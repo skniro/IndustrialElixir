@@ -44,6 +44,7 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         blockStateModelGenerator.family(GeneralBlocks.Steel_Block);
         blockStateModelGenerator.family(GeneralBlocks.Machine);
         blockStateModelGenerator.family(GeneralBlocks.Advanced_Machine);
+        blockStateModelGenerator.family(GeneralBlocks.Super_Machine);
 
         BlockModelGenerators.BlockFamilyProvider MaplePool = blockStateModelGenerator.family(GeneralBlocks.Rubber_PLANKS)
                 .generateFor(GrowableOresBlockFamilies.RUBBER_PLANKS);
