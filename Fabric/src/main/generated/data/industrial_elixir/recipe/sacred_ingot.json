@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:sacred_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "industrial_elixir:sacred_ingot"
+  }
+}

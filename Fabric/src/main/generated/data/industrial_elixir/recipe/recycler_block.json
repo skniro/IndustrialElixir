@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:glowstone_dust",
+    "D": "#minecraft:dirt",
+    "G": "industrial_elixir:compressor",
+    "R": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    " C ",
+    "DGD",
+    "RDR"
+  ],
+  "result": {
+    "id": "industrial_elixir:recycler_block"
+  }
+}

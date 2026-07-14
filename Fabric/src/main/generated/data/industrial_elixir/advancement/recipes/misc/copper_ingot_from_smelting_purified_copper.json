@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purified_copper": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:purified_copper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "industrial_elixir:copper_ingot_from_smelting_purified_copper"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_purified_copper"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "industrial_elixir:copper_ingot_from_smelting_purified_copper"
+    ]
+  }
+}

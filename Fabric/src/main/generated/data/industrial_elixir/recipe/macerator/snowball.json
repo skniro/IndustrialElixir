@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:ice",
+  "result": {
+    "id": "minecraft:snowball"
+  }
+}

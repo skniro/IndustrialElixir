@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/tinted_cross",
+  "textures": {
+    "cross": "industrial_elixir:block/ier_tin_ore_cane"
+  }
+}

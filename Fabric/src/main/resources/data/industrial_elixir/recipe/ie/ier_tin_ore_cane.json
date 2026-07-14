@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#G#",
+        "###"
+    ],
+    "key": {
+        "#": "minecraft:sugar_cane",
+        "G": "industrial_elixir:tin_ingot"
+    },
+    "result": {
+        "id": "industrial_elixir:ier_tin_ore_cane",
+        "count": 1
+    }
+}

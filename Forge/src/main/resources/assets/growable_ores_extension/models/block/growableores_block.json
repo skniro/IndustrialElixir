@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "particle": "industrial_elixir:block/growableores_block_left",
+    "down": "industrial_elixir:block/growableores_block_bottom",
+    "up": "industrial_elixir:block/growableores_block_top",
+    "south": "industrial_elixir:block/growableores_block_back",
+    "east": "industrial_elixir:block/growableores_block_right",
+    "front": "industrial_elixir:block/growableores_block_front",
+    "west": "industrial_elixir:block/growableores_block_left"
+  }
+}

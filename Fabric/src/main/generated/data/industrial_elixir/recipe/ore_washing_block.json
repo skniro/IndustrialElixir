@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:bucket",
+    "C": "industrial_elixir:circuit",
+    "G": "industrial_elixir:machine",
+    "I": "industrial_elixir:iron_plate",
+    "R": "industrial_elixir:electric_motor"
+  },
+  "pattern": [
+    "III",
+    "BGB",
+    "RCR"
+  ],
+  "result": {
+    "id": "industrial_elixir:ore_washing_block"
+  }
+}

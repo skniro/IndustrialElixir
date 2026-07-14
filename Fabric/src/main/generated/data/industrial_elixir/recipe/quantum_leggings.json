@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "industrial_elixir:iridium_plate",
+    "C": "industrial_elixir:carbon_plate",
+    "G": "minecraft:glowstone_dust",
+    "L": "industrial_elixir:lapotron_crystal",
+    "M": "industrial_elixir:machine"
+  },
+  "pattern": [
+    "MLM",
+    "#C#",
+    "GCG"
+  ],
+  "result": {
+    "id": "industrial_elixir:quantum_leggings"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/energy_box_bottom",
+    "east": "industrial_elixir:block/energy_box_side",
+    "north": "industrial_elixir:block/energy_box_front",
+    "particle": "industrial_elixir:block/energy_box_side",
+    "south": "industrial_elixir:block/energy_box_back",
+    "up": "industrial_elixir:block/energy_box_top",
+    "west": "industrial_elixir:block/energy_box_side"
+  }
+}

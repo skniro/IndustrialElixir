@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:metal_former_extruding",
+  "count": 1,
+  "ingredient": "minecraft:copper_ingot",
+  "result": {
+    "count": 3,
+    "id": "industrial_elixir:copper_cable"
+  }
+}

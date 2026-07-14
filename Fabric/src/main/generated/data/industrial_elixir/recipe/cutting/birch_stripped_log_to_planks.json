@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:stripped_birch_log",
+  "result": {
+    "count": 6,
+    "id": "minecraft:birch_planks"
+  }
+}

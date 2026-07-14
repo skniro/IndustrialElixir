@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "industrial_elixir:carbon_fibre"
+  },
+  "pattern": [
+    "II ",
+    "   ",
+    "   "
+  ],
+  "result": {
+    "id": "industrial_elixir:carbon_mesh"
+  }
+}

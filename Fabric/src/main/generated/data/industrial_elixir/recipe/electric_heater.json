@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "industrial_elixir:re_battery",
+    "C": "industrial_elixir:circuit",
+    "H": "industrial_elixir:heat_conductor",
+    "I": "industrial_elixir:iron_casing"
+  },
+  "pattern": [
+    "IBI",
+    "ICI",
+    "IHI"
+  ],
+  "result": {
+    "id": "industrial_elixir:electric_heater"
+  }
+}

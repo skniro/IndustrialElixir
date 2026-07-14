@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 4,
+  "ingredient": "minecraft:brick",
+  "result": {
+    "id": "minecraft:bricks"
+  }
+}

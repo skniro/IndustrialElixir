@@ -1,0 +1,8 @@
+{
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:diamond_cane",
+    "result": {
+        "id": "minecraft:diamond",
+        "count": 1
+    }
+}

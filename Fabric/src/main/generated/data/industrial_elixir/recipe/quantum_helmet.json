@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "industrial_elixir:iridium_plate",
+    "A": "industrial_elixir:advanced_circuit",
+    "C": "industrial_elixir:carbon_plate",
+    "L": "industrial_elixir:lapotron_crystal",
+    "R": "industrial_elixir:reinforced_glass"
+  },
+  "pattern": [
+    "CCC",
+    "#L#",
+    "ARA"
+  ],
+  "result": {
+    "id": "industrial_elixir:quantum_helmet"
+  }
+}

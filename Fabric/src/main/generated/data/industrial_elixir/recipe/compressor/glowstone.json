@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 4,
+  "ingredient": "minecraft:glowstone_dust",
+  "result": {
+    "id": "minecraft:glowstone"
+  }
+}

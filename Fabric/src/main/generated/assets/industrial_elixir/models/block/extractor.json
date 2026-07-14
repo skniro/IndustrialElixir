@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/extractor_bottom",
+    "east": "industrial_elixir:block/extractor_side",
+    "north": "industrial_elixir:block/extractor_front",
+    "particle": "industrial_elixir:block/extractor_side",
+    "south": "industrial_elixir:block/extractor_back",
+    "up": "industrial_elixir:block/extractor_top",
+    "west": "industrial_elixir:block/extractor_side"
+  }
+}

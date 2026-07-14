@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:obsidian",
+  "result": {
+    "id": "industrial_elixir:obsidian_dust"
+  }
+}

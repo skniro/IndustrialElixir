@@ -1,0 +1,11 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "industrial_elixir:ier_silver_ore_cane",
+    "result": {
+        "id": "industrial_elixir:silver_ingot",
+        "count": 1
+    }
+}

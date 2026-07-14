@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:furnace",
+    "G": "industrial_elixir:iron_plate"
+  },
+  "pattern": [
+    " G ",
+    "G G",
+    "GCG"
+  ],
+  "result": {
+    "id": "industrial_elixir:iron_furnace"
+  }
+}

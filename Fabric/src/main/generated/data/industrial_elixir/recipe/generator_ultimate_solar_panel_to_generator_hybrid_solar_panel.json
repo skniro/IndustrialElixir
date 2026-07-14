@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:generator_ultimate_solar_panel"
+  ],
+  "result": {
+    "count": 8,
+    "id": "industrial_elixir:generator_hybrid_solar_panel"
+  }
+}

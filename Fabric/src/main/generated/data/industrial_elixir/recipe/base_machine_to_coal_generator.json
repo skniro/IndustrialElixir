@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "industrial_elixir:re_battery",
+    "G": "minecraft:furnace",
+    "S": "industrial_elixir:machine"
+  },
+  "pattern": [
+    " E ",
+    " S ",
+    " G "
+  ],
+  "result": {
+    "id": "industrial_elixir:coal_generator"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:tool_rolling",
+    "minecraft:copper_ingot"
+  ],
+  "result": {
+    "id": "industrial_elixir:copper_plate"
+  }
+}

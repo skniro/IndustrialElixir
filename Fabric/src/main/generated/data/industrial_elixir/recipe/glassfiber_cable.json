@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "industrial_elixir:energium_dust",
+    "G": "minecraft:glass",
+    "S": "industrial_elixir:silver_dust"
+  },
+  "pattern": [
+    "GGG",
+    "ESE",
+    "GGG"
+  ],
+  "result": {
+    "count": 6,
+    "id": "industrial_elixir:glassfiber_cable"
+  }
+}

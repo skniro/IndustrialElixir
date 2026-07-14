@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/generator_ultimate_solar_panel_bottom",
+    "east": "industrial_elixir:block/generator_ultimate_solar_panel_side",
+    "north": "industrial_elixir:block/generator_ultimate_solar_panel_side",
+    "particle": "industrial_elixir:block/generator_ultimate_solar_panel_side",
+    "south": "industrial_elixir:block/generator_ultimate_solar_panel_side",
+    "up": "industrial_elixir:block/generator_ultimate_solar_panel_top",
+    "west": "industrial_elixir:block/generator_ultimate_solar_panel_side"
+  }
+}

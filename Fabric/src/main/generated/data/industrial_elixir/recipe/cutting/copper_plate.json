@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:copper_block",
+  "result": {
+    "count": 9,
+    "id": "industrial_elixir:copper_plate"
+  }
+}

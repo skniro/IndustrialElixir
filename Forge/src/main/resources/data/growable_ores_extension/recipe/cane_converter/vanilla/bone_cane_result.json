@@ -1,0 +1,8 @@
+{
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:bone_cane",
+    "result": {
+        "id": "minecraft:bone",
+        "count": 2
+    }
+}

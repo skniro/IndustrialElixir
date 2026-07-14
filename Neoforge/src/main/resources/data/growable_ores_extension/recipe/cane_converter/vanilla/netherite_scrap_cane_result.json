@@ -1,0 +1,8 @@
+{
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:netherite_scrap_cane",
+    "result": {
+        "id": "minecraft:netherite_scrap",
+        "count": 1
+    }
+}

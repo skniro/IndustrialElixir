@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "industrial_elixir",
+  "version": "${version}",
+  "name": "Skniro's Industrial Elixir",
+  "description": "A industrial mod.",
+  "authors": [
+    "skniro"
+  ],
+  "contact": {
+    "website": "https://www.curseforge.com/skniro",
+    "sources": "https://github.com/skniro/Industrial_Elixir",
+    "issues": "https://github.com/skniro/Industrial_Elixir/issues"},
+  "license": "MIT",
+  "icon": "assets/industrial_elixir/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.skniro.industrial_elixir.datagen.IndustrialElixirDataGeneration"
+    ],
+    "client": [
+      "com.skniro.industrial_elixir.client.IndustrialElixirOresClient"
+    ],
+    "main": [
+      "com.skniro.industrial_elixir.IndustrialElixir",
+      "com.skniro.growableoresir.GrowableOres"
+    ],
+    "rei_client": [
+      "com.skniro.industrial_elixir.compat.rei.IndustrialModREIClient"
+    ],
+    "rei_common": [
+      "com.skniro.industrial_elixir.compat.rei.IndustrialModREICommon"
+    ],
+    "jei_mod_plugin": [
+      "com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIPlugin"
+    ]
+  },
+  "mixins": [
+    "industrial_elixir.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric-api": "*",
+    "minecraft": "26.1.x"
+  }
+}

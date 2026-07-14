@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "industrial_elixir:block/solid_fuel_heater_generator"
+  }
+}

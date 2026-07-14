@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "industrial_elixir:block/raw_tin_block"
+  }
+}

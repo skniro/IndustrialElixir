@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:diamond",
+  "result": {
+    "id": "industrial_elixir:diamond_dust"
+  }
+}

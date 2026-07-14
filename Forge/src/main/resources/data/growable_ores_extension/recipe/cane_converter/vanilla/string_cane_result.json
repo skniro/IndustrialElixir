@@ -1,0 +1,11 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:string_cane",
+    "result": {
+        "id": "minecraft:string",
+        "count": 1
+    }
+}

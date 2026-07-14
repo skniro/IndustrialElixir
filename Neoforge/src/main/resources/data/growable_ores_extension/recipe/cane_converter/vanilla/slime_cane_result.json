@@ -1,0 +1,8 @@
+{
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:slime_cane",
+    "result": {
+        "id": "minecraft:slime_ball",
+        "count": 1
+    }
+}

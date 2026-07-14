@@ -1,0 +1,14 @@
+{
+  "type": "industrial_elixir:heat_centrifuge",
+  "count": 1,
+  "ingredient": "industrial_elixir:purified_tin",
+  "result": {
+    "id": "industrial_elixir:tin_dust"
+  },
+  "result2": {
+    "id": "industrial_elixir:small_iron_dust"
+  },
+  "result3": {
+    "id": "industrial_elixir:stone_dust"
+  }
+}

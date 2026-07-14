@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:copper_plate",
+  "result": {
+    "id": "industrial_elixir:copper_dust"
+  }
+}

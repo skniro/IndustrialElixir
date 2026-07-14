@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": [
+    "industrial_elixir:bronze_pickaxe",
+    "industrial_elixir:bronze_axe",
+    "industrial_elixir:bronze_shovel",
+    "industrial_elixir:bronze_sword",
+    "industrial_elixir:bronze_hoe",
+    "industrial_elixir:bronze_helmet",
+    "industrial_elixir:bronze_chestplate",
+    "industrial_elixir:bronze_leggings",
+    "industrial_elixir:bronze_boots"
+  ],
+  "result": {
+    "id": "industrial_elixir:bronze_ingot"
+  }
+}

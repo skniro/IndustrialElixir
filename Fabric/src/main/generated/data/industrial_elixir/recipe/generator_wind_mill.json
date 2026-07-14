@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:iron_ingot",
+    "S": "industrial_elixir:coal_generator"
+  },
+  "pattern": [
+    "G G",
+    " S ",
+    "G G"
+  ],
+  "result": {
+    "id": "industrial_elixir:generator_wind_mill"
+  }
+}

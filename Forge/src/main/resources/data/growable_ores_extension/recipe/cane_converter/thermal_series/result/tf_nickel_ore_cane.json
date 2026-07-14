@@ -1,0 +1,28 @@
+{
+    "fabric:load_conditions": [
+        {
+            "condition": "fabric:all_mods_loaded",
+            "values": [
+                "thermal"
+            ]
+        }
+    ],
+    "forge:conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "thermal"
+        }
+    ],
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "thermal"
+        }
+    ],
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:tf_nickel_ore_cane",
+    "result": {
+        "id": "thermal:nickel_ingot",
+        "count": 1
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_rubber_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:stripped_rubber_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:rubber_stripped_log_to_planks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_rubber_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:rubber_stripped_log_to_planks"
+    ]
+  }
+}

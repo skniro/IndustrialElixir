@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "industrial_elixir:block/mfe",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "industrial_elixir:block/mfe"
+    },
+    "facing=south": {
+      "model": "industrial_elixir:block/mfe",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "industrial_elixir:block/mfe",
+      "y": 270
+    }
+  }
+}

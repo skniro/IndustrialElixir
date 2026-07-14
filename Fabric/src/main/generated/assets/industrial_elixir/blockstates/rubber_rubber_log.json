@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "age=0,axis=x": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage0_horizontal",
+      "x": 90
+    },
+    "age=0,axis=y": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage0"
+    },
+    "age=0,axis=z": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage0_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "age=1,axis=x": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage1_horizontal",
+      "x": 90
+    },
+    "age=1,axis=y": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage1"
+    },
+    "age=1,axis=z": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage1_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "age=2,axis=x": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage2_horizontal",
+      "x": 90
+    },
+    "age=2,axis=y": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage2"
+    },
+    "age=2,axis=z": {
+      "model": "industrial_elixir:block/rubber_rubber_log_stage2_horizontal",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:generator_ultimate_solar_panel",
+    "P": "industrial_elixir:quantum_core"
+  },
+  "pattern": [
+    "AAA",
+    "APA",
+    "AAA"
+  ],
+  "result": {
+    "id": "industrial_elixir:generator_quantum_solar_panel"
+  }
+}

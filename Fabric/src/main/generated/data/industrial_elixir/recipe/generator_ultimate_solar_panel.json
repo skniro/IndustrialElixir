@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:generator_advanced_solar_panel",
+    "D": "industrial_elixir:coal_chunk",
+    "E": "industrial_elixir:enriched_luminite_alloy",
+    "L": "minecraft:lapis_block"
+  },
+  "pattern": [
+    " L ",
+    "DAD",
+    "EDE"
+  ],
+  "result": {
+    "id": "industrial_elixir:generator_ultimate_solar_panel"
+  }
+}

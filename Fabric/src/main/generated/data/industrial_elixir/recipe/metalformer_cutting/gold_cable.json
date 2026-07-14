@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:metal_former_cutting",
+  "count": 1,
+  "ingredient": "industrial_elixir:gold_plate",
+  "result": {
+    "count": 4,
+    "id": "industrial_elixir:gold_cable"
+  }
+}

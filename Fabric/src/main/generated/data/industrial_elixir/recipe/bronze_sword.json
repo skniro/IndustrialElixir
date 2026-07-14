@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "industrial_elixir:bronze_ingot",
+    "|": "minecraft:stick"
+  },
+  "pattern": [
+    "#",
+    "#",
+    "|"
+  ],
+  "result": {
+    "id": "industrial_elixir:bronze_sword"
+  }
+}

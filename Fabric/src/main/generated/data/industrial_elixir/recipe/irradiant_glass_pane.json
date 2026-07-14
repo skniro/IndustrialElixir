@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "industrial_elixir:irradiant_septrin",
+    "G": "minecraft:glass",
+    "R": "minecraft:glowstone_dust"
+  },
+  "pattern": [
+    "GGG",
+    "DRD",
+    "GGG"
+  ],
+  "result": {
+    "id": "industrial_elixir:irradiant_glass_pane"
+  }
+}

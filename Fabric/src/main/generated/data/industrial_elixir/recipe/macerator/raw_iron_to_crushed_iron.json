@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:raw_iron",
+  "result": {
+    "count": 2,
+    "id": "industrial_elixir:crushed_iron"
+  }
+}

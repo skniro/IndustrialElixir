@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/fluid_tank_top",
+    "east": "industrial_elixir:block/fluid_tank_side",
+    "north": "industrial_elixir:block/fluid_tank_front",
+    "particle": "industrial_elixir:block/fluid_tank_side",
+    "south": "industrial_elixir:block/fluid_tank_front",
+    "up": "industrial_elixir:block/fluid_tank_top",
+    "west": "industrial_elixir:block/fluid_tank_side"
+  }
+}

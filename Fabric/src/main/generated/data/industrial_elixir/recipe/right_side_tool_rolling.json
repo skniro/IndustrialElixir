@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:stick",
+    "T": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    " TT",
+    "IIT",
+    " TT"
+  ],
+  "result": {
+    "id": "industrial_elixir:tool_rolling"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:tool_cutting",
+    "industrial_elixir:gold_plate"
+  ],
+  "result": {
+    "count": 4,
+    "id": "industrial_elixir:gold_cable"
+  }
+}

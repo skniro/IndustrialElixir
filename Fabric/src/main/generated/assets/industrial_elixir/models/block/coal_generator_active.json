@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/coal_generator_top",
+    "east": "industrial_elixir:block/coal_generator_side",
+    "north": "industrial_elixir:block/coal_generator_front_active",
+    "particle": "industrial_elixir:block/coal_generator_side",
+    "south": "industrial_elixir:block/coal_generator_side",
+    "up": "industrial_elixir:block/coal_generator_top",
+    "west": "industrial_elixir:block/coal_generator_side"
+  }
+}

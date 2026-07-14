@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:molecular_transformer",
+  "energy": 250000000,
+  "ingredient": "minecraft:wither_skeleton_skull",
+  "result": {
+    "id": "minecraft:nether_star"
+  }
+}

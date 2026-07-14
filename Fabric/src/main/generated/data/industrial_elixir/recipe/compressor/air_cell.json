@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 1,
+  "ingredient": "industrial_elixir:empty_cell",
+  "result": {
+    "id": "industrial_elixir:air_cell"
+  }
+}

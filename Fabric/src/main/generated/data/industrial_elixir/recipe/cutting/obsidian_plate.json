@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:obsidian",
+  "result": {
+    "count": 4,
+    "id": "industrial_elixir:obsidian_plate"
+  }
+}

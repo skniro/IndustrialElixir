@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "C": "industrial_elixir:copper_plate",
+    "P": "industrial_elixir:iron_plate"
+  },
+  "pattern": [
+    "BPB",
+    "PCP",
+    "BPB"
+  ],
+  "result": {
+    "id": "industrial_elixir:heat_vent"
+  }
+}

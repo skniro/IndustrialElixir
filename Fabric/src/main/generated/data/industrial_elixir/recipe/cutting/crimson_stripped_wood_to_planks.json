@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:stripped_crimson_hyphae",
+  "result": {
+    "count": 6,
+    "id": "minecraft:crimson_planks"
+  }
+}

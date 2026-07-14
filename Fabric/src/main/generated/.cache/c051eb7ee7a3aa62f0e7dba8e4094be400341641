@@ -1,0 +1,15 @@
+// 26.1.2	-999999999-01-01T00:00:00	Skniro's Industrial Elixir/Tags for minecraft:block
+ee6e428c1f978c73d50cda8eec042f1daf60f028 data/minecraft/tags/block/fences.json
+68c79ea0f8f557c121d95a0c2d7fe83dd8415c19 data/minecraft/tags/block/leaves.json
+0e0388bc7555cc27e0dfab3c1354d65608240196 data/minecraft/tags/block/logs_that_burn.json
+47a35f092142bf7cde9e49bbd24c409073b1d27e data/minecraft/tags/block/mineable/pickaxe.json
+6f6e3aee8cd35c907c26c098606ae74e760cefbc data/minecraft/tags/block/needs_iron_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/block/needs_stone_tool.json
+ba9208221aa25e0c4407be7aa11952241dc91589 data/minecraft/tags/block/planks.json
+376a593c654d1761ee15ef6a44721e3af7e8e166 data/minecraft/tags/block/saplings.json
+cfcef389ce888886eb02f4e91c7e467b463584fc data/minecraft/tags/block/wooden_buttons.json
+0adfa47030f07069791fec825555cb45a6cbc6dc data/minecraft/tags/block/wooden_doors.json
+dca3593c4e8daf8b80ecb67ba5d2a396aa6f7898 data/minecraft/tags/block/wooden_pressure_plates.json
+3b413ed616365fc0c960197472d1ce709fe2ba08 data/minecraft/tags/block/wooden_slabs.json
+a3a862151e8c15a33451046825f30b2d3fb31e53 data/minecraft/tags/block/wooden_stairs.json
+d083d95ff9efe5944358026039141ae30865e7fb data/minecraft/tags/block/wooden_trapdoors.json

@@ -1,0 +1,8 @@
+{
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:gold_cane",
+    "result": {
+        "id": "minecraft:gold_ingot",
+        "count": 1
+    }
+}

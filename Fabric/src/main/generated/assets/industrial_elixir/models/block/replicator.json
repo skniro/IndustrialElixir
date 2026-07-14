@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/replicator_bottom",
+    "east": "industrial_elixir:block/replicator_right",
+    "north": "industrial_elixir:block/replicator_front",
+    "particle": "industrial_elixir:block/replicator_left",
+    "south": "industrial_elixir:block/replicator_back",
+    "up": "industrial_elixir:block/replicator_top",
+    "west": "industrial_elixir:block/replicator_left"
+  }
+}

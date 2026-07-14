@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot",
+    "industrial_elixir:tin_ingot"
+  ],
+  "result": {
+    "id": "industrial_elixir:tin_block"
+  }
+}

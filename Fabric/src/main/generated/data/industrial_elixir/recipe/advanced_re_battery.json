@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "industrial_elixir:sulfur_dust",
+    "C": "industrial_elixir:lead_dust",
+    "I": "industrial_elixir:bronze_casing",
+    "T": "industrial_elixir:insulated_copper_cable"
+  },
+  "pattern": [
+    "TIT",
+    "IBI",
+    "ICI"
+  ],
+  "result": {
+    "id": "industrial_elixir:advanced_re_battery"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.skniro.industrial_elixir.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "SignTypeAccessor",
+    "BlockEntityTypeMixin",
+    "FurnaceSpeedMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

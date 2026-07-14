@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "industrial_elixir:iron_plate",
+    "T": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "I I",
+    " I ",
+    "T T"
+  ],
+  "result": {
+    "id": "industrial_elixir:tool_cutting"
+  }
+}

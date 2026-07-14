@@ -1,0 +1,11 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "growable_ores:dark_oak_log_cane",
+    "result": {
+        "id": "minecraft:dark_oak_log",
+        "count": 1
+    }
+}
