@@ -109,6 +109,8 @@ public class ModCreativeTab {
             content.accept(GeneralBlocks.Advanced_Machine);
             content.accept(GeneralBlocks.Super_Machine);
             content.accept(GrowableOresBlocks.FLUID_TANK_BLOCK);
+            content.accept(GeneralBlocks.Reinforced_Stone);
+            content.accept(GeneralBlocks.Reinforced_Glass);
             //PLASTER
             content.accept(GeneralBlocks.GREEN_PLASTER);
             content.accept(GeneralBlocks.PLASTER);
