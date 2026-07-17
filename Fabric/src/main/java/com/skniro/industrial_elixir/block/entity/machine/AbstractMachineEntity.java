@@ -79,7 +79,7 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
             @Override
             public long getCapacity() {
                 long extra = getEnergyStorageUpgrade();
-                return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : getEffectiveTier().getMaxInput() + 300 + extra;
+                return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : getEffectiveTier().getMaxInput() + 512 + extra;
             }
 
             @Override
