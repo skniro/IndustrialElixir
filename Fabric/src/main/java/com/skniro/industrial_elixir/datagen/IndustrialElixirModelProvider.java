@@ -75,6 +75,9 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         blockStateModelGenerator.family(GeneralBlocks.BROWN_PLASTER);
         blockStateModelGenerator.family(GeneralBlocks.RED_PLASTER);
 
+
+        blockStateModelGenerator.family(GeneralBlocks.Reinforced_Stone);
+        blockStateModelGenerator.family(GeneralBlocks.Reinforced_Glass);
         blockStateModelGenerator.createDoor(GeneralBlocks.Reinforced_DOOR);
 
         MapleModelDatagenHelper mapleModelDatagenHelper = new MapleModelDatagenHelper(blockStateModelGenerator);
