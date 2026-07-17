@@ -89,5 +89,8 @@ public class IndustrialElixirItemTagGenerator extends FabricTagsProvider.ItemTag
       valueLookupBuilder(ModItemTags.Diamond)
               .add(GrowableOresItems.INDUSTRIAL_DIAMOND)
               .add(Items.DIAMOND);
+      valueLookupBuilder(ItemTags.DOORS)
+              .add(Item.byBlock(GeneralBlocks.Reinforced_DOOR))
+              .setReplace(false);
    }
 }

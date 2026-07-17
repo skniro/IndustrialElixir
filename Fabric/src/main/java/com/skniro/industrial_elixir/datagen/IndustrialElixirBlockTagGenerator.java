@@ -132,6 +132,9 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
       valueLookupBuilder(FENCES)
               .add(GeneralBlocks.Rubber_FENCE)
               .setReplace(false);
+      valueLookupBuilder(DOORS)
+              .add(GeneralBlocks.Reinforced_DOOR)
+              .setReplace(false);
 
 
    }

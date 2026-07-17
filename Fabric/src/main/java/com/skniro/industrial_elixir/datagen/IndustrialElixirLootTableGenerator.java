@@ -63,6 +63,7 @@ public class IndustrialElixirLootTableGenerator extends FabricBlockLootSubProvid
         dropSelf(GeneralBlocks.Super_Machine);
         dropSelf(GeneralBlocks.Reinforced_Stone);
         dropSelf(GeneralBlocks.Reinforced_Glass);
+        add(GeneralBlocks.Reinforced_DOOR, createDoorTable(GeneralBlocks.Reinforced_DOOR));
 
         dropSelf(GrowableOresBlocks.GrowableOres_Block);
 

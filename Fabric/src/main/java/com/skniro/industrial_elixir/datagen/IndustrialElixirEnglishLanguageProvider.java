@@ -135,6 +135,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(GeneralBlocks.Rubber_SHELF, "Rubber Shelf");
         translationBuilder.add(GeneralBlocks.Reinforced_Glass, "Reinforced Glass");
         translationBuilder.add(GeneralBlocks.Reinforced_Stone, "Reinforced Stone");
+        translationBuilder.add(GeneralBlocks.Reinforced_DOOR, "Reinforced Door");
 
         translationBuilder.add(GrowableOresBlocks.Macerator_Block, "Macerator");
         translationBuilder.add(GrowableOresBlocks.Compressor_Block, "Compressor");

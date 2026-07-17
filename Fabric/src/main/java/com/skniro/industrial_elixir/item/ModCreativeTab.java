@@ -111,6 +111,8 @@ public class ModCreativeTab {
             content.accept(GrowableOresBlocks.FLUID_TANK_BLOCK);
             content.accept(GeneralBlocks.Reinforced_Stone);
             content.accept(GeneralBlocks.Reinforced_Glass);
+            content.accept(GeneralBlocks.Reinforced_DOOR);
+
             //PLASTER
             content.accept(GeneralBlocks.GREEN_PLASTER);
             content.accept(GeneralBlocks.PLASTER);

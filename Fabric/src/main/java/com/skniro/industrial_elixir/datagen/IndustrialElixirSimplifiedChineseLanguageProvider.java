@@ -136,6 +136,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(GeneralBlocks.Rubber_SHELF, "橡胶木展示格");
         translationBuilder.add(GeneralBlocks.Reinforced_Glass, "防爆玻璃");
         translationBuilder.add(GeneralBlocks.Reinforced_Stone, "防爆石");
+        translationBuilder.add(GeneralBlocks.Reinforced_DOOR, "防爆门");
 
         translationBuilder.add(GrowableOresBlocks.Macerator_Block, "粉碎机");
         translationBuilder.add(GrowableOresBlocks.Compressor_Block, "压缩机");

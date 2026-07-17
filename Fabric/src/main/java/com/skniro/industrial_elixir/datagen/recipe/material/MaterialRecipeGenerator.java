@@ -286,16 +286,22 @@ public class MaterialRecipeGenerator extends FabricRecipeProvider {
                         .pattern("CPC").pattern("CPC").pattern("CPC")
                         .unlockedBy("has_item", this.has(GrowableOresItems.COPPER_PLATE)).save(this.output);
 
-                shaped(RecipeCategory.MISC, GeneralBlocks.Reinforced_Glass)
+                shaped(RecipeCategory.MISC, GeneralBlocks.Reinforced_Glass,7)
                         .define('P', Blocks.GLASS).define('C', GrowableOresItems.ALLOY_PLATE)
                         .pattern("PPP").pattern("CPC").pattern("PPP")
                         .unlockedBy("has_item", this.has(GrowableOresItems.ALLOY_PLATE)).save(this.output);
 
-                shaped(RecipeCategory.MISC, GeneralBlocks.Reinforced_Stone)
+                shaped(RecipeCategory.MISC, GeneralBlocks.Reinforced_Stone,8)
                         .define('P', Blocks.STONE)
                         .define('C', GrowableOresItems.ALLOY_PLATE)
                         .pattern("PPP").pattern("PCP").pattern("PPP")
                         .unlockedBy("has_item", this.has(GrowableOresItems.ALLOY_PLATE)).save(this.output);
+
+                shaped(RecipeCategory.MISC, GeneralBlocks.Reinforced_DOOR)
+                        .define('P', GrowableOresItems.IRON_PLATE)
+                        .define('C', GrowableOresItems.LEAD_PLATE)
+                        .pattern("PCP").pattern("PCP").pattern("PCP")
+                        .unlockedBy("has_item", this.has(GrowableOresItems.LEAD_PLATE)).save(this.output);
 
                 shaped(RecipeCategory.MISC, GrowableOresItems.RAW_PATTERN_STORAGE_CRYSTAL)
                         .define('I', GrowableOresItems.SILICON_DIOXIDE_DUST)

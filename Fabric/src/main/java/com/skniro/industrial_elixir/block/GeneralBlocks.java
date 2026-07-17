@@ -106,6 +106,9 @@ public class GeneralBlocks {
     public static final Block Reinforced_Glass = registerBlock("reinforced_glass",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 800.0F)));
 
+    public static final Block Reinforced_DOOR = registerBlock("reinforced_door",
+            (settings)-> new DoorBlock(BlockSetType.IRON, settings), BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 1000.0F).noOcclusion().pushReaction(PushReaction.IGNORE));
+
     //PLASTER
     public static final Block GREEN_PLASTER =registerBlock("green_plaster",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_CONCRETE)));
