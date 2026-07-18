@@ -277,9 +277,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(GrowableOresItems.SILVER_INGOT, "银锭");
         translationBuilder.add(GrowableOresItems.STEEL_INGOT, "钢锭");
         translationBuilder.add(GrowableOresItems.TIN_INGOT, "锡锭");
-        translationBuilder.add(GrowableOresItems.REFINED_IRON_INGOT, "精炼铁锭");
         translationBuilder.add(GrowableOresItems.SACRED_INGOT, "神圣石锭");
-
         translationBuilder.add(GrowableOresItems.CARBON_FIBRE, "碳纤维");
         translationBuilder.add(GrowableOresItems.CARBON_MESH, "碳纤维网");
         translationBuilder.add(GrowableOresItems.CARBON_PLATE, "碳板");

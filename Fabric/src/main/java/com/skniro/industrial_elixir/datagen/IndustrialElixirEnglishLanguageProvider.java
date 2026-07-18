@@ -276,7 +276,6 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(GrowableOresItems.SILVER_INGOT, "Silver Ingot");
         translationBuilder.add(GrowableOresItems.STEEL_INGOT, "Steel Ingot");
         translationBuilder.add(GrowableOresItems.TIN_INGOT, "Tin Ingot");
-        translationBuilder.add(GrowableOresItems.REFINED_IRON_INGOT, "Refined Iron Ingot");
         translationBuilder.add(GrowableOresItems.SACRED_INGOT, "Sacred Ingot");
 
         translationBuilder.add(GrowableOresItems.CARBON_FIBRE, "Carbon Fibre");

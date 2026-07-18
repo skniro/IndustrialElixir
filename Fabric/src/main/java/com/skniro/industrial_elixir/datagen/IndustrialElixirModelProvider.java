@@ -222,7 +222,6 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(GrowableOresItems.SILVER_INGOT, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.STEEL_INGOT, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.TIN_INGOT, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(GrowableOresItems.REFINED_IRON_INGOT, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.SACRED_INGOT, ModelTemplates.FLAT_ITEM);
 
         itemModelGenerator.generateFlatItem(GrowableOresItems.BRONZE_PLATE, ModelTemplates.FLAT_ITEM);
@@ -306,6 +305,8 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_SHOVEL, ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_HOE, ModelTemplates.FLAT_HANDHELD_ITEM);
+
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Electric_Jetpack, MapleEquipmentAssetKeys.ELECTRIC_JETPACK, TRIM_PREFIX_CHESTPLATE, false);
 
         itemModelGenerator.generateFlatItem(GrowableOresItems.EMPTY_CELL, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.WATER_CELL, ModelTemplates.FLAT_ITEM);

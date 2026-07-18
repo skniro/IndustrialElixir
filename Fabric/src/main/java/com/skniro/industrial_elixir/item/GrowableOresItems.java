@@ -108,7 +108,6 @@ public class GrowableOresItems {
     public static final Item SILVER_INGOT = registerItem("silver_ingot", Item::new, new Item.Properties());
     public static final Item STEEL_INGOT = registerItem("steel_ingot", Item::new, new Item.Properties());
     public static final Item TIN_INGOT = registerItem("tin_ingot", Item::new, new Item.Properties());
-    public static final Item REFINED_IRON_INGOT = registerItem("refined_iron_ingot", Item::new, new Item.Properties());
     public static final Item SACRED_INGOT = registerItem("sacred_ingot", Item::new, new Item.Properties());
 
     public static final Item BRONZE_PLATE = registerItem("bronze_plate", Item::new, new Item.Properties());

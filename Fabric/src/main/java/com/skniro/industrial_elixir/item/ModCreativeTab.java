@@ -319,7 +319,6 @@ public class ModCreativeTab {
             content.accept(GrowableOresItems.SILVER_INGOT);
             content.accept(GrowableOresItems.STEEL_INGOT);
             content.accept(GrowableOresItems.TIN_INGOT);
-            content.accept(GrowableOresItems.REFINED_IRON_INGOT);
             content.accept(GrowableOresItems.SACRED_INGOT);
             content.accept(GrowableOresItems.IMPURE_SACRED_STONE);
 
