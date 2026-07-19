@@ -4,8 +4,12 @@ import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.api.item.TieredEnergyItem;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomModelData;
+
+import java.util.List;
 
 
 public class BatteryItem extends Item implements SimpleEnergyItem, TieredEnergyItem {
@@ -13,7 +17,7 @@ public class BatteryItem extends Item implements SimpleEnergyItem, TieredEnergyI
     private long capacity;
 
     public BatteryItem(Properties settings, EnergyTier energyTier, long capacity) {
-        super(settings.stacksTo(1));
+        super(settings.stacksTo(1).durability(100));
         this.energyTier = energyTier;
         this.capacity = capacity;
         EnergyStorage.ITEM.registerForItems((stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
@@ -53,6 +57,25 @@ public class BatteryItem extends Item implements SimpleEnergyItem, TieredEnergyI
         } else {
             throw new UnsupportedOperationException();
         }
+    }
+
+    @Override
+    public void setStoredEnergy(ItemStack stack, long newAmount) {
+        SimpleEnergyItem.setStoredEnergyUnchecked(stack, newAmount);
+
+        if (stack.getItem() instanceof BatteryItem battery) {
+            battery.syncDamage(stack);
+        }
+    }
+
+    public void syncDamage(ItemStack stack) {
+        int maxDamage = stack.getMaxDamage();
+        if (maxDamage <= 0) {
+            return;
+        }
+
+        float percent = (float) getStoredEnergy(stack) / getEnergyCapacity(stack);
+        stack.setDamageValue(Math.round((1.0F - percent) * maxDamage));
     }
 
     public static int getColorForDurabilityBar(ItemStack stack) {

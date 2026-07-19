@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.client;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
+import com.skniro.industrial_elixir.api.data.model.BatteryLevelProperty;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
@@ -51,6 +52,7 @@ import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.BoatRenderer;
+import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import com.skniro.industrial_elixir.networking.packet.ToggleNightVisionC2SPayload;
@@ -64,6 +66,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
     public void onInitializeClient() {
         ModKeyMappings.registerKeys();
         ClientTickEvents.END_CLIENT_TICK.register(ModClientEvents::onEndTick);
+        SelectItemModelProperties.ID_MAPPER.put(BatteryLevelProperty.ID, BatteryLevelProperty.TYPE);
 
         ChunkSectionLayer renderLayer2 = ChunkSectionLayer.CUTOUT;
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING, renderLayer2);

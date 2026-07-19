@@ -4,8 +4,10 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.renderer.item.ItemModel;
-import net.minecraft.client.renderer.item.properties.numeric.Damage;
+import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.world.item.Item;
+
+import java.util.List;
 
 public class MapleItemModelDatagenHelper {
     private final ItemModelGenerators generator;;
@@ -15,13 +17,21 @@ public class MapleItemModelDatagenHelper {
     }
 
     public final void registerDurabilityItem(Item item) {
-        ItemModel.Unbaked low0   = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_0", ModelTemplates.FLAT_ITEM));
-        ItemModel.Unbaked low25  = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_1", ModelTemplates.FLAT_ITEM));
-        ItemModel.Unbaked low50  = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_2", ModelTemplates.FLAT_ITEM));
-        ItemModel.Unbaked low75  = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_3", ModelTemplates.FLAT_ITEM));
-        ItemModel.Unbaked low100 = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_4", ModelTemplates.FLAT_ITEM));
-        ItemModel.Unbaked dispatched = ItemModelUtils.conditional(ItemModelUtils.isUsingItem(), ItemModelUtils.rangeSelect(new Damage(false), 0.0F, low0, ItemModelUtils.override(low25, 0.25F), ItemModelUtils.override(low50, 0.50F), ItemModelUtils.override(low75, 0.75F), ItemModelUtils.override(low100, 1.0F)), low0);
-        generator.itemModelOutput.accept(item, dispatched);
+        ItemModel.Unbaked level0 = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_0", ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked level1 = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_1", ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked level2 = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_2", ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked level3 = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_3", ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked level4 = ItemModelUtils.plainModel(generator.createFlatItemModel(item, "_4", ModelTemplates.FLAT_ITEM));
+
+        generator.itemModelOutput.accept(item, ItemModelUtils.select(new BatteryLevelProperty(), level0,
+                        List.of(
+                                new SelectItemModel.SwitchCase<>(List.of(1), level1),
+                                new SelectItemModel.SwitchCase<>(List.of(2), level2),
+                                new SelectItemModel.SwitchCase<>(List.of(3), level3),
+                                new SelectItemModel.SwitchCase<>(List.of(4), level4)
+                        )
+                )
+        );
     }
 
 }
