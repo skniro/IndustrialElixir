@@ -4,12 +4,16 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.screen.handler.generator.fluid.FluidGeneratorScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
+import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.List;
+import java.util.Optional;
 
 public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGeneratorScreenHandler> {
     private static final Identifier TEXTURE =
@@ -29,26 +33,53 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
         fluidRenderer = new GuiFluidTankRenderer(menu.blockEntity.fluidContainer.getCapacity(), false, 16, 50);
     }
 
+    public List<Component> getTooltips() {
+        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" E"));
+    }
+
+    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
+        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
+    }
+
+    private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 75, 34, 31, 16)) {
+            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+                    Optional.empty(), pMouseX - x, pMouseY - y);
+        }
+    }
+
+    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 33, 176, 13, getScaledEnergyHeight(), 16,256,256);
+    }
+
+    public int getScaledEnergyHeight() {
+        long energy = menu.blockEntity.energyContainer.amount;
+        long capacity = menu.blockEntity.energyContainer.getCapacity();
+        int energyBarSize = 31;
+
+        return Math.toIntExact(capacity != 0 && energy != 0 ? energy * energyBarSize / capacity : 0);
+    }
+
     @Override
-    protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
-        super.extractLabels(graphics, xm, ym);
+    protected void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
+        super.extractLabels(context, mouseX, mouseY);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
+        renderEnergyAreaTooltips(context, mouseX, mouseY, leftPos, topPos);
 
-        graphics.text(font, menu.getEnergyAmount() + " EP", 72, 61, -12566464, false);
-
-        if (MouseUtil.isMouseOver(xm, ym, x + 8, y + 5, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
-            graphics.setComponentTooltipForNextFrame(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), xm, ym);
+        if (MouseUtil.isMouseOver(mouseX, mouseY, x + 8, y + 5, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
+            context.setComponentTooltipForNextFrame(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), mouseX, mouseY);
         }
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
+    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float a) {
+        super.extractBackground(context, mouseX, mouseY, a);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
-        fluidRenderer.render(graphics, x + 8, y + 5, menu.blockEntity.fluidContainer);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        fluidRenderer.render(context, x + 8, y + 5, menu.blockEntity.fluidContainer);
+        renderEnergyArea(context, x, y);
     }
 }

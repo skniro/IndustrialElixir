@@ -100,7 +100,7 @@ public class ModCreativeTab {
             content.accept(GeneralBlocks.Rubber_SAPLING);
             content.accept(GeneralBlocks.Rubber_LEAVES);
             content.accept(GeneralBlocks.Rubber_Rubber_LOG);
-            content.accept(GrowableOresItems.Rubber);
+            content.accept(GrowableOresItems.Sticky_Resin);
             content.accept(MapleArmorItems.Rubber_SIGN);
             content.accept(MapleArmorItems.Rubber_HANGING_SIGN);
             content.accept(GrowableOresItems.RUBBER_BOAT);
@@ -350,6 +350,7 @@ public class ModCreativeTab {
             content.accept(GrowableOresItems.STEEL_CASING);
             content.accept(GrowableOresItems.TIN_CASING);
 
+            content.accept(GrowableOresItems.Rubber);
             content.accept(GrowableOresItems.CARBON_FIBRE);
             content.accept(GrowableOresItems.CARBON_MESH);
             content.accept(GrowableOresItems.CARBON_PLATE);

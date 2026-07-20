@@ -1,11 +1,13 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
 import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.fluid.AbstractFluidMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
+import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.screen.handler.generator.fluid.FluidGeneratorScreenHandler;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -47,6 +49,28 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
 
     public FluidGeneratorEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.FLUID_GENERATOR_BE, pos, state);
+        energyContainer = new SimpleSidedEnergyContainer() {
+            @Override
+            public long getCapacity() {
+                return 10000;
+            }
+
+            @Override
+            public long getMaxInsert(@Nullable Direction side) {
+                return getEffectiveTier().getMaxInput();
+            }
+
+            @Override
+            public long getMaxExtract(@Nullable Direction side) {
+                return getEffectiveTier().getMaxOutput();
+            }
+
+            @Override
+            protected void onFinalCommit() {
+                setChanged();
+                getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
+            }
+        };
     }
 
     @Override
