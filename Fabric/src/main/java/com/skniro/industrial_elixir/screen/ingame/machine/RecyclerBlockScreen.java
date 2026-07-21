@@ -68,7 +68,7 @@ public class RecyclerBlockScreen extends AbstractContainerScreen<RecyclerScreenH
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 72, y + 34, 190, 0, menu.getScaledProgress(),15,256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 72, y + 34, 190, 0, menu.getScaledProgress(),16,256,256);
         }
     }
 

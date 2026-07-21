@@ -31,7 +31,7 @@ public class RecyclerCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput
         if (world.isClientSide()) {
             return false;
         }
-        ItemStack stack = input.getItem(1);
+        ItemStack stack = input.getItem(0);
         return !stack.isEmpty();
     }
 
