@@ -153,12 +153,13 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
                 }
             }
 
-            // Pull UU fluid continuously
-            if (fluidProgress < replicatingUUCost && energyProgress > 0) {
+            // Pull UU fluid continuously (rate-limited by tier)
+            if (fluidProgress < replicatingUUCost) {
                 int needed = replicatingUUCost - fluidProgress;
+                int toExtract = Math.min(needed, 5);
                 try (Transaction tx = Transaction.openOuter()) {
                     long extracted = fluidContainer.extract(
-                            FluidVariant.of(IndustrialElixirFluids.STILL_Fluid_UU), needed, tx);
+                            FluidVariant.of(IndustrialElixirFluids.STILL_Fluid_UU), toExtract, tx);
                     if (extracted > 0) {
                         tx.commit();
                         fluidProgress += (int) extracted;
@@ -168,16 +169,17 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
             }
 
             // Check if synthesis is complete
-            if (energyProgress >= replicatingEnergyCost && fluidProgress >= replicatingUUCost) {
-                produceReplicatedItem();
+            if (energyProgress >= replicatingEnergyCost
+                    && fluidProgress >= replicatingUUCost) {
 
-                if (mode == Mode.SINGLE) {
-                    mode = Mode.STOP;
-                }
-                // LOOP: reset and continue
-                if (mode == Mode.LOOP) {
-                    energyProgress = 0;
-                    fluidProgress = 0;
+                if (produceReplicatedItem()) {
+
+                    if (mode == Mode.SINGLE) {
+                        mode = Mode.STOP;
+                    }
+
+                    // LOOP continues automatically
+                    // because progress was reset
                 }
             }
         }
@@ -191,19 +193,44 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
         }
     }
 
-    private void produceReplicatedItem() {
-        Item targetItem = BuiltInRegistries.ITEM.getOptional(replicatingItemId).orElse(null);
-        if (targetItem == null) return;
+    private boolean produceReplicatedItem() {
+        if (replicatingItemId == null) {
+            return false;
+        }
+
+        Item targetItem = BuiltInRegistries.ITEM
+                .getOptional(replicatingItemId)
+                .orElse(null);
+
+        if (targetItem == null) {
+            return false;
+        }
 
         ItemStack output = inventory.get(OUTPUT_SLOT);
+
         if (output.isEmpty()) {
-            inventory.set(OUTPUT_SLOT, new ItemStack(targetItem, 1));
-        } else if (output.is(targetItem)) {
+            inventory.set(
+                    OUTPUT_SLOT,
+                    new ItemStack(targetItem, 1)
+            );
+        } else {
+            if (!output.is(targetItem)) {
+                return false;
+            }
+
+            if (output.getCount() >= output.getMaxStackSize()) {
+                return false;
+            }
+
             output.grow(1);
         }
 
         energyProgress = 0;
         fluidProgress = 0;
+
+        setChanged();
+
+        return true;
     }
 
     // ---- Getters for display ----
@@ -214,8 +241,8 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
     @Nullable public Identifier getReplicatingItemId() { return replicatingItemId; }
 
     public int getOverallProgressPercent() {
-        if (replicatingEnergyCost == 0) return 0;
-        int ep = (int) (energyProgress * 100 / replicatingEnergyCost);
+        if (replicatingEnergyCost == 0 && replicatingUUCost == 0) return 0;
+        int ep = replicatingEnergyCost == 0 ? 100 : (int) (energyProgress * 100 / replicatingEnergyCost);
         int fp = replicatingUUCost == 0 ? 100 : fluidProgress * 100 / replicatingUUCost;
         return Math.min(ep, fp);
     }

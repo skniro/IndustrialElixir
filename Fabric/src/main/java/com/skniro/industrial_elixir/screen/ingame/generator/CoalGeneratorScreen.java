@@ -31,18 +31,18 @@ public class CoalGeneratorScreen extends AbstractContainerScreen<CoalGeneratorSc
     }
 
     public List<Component> getTooltips() {
-        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" E"));
+        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" EP"));
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 75, 34, 31, 16)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 72, 33, 31, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 79, y + 33, 176, 13, getScaledEnergyHeight(), 16,256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 72, y + 30, 176, 13, getScaledEnergyHeight(), 16,256,256);
     }
 
     public int getScaledEnergyHeight() {

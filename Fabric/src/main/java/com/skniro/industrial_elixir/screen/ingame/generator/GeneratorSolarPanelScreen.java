@@ -30,27 +30,27 @@ public class GeneratorSolarPanelScreen extends AbstractContainerScreen<Generator
     }
 
     public List<Component> getTooltips() {
-        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" E"));
+               return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" EP"));
     }
 
     public void drawState(GuiGraphicsExtractor context) {
         GeneratorSolarPanelBlockEntity.GeneratorState state = menu.getState();
         Integer statey = switch (state) {
             case IDLE -> 0;
-            case GENERATING -> 13;
+            case GENERATING -> 16;
         };
-        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, leftPos + 80, topPos + 65, 176, statey, 13, 13,256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, leftPos + 85, topPos + 60, 176, statey, 14, 13,256,256);
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 75, 34, 31, 16)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 72, 33, 31, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 79, y + 33, 190, 0, getScaledEnergyHeight(), 16,256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 76, y + 33, 190, 0, getScaledEnergyHeight(), 16,256,256);
     }
 
     public int getScaledEnergyHeight() {
@@ -83,7 +83,7 @@ public class GeneratorSolarPanelScreen extends AbstractContainerScreen<Generator
    public void extractRenderState(GuiGraphicsExtractor context , int mouseX, int mouseY, float delta) {
         extractBackground(context, mouseX, mouseY, delta);
         super.extractRenderState(context, mouseX, mouseY, delta);
-         extractTooltip(context, mouseX, mouseY);
+        extractTooltip(context, mouseX, mouseY);
     }
 
     private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {

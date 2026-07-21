@@ -36,7 +36,7 @@ public class BrewReactorScreen extends AbstractContainerScreen<BrewReactorScreen
     }
 
     public List<Component> getTooltips() {
-        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" E"));
+               return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" EP"));
     }
 
     private void assignFluidRenderer() {

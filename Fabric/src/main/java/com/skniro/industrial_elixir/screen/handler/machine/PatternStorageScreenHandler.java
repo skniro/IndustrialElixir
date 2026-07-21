@@ -55,10 +55,10 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
         });
 
         // Slot 3: Energy / Battery (bottom-right area)
-        this.addSlot(new BatteryFuelSlot(inventory, 3, 111, 34, this.blockEntity.getEnergyTier()));
+        this.addSlot(new BatteryFuelSlot(inventory, 3, 131, 63, this.blockEntity.getEnergyTier()));
 
         // Slot 10: Copy target crystal (right side, for copying patterns)
-        this.addSlot(new Slot(inventory, 10, 114, 17) {
+        this.addSlot(new Slot(inventory, 10, 111, 34) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL)
@@ -90,14 +90,14 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
     public int getScaledProgress() {
         int progress = this.propertyDelegate.get(0);
         int maxProgress = this.propertyDelegate.get(1);
-        int progressArrowSize = 22;
+        int progressArrowSize = 23;
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     public int getScaledEnergyHeight() {
         long energy = blockEntity.energyContainer.amount;
         long capacity = blockEntity.energyContainer.getCapacity();
-        int energyBarSize = 14;
+        int energyBarSize = 16;
         return Math.toIntExact(capacity != 0 && energy != 0 ? energy * energyBarSize / capacity : 0);
     }
 
@@ -120,30 +120,12 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack originalStack = slot.getItem();
             newStack = originalStack.copy();
-            if (invSlot < 8) {
-                // From machine to player inventory
-                if (!this.moveItemStackTo(originalStack, 8, this.slots.size(), true)) {
+            if (invSlot < this.inventory.getContainerSize()) {
+                if (!this.moveItemStackTo(originalStack, this.inventory.getContainerSize(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else {
-                // From player to machine
-                // Try crystal slot first
-                if (originalStack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL)) {
-                    if (!PatternStorageBlockEntity.hasPatternData(originalStack)) {
-                        // Blank crystal -> slot 1 (crystal slot) or slot 10 (copy target)
-                        if (!this.moveItemStackTo(originalStack, 0, 1, false)) {
-                            // Slot 0 is crystal, slot 3 is copy target (index 3 in our slots)
-                            if (!this.moveItemStackTo(originalStack, 3, 4, false)) {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                    }
-                } else {
-                    // Non-crystal -> slot 1 (scan item, index 1)
-                    if (!this.moveItemStackTo(originalStack, 1, 2, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
+            } else if (!this.moveItemStackTo(originalStack, 0, this.inventory.getContainerSize(), false)) {
+                return ItemStack.EMPTY;
             }
 
             if (originalStack.isEmpty()) {
@@ -152,6 +134,7 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
                 slot.setChanged();
             }
         }
+
         return newStack;
     }
 

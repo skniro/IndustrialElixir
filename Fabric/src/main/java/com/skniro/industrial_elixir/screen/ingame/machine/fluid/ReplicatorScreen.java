@@ -117,7 +117,7 @@ public class ReplicatorScreen extends AbstractContainerScreen<ReplicatorScreenHa
 
         // Progress text
         ReplicatorBlockEntity be = this.menu.blockEntity;
-        if (be.getMode() != ReplicatorBlockEntity.Mode.STOP && be.getReplicatingEnergyCost() > 0) {
+        if (be.getMode() != ReplicatorBlockEntity.Mode.STOP && (be.getReplicatingEnergyCost() > 0 || be.getReplicatingUUCost() > 0)) {
             int pct = be.getOverallProgressPercent();
             graphics.text(font, pct + "%", 77, 41, -12566464, false);
         }

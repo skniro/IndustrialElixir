@@ -33,7 +33,7 @@ public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentr
     }
 
     public List<Component> getTooltips() {
-        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " E"));
+        return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EP"));
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
@@ -50,7 +50,7 @@ public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentr
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         renderHeatAreaTooltips(context);
-        if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 14)) {
+        if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(), Optional.empty(), xm - x, ym - y);
         }
     }

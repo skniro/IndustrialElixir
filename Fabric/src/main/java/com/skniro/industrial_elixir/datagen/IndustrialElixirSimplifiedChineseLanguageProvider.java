@@ -431,11 +431,14 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(GeneralBlocks.RED_PLASTER,"红色灰浆");
 
         translationBuilder.add(IndustrialElixirFluidBlocks.Fluid_UU_BLOCK,"UU流体");
-        translationBuilder.add("fluid.industrial_elixir.fluid_air","空气流体");
+        translationBuilder.add("block.industrial_elixir.fluid_uu","UU流体");
+        translationBuilder.add("fluid.industrial_elixir.fluid_air_block","空气流体");
+        translationBuilder.add("block.industrial_elixir.fluid_air","空气流体");
 
         translationBuilder.add("key.category.industrial_elixir.industrial_elixir.keybinds", "工业灵药");
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT键");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "模式切换键");
         translationBuilder.add("key.industrial_elixir.boost_key", "加速键");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "液体容量:");
     }
 }

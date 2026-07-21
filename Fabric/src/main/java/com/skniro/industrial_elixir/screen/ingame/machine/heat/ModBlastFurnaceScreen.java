@@ -48,7 +48,7 @@ public class ModBlastFurnaceScreen extends AbstractContainerScreen<ModBlastFurna
     }
 
     private void renderHeatAreaTooltips(GuiGraphicsExtractor context) {
-        context.text(font, menu.blockEntity.heatContainer.getSideStorage(null).getAmount() + "/" + menu.blockEntity.heatContainer.getSideStorage(null).getCapacity() + "E", 78, 68, -12566464, false);
+        context.text(font, menu.blockEntity.heatContainer.getSideStorage(null).getAmount() + "/" + menu.blockEntity.heatContainer.getSideStorage(null).getCapacity() + "HP", 78, 68, -12566464, false);
     }
 
     @Override

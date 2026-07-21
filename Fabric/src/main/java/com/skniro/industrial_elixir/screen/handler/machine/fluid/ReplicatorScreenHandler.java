@@ -78,7 +78,7 @@ public class ReplicatorScreenHandler extends AbstractContainerMenu {
     }
 
     public boolean isCrafting() {
-        return blockEntity.getMode() != ReplicatorBlockEntity.Mode.STOP && blockEntity.getEnergyProgress() > 0;
+        return blockEntity.getMode() != ReplicatorBlockEntity.Mode.STOP && (blockEntity.getEnergyProgress() > 0 || blockEntity.getFluidProgress() > 0);
     }
 
     public int getScaledProgress() {

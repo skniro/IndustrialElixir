@@ -28,10 +28,11 @@ public class PatternStorageCrystalItem extends Item {
 
             if (itemId != null) {
                 var item = BuiltInRegistries.ITEM.get(itemId);
+                ItemStack stack1 = new ItemStack(item.get());
                 if (item != null) {
                     textConsumer.accept(Component.translatable("tooltip.industrial_elixir.pattern_storage.stored_item")
                             .append(": ")
-                            .append(item.toString())
+                            .append(Component.translatable(stack1.getHoverName().getString()))
                             .withStyle(ChatFormatting.GOLD));
                 }
             }

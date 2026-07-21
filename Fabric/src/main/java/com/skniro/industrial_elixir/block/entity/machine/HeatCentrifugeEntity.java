@@ -238,7 +238,7 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
     public int getScaledEnergyHeight() {
         long energy = energyContainer.amount;
         long capacity = energyContainer.getCapacity();
-        return capacity != 0 && energy != 0 ? (int) (energy * 14 / capacity) : 0;
+        return capacity != 0 && energy != 0 ? (int) (energy * 16 / capacity) : 0;
     }
 
     @Override

@@ -430,12 +430,15 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(GeneralBlocks.BROWN_PLASTER,"Brown Plaster");
         translationBuilder.add(GeneralBlocks.RED_PLASTER,"Red Plaster");
 
-        translationBuilder.add(IndustrialElixirFluidBlocks.Fluid_UU_BLOCK,"UUFluid");
-        translationBuilder.add("fluid.industrial_elixir.fluid_air_block","AirFluid");
+        translationBuilder.add(IndustrialElixirFluidBlocks.Fluid_UU_BLOCK,"UU Fluid");
+        translationBuilder.add("block.industrial_elixir.fluid_uu","UU Fluid");
+        translationBuilder.add("fluid.industrial_elixir.fluid_air_block","Air Fluid");
+        translationBuilder.add("block.industrial_elixir.fluid_air","Air Fluid");
 
         translationBuilder.add("key.category.industrial_elixir.industrial_elixir.keybinds", "Industrial Elixir");
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT key");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "Mode Switch Key");
         translationBuilder.add("key.industrial_elixir.boost_key", "Boost Key");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "Liquid Capacity:");
     }
 }

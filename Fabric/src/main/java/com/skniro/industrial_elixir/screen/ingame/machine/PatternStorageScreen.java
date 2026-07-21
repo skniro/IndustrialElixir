@@ -78,14 +78,14 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
     }
 
     private void renderEnergyTooltip(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if (MouseUtil.isMouseOver(pMouseX, pMouseY, x + 131, y + 48, 13, 14)) {
+        if (MouseUtil.isMouseOver(pMouseX, pMouseY, x + 130, y + 44, 13, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getEnergyTooltip(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 131, y + 48, 176, 0, 13, menu.getScaledEnergyHeight(), 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 130, y + 44, 176, 0, 13, menu.getScaledEnergyHeight(), 256, 256);
     }
 
     @Override
@@ -125,16 +125,16 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
         PatternStorageBlockEntity be = this.menu.blockEntity;
         Identifier scannedId = be.getScannedItemId();
 
-        if (scannedId != null && MouseUtil.isMouseOver(mouseX, mouseY, x + 103, y + 34, 16, 16)) {
+/*        if (scannedId != null && MouseUtil.isMouseOver(mouseX, mouseY, x + 103, y + 34, 16, 16)) {
             Item item = BuiltInRegistries.ITEM.getOptional(scannedId).orElse(null);
             if (item != null) {
                 context.setTooltipForNextFrame(Screens.getFont(this),
                         List.of(Component.literal(item.getDescriptionId().toString())),
                         Optional.empty(), mouseX - x, mouseY - y);
             }
-        }
+        }*/
 
-        if (scannedId != null && MouseUtil.isMouseOver(mouseX, mouseY, x + 80, y + 54, 80, 8)) {
+   /*     if (scannedId != null && MouseUtil.isMouseOver(mouseX, mouseY, x + 80, y + 54, 80, 8)) {
             context.setComponentTooltipForNextFrame(this.font,
                     List.of(Component.translatable("gui.industrial_elixir.pattern_storage.uu_tooltip")),
                     mouseX - x, mouseY - y);
@@ -144,7 +144,7 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
             context.setComponentTooltipForNextFrame(this.font,
                     List.of(Component.translatable("gui.industrial_elixir.pattern_storage.energy_tooltip")),
                     mouseX - x, mouseY - y);
-        }
+        }*/
     }
 
     @Override
@@ -160,7 +160,7 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if (menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 45, y + 35, 176, 14, menu.getScaledProgress(), 12, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 45, y + 35, 190, 0, menu.getScaledProgress(), 15, 256, 256);
         }
     }
 

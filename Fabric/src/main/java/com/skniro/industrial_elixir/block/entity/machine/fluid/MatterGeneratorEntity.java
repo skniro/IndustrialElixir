@@ -49,7 +49,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 
 	@Override
 	public Component getDisplayName() {
-		return Component.literal(FurnitureStrings.Matter_Generator);
+		return Component.translatable(FurnitureStrings.Matter_Generator);
 	}
 
 	@Nullable

@@ -32,7 +32,7 @@ public class HeatCentrifugeScreenHandler extends AbstractContainerMenu {
         this.blockEntity = (HeatCentrifugeEntity) blockEntity;
         this.propertyDelegate = delegate;
 
-        this.addSlot(new Slot(inventory, 1, 52, 34));
+        this.addSlot(new Slot(inventory, 1, 52, 33));
         this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 104, 16));
         this.addSlot(new BatteryFuelSlot(inventory, 3, 131, 63, this.blockEntity.getEnergyTier()));
         this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 10, 104, 34));
