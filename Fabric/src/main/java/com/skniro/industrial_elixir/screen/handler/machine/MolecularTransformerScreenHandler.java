@@ -32,7 +32,7 @@ public class MolecularTransformerScreenHandler extends AbstractContainerMenu {
         inventory.startOpen(playerInventory.player);
         this.propertyDelegate = delegate;
         this.blockEntity = (MolecularTransformerBlockEntity) blockEntity;
-        this.addSlot(new Slot(inventory, 1, 52, 13));
+        this.addSlot(new Slot(inventory, 1, 52, 33));
         this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 100, 34));
 
         addBasic(inventory, playerInventory, delegate);
@@ -61,7 +61,13 @@ public class MolecularTransformerScreenHandler extends AbstractContainerMenu {
     public int getScaledProgress() {
         MolecularTransformerBlockEntity molecularTransformerBlockEntity = (MolecularTransformerBlockEntity) blockEntity;
         if (molecularTransformerBlockEntity.energyRequired == 0) return 0;
-        return (int) ((double) molecularTransformerBlockEntity.energyProgress * 24 / molecularTransformerBlockEntity.energyRequired);
+        return (int) ((double) molecularTransformerBlockEntity.energyProgress * 17 / molecularTransformerBlockEntity.energyRequired);
+    }
+
+    public int getProgressPercent() {
+        MolecularTransformerBlockEntity be = (MolecularTransformerBlockEntity) blockEntity;
+        if (be.energyRequired == 0) return 0;
+        return (int) (be.energyProgress * 100 / be.energyRequired);
     }
 
     @Override

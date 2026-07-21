@@ -63,7 +63,7 @@ public class MetalFormerScreenHandler extends AbstractContainerMenu {
     public int getScaledEnergyHeight() {
         long energy = blockEntity.energyContainer.amount;
         long capacity = blockEntity.energyContainer.getCapacity();
-        int energyBarSize = 14;
+        int energyBarSize = 16;
 
         return Math.toIntExact(capacity != 0 && energy != 0 ? energy * energyBarSize / capacity : 0);
     }
@@ -71,7 +71,7 @@ public class MetalFormerScreenHandler extends AbstractContainerMenu {
     public int getScaledProgress() {
         int progress = this.propertyDelegate.get(0);
         int maxProgress = this.propertyDelegate.get(1);  // Max Progress
-        int progressArrowSize = 48; // This is the width in pixels of your arrow
+        int progressArrowSize = 30; // This is the width in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }

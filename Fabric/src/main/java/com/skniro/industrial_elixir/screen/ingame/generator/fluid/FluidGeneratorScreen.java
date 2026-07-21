@@ -42,14 +42,14 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 75, 34, 31, 16)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 76, 34, 31, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 33, 176, 13, getScaledEnergyHeight(), 16,256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 76, y + 34, 176, 14, getScaledEnergyHeight(), 16,256,256);
     }
 
     public int getScaledEnergyHeight() {

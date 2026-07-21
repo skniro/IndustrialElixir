@@ -35,14 +35,14 @@ public class CoalGeneratorScreen extends AbstractContainerScreen<CoalGeneratorSc
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 72, 33, 31, 16)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 76, 36, 31, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
                     Optional.empty(), pMouseX, pMouseY);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 72, y + 30, 176, 13, getScaledEnergyHeight(), 16,256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 76, y + 34, 176, 14, getScaledEnergyHeight(), 16,256,256);
     }
 
     public int getScaledEnergyHeight() {

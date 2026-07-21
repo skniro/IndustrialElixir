@@ -26,6 +26,7 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
 
     public long energyProgress = 0;
     public long energyRequired = 0;
+    public long energyInputPerTick = 0;
 
     public MolecularTransformerBlockEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.MolecularTransformer_BLOCK_ENTITY, pos, state);
@@ -40,6 +41,7 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
             energyRequired = recipe.getEnergyRequired();
 
             long availableEnergy = Math.min(energyContainer.amount, energyRequired - energyProgress);
+            this.energyInputPerTick = availableEnergy;
             if(availableEnergy > 0) {
                 try (Transaction tx = Transaction.openOuter()) {
                     energyContainer.getSideStorage(null).extract(availableEnergy, tx);
@@ -72,6 +74,7 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
         super.saveAdditional(nbt);
         nbt.putLong("molecular_transformer.energy_progress", energyProgress);
         nbt.putLong("molecular_transformer.energy_required", energyRequired);
+        nbt.putLong("molecular_transformer.energy_input_per_tick", energyInputPerTick);
     }
 
     @Override
@@ -79,6 +82,7 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
         super.loadAdditional(nbt);
         energyProgress = nbt.getLongOr("molecular_transformer.energy_progress", energyProgress);
         energyRequired = nbt.getLongOr("molecular_transformer.energy_required", energyRequired);
+        energyInputPerTick = nbt.getLongOr("molecular_transformer.energy_input_per_tick", energyInputPerTick);
     }
 
     @Override

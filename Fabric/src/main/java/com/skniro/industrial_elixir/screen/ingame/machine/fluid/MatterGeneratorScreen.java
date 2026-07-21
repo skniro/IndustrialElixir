@@ -41,7 +41,7 @@ public class MatterGeneratorScreen extends AbstractContainerScreen<MatterGenerat
         int y = (height - imageHeight) / 2;
 
         graphics.text(font, menu.blockEntity.getProgressPercent() + "%", 77, 41, -12566464, false);
-        graphics.text(font, menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " EP", 72, 61, -12566464, false);
+        graphics.text(font, menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " EP", 70, 61, -12566464, false);
 
         if (MouseUtil.isMouseOver(xm, ym, x + 8, y + 5, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
             graphics.setComponentTooltipForNextFrame(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), xm, ym);

@@ -34,14 +34,14 @@ public class MaceratorBlockScreen extends AbstractContainerScreen<MaceratorScree
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 52, 32, 13, 14)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 52, 30, 13, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 52, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 52, y + 30, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
 
@@ -68,7 +68,7 @@ public class MaceratorBlockScreen extends AbstractContainerScreen<MaceratorScree
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 69, y + 37, 190, 0, menu.getScaledProgress(),12,256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 76, y + 35, 192, 0, menu.getScaledProgress(),12,256,256);
         }
     }
 

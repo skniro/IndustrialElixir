@@ -57,13 +57,13 @@ public class ElectricHeaterScreenHandler extends AbstractContainerMenu {
     public int getScaledEnergyHeight() {
         long energy = blockEntity.energyContainer.amount;
         long capacity = blockEntity.energyContainer.getCapacity();
-        int energyBarSize = 14;
+        int energyBarSize = 16;
 
         return Math.toIntExact(capacity != 0 && energy != 0 ? energy * energyBarSize / capacity : 0);
     }
 
     public Component getHeatTooltips() {
-        return Component.literal(blockEntity.getHeatProduction() + " HU/t / 100 HU/t");
+        return Component.literal(blockEntity.getHeatProduction() + " H/t / 100 H/t");
     }
 
 

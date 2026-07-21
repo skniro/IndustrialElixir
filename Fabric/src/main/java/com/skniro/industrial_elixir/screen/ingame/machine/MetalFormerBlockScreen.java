@@ -85,14 +85,14 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 22, 32, 13, 14)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 21, 31, 13, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 22, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 21, y + 31, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
 
@@ -116,7 +116,7 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 54, y + 37, 190, 0, menu.getScaledProgress(),15,256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(),15,256,256);
         }
     }
 

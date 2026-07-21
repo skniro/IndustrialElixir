@@ -1,8 +1,11 @@
 package com.skniro.industrial_elixir.screen.handler.generator.heat;
 
 import com.skniro.industrial_elixir.block.entity.generator.heat.SolidFuelHeaterEntity;
+import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -28,13 +31,25 @@ public class SolidFuelHeaterScreenHandler extends AbstractContainerMenu {
         inventory.startOpen(playerInventory.player);
 
         // Fuel slot
-        this.addSlot(new Slot(inventory, 1, 56, 53));
+        this.addSlot(new Slot(inventory, 1, 80, 35));
         // Ash output slot
-        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 116, 35));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 117, 35));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
         addDataSlots(propertyDelegate);
+    }
+
+    public float getFuelProgress() {
+        int i = this.propertyDelegate.get(1);
+        if (i == 0) {
+            i = 200;
+        }
+        return Mth.clamp((float)this.propertyDelegate.get(0) / (float)i, 0.0f, 1.0f);
+    }
+
+    public Component getHeatTooltips() {
+        return Component.literal(blockEntity.heatContainer.amount + " / 100 H");
     }
 
     public boolean isBurning() {

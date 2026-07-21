@@ -32,7 +32,7 @@ public class GeneratorWindMillScreen extends AbstractContainerScreen<GeneratorWi
             case GENERATING -> 13;
             case DANGER -> 26;
         };
-        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, leftPos + 80, topPos + 65, 176, statey, 13, 13,256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, leftPos + 80, topPos + 65, 176, statey, 13, 15,256,256);
     }
 
     @Override

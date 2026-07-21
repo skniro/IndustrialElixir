@@ -34,14 +34,14 @@ public class ExtractorBlockScreen extends AbstractContainerScreen<ExtractorScree
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 52, 32, 13, 14)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 52, 31, 13, 14)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 52, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 52, y + 31, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
 
@@ -68,7 +68,7 @@ public class ExtractorBlockScreen extends AbstractContainerScreen<ExtractorScree
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 35, 190, 0, menu.getScaledProgress(),14,256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 75, y + 35, 190, 0, menu.getScaledProgress(),14,256,256);
         }
     }
 

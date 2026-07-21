@@ -35,7 +35,7 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if (MouseUtil.isMouseOver(pMouseX, pMouseY, 15, 31, 13, 13)) {
+        if (MouseUtil.isMouseOver(pMouseX, pMouseY, 15, 32, 13, 13)) {
             context.setTooltipForNextFrame(Screens.getFont(this),
                     List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EU")),
                     Optional.empty(), pMouseX - x, pMouseY - y);
@@ -43,7 +43,7 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 15, y + 31, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 15, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
     @Override

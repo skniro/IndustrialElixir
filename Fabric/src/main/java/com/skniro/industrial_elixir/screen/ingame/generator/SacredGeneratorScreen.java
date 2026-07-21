@@ -43,7 +43,7 @@ public class SacredGeneratorScreen extends AbstractContainerScreen<SacredGenerat
     }*/
 
     private void renderEnergyOutputTooltips(GuiGraphicsExtractor context) {
-        context.text(font, menu.getGeneration() + "E/t", 8, 44, -12566464, false);
+        context.text(font, menu.getGeneration() + "EP/t", 8, 44, -12566464, false);
     }
 
     @Override

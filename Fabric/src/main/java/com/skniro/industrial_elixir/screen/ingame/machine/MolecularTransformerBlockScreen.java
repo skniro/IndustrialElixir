@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.screen.ingame.machine;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
+import com.skniro.industrial_elixir.block.entity.machine.MolecularTransformerBlockEntity;
 import com.skniro.industrial_elixir.screen.handler.machine.MolecularTransformerScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
 import net.fabricmc.api.EnvType;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,32 +32,22 @@ public class MolecularTransformerBlockScreen extends AbstractContainerScreen<Mol
         titleLabelX = (imageWidth - font.width(title)) / 2;
     }
 
-    public List<Component> getTooltips() {
-               return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" EP"));
+    public Component getTooltips() {
+        return Component.literal(((MolecularTransformerBlockEntity) menu.blockEntity).energyInputPerTick + " EP/t");
     }
 
-    private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 52, 32, 13, 14)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
-        }
+    private void renderArrowTooltips(GuiGraphicsExtractor context) {
+        context.text(font, Component.literal( menu.getProgressPercent() + "%"), 74, 22, -12566464, false);
     }
-
-    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 52, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
-    }
-
-
-
+    
     @Override
     protected void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
-        renderEnergyAreaTooltips(context, mouseX, mouseY, x, y);
-
         context.text(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
         context.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
+        context.text(font, getTooltips(), 64, 61, -12566464, false);
+        renderArrowTooltips(context);
     }
 
     @Override
@@ -63,14 +56,13 @@ public class MolecularTransformerBlockScreen extends AbstractContainerScreen<Mol
         int y = (height - imageHeight) / 2;
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight,256,256);
         renderProgressArrow(context, x, y);
-        renderEnergyArea(context, x, y);
     }
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         int progress = menu.getScaledProgress();
         if (progress > 0) {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
-                    x + 69, y + 37, 190, 0, progress, 12,
+                    x + 74, y + 37, 194, 2, progress, 9,
                     256, 256);
         }
     }

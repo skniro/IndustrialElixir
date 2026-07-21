@@ -34,14 +34,14 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 15, 36, 13, 13)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 15, 33, 13, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 15, y + 36, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 15, y + 33, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 73, y + 34, 176, 13, menu.getScaledProgress(),45,256,256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 73, y + 34, 190, 0, menu.getScaledProgress(),45,256,256);
         }
     }
 

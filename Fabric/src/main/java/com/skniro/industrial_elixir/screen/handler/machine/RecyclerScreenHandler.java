@@ -63,7 +63,7 @@ public class RecyclerScreenHandler extends AbstractContainerMenu {
     public int getScaledEnergyHeight() {
         long energy = blockEntity.energyContainer.amount;
         long capacity = blockEntity.energyContainer.getCapacity();
-        int energyBarSize = 14;
+        int energyBarSize = 16;
 
         return Math.toIntExact(capacity != 0 && energy != 0 ? energy * energyBarSize / capacity : 0);
     }

@@ -310,7 +310,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(MapleArmorItems.Electric_Jetpack, "电力喷气背包");
 
         translationBuilder.add(GrowableOresItems.BRONZE_DUST, "青铜粉");
-        translationBuilder.add(GrowableOresItems.CLAY_DUST, "粘土粉");
+        translationBuilder.add(GrowableOresItems.CLAY_DUST, "黏土粉");
         translationBuilder.add(GrowableOresItems.COAL_DUST, "煤粉");
         translationBuilder.add(GrowableOresItems.COPPER_DUST, "铜粉");
         translationBuilder.add(GrowableOresItems.DIAMOND_DUST, "钻石粉");
