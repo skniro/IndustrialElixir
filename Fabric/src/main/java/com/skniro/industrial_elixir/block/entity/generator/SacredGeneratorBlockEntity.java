@@ -149,7 +149,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable(FurnitureStrings.CoalGenerator);
+        return Component.translatable(FurnitureStrings.SacredReactor);
     }
 
     @Nullable

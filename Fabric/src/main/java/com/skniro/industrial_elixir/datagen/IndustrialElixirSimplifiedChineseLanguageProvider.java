@@ -30,6 +30,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(FurnitureStrings.MetalFormer, "金属成型机");
         translationBuilder.add(FurnitureStrings.GeneratorWindMill, "风力发电机");
         translationBuilder.add(FurnitureStrings.CoalGenerator, "火力发电机");
+        translationBuilder.add(FurnitureStrings.SacredReactor, "神圣反应堆");
         translationBuilder.add(FurnitureStrings.NuclearReactor, "核反应堆");
         translationBuilder.add(FurnitureStrings.Extractor, "提取机");
         translationBuilder.add(FurnitureStrings.ROLLING, "压板模式");
@@ -87,8 +88,6 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add("gui.industrial_elixir.replicator.stop", "停止");
         translationBuilder.add("gui.industrial_elixir.replicator.single", "合成1次");
         translationBuilder.add("gui.industrial_elixir.replicator.loop", "循环合成");
-
-        translationBuilder.add("gui.industrial_elixir.sacred_generator", "神圣石发电机");
 
         translationBuilder.add(GeneralBlocks.Lead_Ore, "铅矿石");
         translationBuilder.add(GeneralBlocks.Tin_Ore, "锡矿石");
@@ -156,7 +155,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
 
         translationBuilder.add(GrowableOresBlocks.COAL_GENERATOR, "火力发电机");
         translationBuilder.add(GrowableOresBlocks.NUCLEAR_REACTOR, "核反应堆");
-        translationBuilder.add(GrowableOresBlocks.SACRED_GENERATOR, "神圣石发电机");
+        translationBuilder.add(GrowableOresBlocks.SACRED_GENERATOR, "神圣反应堆");
         translationBuilder.add(GrowableOresBlocks.GENERATOR_Wind_Mill, "风力发电机");
 
         translationBuilder.add(GrowableOresBlocks.EnergyBox, "储能箱");

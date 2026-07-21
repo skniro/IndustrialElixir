@@ -23,6 +23,7 @@ public class FurnitureStrings {
     public static final String GENERATOR_QUANTUM_SOLAR_PANEL = "gui.industrial_elixir.generator_quantum_solar_panel";
 
     public static final String CoalGenerator = "gui.industrial_elixir.coal_generator";
+    public static final String SacredReactor = "gui.industrial_elixir.sacred_reactor";
     public static final String NuclearReactor = "gui.industrial_elixir.nuclear_reactor";
     public static final String ROLLING = "gui.metal_former.mode.rolling";
     public static final String CUTTING = "gui.metal_former.mode.cutting";

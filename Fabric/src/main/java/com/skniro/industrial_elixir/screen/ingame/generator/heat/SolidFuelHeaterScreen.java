@@ -27,12 +27,12 @@ public class SolidFuelHeaterScreen extends AbstractContainerScreen<SolidFuelHeat
         super.init();
         titleLabelX = (imageWidth - font.width(title)) / 2;
         titleLabelY = 4;
-        inventoryLabelX = 8;
+        inventoryLabelX = 145;
         inventoryLabelY = 72;
     }
 
     private void renderHeatAreaTooltips(GuiGraphicsExtractor context) {
-        context.text(font, menu.getHeatTooltips(), 43, 68,  -12566464, false);
+        context.text(font, menu.getHeatTooltips(), 47, 62,  -12566464, false);
     }
 
     @Override
@@ -43,12 +43,6 @@ public class SolidFuelHeaterScreen extends AbstractContainerScreen<SolidFuelHeat
         context.text(font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
         context.text(font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
         renderHeatAreaTooltips(context);
-
-        // Fuel burn tooltip
-        if (menu.isBurning()) {
-            context.text(font, Component.literal(menu.blockEntity.getBurnTime() + " / " + menu.blockEntity.getBurnDuration()),
-                    78, 56, -12566464, false);
-        }
     }
 
     @Override

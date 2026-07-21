@@ -49,7 +49,7 @@ public class SolidFuelHeaterScreenHandler extends AbstractContainerMenu {
     }
 
     public Component getHeatTooltips() {
-        return Component.literal(blockEntity.heatContainer.amount + " / 100 H");
+        return Component.literal(blockEntity.heatContainer.amount + " / " + blockEntity.getHeatCapacity() + " H");
     }
 
     public boolean isBurning() {
@@ -65,8 +65,9 @@ public class SolidFuelHeaterScreenHandler extends AbstractContainerMenu {
 
     public int getScaledHeatHeight() {
         long heat = blockEntity.heatContainer.amount;
+        long capacity = blockEntity.getHeatCapacity();
         int barHeight = 50;
-        return Math.toIntExact(heat != 0 ? heat * barHeight / 100 : 0);
+        return Math.toIntExact(heat != 0 ? heat * barHeight / capacity : 0);
     }
 
     @Override

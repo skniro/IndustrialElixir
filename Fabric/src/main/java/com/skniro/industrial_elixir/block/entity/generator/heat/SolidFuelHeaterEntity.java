@@ -22,6 +22,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -33,15 +34,40 @@ import org.jspecify.annotations.Nullable;
 public class SolidFuelHeaterEntity extends AbstractMachineEntity {
 
     public SimpleSidedHeatContainer heatContainer;
-
+    private int burnProgress;
+    private int maxBurnProgress;
     private int burnTime = 0;
     private int burnDuration = 0;
-
+    protected final ContainerData propertyDelegate;
     private static final long HEAT_PER_TICK = 10;
-    private static final long HEAT_CAPACITY = 100;
+    public static final long HEAT_CAPACITY = 100;
+    public long getHeatCapacity() { return HEAT_CAPACITY; }
 
     public SolidFuelHeaterEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.SOLID_FUEL_HEATER_BE, pos, state);
+        this.propertyDelegate = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> SolidFuelHeaterEntity.this.burnProgress;
+                    case 1 -> SolidFuelHeaterEntity.this.maxBurnProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0: SolidFuelHeaterEntity.this.burnProgress = value;
+                    case 1: SolidFuelHeaterEntity.this.maxBurnProgress = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
         heatContainer = new SimpleSidedHeatContainer() {
 
             @Override
@@ -106,8 +132,8 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
         }
 
         // Sync progress to property delegate
-        this.progress = burnTime;
-        this.maxProgress = burnDuration;
+        this.burnProgress = burnTime;
+        this.maxBurnProgress = burnDuration;
 
         if (state.getValue(AbstractMachineblock.LIT) != (burning || burnTime > 0)) {
             world.setBlock(pos, state.setValue(AbstractMachineblock.LIT, burning || burnTime > 0), 3);
@@ -159,7 +185,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new SolidFuelHeaterScreenHandler(syncId, playerInventory, worldPosition);
+        return new SolidFuelHeaterScreenHandler(syncId, playerInventory, this, propertyDelegate);
     }
 
     @Override
@@ -170,6 +196,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
         super.saveAdditional(output);
         output.putInt("solid_fuel_heater.burnTime", burnTime);
         output.putInt("solid_fuel_heater.burnDuration", burnDuration);
+        output.putLong("solid_fuel_heater.heat", heatContainer.amount);
     }
 
     @Override
@@ -177,6 +204,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
         super.loadAdditional(input);
         burnTime = input.getIntOr("solid_fuel_heater.burnTime", 0);
         burnDuration = input.getIntOr("solid_fuel_heater.burnDuration", 0);
+        heatContainer.amount = input.getLongOr("solid_fuel_heater.heat", 0);
     }
 
     @Nullable

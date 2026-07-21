@@ -30,6 +30,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(FurnitureStrings.MetalFormer, "Metal Former");
         translationBuilder.add(FurnitureStrings.GeneratorWindMill, "Wind Mill Generator");
         translationBuilder.add(FurnitureStrings.CoalGenerator, "Coal Generator");
+        translationBuilder.add(FurnitureStrings.SacredReactor, "Sacred Reactor");
         translationBuilder.add(FurnitureStrings.NuclearReactor, "Nuclear Reactor");
         translationBuilder.add(FurnitureStrings.Extractor, "Extractor");
         translationBuilder.add(FurnitureStrings.ROLLING, "Rolling");
@@ -85,9 +86,6 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add("gui.industrial_elixir.replicator.stop", "Stop");
         translationBuilder.add("gui.industrial_elixir.replicator.single", "Craft 1");
         translationBuilder.add("gui.industrial_elixir.replicator.loop", "Loop");
-
-        translationBuilder.add("gui.industrial_elixir.sacred_generator", "Sacred Generator");
-
 
         translationBuilder.add(GeneralBlocks.Lead_Ore, "Lead Ore");
         translationBuilder.add(GeneralBlocks.Tin_Ore, "Tin Ore");
@@ -155,7 +153,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
 
         translationBuilder.add(GrowableOresBlocks.COAL_GENERATOR, "Coal Generator");
         translationBuilder.add(GrowableOresBlocks.NUCLEAR_REACTOR, "Nuclear Reactor");
-        translationBuilder.add(GrowableOresBlocks.SACRED_GENERATOR, "Sacred Generator");
+        translationBuilder.add(GrowableOresBlocks.SACRED_GENERATOR, "Sacred Reactor");
         translationBuilder.add(GrowableOresBlocks.GENERATOR_Wind_Mill, "Wind Mill");
 
         translationBuilder.add(GrowableOresBlocks.EnergyBox, "Energy Box");
