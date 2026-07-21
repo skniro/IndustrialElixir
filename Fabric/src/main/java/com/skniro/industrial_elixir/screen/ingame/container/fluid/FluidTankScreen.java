@@ -23,10 +23,6 @@ public class FluidTankScreen extends AbstractContainerScreen<FluidTankScreenHand
     @Override
     protected void init() {
         super.init();
-
-        inventoryLabelX = 35;
-        titleLabelX = 35;
-
         assignFluidRenderer();
     }
 
