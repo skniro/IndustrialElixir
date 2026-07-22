@@ -45,8 +45,8 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.RECYCLER_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
-        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/recycler.png"), 190, 0, 23, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
+        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/recycler.png"), 190, 0, 23, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override

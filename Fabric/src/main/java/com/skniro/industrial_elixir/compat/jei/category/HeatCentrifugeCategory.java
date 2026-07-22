@@ -40,9 +40,9 @@ public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<Heat
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.HEAT_CENTRIFUGE));
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/heatcentrifuge.png"),
-                189, 0, 21, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+                189, 0, 26, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<Heat
     public void draw(RecipeHolder<HeatCentrifugeCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 129, 45);
-        arrow.draw(guiGraphics, 79, 32);
+        arrow.draw(guiGraphics, 70, 34);
 
         int count = recipe.value().requiredCount();
         if (count > 1) {

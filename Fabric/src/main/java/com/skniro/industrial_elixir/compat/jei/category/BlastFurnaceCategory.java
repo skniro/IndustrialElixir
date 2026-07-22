@@ -50,7 +50,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.BLAST_FURNACE_BLOCK));
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/blastfurnace.png"),
-                189, 0, 21, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+                189, 0, 26, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
         this.fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);
         this.emptyFluid = new SingleVariantStorage<FluidVariant>() {
             @Override

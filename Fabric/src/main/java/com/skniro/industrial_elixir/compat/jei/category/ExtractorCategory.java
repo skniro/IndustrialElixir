@@ -42,7 +42,7 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.Extractor_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/extractor.png"), 190, 0, 23, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 

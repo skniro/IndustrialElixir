@@ -42,7 +42,7 @@ public class MaceratorCategory implements IRecipeCategory<RecipeHolder<Macerator
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.Macerator_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/macerator.png"), 192, 0, 23, 12).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 

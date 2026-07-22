@@ -50,7 +50,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
         Identifier texture = Helper.id("textures/gui/container/machine/brewreactor.png");
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(GrowableOresBlocks.Brew_Reactor_BLOCK));
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/brewreactor.png"), 189, 0, 11, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
         // fluid renderer for JEI preview (empty storage)
         this.fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);

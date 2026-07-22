@@ -31,7 +31,7 @@ public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolde
 
     private final IDrawable background;
     private final IDrawable icon;
-    private final IDrawable energyBar;
+
     private final IDrawableAnimated arrow;
 
     public MolecularTransformerCategory(IGuiHelper helper) {
@@ -42,7 +42,6 @@ public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolde
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.MolecularTransformerBlock));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/molecular_transformer.png"), 194, 2, 23, 12).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -82,8 +81,6 @@ public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolde
     @Override
     public void draw(RecipeHolder<MolecularTransformerCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
-
-        energyBar.draw(guiGraphics, 52, 32);
 
         arrow.draw(guiGraphics, 74, 37);
 

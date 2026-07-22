@@ -42,8 +42,8 @@ public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<Alchem
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.GrowableOres_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
-        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/cane_converter.png"), 176, 13, 28, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
+        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/cane_converter.png"), 190, 0, 28, 15).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<Alchem
     public void draw(RecipeHolder<AlchemyCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
 
-        energyBar.draw(guiGraphics, 15, 36);
+        energyBar.draw(guiGraphics, 15, 32);
 
         arrow.draw(guiGraphics, 73, 34);
     }

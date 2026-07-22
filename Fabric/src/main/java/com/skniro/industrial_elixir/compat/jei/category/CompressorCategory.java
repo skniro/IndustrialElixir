@@ -45,7 +45,7 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
 
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(GrowableOresBlocks.Compressor_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
         arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/compressor.png"), 190, 0, 23, 15).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
