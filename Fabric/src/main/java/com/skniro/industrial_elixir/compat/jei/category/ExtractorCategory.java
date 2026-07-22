@@ -42,7 +42,7 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.Extractor_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/extractor.png"), 190, 0, 23, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -75,7 +75,7 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ExtractorCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 13)
                 .add(recipe.value().ingredient());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 34)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 33)
                 .add(recipe.value().output());
     }
 
@@ -83,9 +83,9 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
     public void draw(RecipeHolder<ExtractorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
 
-        energyBar.draw(guiGraphics, 52, 32);
+        energyBar.draw(guiGraphics, 52, 31);
 
-        arrow.draw(guiGraphics, 70, 35);
+        arrow.draw(guiGraphics, 75, 35);
 
         int count = recipe.value().requiredCount();
 

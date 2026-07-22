@@ -25,11 +25,11 @@ public class CompressorCategory implements DisplayCategory<CompressorDisplay> {
     public static final Identifier TEXTURE = Helper.id("textures/gui/container/machine/compressor.png");
 
     private static final int ENERGY_X = 52;
-    private static final int ENERGY_Y = 32;
+    private static final int ENERGY_Y = 31;
     private static final int ENERGY_U = 176;
     private static final int ENERGY_V = 0;
-    private static final int ENERGY_WIDTH = 14;
-    private static final int ENERGY_HEIGHT = 14;
+    private static final int ENERGY_WIDTH = 13;
+    private static final int ENERGY_HEIGHT = 16;
 
     @Override
     public CategoryIdentifier<? extends CompressorDisplay> getCategoryIdentifier() {
@@ -62,7 +62,7 @@ public class CompressorCategory implements DisplayCategory<CompressorDisplay> {
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 13))
                 .entries(display.getInputEntries().get(0)).markInput());
 
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 101, startPoint.y + 34)).entries(
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 100, startPoint.y + 34)).entries(
                 display.getOutputEntries().get(0)).disableBackground().markOutput());
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
@@ -71,7 +71,7 @@ public class CompressorCategory implements DisplayCategory<CompressorDisplay> {
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 72, startPoint.y + 34, 190, 0, progress, 14, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 72, startPoint.y + 33, 190, 0, progress, 15, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

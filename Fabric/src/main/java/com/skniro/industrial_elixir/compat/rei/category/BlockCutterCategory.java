@@ -25,12 +25,12 @@ public class BlockCutterCategory implements DisplayCategory<BlockCutterDisplay> 
     public static final Identifier TEXTURE = Helper.id(
             "textures/gui/container/machine/block_cutter.png");
 
-    private static final int ENERGY_X = 22;
+    private static final int ENERGY_X = 21;
     private static final int ENERGY_Y = 32;
     private static final int ENERGY_U = 176;
     private static final int ENERGY_V = 0;
-    private static final int ENERGY_WIDTH = 14;
-    private static final int ENERGY_HEIGHT = 14;
+    private static final int ENERGY_WIDTH = 13;
+    private static final int ENERGY_HEIGHT = 16;
 
     @Override
     public CategoryIdentifier<? extends BlockCutterDisplay> getCategoryIdentifier() {
@@ -72,7 +72,7 @@ public class BlockCutterCategory implements DisplayCategory<BlockCutterDisplay> 
             int arrowWidth = 48;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 54, startPoint.y + 31, 190, 0, progress, 19, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 33, 190, 0, progress, 19, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

@@ -42,8 +42,8 @@ public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolde
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.MolecularTransformerBlock));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
-        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/molecular_transformer.png"), 190, 0, 23, 12).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/molecular_transformer.png"), 194, 2, 23, 12).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolde
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<MolecularTransformerCraftingRecipe> recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 52, 13)
+        builder.addSlot(RecipeIngredientRole.INPUT, 52, 33)
                 .add(recipe.value().ingredient());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 34)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 34)
                 .add(recipe.value().output());
     }
 
@@ -85,7 +85,7 @@ public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolde
 
         energyBar.draw(guiGraphics, 52, 32);
 
-        arrow.draw(guiGraphics, 69, 37);
+        arrow.draw(guiGraphics, 74, 37);
 
         int count = recipe.value().requiredCount();
 

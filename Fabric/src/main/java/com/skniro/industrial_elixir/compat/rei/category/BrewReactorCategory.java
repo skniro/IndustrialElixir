@@ -67,13 +67,17 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 13))
                 .entries(display.getInputEntries().get(0)));
 
+        widgets.add(Widgets.createTexturedWidget(TEXTURE,
+                new Rectangle(startPoint.x + 129, startPoint.y + 45, 13, 16),
+                176, 0));
+
         if (display.getInputEntries().size() > 1) {
             widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 49))
                 .entries(display.getInputEntries().get(1)));
         }
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 104, startPoint.y + 34))
-                .entries(display.getOutputEntries().get(0)).markOutput()
+                .entries(display.getOutputEntries().get(0)).disableBackground().markOutput()
         );
 
 

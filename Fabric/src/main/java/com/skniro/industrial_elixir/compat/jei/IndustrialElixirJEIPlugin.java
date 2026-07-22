@@ -152,18 +152,18 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(MaceratorBlockScreen.class, 78, 30, 20, 25, MaceratorCategory.TYPE);
-        registration.addRecipeClickArea(CompressorBlockScreen.class, 78, 30, 20, 25, CompressorCategory.TYPE);
-        registration.addRecipeClickArea(MetalFormerBlockScreen.class, 78, 30, 20, 25, MetalFormerRollingCategory.TYPE);
-        registration.addRecipeClickArea(MetalFormerBlockScreen.class, 78, 30, 20, 25, MetalFormerCuttingCategory.TYPE);
-        registration.addRecipeClickArea(MetalFormerBlockScreen.class, 78, 30, 20, 25, MetalFormerExtrudingCategory.TYPE);
-        registration.addRecipeClickArea(MolecularTransformerBlockScreen.class, 78, 30, 20, 25, MolecularTransformerCategory.TYPE);
-        registration.addRecipeClickArea(ExtractorBlockScreen.class, 78, 30, 20, 25, ExtractorCategory.TYPE);
-        registration.addRecipeClickArea(AlchemyBlockScreen.class, 78, 30, 20, 25, GrowableOresCategory.TYPE);
-        registration.addRecipeClickArea(RecyclerBlockScreen.class, 78, 30, 20, 25, RecyclerCategory.TYPE);
-        registration.addRecipeClickArea(CuttingBlockScreen.class, 78, 30, 20, 25, BlockCutterCategory.TYPE);
-        registration.addRecipeClickArea(BrewReactorScreen.class, 78, 30, 20, 25, BrewReactorCategory.TYPE);
-        registration.addRecipeClickArea(ElectricFurnaceBlockScreen.class, 78, 30, 20, 25, RecipeTypes.SMELTING);
+        registration.addRecipeClickArea(MaceratorBlockScreen.class, 76, 35, 23, 12, MaceratorCategory.TYPE);
+        registration.addRecipeClickArea(CompressorBlockScreen.class, 72, 33, 23, 14, CompressorCategory.TYPE);
+        registration.addRecipeClickArea(MetalFormerBlockScreen.class, 70, 34, 48, 12, MetalFormerRollingCategory.TYPE);
+        registration.addRecipeClickArea(MetalFormerBlockScreen.class, 70, 34, 48, 12, MetalFormerCuttingCategory.TYPE);
+        registration.addRecipeClickArea(MetalFormerBlockScreen.class, 70, 34, 48, 12, MetalFormerExtrudingCategory.TYPE);
+        registration.addRecipeClickArea(MolecularTransformerBlockScreen.class, 74, 37, 23, 12, MolecularTransformerCategory.TYPE);
+        registration.addRecipeClickArea(ExtractorBlockScreen.class, 75, 35, 23, 14, ExtractorCategory.TYPE);
+        registration.addRecipeClickArea(AlchemyBlockScreen.class, 73, 34, 28, 14, GrowableOresCategory.TYPE);
+        registration.addRecipeClickArea(RecyclerBlockScreen.class, 72, 34, 23, 16, RecyclerCategory.TYPE);
+        registration.addRecipeClickArea(CuttingBlockScreen.class, 70, 33, 48, 19, BlockCutterCategory.TYPE);
+        registration.addRecipeClickArea(BrewReactorScreen.class, 79, 32, 11, 16, BrewReactorCategory.TYPE);
+        registration.addRecipeClickArea(ElectricFurnaceBlockScreen.class, 71, 34, 22, 15, RecipeTypes.SMELTING);
         registration.addRecipeClickArea(InductionFurnaceBlockScreen.class, 71, 34, 21, 15, RecipeTypes.SMELTING);
         registration.addRecipeClickArea(HeatCentrifugeBlockScreen.class, 79, 32, 21, 16, HeatCentrifugeCategory.TYPE);
         registration.addRecipeClickArea(OreWashingScreen.class, 79, 32, 11, 16, OreWashingCategory.TYPE);

@@ -24,11 +24,11 @@ public class GrowableOresCategory implements DisplayCategory<GrowableOresDisplay
             "textures/gui/container/cane_converter.png");
 
     private static final int ENERGY_X = 15;
-    private static final int ENERGY_Y = 36;
+    private static final int ENERGY_Y = 32;
     private static final int ENERGY_U = 176;
     private static final int ENERGY_V = 0;
-    private static final int ENERGY_WIDTH = 14;
-    private static final int ENERGY_HEIGHT = 14;
+    private static final int ENERGY_WIDTH = 13;
+    private static final int ENERGY_HEIGHT = 16;
 
     @Override
     public CategoryIdentifier<? extends GrowableOresDisplay> getCategoryIdentifier() {
@@ -70,7 +70,7 @@ public class GrowableOresCategory implements DisplayCategory<GrowableOresDisplay
             int arrowWidth = 28;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 73, startPoint.y + 34, 176, 13, progress, 14, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 73, startPoint.y + 34, 190, 0, progress, 14, 256, 256);
         }));
 
         return widgets;

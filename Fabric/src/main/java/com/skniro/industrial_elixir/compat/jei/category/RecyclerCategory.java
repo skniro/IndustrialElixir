@@ -45,7 +45,7 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.RECYCLER_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/recycler.png"), 190, 0, 23, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -81,7 +81,7 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
                         .filter(item -> item != Items.AIR)
                         .map(ItemStack::new)
                         .toList());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 34)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 34)
                 .add(recipe.value().output());
     }
 
@@ -89,7 +89,7 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
     public void draw(RecipeHolder<RecyclerCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
 
-        energyBar.draw(guiGraphics, 52, 32);
+        energyBar.draw(guiGraphics, 52, 31);
 
         arrow.draw(guiGraphics, 72, 34);
     }

@@ -26,11 +26,11 @@ public class MaceratorCategory implements DisplayCategory<BasicDisplay> {
 
 
     private static final int ENERGY_X = 52;
-    private static final int ENERGY_Y = 32;
+    private static final int ENERGY_Y = 30;
     private static final int ENERGY_U = 176;
     private static final int ENERGY_V = 0;
-    private static final int ENERGY_WIDTH = 14;
-    private static final int ENERGY_HEIGHT = 14;
+    private static final int ENERGY_WIDTH = 13;
+    private static final int ENERGY_HEIGHT = 16;
 
     @Override
     public CategoryIdentifier<? extends BasicDisplay> getCategoryIdentifier() {
@@ -63,7 +63,7 @@ public class MaceratorCategory implements DisplayCategory<BasicDisplay> {
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 13))
                 .entries(display.getInputEntries().get(0)).markInput());
 
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 101, startPoint.y + 34)).entries(
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 100, startPoint.y + 34)).entries(
                 display.getOutputEntries().get(0)).disableBackground().markOutput());
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
@@ -72,7 +72,7 @@ public class MaceratorCategory implements DisplayCategory<BasicDisplay> {
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 69, startPoint.y + 37, 190, 0, progress, 12, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 74, startPoint.y + 35, 190, 0, progress, 12, 256, 256);
         }));
 
         return widgets;

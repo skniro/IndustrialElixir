@@ -63,52 +63,52 @@ public class IndustrialModREIClient implements REIClientPlugin {
 
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                ((screen.height - 166) / 2) + 30, 20, 25), MaceratorBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 76,
+                ((screen.height - 166) / 2) + 35, 23, 12), MaceratorBlockScreen.class,
                 MaceratorDisplay.MACERATOR);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), CompressorBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 72,
+                        ((screen.height - 166) / 2) + 33, 23, 14), CompressorBlockScreen.class,
                 CompressorDisplay.Compressor);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), MetalFormerBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 70,
+                        ((screen.height - 166) / 2) + 34, 48, 12), MetalFormerBlockScreen.class,
                 MetalFormerRollingDisplay.MetalFormerRolling);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), MetalFormerBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 70,
+                        ((screen.height - 166) / 2) + 34, 48, 12), MetalFormerBlockScreen.class,
                 MetalFormerCuttingDisplay.MetalFormerCutting);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), MetalFormerBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 70,
+                        ((screen.height - 166) / 2) + 34, 48, 12), MetalFormerBlockScreen.class,
                 MetalFormerExtrudingDisplay.MetalFormerExtruding);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), MolecularTransformerBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 74,
+                        ((screen.height - 166) / 2) + 37, 23, 12), MolecularTransformerBlockScreen.class,
                 MolecularTransformerDisplay.MolecularTransformer);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), ExtractorBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 75,
+                        ((screen.height - 166) / 2) + 35, 23, 14), ExtractorBlockScreen.class,
                 ExtractorDisplay.Extractor);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), AlchemyBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 73,
+                        ((screen.height - 166) / 2) + 34, 28, 14), AlchemyBlockScreen.class,
                 GrowableOresDisplay.GrowableOres);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), RecyclerBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 72,
+                        ((screen.height - 166) / 2) + 34, 23, 16), RecyclerBlockScreen.class,
                 RecyclerDisplay.Recycler);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), CuttingBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 70,
+                        ((screen.height - 166) / 2) + 33, 48, 19), CuttingBlockScreen.class,
                 BlockCutterDisplay.BlockCutter);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), ElectricFurnaceBlockScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 71,
+                        ((screen.height - 166) / 2) + 34, 22, 15), ElectricFurnaceBlockScreen.class,
                 BuiltinPlugin.SMELTING);
 
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 78,
-                        ((screen.height - 166) / 2) + 30, 20, 25), BrewReactorScreen.class,
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 79,
+                        ((screen.height - 166) / 2) + 32, 11, 16), BrewReactorScreen.class,
                 BrewReactorDisplay.BREW_REACTOR);
 
         registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 71,

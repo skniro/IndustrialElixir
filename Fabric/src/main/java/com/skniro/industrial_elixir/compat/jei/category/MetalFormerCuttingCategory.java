@@ -42,8 +42,8 @@ public class MetalFormerCuttingCategory implements IRecipeCategory<RecipeHolder<
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.MetalFormerBlock));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
-        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/metal_former.png"), 190, 0, 48, 12).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/metal_former.png"), 190, 0, 48, 15).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MetalFormerCuttingCategory implements IRecipeCategory<RecipeHolder<
 
         energyBar.draw(guiGraphics, 22, 32);
 
-        arrow.draw(guiGraphics, 54, 37);
+        arrow.draw(guiGraphics, 70, 34);
 
         int count = recipe.value().requiredCount();
 

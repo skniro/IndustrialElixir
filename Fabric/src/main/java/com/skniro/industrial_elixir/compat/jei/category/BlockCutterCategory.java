@@ -39,7 +39,7 @@ public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<Cutting
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.CUTTING_Block));
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/block_cutter.png"), 190, 0, 48, 19).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -80,7 +80,7 @@ public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<Cutting
     public void draw(RecipeHolder<CuttingCraftingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 22, 32);
-        arrow.draw(guiGraphics, 54, 31);
+        arrow.draw(guiGraphics, 70, 33);
 
         int count = recipe.value().requiredCount();
         if (count > 1) {

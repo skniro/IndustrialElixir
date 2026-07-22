@@ -45,8 +45,8 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
 
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(GrowableOresBlocks.Compressor_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
-        arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/compressor.png"), 190, 0, 23, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
+        arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/compressor.png"), 190, 0, 23, 15).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -78,15 +78,15 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CompressorCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 13)
                 .add(recipe.value().ingredient());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 34)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 34)
                 .add(recipe.value().output());
     }
 
     @Override
     public void draw(RecipeHolder<CompressorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
-        energyBar.draw(guiGraphics, 52, 32);
-        arrow.draw(guiGraphics, 72, 34);
+        energyBar.draw(guiGraphics, 52, 31);
+        arrow.draw(guiGraphics, 72, 33);
         int count = recipe.value().requiredCount();
         if (count > 1) {
             Font font = Minecraft.getInstance().font;

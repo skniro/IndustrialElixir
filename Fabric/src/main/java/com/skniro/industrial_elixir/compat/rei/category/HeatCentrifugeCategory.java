@@ -47,10 +47,10 @@ public class HeatCentrifugeCategory implements DisplayCategory<HeatCentrifugeDis
         widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 175, 82)));
 
         widgets.add(Widgets.createTexturedWidget(TEXTURE,
-                new Rectangle(startPoint.x + 129, startPoint.y + 45, 13, 14),
+                new Rectangle(startPoint.x + 129, startPoint.y + 45, 13, 16),
                 176, 0));
 
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 34))
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 33))
                 .entries(display.getInputEntries().get(0)).markInput());
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 104, startPoint.y + 16))
@@ -69,10 +69,10 @@ public class HeatCentrifugeCategory implements DisplayCategory<HeatCentrifugeDis
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
             long ticks = System.currentTimeMillis() / 50;
             int totalTicks = 72;
-            int arrowWidth = 21;
+            int arrowWidth = 26;
             int currentTick = (int) (ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 79, startPoint.y + 32, 189, 0, progress, 16, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
 
             int count = display.getCount();
             if (count > 1) {

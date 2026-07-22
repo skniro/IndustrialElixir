@@ -42,7 +42,7 @@ public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<Alchem
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.GrowableOres_Block));
 
-        energyBar = helper.createDrawable(texture, 176, 0, 14, 14);
+        energyBar = helper.createDrawable(texture, 176, 0, 13, 14);
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/cane_converter.png"), 176, 13, 28, 14).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
     }
 

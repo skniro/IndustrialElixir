@@ -55,7 +55,11 @@ public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
 
         widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 175, 82), 0, 0));
 
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 34))
+        widgets.add(Widgets.createTexturedWidget(TEXTURE,
+                new Rectangle(startPoint.x + 129, startPoint.y + 45, 13, 16),
+                176, 0));
+
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 33))
                 .entries(display.getInputEntries().get(0)).markInput());
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 104, startPoint.y + 16))
@@ -73,8 +77,8 @@ public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
             long tick = System.currentTimeMillis() / 50;
-            int progress = (int) ((tick % 72) * 11 / 72);
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 79, startPoint.y + 32, 189, 0, progress, 16, 256, 256);
+            int progress = (int) ((tick % 72) * 26 / 72);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
 
             var storage = getFluid(display);
             fluidRenderer.render(context, startPoint.x + 8, startPoint.y + 5, storage);
