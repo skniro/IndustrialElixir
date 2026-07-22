@@ -33,15 +33,15 @@ public class AdvancedRecipeGenerator extends FabricRecipeProvider {
                         .pattern("DDD").pattern("DRD").pattern("DDD")
                         .unlockedBy("has_item_tags", this.has(GrowableOresItems.IRIDIUM_PLATE)).save(this.output);
 
-                 shaped(RecipeCategory.MISC, AdvancedItems.IRRADIANT_SEPTRIN_INGOT)
+                 shaped(RecipeCategory.MISC, AdvancedItems.IRRADIANT_SACRED_INGOT)
                         .define('R', Items.GLOWSTONE_DUST).define('D', GrowableOresItems.SACRED_INGOT)
                         .pattern(" R ").pattern("RDR").pattern(" R ")
                         .unlockedBy("has_item_tags", this.has(GrowableOresItems.SACRED_INGOT)).save(this.output);
 
                 shaped(RecipeCategory.MISC, AdvancedItems.ENRICHED_LUMINITE)
-                        .define('R', AdvancedItems.LUMINITE).define('D', AdvancedItems.IRRADIANT_SEPTRIN_INGOT)
+                        .define('R', AdvancedItems.LUMINITE).define('D', AdvancedItems.IRRADIANT_SACRED_INGOT)
                         .pattern("DDD").pattern("DRD").pattern("DDD")
-                        .unlockedBy("has_item_tags", this.has(AdvancedItems.IRRADIANT_SEPTRIN_INGOT)).save(this.output);
+                        .unlockedBy("has_item_tags", this.has(AdvancedItems.IRRADIANT_SACRED_INGOT)).save(this.output);
 
                 shaped(RecipeCategory.MISC, AdvancedItems.ENRICHED_LUMINITE_ALLOY)
                         .define('R', AdvancedItems.ENRICHED_LUMINITE).define('D', AdvancedItems.LUMINITE_ALLOY)
@@ -50,9 +50,9 @@ public class AdvancedRecipeGenerator extends FabricRecipeProvider {
 
                 //TEM
                 shaped(RecipeCategory.MISC, AdvancedItems.IRRADIANT_GLASS_PANE)
-                        .define('R', Items.GLOWSTONE_DUST).define('D', AdvancedItems.IRRADIANT_SEPTRIN_INGOT).define('G', Items.GLASS)
+                        .define('R', Items.GLOWSTONE_DUST).define('D', AdvancedItems.IRRADIANT_SACRED_INGOT).define('G', Items.GLASS)
                         .pattern("GGG").pattern("DRD").pattern("GGG")
-                        .unlockedBy("has_item_tags", this.has(AdvancedItems.IRRADIANT_SEPTRIN_INGOT)).save(this.output);
+                        .unlockedBy("has_item_tags", this.has(AdvancedItems.IRRADIANT_SACRED_INGOT)).save(this.output);
 
                 shaped(RecipeCategory.MISC, AdvancedItems.IRIDIUM_AMETHYST_PLATE)
                         .define('R', AdvancedItems.Iridium_INGOT).define('D', GrowableOresItems.IRIDIUM_PLATE)

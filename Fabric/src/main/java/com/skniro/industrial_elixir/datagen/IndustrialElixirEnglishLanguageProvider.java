@@ -205,7 +205,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(MapleSignBlocks.Rubber_HANGING_SIGN, "Rubber Hanging Sign");
         translationBuilder.add(MapleSignBlocks.Rubber_WALL_HANGING_SIGN, "Rubber Wall Hanging Sign");
 
-        translationBuilder.add(AdvancedItems.IRRADIANT_SEPTRIN_INGOT, "Irradiant Sacred Ingot");
+        translationBuilder.add(AdvancedItems.IRRADIANT_SACRED_INGOT, "Irradiant Sacred Ingot");
         translationBuilder.add(AdvancedItems.IRRADIANT_GLASS_PANE, "Irradiant Glass Pane");
         translationBuilder.add(AdvancedItems.LUMINITE, "Luminite");
         translationBuilder.add(AdvancedItems.ENRICHED_LUMINITE, "Enriched Luminite");
@@ -437,6 +437,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT key");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "Mode Switch Key");
         translationBuilder.add("key.industrial_elixir.boost_key", "Boost Key");
-        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "Liquid Capacity:");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "Capacity:");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount", "Liquid Amount:");
     }
 }

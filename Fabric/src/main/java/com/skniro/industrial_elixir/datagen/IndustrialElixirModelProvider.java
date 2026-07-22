@@ -257,7 +257,7 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_LEGGINGS, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_LEGGINGS, false);
         itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_BOOTS, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_BOOTS, false);
 
-        itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_SEPTRIN_INGOT, ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_SACRED_INGOT, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_GLASS_PANE, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(AdvancedItems.LUMINITE, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(AdvancedItems.ENRICHED_LUMINITE, ModelTemplates.FLAT_ITEM);

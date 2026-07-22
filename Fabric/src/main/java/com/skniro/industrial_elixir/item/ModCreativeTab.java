@@ -375,7 +375,7 @@ public class ModCreativeTab {
             content.accept(GrowableOresItems.RAW_PATTERN_STORAGE_CRYSTAL);
             content.accept(GrowableOresItems.HEAT_CONDUCTOR);
 
-            content.accept(AdvancedItems.IRRADIANT_SEPTRIN_INGOT);
+            content.accept(AdvancedItems.IRRADIANT_SACRED_INGOT);
             content.accept(AdvancedItems.IRRADIANT_GLASS_PANE);
             content.accept(AdvancedItems.LUMINITE);
             content.accept(AdvancedItems.ENRICHED_LUMINITE);

@@ -1,3 +1,15 @@
 {
-  "values": []
+  "values": [
+    "industrial_elixir:deepslate_tin_ore",
+    "industrial_elixir:tin_ore",
+    "industrial_elixir:advanced_machine",
+    "industrial_elixir:machine",
+    "industrial_elixir:tin_block",
+    "industrial_elixir:raw_tin_block",
+    "industrial_elixir:tin_cable",
+    "industrial_elixir:copper_cable",
+    "industrial_elixir:ev_transformer",
+    "industrial_elixir:energy_box",
+    "industrial_elixir:charge_pad"
+  ]
 }

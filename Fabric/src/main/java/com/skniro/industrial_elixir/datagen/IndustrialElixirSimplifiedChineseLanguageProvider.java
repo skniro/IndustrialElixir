@@ -207,7 +207,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(MapleSignBlocks.Rubber_HANGING_SIGN, "悬挂式橡胶木告示牌");
         translationBuilder.add(MapleSignBlocks.Rubber_WALL_HANGING_SIGN, "墙上悬挂式橡胶木告示牌");
 
-        translationBuilder.add(AdvancedItems.IRRADIANT_SEPTRIN_INGOT, "光辉神圣石锭");
+        translationBuilder.add(AdvancedItems.IRRADIANT_SACRED_INGOT, "光辉神圣石锭");
         translationBuilder.add(AdvancedItems.IRRADIANT_GLASS_PANE, "光辉玻璃板");
         translationBuilder.add(AdvancedItems.LUMINITE, "辉光石");
         translationBuilder.add(AdvancedItems.ENRICHED_LUMINITE, "富集辉光石");
@@ -438,6 +438,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT键");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "模式切换键");
         translationBuilder.add("key.industrial_elixir.boost_key", "加速键");
-        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "液体容量:");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "容器容量:");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount", "液体容量:");
     }
 }

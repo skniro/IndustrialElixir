@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 
 public class AdvancedItems {
-    public static final Item IRRADIANT_SEPTRIN_INGOT = registerItem("irradiant_septrin", Item::new, new Item.Properties());
+    public static final Item IRRADIANT_SACRED_INGOT = registerItem("irradiant_sacred", Item::new, new Item.Properties());
     public static final Item IRRADIANT_GLASS_PANE = registerItem("irradiant_glass_pane", Item::new, new Item.Properties());
     public static final Item LUMINITE = registerItem("luminite", Item::new, new Item.Properties());
     public static final Item ENRICHED_LUMINITE = registerItem("enriched_luminite", Item::new, new Item.Properties());

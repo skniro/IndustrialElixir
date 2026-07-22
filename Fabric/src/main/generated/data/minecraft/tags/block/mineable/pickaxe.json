@@ -54,6 +54,25 @@
     "industrial_elixir:machine",
     "industrial_elixir:electric_furnace",
     "industrial_elixir:recycler_block",
-    "industrial_elixir:cutting_block"
+    "industrial_elixir:cutting_block",
+    "industrial_elixir:matter_generator",
+    "industrial_elixir:fluid_generator",
+    "industrial_elixir:nuclear_reactor",
+    "industrial_elixir:sacred_generator",
+    "industrial_elixir:induction_furnace",
+    "industrial_elixir:heat_centrifuge",
+    "industrial_elixir:pattern_storage",
+    "industrial_elixir:pipe_wooden_item",
+    "industrial_elixir:pipe_stone_item",
+    "industrial_elixir:pipe_wooden_fluid",
+    "industrial_elixir:pipe_stone_fluid",
+    "industrial_elixir:fluid_tank",
+    "industrial_elixir:brew_reactor_tank",
+    "industrial_elixir:ore_washing_block",
+    "industrial_elixir:replicator",
+    "industrial_elixir:chunk_loader",
+    "industrial_elixir:electric_heater",
+    "industrial_elixir:solid_fuel_heater_generator",
+    "industrial_elixir:blast_furnace"
   ]
 }
