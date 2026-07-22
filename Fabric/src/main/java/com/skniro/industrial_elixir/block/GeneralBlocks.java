@@ -39,12 +39,12 @@ import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
 
 public class GeneralBlocks {
-    public static final Block Lead_Ore = registerBlock("lead_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE));
-    public static final Block Tin_Ore = registerBlock("tin_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE));
-    public static final Block SACRED_Ore = registerBlock("sacred_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE));
-    public static final Block Deepslate_Lead_Ore = registerBlock("deepslate_lead_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE));
-    public static final Block Deepslate_Tin_Ore = registerBlock("deepslate_tin_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE));
-    public static final Block Deepslate_SACRED_Ore = registerBlock("deepslate_sacred_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE));
+    public static final Block Lead_Ore = registerBlock("lead_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
+    public static final Block Tin_Ore = registerBlock("tin_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_ORE));
+    public static final Block SACRED_Ore = registerBlock("sacred_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
+    public static final Block Deepslate_Lead_Ore = registerBlock("deepslate_lead_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE));
+    public static final Block Deepslate_Tin_Ore = registerBlock("deepslate_tin_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_COPPER_ORE));
+    public static final Block Deepslate_SACRED_Ore = registerBlock("deepslate_sacred_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE));
     public static final Block Raw_Lead_Block = registerBlock("raw_lead_block", Block::new, BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F));
     public static final Block Raw_Tin_Block = registerBlock("raw_tin_block", Block::new, BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F));
     public static final Block Raw_SACRED_Block = registerBlock("raw_sacred_block", Block::new, BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F));
