@@ -7,15 +7,13 @@ import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
+import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
 import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
-import com.skniro.industrial_elixir.item.AdvancedItems;
-import com.skniro.industrial_elixir.item.GrowableOresItems;
-import com.skniro.industrial_elixir.item.MapleArmorItems;
-import com.skniro.industrial_elixir.item.ModCreativeTab;
+import com.skniro.industrial_elixir.item.*;
 import com.skniro.industrial_elixir.item.alchemy.IndustrialElixirPotions;
 import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipe;
@@ -24,6 +22,7 @@ import com.skniro.industrial_elixir.recipe.machine.*;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.util.ModFuel;
 import com.skniro.industrial_elixir.util.ModLootTableModifiers;
+import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
@@ -38,6 +37,7 @@ public class  ModContent {
         GrowableOresItems.shield_item();
         AdvancedItems.registerAdvancedItem();
         MapleArmorItems.registerMapleArmorItems();
+        MapleFoodComponents.registerMapleFoodItems();
         MapleEquipmentAssetKeys.registerMapleArmorAssetsKeys();
         ModFuel.registerFuel();
         IndustrialElixirPotions.registerPotions();
@@ -73,6 +73,14 @@ public class  ModContent {
         ModOreGeneration.generateOres();
         ModTreeGeneration.generateTrees();
         ModLootTableModifiers.modifyLootTables();
+    }
+
+    public static void registerCommand() {
+        MapleGameRules.maplegamerule();
+    }
+
+    public static void registerOthers() {
+        MapleParticleTypes.registerParticleTypes();
     }
 
     public static void Compat() {

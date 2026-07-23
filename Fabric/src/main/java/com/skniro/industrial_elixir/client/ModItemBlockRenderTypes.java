@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +20,8 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class ModItemBlockRenderTypes {
     private static final Map<Block, ChunkSectionLayer> TYPE_BY_BLOCK = new HashMap<>();
+    private static final Map<Fluid, ChunkSectionLayer> LAYER_BY_FLUID = new HashMap<>();
 
-    public static synchronized void setRenderLayer(Block block, ChunkSectionLayer layer) {
-        checkClientLoading();
-        TYPE_BY_BLOCK.put(block, layer);
-    }
     private static boolean cutoutLeaves;
 
     public static ChunkSectionLayer getChunkRenderType(BlockState state) {
@@ -61,9 +60,23 @@ public class ModItemBlockRenderTypes {
         return renderType == ChunkSectionLayer.TRANSLUCENT ? Sheets.translucentBlockItemSheet() : Sheets.cutoutBlockSheet();
     }
 
+    public static ChunkSectionLayer getRenderLayer(FluidState state) {
+        ChunkSectionLayer layer = (ChunkSectionLayer)LAYER_BY_FLUID.get(state.getType());
+        return layer != null ? layer : ChunkSectionLayer.SOLID;
+    }
 
     public static void setCutoutLeaves(final boolean cutoutLeaves) {
         ModItemBlockRenderTypes.cutoutLeaves = cutoutLeaves;
+    }
+
+    public static synchronized void setRenderLayer(Block block, ChunkSectionLayer layer) {
+        checkClientLoading();
+        TYPE_BY_BLOCK.put(block, layer);
+    }
+
+    public static synchronized void setRenderLayer(Fluid fluid, ChunkSectionLayer layer) {
+        checkClientLoading();
+        LAYER_BY_FLUID.put(fluid, layer);
     }
 
     private static void checkClientLoading() {

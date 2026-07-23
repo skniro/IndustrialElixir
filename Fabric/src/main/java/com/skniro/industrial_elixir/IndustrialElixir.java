@@ -4,6 +4,7 @@ import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
 import com.skniro.industrial_elixir.networking.ModMessages;
 
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
+import dev.architectury.platform.Mod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
@@ -22,12 +23,14 @@ public class IndustrialElixir implements ModInitializer {
     public void onInitialize() {
         checkExpiration();
         if(!DISABLED){
+            ModContent.registerCommand();
             ModContent.registerItem();
             ModContent.registerBlock();
             ModContent.registerFluids();
             ModContent.registerEntity();
             ModContent.CreativeTab();
             ModContent.WorldGen();
+            ModContent.registerOthers();
 
             EnergyImpl.init();
             HeatImpl.init();

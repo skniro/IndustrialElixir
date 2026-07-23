@@ -6,6 +6,8 @@ import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.renderer.AlchemyblockentityRenderer;
+import com.skniro.industrial_elixir.client.particle.MapleCampfireSmokeParticle;
+import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIPlugin;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
@@ -36,6 +38,7 @@ import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceSc
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.recipe.v1.sync.ClientRecipeSynchronizedEvent;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -77,7 +80,15 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Fluid_Block, renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block, renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK, ChunkSectionLayer.TRANSLUCENT);
+
+        ChunkSectionLayer renderLayer3 = ChunkSectionLayer.TRANSLUCENT;
+        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK, renderLayer3);
+        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Hot_Spring, renderLayer3);
+        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Hot_Spring, renderLayer3);
+        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_AIR, renderLayer3);
+        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_AIR, renderLayer3);
+        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_UU, renderLayer3);
+        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_UU, renderLayer3);
 
         MenuScreens.register(AlchemyScreenHandlerType.ALCHEMY, AlchemyBlockScreen::new);
         MenuScreens.register(AlchemyScreenHandlerType.COAL_GENERATOR_SCREEN_HANDLER, CoalGeneratorScreen::new);
@@ -131,6 +142,19 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
                 }
             }
         });
+
+        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Hot_Spring, IndustrialElixirFluids.FLOWING_Hot_Spring,
+                new FluidModel.Unbaked(
+                        new Material(Identifier.parse("industrial_elixir:block/spring_still")),
+                        new Material(Identifier.parse("industrial_elixir:block/spring_flow")),
+                        null,
+                        _ -> -6141935
+                ));
+
+
+        ParticleProviderRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING, MapleCampfireSmokeParticle.CosySmokeFactory::new);
+
+        //MenuScreens.register(MapleScreenHandlerType.Maple_JUICER, MapleJuicerBlockScreen::new);
 
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU, IndustrialElixirFluids.FLOWING_Fluid_UU, IndustrialElixirFluids.Fluid_UU_MODEL);
     }
