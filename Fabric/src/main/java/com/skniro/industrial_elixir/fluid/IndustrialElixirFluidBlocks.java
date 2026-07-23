@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class IndustrialElixirFluidBlocks {
 
     public static final Block Hot_Spring_BLOCK = registerBlockWithoutItem( "hot_spring_block",
-                                                         (settings)-> new MapleHotSpringFluidBlock(MapleFluids.STILL_Hot_Spring, settings), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel((state)->{return 7;}));
+                                                         (settings)-> new MapleHotSpringFluidBlock(IndustrialElixirFluids.STILL_Hot_Spring, settings), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel((state)->{return 7;}));
 
     public static final Block Fluid_UU_BLOCK = registerBlockWithoutItem( "fluid_uu_block",
             (settings)-> new MapleHotSpringFluidBlock(IndustrialElixirFluids.STILL_Fluid_UU, settings), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER));
