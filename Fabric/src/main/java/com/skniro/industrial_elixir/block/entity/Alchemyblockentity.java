@@ -1,7 +1,8 @@
 package com.skniro.industrial_elixir.block.entity;
 import java.util.Optional;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.init.machine.Alchemyblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
@@ -44,7 +45,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner {
+public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineEnergyProvider {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(8, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
@@ -54,7 +55,6 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     private static final int UPGRADE_START = 4;
     private static final int UPGRADE_END = 7;
     private static final int ENERGY_CRAFTING_AMOUNT = 32;
-    private static final int ENERGY_TRANSFER_AMOUNT = 32;
     protected final EnergyTier energyTier;
 
     public SimpleSidedEnergyContainer energyContainer;
@@ -71,8 +71,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
         energyContainer = new SimpleSidedEnergyContainer() {
             @Override
             public long getCapacity() {
-                long extra = getEnergyStorageUpgrade();
-                return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 300 + extra;
+                return getMachineCapacity();
             }
 
             @Override
@@ -338,7 +337,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
     private void useEnergyForCrafting() {
-        long baseUse = ENERGY_CRAFTING_AMOUNT / 20;
+        long baseUse = getCraftEnergyCost() / 20;
         long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
         try (Transaction tx = Transaction.openOuter()) {
             energyContainer.getSideStorage(null).extract(effectiveUse, tx);
@@ -398,7 +397,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
     private boolean hasEnoughEnergyToCraft() {
-        return this.energyContainer.amount >= (long) (ENERGY_CRAFTING_AMOUNT/ 20) * maxProgress;
+        return this.energyContainer.amount >= (long) (getCraftEnergyCost()/ 20) * maxProgress;
     }
 
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
@@ -446,5 +445,16 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
 
     public EnergyTier getEnergyTier(){
         return energyTier;
+    }
+
+    @Override
+    public long getMachineCapacity() {
+        long extra = getEnergyStorageUpgrade();
+        return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 512 + extra;
+    }
+
+    @Override
+    public long getCraftEnergyCost() {
+        return ENERGY_CRAFTING_AMOUNT;
     }
 }

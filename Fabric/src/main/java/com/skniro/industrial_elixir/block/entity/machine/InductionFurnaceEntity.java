@@ -86,28 +86,6 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
     public InductionFurnaceEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.INDUCTION_FURNACE_BLOCK_ENTITY, pos, state);
         this.maxProgress = getProgressTicksForHeat();
-        this.energyContainer = new SimpleSidedEnergyContainer() {
-            @Override
-            public long getCapacity() {
-                return 10000 + getEnergyStorageUpgrade();
-            }
-
-            @Override
-            public long getMaxInsert(@Nullable Direction side) {
-                return getEffectiveTier().getMaxInput();
-            }
-
-            @Override
-            public long getMaxExtract(@Nullable Direction side) {
-                return getEffectiveTier().getMaxOutput();
-            }
-
-            @Override
-            protected void onFinalCommit() {
-                setChanged();
-                getLevel().sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-            }
-        };
     }
 
     @Override

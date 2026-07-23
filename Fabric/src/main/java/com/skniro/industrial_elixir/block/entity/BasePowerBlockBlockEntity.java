@@ -1,6 +1,6 @@
 package com.skniro.industrial_elixir.block.entity;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;

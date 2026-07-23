@@ -1,4 +1,4 @@
-package com.skniro.industrial_elixir.api;
+package com.skniro.industrial_elixir.api.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

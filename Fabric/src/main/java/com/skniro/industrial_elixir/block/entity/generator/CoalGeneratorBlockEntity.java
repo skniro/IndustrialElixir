@@ -1,6 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.item.ModFuelRegistry;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
@@ -185,11 +185,6 @@ public class CoalGeneratorBlockEntity extends BaseGeneratorBlockEntity {
         }
     }
 
-
-    public boolean canInsert(ItemStack stack) {
-        return stack.is(ModItemTags.BATTERY);
-    }
-
     private void fillUpOnEnergy() {
         try (Transaction transaction = Transaction.openOuter()) {
             this.energyContainer.getSideStorage(null).insert(energyTier.getMaxInput(), transaction);
@@ -231,27 +226,9 @@ public class CoalGeneratorBlockEntity extends BaseGeneratorBlockEntity {
         isBurning = false;
     }
 
-    public void discharge(int slot) {
-        if (this.level != null) {
-            if (!this.level.isClientSide()) {
-                if (!this.getOptionalInventory().isEmpty()) {
-                    Container inventory = this.getOptionalInventory().get();
-                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
-                }
-            }
-        }
-    }
 
     public long getFreeSpace() {
         return this.energyContainer.getCapacity() - energyContainer.amount;
-    }
-
-    public Optional<ImplementedInventory> getOptionalInventory() {
-        if (this instanceof ImplementedInventory inventory) {
-            return inventory == null ? Optional.empty() : Optional.of(inventory);
-        } else {
-            return Optional.empty();
-        }
     }
 
 

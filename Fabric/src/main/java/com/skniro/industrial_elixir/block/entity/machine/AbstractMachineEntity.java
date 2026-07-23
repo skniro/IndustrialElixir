@@ -1,7 +1,8 @@
 package com.skniro.industrial_elixir.block.entity.machine;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
-import com.skniro.industrial_elixir.api.MachineRecipeProvider;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
+import com.skniro.industrial_elixir.api.block.MachineRecipeProvider;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
@@ -10,7 +11,6 @@ import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
-import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
@@ -20,8 +20,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtIo;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -42,11 +40,9 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Base64;
 import java.util.Optional;
 
-public abstract class AbstractMachineEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineRecipeProvider {
+public abstract class AbstractMachineEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineRecipeProvider, MachineEnergyProvider {
     public NonNullList<ItemStack> inventory = NonNullList.withSize(12, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -61,7 +57,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
     // Additional second input slot (used by machines that need two inputs, e.g. Brew Reactor)
     protected static final int SECOND_INPUT_SLOT = 9;
     protected static final int ENERGY_CRAFTING_AMOUNT = 32;
-    protected static final int ENERGY_TRANSFER_AMOUNT = 32;
     protected final EnergyTier energyTier;
 
     public SimpleSidedEnergyContainer energyContainer;
@@ -78,8 +73,7 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
         energyContainer = new SimpleSidedEnergyContainer() {
             @Override
             public long getCapacity() {
-                long extra = getEnergyStorageUpgrade();
-                return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : getEffectiveTier().getMaxInput() + 512 + extra;
+                return getMachineCapacity();
             }
 
             @Override
@@ -338,7 +332,7 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
     }
 
     public void useEnergyForCrafting() {
-        long baseUse = ENERGY_CRAFTING_AMOUNT / 20;
+        long baseUse = getCraftEnergyCost() / 20;
         long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
         try (Transaction tx = Transaction.openOuter()) {
             energyContainer.getSideStorage(null).extract(effectiveUse, tx);
@@ -402,7 +396,7 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
     }
 
     protected boolean hasEnoughEnergyToCraft() {
-        return this.energyContainer.amount >= (long) (ENERGY_CRAFTING_AMOUNT/ 20) * maxProgress;
+        return this.energyContainer.amount >= (long) (getCraftEnergyCost()/ 20) * maxProgress;
     }
 
     protected Optional<RecipeHolder<AbstractMachineCraftingRecipe>> getCurrentRecipe() {
@@ -450,5 +444,16 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
 
     public EnergyTier getEnergyTier(){
         return energyTier;
+    }
+
+    @Override
+    public long getMachineCapacity() {
+        long extra = getEnergyStorageUpgrade();
+        return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 512 + extra;
+    }
+
+    @Override
+    public long getCraftEnergyCost(){
+        return ENERGY_CRAFTING_AMOUNT;
     }
 }

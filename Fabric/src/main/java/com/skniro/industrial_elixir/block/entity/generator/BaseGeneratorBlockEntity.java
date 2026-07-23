@@ -1,6 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;

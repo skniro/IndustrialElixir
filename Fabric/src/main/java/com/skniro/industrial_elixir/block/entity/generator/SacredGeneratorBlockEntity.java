@@ -1,15 +1,13 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
-import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContainer;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
-import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.handler.generator.SacredGeneratorScreenHandler;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;

@@ -1,6 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.container.fluid;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.fluid.ContainerInfo;
 import com.skniro.industrial_elixir.api.fluid.FluidOutputMap;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;

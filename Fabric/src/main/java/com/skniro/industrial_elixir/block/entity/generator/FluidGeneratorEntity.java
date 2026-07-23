@@ -1,7 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
-import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.fluid.AbstractFluidMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;

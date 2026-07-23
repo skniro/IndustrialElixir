@@ -1,4 +1,4 @@
-package com.skniro.industrial_elixir.api;
+package com.skniro.industrial_elixir.api.block;
 
 import net.minecraft.world.item.crafting.RecipeType;
 

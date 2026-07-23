@@ -1,18 +1,14 @@
 package com.skniro.industrial_elixir.block.entity.machine.heat;
 
-import com.skniro.industrial_elixir.api.ImplementedInventory;
-import com.skniro.industrial_elixir.api.MachineRecipeProvider;
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.MachineRecipeProvider;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
-import com.skniro.industrial_elixir.energy.heat.api.HeatStorageUtil;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleHeatStorage;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContainer;
-import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +19,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.inventory.ContainerData;
