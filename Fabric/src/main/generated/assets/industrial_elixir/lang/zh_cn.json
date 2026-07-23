@@ -350,6 +350,10 @@
   "key.industrial_elixir.alt_key": "ALT键",
   "key.industrial_elixir.boost_key": "加速键",
   "key.industrial_elixir.mode_switch_key": "模式切换键",
+  "tooltip.industrial_elixir.energy.capacity": "最大容量: %s",
+  "tooltip.industrial_elixir.energy.max_io": "最大输入/输出: %s / %s EP/t",
+  "tooltip.industrial_elixir.energy.stored": "储存电量: %s / %s EP",
+  "tooltip.industrial_elixir.energy.tier": "电压等级: %s",
   "tooltip.industrial_elixir.pattern_storage.energy_cost": "能量消耗",
   "tooltip.industrial_elixir.pattern_storage.stored_item": "存储物品",
   "tooltip.industrial_elixir.pattern_storage.uu_cost": "UU物质消耗"
