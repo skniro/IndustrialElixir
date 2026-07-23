@@ -2,6 +2,7 @@ package com.skniro.industrial_elixir.block.init.machine;
 
 
 import com.mojang.serialization.MapCodec;
+import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.Alchemyblockentity;
 import net.minecraft.core.BlockPos;
@@ -34,71 +35,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblock extends BaseEntityBlock {
+public class Alchemyblock extends AbstractMachineblock {
     public Alchemyblock(Properties settings) {
-        super(settings);
+        super(settings, EnergyTier.TIER1);
     }
+
     public static final MapCodec<Alchemyblock> CODEC = simpleCodec(Alchemyblock::new);
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
-    }
-
-    private static VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return SHAPE;
-    }
-    @Override
-    protected BlockState rotate(BlockState state, Rotation rotation) {
-        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-    }
-    @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
-    }
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-
-    /* BLOCK ENTITY */
-
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
-    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof Alchemyblockentity) {
-            Containers.dropContents(world, pos, (Container) blockEntity);
-            world.updateNeighbourForOutputSignal(pos,this);
-        }
-        super.affectNeighborsAfterRemoval(state, world, pos, moved);
-    }
-
-    @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!world.isClientSide()) {
-            MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
-
-            if (screenHandlerFactory != null) {
-                player.openMenu(screenHandlerFactory);
-            }
-        }
-
-        return InteractionResult.SUCCESS;
     }
 
     @Nullable

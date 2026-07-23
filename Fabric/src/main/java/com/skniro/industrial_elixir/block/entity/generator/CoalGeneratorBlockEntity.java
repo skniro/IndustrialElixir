@@ -40,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 
-public class CoalGeneratorBlockEntity extends BaseGeneratorBlockEntity {
+public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
 
 
@@ -54,7 +54,7 @@ public class CoalGeneratorBlockEntity extends BaseGeneratorBlockEntity {
     private static final int ENERGY_TRANSFER_AMOUNT = 320;
 
     public CoalGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(AlchemyBlockEntityType.COAL_GENERATOR_BE, pos, state, 40000, EnergyTier.TIER1);
+        super(AlchemyBlockEntityType.COAL_GENERATOR_BE, pos, state);
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
@@ -164,7 +164,7 @@ public class CoalGeneratorBlockEntity extends BaseGeneratorBlockEntity {
         }
     }
 
-    private void pushEnergyToNeighbours() {
+    public void pushEnergyToNeighbours() {
         if (energyContainer.amount <= 0) return;
 
         for (Direction direction : Direction.values()) {

@@ -48,7 +48,7 @@ public abstract class AbstractMachineblock extends BaseEntityBlock implements Ti
         super(settings);
         this.registerDefaultState(this.getStateDefinition().any().setValue(LIT, false));
         this.energyTier = energyTier;
-        this.capacity = 10000;
+        this.capacity = energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 512 + energyTier.getMaxOutput();
     }
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;

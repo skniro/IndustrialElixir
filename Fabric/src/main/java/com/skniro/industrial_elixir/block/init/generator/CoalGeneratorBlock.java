@@ -43,7 +43,7 @@ public class CoalGeneratorBlock  extends AbstractMachineblock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public CoalGeneratorBlock(Properties settings) {
-        super(settings, EnergyTier.TIER1);
+        super(settings, EnergyTier.TIER1, 40000);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 

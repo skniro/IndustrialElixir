@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class GeneratorWindMillBlock extends AbstractMachineblock {
     public GeneratorWindMillBlock(Properties settings) {
-        super(settings, EnergyTier.TIER1);
+        super(settings, EnergyTier.TIER1, 100);
     }
     public static final MapCodec<GeneratorWindMillBlock> CODEC = simpleCodec(GeneratorWindMillBlock::new);
 

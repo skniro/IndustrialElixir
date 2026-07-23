@@ -34,7 +34,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 
-public class GeneratorWindMillBlockEntity extends BaseGeneratorBlockEntity {
+public class GeneratorWindMillBlockEntity extends NewBaseGeneratorBlockEntity {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 
     private static final int Battery_SLOT = 0;
@@ -48,7 +48,7 @@ public class GeneratorWindMillBlockEntity extends BaseGeneratorBlockEntity {
     private GeneratorState state = GeneratorState.IDLE;
 
     public GeneratorWindMillBlockEntity(BlockPos pos, BlockState state) {
-        super(AlchemyBlockEntityType.GENERATOR_WIND_MILL_BLOCK_ENTITY, pos, state, 100, EnergyTier.TIER1);
+        super(AlchemyBlockEntityType.GENERATOR_WIND_MILL_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
@@ -248,7 +248,7 @@ public class GeneratorWindMillBlockEntity extends BaseGeneratorBlockEntity {
         windStrength = Math.max(0, Math.min(30, s));
     }
 
-    private void pushEnergyToNeighbours() {
+    public void pushEnergyToNeighbours() {
         if (energyContainer.amount <= 0) return;
 
         for (Direction direction : Direction.values()) {
