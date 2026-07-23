@@ -3,7 +3,9 @@ import java.util.Optional;
 
 import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
+import com.skniro.industrial_elixir.api.block.TieredEnergyBlock;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.block.init.machine.Alchemyblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
@@ -450,7 +452,10 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     @Override
     public long getMachineCapacity() {
         long extra = getEnergyStorageUpgrade();
-        return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 512 + extra;
+        if(getBlockState().getBlock() instanceof AbstractMachineblock) {
+            return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : ((AbstractMachineblock) getBlockState().getBlock()).getMaxCapacity() + extra + energyTier.getMaxOutput();
+        }
+        return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 512 + extra + energyTier.getMaxOutput();
     }
 
     @Override

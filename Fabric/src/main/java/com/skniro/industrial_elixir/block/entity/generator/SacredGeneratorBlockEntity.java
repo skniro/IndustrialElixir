@@ -217,7 +217,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
         world.explode(null, pos.getX() + 5.5, pos.getY() + 10.5, pos.getZ() + 5.5, 100.0f, true, Level.ExplosionInteraction.BLOCK);
     }
 
-    private void pushEnergyToNeighbours() {
+    public void pushEnergyToNeighbours() {
         if (energyContainer.amount <= 0) return;
         for (Direction direction : Direction.values()) {
             EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());

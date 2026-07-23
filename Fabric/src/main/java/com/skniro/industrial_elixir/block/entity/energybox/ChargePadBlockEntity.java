@@ -41,11 +41,7 @@ public class ChargePadBlockEntity extends BaseEnergyBoxBlockEntity {
 
 
     public ChargePadBlockEntity(BlockPos pos, BlockState state) {
-        super(AlchemyBlockEntityType.ChargePad_BLOCK_ENTITY, pos, state, 40000, EnergyTier.TIER1);
-    }
-
-    public ChargePadBlockEntity(BlockPos pos, BlockState state, int capacity, EnergyTier energyTier) {
-        super(AlchemyBlockEntityType.ChargePad_BLOCK_ENTITY, pos, state, capacity, energyTier);
+        super(AlchemyBlockEntityType.ChargePad_BLOCK_ENTITY, pos, state);
     }
 
     @Override

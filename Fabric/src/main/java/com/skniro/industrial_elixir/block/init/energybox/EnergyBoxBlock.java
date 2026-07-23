@@ -20,10 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class EnergyBoxBlock extends AbstractMachineblock {
-    private int capacity;
+
     public EnergyBoxBlock(Properties settings, int capacity, EnergyTier energyTier) {
-        super(settings, energyTier);
-        this.capacity = capacity;
+        super(settings, energyTier, capacity);
     }
 
 /*    public static final MapCodec<EnergyBoxBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -42,7 +41,7 @@ public class EnergyBoxBlock extends AbstractMachineblock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new EnergyBoxBlockEntity(pos, state, capacity, energyTier);
+        return new EnergyBoxBlockEntity(pos, state);
     }
 
 

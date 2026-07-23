@@ -20,10 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class ChargePadBlock extends AbstractMachineblock {
-    private int capacity;
+
     public ChargePadBlock(Properties settings, int capacity, EnergyTier energyTier) {
-        super(settings, energyTier);
-        this.capacity = capacity;
+        super(settings, energyTier, capacity);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class ChargePadBlock extends AbstractMachineblock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ChargePadBlockEntity(pos, state, capacity, energyTier);
+        return new ChargePadBlockEntity(pos, state);
     }
 
 

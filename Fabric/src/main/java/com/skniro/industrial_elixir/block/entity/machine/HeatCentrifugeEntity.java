@@ -182,17 +182,6 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
         return false;
     }
 
-    private int getEnergyStorageUpgrade() {
-        int total = 0;
-        for (int slot = UPGRADE_START; slot <= UPGRADE_END; slot++) {
-            net.minecraft.world.item.ItemStack stack = inventory.get(slot);
-            if (stack.getItem() instanceof com.skniro.industrial_elixir.item.init.ItemUpgradeModule upgrade) {
-                total += upgrade.getExtraEnergyStorage(stack);
-            }
-        }
-        return total;
-    }
-
     public EnergyTier getEffectiveTier() {
         int tierBoost = 0;
         for (int slot = UPGRADE_START; slot <= UPGRADE_END; slot++) {

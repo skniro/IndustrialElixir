@@ -145,15 +145,6 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
         setChanged(world, pos, state);
     }
 
-    private void pushEnergyToNeighbours() {
-        if (energyContainer.amount <= 0) return;
-        for (Direction dir : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
-            if (target == null) continue;
-            EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, getEffectiveTier().getMaxOutput(), null);
-        }
-    }
-
     public void discharge(int slot) {
         if (this.level != null && !this.level.isClientSide()) {
             if (!this.getOptionalInventory().isEmpty()) {

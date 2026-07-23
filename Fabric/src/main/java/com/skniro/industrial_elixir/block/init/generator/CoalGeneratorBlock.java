@@ -1,8 +1,10 @@
 package com.skniro.industrial_elixir.block.init.generator;
 
 import com.mojang.serialization.MapCodec;
+import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.generator.CoalGeneratorBlockEntity;
+import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -35,13 +37,13 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class CoalGeneratorBlock extends BaseEntityBlock {
+public class CoalGeneratorBlock  extends AbstractMachineblock {
     public static final MapCodec<CoalGeneratorBlock> CODEC = simpleCodec(CoalGeneratorBlock::new);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public CoalGeneratorBlock(Properties settings) {
-        super(settings);
+        super(settings, EnergyTier.TIER1);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 

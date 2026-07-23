@@ -27,18 +27,16 @@ import java.util.List;
 
 
 public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity {
-    private long capacity;
     public SimpleSidedEnergyContainer energyContainer;
     protected final ContainerData propertyDelegate;
 
-    public BaseEnergyBoxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, long capacity, EnergyTier energyTier) {
-        super(blockEntityType, pos, state, energyTier);
-        this.capacity = capacity;
+    public BaseEnergyBoxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
+        super(blockEntityType, pos, state);
         energyContainer = new SimpleSidedEnergyContainer() {
 
             @Override
             public long getCapacity() {
-                return capacity;
+                return getMachineCapacity();
             }
 
             @Override
@@ -87,14 +85,6 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
         return this.energyContainer.getSideStorage(side);
     }
 
-    public void pushEnergyToNeighbours() {
-        if (energyContainer.amount <= 0) return;
-        for (Direction direction : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
-            if (target == null) continue;
-            EnergyStorageUtil.move(this.energyContainer.getSideStorage(direction), target, energyTier.getMaxOutput(), null);
-        }
-    }
 
     public void discharge(int slot) {
         if (this.level != null) {
@@ -174,4 +164,6 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
     public boolean canInsert(ItemStack stack) {
         return stack.is(ModItemTags.BATTERY);
     }
+
+
 }

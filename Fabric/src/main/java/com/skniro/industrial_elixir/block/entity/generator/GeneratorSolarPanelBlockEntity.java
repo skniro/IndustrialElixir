@@ -164,7 +164,7 @@ public class GeneratorSolarPanelBlockEntity extends NewBaseGeneratorBlockEntity 
         return (int) Math.ceil(power);
     }
 
-    private void pushEnergyToNeighbours() {
+    public void pushEnergyToNeighbours() {
         if (energyContainer.amount <= 0) return;
 
         for (Direction direction : Direction.values()) {

@@ -35,7 +35,6 @@ import org.jspecify.annotations.Nullable;
 
 public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(21, ItemStack.EMPTY);
-
     public SimpleSidedHeatContainer heatContainer;
     private static final int COIL_SLOT_START = 11;
     private static final int COIL_SLOT_END = 20;

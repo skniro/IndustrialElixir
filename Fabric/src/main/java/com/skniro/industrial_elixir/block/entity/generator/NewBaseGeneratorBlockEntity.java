@@ -1,10 +1,10 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
 import com.skniro.industrial_elixir.api.block.ImplementedInventory;
+import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
-import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -21,43 +21,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 
-public abstract class NewBaseGeneratorBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory {
+public abstract class NewBaseGeneratorBlockEntity extends BasePowerBlockBlockEntity {
 
-    public SimpleSidedEnergyContainer energyContainer;
+    private long capacity;
 
     public NewBaseGeneratorBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
-        energyContainer = new SimpleSidedEnergyContainer() {
-
-            @Override
-            public long getCapacity() {
-                return ((AbstractMachineblock)state.getBlock()).getMaxCapacity();
-            }
-
-            @Override
-            public long getMaxInsert(@Nullable Direction side) {
-                if (side == null) return ((AbstractMachineblock)state.getBlock()).getEnergyTier().getMaxInput();
-                return 0;
-            }
-
-            @Override
-            public long getMaxExtract(@Nullable Direction side) {
-                return ((AbstractMachineblock)state.getBlock()).getEnergyTier().getMaxOutput();
-            }
-
-            @Override
-            protected void onFinalCommit() {
-                setChanged();
-                getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
-            }
-        };
     }
 
     public EnergyStorage getSideEnergyStorage(@Nullable Direction side) {
         return this.energyContainer.getSideStorage(side);
     }
 
-    private void pushEnergyToNeighbours() {
+    public void pushEnergyToNeighbours() {
         for (Direction dir : Direction.values()) {
             EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
             if (target == null) continue;

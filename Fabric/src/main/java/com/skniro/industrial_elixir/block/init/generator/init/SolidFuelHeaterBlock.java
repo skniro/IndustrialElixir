@@ -15,15 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class SolidFuelHeaterBlock extends AbstractMachineblock {
-    public static final MapCodec<SolidFuelHeaterBlock> CODEC = simpleCodec(SolidFuelHeaterBlock::new);
 
-    public SolidFuelHeaterBlock(Properties settings) {
-        super(settings, EnergyTier.TIER1, 1000);
+    public SolidFuelHeaterBlock(Properties settings, long capacity) {
+        super(settings, EnergyTier.TIER1, capacity);
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
+        throw new IllegalStateException("Block does not support getCodec!");
     }
 
     @Nullable

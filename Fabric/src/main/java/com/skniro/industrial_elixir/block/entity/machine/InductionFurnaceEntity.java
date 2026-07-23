@@ -166,29 +166,6 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
         return false;
     }
 
-    private int getEnergyStorageUpgrade() {
-        int total = 0;
-        for (int slot = UPGRADE_START; slot <= UPGRADE_END; slot++) {
-            ItemStack stack = inventory.get(slot);
-            if (stack.getItem() instanceof ItemUpgradeModule upgrade) {
-                total += upgrade.getExtraEnergyStorage(stack);
-            }
-        }
-        return total;
-    }
-
-    public EnergyTier getEffectiveTier() {
-        int tierBoost = 0;
-        for (int slot = UPGRADE_START; slot <= UPGRADE_END; slot++) {
-            ItemStack stack = inventory.get(slot);
-            if (stack.getItem() instanceof ItemUpgradeModule upgrade) {
-                tierBoost += upgrade.getTierIncrease(stack);
-            }
-        }
-        int newTier = Math.min(energyTier.ordinal() + tierBoost, EnergyTier.values().length - 1);
-        return EnergyTier.values()[newTier];
-    }
-
     private int getProgressTicksForHeat() {
         return Math.max(1, (int) Math.ceil((double) getEnergyPerItem() / MAX_EU_PER_TICK_PER_SLOT));
     }

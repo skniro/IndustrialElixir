@@ -4,6 +4,7 @@ import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
 import com.skniro.industrial_elixir.api.block.MachineRecipeProvider;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
@@ -42,62 +43,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class AbstractMachineEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineRecipeProvider, MachineEnergyProvider {
-    public NonNullList<ItemStack> inventory = NonNullList.withSize(12, ItemStack.EMPTY);
-    private float rotation = 0;
-    protected static final int FLUID_ITEM_SLOT = 0;
-    protected static final int INPUT_SLOT = 1;
-    protected static final int OUTPUT_SLOT = 2;
-    protected static final int OUTPUT_SLOT_2 = 10;
-    protected static final int OUTPUT_SLOT_3 = 11;
-    protected static final int ENERGY_ITEM_SLOT = 3;
-    protected static final int UPGRADE_START = 4;
-    protected static final int UPGRADE_END = 7;
-    protected static final int EMPTY_FLUID_ITEM_SLOT = 8;
-    // Additional second input slot (used by machines that need two inputs, e.g. Brew Reactor)
-    protected static final int SECOND_INPUT_SLOT = 9;
-    protected static final int ENERGY_CRAFTING_AMOUNT = 32;
-    protected final EnergyTier energyTier;
-
-    public SimpleSidedEnergyContainer energyContainer;
-
-    protected final ContainerData propertyDelegate;
+public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity implements MachineRecipeProvider  {
     public int progress = 0;
     public int maxProgress = 72;
     private final int DEFAULT_MAX_PROGRESS = 72;
+    protected final ContainerData propertyDelegate;
 
     public AbstractMachineEntity(BlockEntityType entityType, BlockPos pos, BlockState state) {
         super(entityType, pos, state);
-        this.energyTier = ((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier();
 
-        energyContainer = new SimpleSidedEnergyContainer() {
-            @Override
-            public long getCapacity() {
-                return getMachineCapacity();
-            }
-
-            @Override
-            public long getMaxInsert(@Nullable Direction side) {
-                return getEffectiveTier().getMaxInput();
-            }
-
-            @Override
-            public long getMaxExtract(@Nullable Direction side) {
-                return getEffectiveTier().getMaxOutput();
-            }
-
-            @Override
-            protected void onFinalCommit() {
-                setChanged();
-                getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
-
-/*            if(!world.isClient()) {
-                for(ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
-                    ServerPlayNetworking.send(player, new EnergySyncS2CPayload(amount, getPos()));
-                }
-            }*/
-            }
-        };
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
@@ -121,55 +75,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
                 return 2;
             }
         };
-    }
-
-    // 计算处理速度倍率
-    private double getProcessTimeMultiplier() {
-        double multiplier = 1.0;
-        for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
-            ItemStack stack = inventory.get(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgradeModule u) {
-                multiplier = u.getProcessTimeMultiplier(stack);
-            }
-        }
-        return multiplier;
-    }
-
-    // 计算能耗倍率
-    private double getEnergyDemandMultiplier() {
-        double multiplier = 1.0;
-        for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
-            ItemStack stack = inventory.get(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgradeModule u) {
-                multiplier = u.getEnergyDemandMultiplier(stack);
-            }
-        }
-        return multiplier;
-    }
-
-    // 计算额外储能
-    private int getEnergyStorageUpgrade() {
-        int total = 0;
-        for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
-            ItemStack stack = inventory.get(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgradeModule u) {
-                total += u.getExtraEnergyStorage(stack);
-            }
-        }
-        return total;
-    }
-
-    // 获取有效的 EnergyTier（支持 Transformer 升级）
-    public EnergyTier getEffectiveTier() {
-        int tierBoost = 0;
-        for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
-            ItemStack stack = inventory.get(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgradeModule u) {
-                tierBoost += u.getTierIncrease(stack);
-            }
-        }
-        int newTier = Math.min(energyTier.ordinal() + tierBoost, EnergyTier.values().length - 1);
-        return EnergyTier.values()[newTier];
     }
 
 
@@ -242,21 +147,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
     public ItemStack getRenderStack() {
             return this.getItem(INPUT_SLOT);
     }
-    @Override
-    public void setChanged() {
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        super.setChanged();
-    }
-
-    @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getItems() {
-        return inventory;
-    }
 
     @Override
     protected void saveAdditional(ValueOutput nbt) {
@@ -299,36 +189,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
         if (state.getValue(AbstractMachineblock.LIT) != isWorking) {
             world.setBlock(pos, state.setValue(AbstractMachineblock.LIT, isWorking), 3);
         }
-    }
-
-    public long getFreeSpace() {
-        return this.energyContainer.getCapacity() - energyContainer.amount;
-    }
-
-    public Optional<ImplementedInventory> getOptionalInventory() {
-        if (this instanceof ImplementedInventory inventory) {
-            return inventory == null ? Optional.empty() : Optional.of(inventory);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public void charge(int slot) {
-        if (this.level != null) {
-            if (!this.level.isClientSide()) {
-                long chargeEnergy = Math.min(this.getFreeSpace(), energyTier.getMaxInput());
-                if (chargeEnergy > 0L) {
-                    if (!this.getOptionalInventory().isEmpty()) {
-                        Container inventory = this.getOptionalInventory().get();
-                        EnergyStorageUtil.move(ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
-                    }
-                }
-            }
-        }
-    }
-
-    public EnergyStorage getSideEnergyStorage(@Nullable Direction side) {
-        return this.energyContainer.getSideStorage(side);
     }
 
     public void useEnergyForCrafting() {
@@ -413,37 +273,6 @@ public abstract class AbstractMachineEntity extends BlockEntity implements Exten
         int currentCount = this.getItem(OUTPUT_SLOT).getCount();
 
         return maxCount >= currentCount + count;
-    }
-
-
-   @Nullable
-   @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-    return ClientboundBlockEntityDataPacket.create(this);
-}
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registryLookup) {
-        return saveCustomOnly(registryLookup);
-    }
-
-    @Override
-    public Level level() {
-        return this.level;
-    }
-
-    @Override
-    public Vec3 position() {
-        return this.getBlockPos().getCenter();
-    }
-
-    @Override
-    public float getVisualRotationYInDegrees() {
-        return this.getBlockState().getValue(AbstractMachineblock.FACING).getOpposite().getStepY();
-    }
-
-    public EnergyTier getEnergyTier(){
-        return energyTier;
     }
 
     @Override

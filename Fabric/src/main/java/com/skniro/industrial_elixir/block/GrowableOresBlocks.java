@@ -110,7 +110,7 @@ public class GrowableOresBlocks {
     public static final Block CHUNK_LOADER = registerBlock("chunk_loader", ChunkLoaderBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
 
     public static final Block Electric_Heater_Block =registerBlock("electric_heater", ElectricHeaterBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
-    public static final Block SOLID_FUEL_HEATER_GENERATOR = registerBlock("solid_fuel_heater_generator", SolidFuelHeaterBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
+    public static final Block SOLID_FUEL_HEATER_GENERATOR = registerBlock("solid_fuel_heater_generator", (properties)-> new SolidFuelHeaterBlock(properties,1000), (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
     public static final Block BLAST_FURNACE_BLOCK =registerBlock("blast_furnace", ModBlastFurnaceBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
 
     private static Block registerSolar(String name, EnergyTier tier, int DayPower, int NightPower, long capacity) {
