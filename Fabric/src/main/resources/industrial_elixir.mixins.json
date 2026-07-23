@@ -6,7 +6,8 @@
   "mixins": [
     "SignTypeAccessor",
     "BlockEntityTypeMixin",
-    "FurnaceSpeedMixin"
+    "FurnaceSpeedMixin",
+    "ItemTooltipMixin"
   ],
   "client": [
   ],
