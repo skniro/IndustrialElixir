@@ -10,6 +10,7 @@ import com.skniro.industrial_elixir.screen.handler.machine.PatternStorageScreenH
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.BrewReactorScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.CoffeeMachineScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.CropFarmScreenHandler;
+import com.skniro.industrial_elixir.screen.handler.machine.VendorMachineScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.MatterGeneratorScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.OreWashingScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.ReplicatorScreenHandler;

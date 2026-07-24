@@ -2,6 +2,8 @@ package com.skniro.industrial_elixir.networking;
 
 import com.google.common.base.Suppliers;
 import com.skniro.industrial_elixir.block.entity.machine.MetalFormerBlockEntity;
+import com.skniro.industrial_elixir.screen.handler.machine.VendorMachineScreenHandler;
+import com.skniro.industrial_elixir.networking.packet.VendorMachineSynPayload;
 import com.skniro.industrial_elixir.networking.packet.BoostJumpC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.JetpackInputC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.MetalFormerStateC2SPayload;
@@ -10,9 +12,11 @@ import com.skniro.industrial_elixir.networking.packet.ToggleNightVisionC2SPayloa
 import com.skniro.industrial_elixir.item.init.JetpackHelper;
 import com.skniro.industrial_elixir.item.init.QuantumSuitItem;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -115,7 +119,15 @@ public class NetworkUtilsImpl {
 
     private static class ClientNetworking {
         private static void initialize() {
-
+/*            ClientPlayNetworking.registerGlobalReceiver(VendorMachineSynPayload.TYPE,
+                    (payload, context) -> {
+                        context.client().execute(() -> {
+                            if (Minecraft.getInstance().player != null
+                                    && Minecraft.getInstance().player.containerMenu instanceof VendorMachineScreenHandler menu) {
+                                menu.setOffers(payload.toMerchantOffers());
+                            }
+                        });
+                    });*/
         }
     }
 }

@@ -190,7 +190,7 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements E
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registryLookup) {
-        return saveCustomOnly(registryLookup);
+        return saveWithoutMetadata(registryLookup);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.skniro.industrial_elixir.networking.packet.JetpackInputC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.MetalFormerStateC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.ToggleHoverC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.ToggleNightVisionC2SPayload;
+import com.skniro.industrial_elixir.networking.packet.VendorMachineSynPayload;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 
@@ -21,9 +22,10 @@ public class ModMessages {
         registry.register(BoostJumpC2SPayload.TYPE, BoostJumpC2SPayload.CODEC);
         registry.register(ToggleHoverC2SPayload.TYPE, ToggleHoverC2SPayload.CODEC);
         registry.register(JetpackInputC2SPayload.TYPE, JetpackInputC2SPayload.CODEC);
+        //registry.register(VendorMachineSynPayload.TYPE, VendorMachineSynPayload.CODEC);
     }
 
     public static void registerS2CPackets(PayloadTypeRegistry<RegistryFriendlyByteBuf> registry) {
-
+        //registry.register(VendorMachineSynPayload.TYPE, VendorMachineSynPayload.CODEC);
     }
 }

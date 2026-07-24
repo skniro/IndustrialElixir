@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.VendorMachineBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -50,4 +51,15 @@ public class VendorMachineBlock extends BaseEntityBlock {
         }
         return InteractionResult.SUCCESS;
     }
+
+/*    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos,
+                                               Player player, BlockHitResult hit) {
+        if (!world.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            if (world.getBlockEntity(pos) instanceof VendorMachineBlockEntity vendor) {
+                serverPlayer.openMenu(vendor);
+            }
+        }
+        return InteractionResult.SUCCESS;
+    }*/
 }

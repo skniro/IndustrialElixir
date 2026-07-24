@@ -3,6 +3,7 @@ package com.skniro.industrial_elixir.screen.ingame.machine;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import java.util.Objects;
 
+import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.machine.VendorMachineScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,7 +19,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.npc.villager.VillagerData;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
@@ -35,24 +35,6 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
     private static final Identifier TRADE_ARROW_SPRITE = Identifier.withDefaultNamespace("container/villager/trade_arrow");
     private static final Identifier DISCOUNT_STRIKETHRUOGH_SPRITE = Identifier.withDefaultNamespace("container/villager/discount_strikethrough");
     private static final Identifier VILLAGER_LOCATION = Identifier.withDefaultNamespace("textures/gui/container/villager.png");
-    private static final int TEXTURE_WIDTH = 512;
-    private static final int TEXTURE_HEIGHT = 256;
-    private static final int MERCHANT_MENU_PART_X = 99;
-    private static final int PROGRESS_BAR_X = 136;
-    private static final int PROGRESS_BAR_Y = 16;
-    private static final int SELL_ITEM_1_X = 5;
-    private static final int SELL_ITEM_2_X = 35;
-    private static final int BUY_ITEM_X = 68;
-    private static final int LABEL_Y = 6;
-    private static final int NUMBER_OF_OFFER_BUTTONS = 7;
-    private static final int TRADE_BUTTON_X = 5;
-    private static final int TRADE_BUTTON_HEIGHT = 20;
-    private static final int TRADE_BUTTON_WIDTH = 88;
-    private static final int SCROLLER_HEIGHT = 27;
-    private static final int SCROLLER_WIDTH = 6;
-    private static final int SCROLL_BAR_HEIGHT = 139;
-    private static final int SCROLL_BAR_TOP_POS_Y = 18;
-    private static final int SCROLL_BAR_START_X = 94;
     private static final Component TRADES_LABEL = Component.translatable("merchant.trades");
     private static final Component DEPRECATED_TOOLTIP = Component.translatable("merchant.deprecated");
     private int shopItem;
@@ -68,7 +50,9 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
     private void postButtonClick() {
         (this.menu).setSelectionHint(this.shopItem);
         (this.menu).tryMoveItems(this.shopItem);
-        this.minecraft.getConnection().send(new ServerboundSelectTradePacket(this.shopItem));
+        this.minecraft.getConnection().send(
+                new ServerboundSelectTradePacket(this.shopItem)
+        );
     }
 
     protected void init() {
@@ -173,6 +157,10 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
     public void extractContents(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractContents(graphics, mouseX, mouseY, a);
         MerchantOffers offers = (this.menu).getOffers();
+        IndustrialElixir.LOGGER.info(
+                "CLIENT MERCHANT OFFERS = "
+                        + offers.size()
+        );
         if (!offers.isEmpty()) {
             int xo = (this.width - this.imageWidth) / 2;
             int yo = (this.height - this.imageHeight) / 2;
@@ -182,7 +170,7 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
             int currentOfferIndex = 0;
 
             for(MerchantOffer offer : offers) {
-                if (!this.canScroll(offers.size()) || currentOfferIndex >= this.scrollOff && currentOfferIndex < 7 + this.scrollOff) {
+                if (!this.canScroll(offers.size()) || currentOfferIndex >= this.scrollOff && currentOfferIndex < 20 + this.scrollOff) {
                     ItemStack baseCostA = offer.getBaseCostA();
                     ItemStack costA = offer.getCostA();
                     ItemStack costB = offer.getCostB();
