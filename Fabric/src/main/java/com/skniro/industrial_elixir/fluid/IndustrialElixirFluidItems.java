@@ -28,7 +28,7 @@ public class IndustrialElixirFluidItems {
             (properties)-> new FluidCellItem(properties, IndustrialElixirFluids.STILL_Fluid_AIR), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL).stacksTo(16));
     public static final Item Hot_Spring_BUCKET = registerItem("hot_spring_bucket",
             (settings)->  new BucketItem(IndustrialElixirFluids.STILL_Hot_Spring, settings), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
-    public static final Item Hot_CELL = registerItem("hot_spring_cell",
+    public static final Item Hot_Spring_CELL = registerItem("hot_spring_cell",
             (settings)->  new FluidCellItem(settings, IndustrialElixirFluids.STILL_Hot_Spring), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL).stacksTo(16));
 
     private static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {

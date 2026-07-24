@@ -1,0 +1,10 @@
+{
+  "type": "industrial_elixir:coffee_machine",
+  "count": 1,
+  "fluid": "minecraft:water",
+  "fluid_amount": 1000,
+  "ingredient": "minecraft:milk_bucket",
+  "result": {
+    "id": "industrial_elixir:mocha"
+  }
+}

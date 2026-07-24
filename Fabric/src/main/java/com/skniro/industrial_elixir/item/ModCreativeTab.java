@@ -27,6 +27,7 @@ public class ModCreativeTab {
     public static final ResourceKey<CreativeModeTab> Tool_And_Utilities = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "tool_and_utilities"));
     public static final ResourceKey<CreativeModeTab> Combat = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "combat"));
     public static final ResourceKey<CreativeModeTab> Materials = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "materials"));
+    public static final ResourceKey<CreativeModeTab> AGRICULTURE = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "agriculture"));
 
     public static void CreativeTab() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, General, FabricCreativeModeTab.builder()
@@ -61,6 +62,11 @@ public class ModCreativeTab {
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Materials, FabricCreativeModeTab.builder()
                 .icon(() -> new ItemStack(GrowableOresItems.Rubber.asItem()))
+                .title(Component.translatable("itemGroup.industrial_elixir.materials"))
+                .build()); // build() no longer registers by itself
+
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AGRICULTURE, FabricCreativeModeTab.builder()
+                .icon(() -> new ItemStack(MapleFoodComponents.Coffee_Black.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.materials"))
                 .build()); // build() no longer registers by itself
     }
@@ -214,6 +220,7 @@ public class ModCreativeTab {
         CreativeModeTabEvents.modifyOutputEvent(Tool_And_Utilities).register(content -> {
             content.accept(IndustrialElixirFluidItems.Fluid_UU_BUCKET);
             content.accept(IndustrialElixirFluidItems.Fluid_AIR_BUCKET);
+            content.accept(IndustrialElixirFluidItems.Hot_Spring_BUCKET);
             content.accept(GrowableOresItems.ENERGY_STORAGE);
             content.accept(GrowableOresItems.OVERCLOCKER);
             content.accept(GrowableOresItems.TRANSFORMER);
@@ -236,6 +243,7 @@ public class ModCreativeTab {
             content.accept(GrowableOresItems.LAVA_CELL);
             content.accept(IndustrialElixirFluidItems.UU_CELL);
             content.accept(IndustrialElixirFluidItems.AIR_CELL);
+            content.accept(IndustrialElixirFluidItems.Hot_Spring_CELL);
         });
 
         CreativeModeTabEvents.modifyOutputEvent(Combat).register(content -> {
@@ -388,6 +396,16 @@ public class ModCreativeTab {
             content.accept(AdvancedItems.Iridium_INGOT);
             content.accept(AdvancedItems.Quantum_Core);
             content.accept(AdvancedItems.MT_Core);
+        });
+
+        CreativeModeTabEvents.modifyOutputEvent(Materials).register(content -> {
+            content.accept(GeneralBlocks.COFFEE_MACHINE_Block);
+            content.accept(MapleFoodComponents.Coffee_Beans);
+            content.accept(MapleFoodComponents.Coffee_Black);
+            content.accept(MapleFoodComponents.Cappuccino);
+            content.accept(MapleFoodComponents.Latte);
+            content.accept(MapleFoodComponents.Mocha);
+            content.accept(MapleFoodComponents.Hot_Cocoa);
         });
     }
 

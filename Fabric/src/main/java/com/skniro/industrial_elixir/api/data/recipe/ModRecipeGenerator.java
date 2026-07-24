@@ -154,6 +154,18 @@ public class ModRecipeGenerator extends RecipeProvider {
         return BrewReactorRecipeJsonBuilder.create(this.itemLookup, output);
     }
 
+    public CoffeeMachineRecipeJsonBuilder createCoffeeMachine(ItemLike output, int count) {
+        return CoffeeMachineRecipeJsonBuilder.create(this.itemLookup, output, count);
+    }
+
+    public CoffeeMachineRecipeJsonBuilder createCoffeeMachine(ItemLike output) {
+        return CoffeeMachineRecipeJsonBuilder.create(this.itemLookup, output);
+    }
+
+    public CoffeeMachineRecipeJsonBuilder createCoffeeMachine(ItemStackTemplate output) {
+        return CoffeeMachineRecipeJsonBuilder.create(this.itemLookup, output);
+    }
+
     public OreWashingRecipeJsonBuilder createOreWashing(ItemLike output, int count) {
         return OreWashingRecipeJsonBuilder.create(this.itemLookup, output, count);
     }

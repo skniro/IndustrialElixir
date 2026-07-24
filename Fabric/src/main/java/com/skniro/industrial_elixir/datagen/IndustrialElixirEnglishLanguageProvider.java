@@ -5,6 +5,7 @@ import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
+import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.AdvancedItems;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
@@ -443,5 +444,10 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add("tooltip.industrial_elixir.energy.tier", "Tier: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.capacity", "Capacity: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.max_io", "Max I/O: %s / %s EP/t");
+
+
+        translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"Hot Spring Bucket");
+        translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"Hot Spring");
+        translationBuilder.add("fluid.industrial_elixir.hot_spring","Hot Spring");
     }
 }

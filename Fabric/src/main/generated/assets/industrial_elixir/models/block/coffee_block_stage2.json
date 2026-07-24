@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "industrial_elixir:block/coffee_block_stage2"
+  }
+}

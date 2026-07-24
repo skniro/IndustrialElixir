@@ -444,5 +444,9 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add("tooltip.industrial_elixir.energy.tier", "电压等级: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.capacity", "最大容量: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.max_io", "最大输入/输出: %s / %s EP/t");
+
+        translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"温泉桶");
+        translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"温泉");
+        translationBuilder.add("fluid.industrial_elixir.hot_spring","Hot Spring");
     }
 }

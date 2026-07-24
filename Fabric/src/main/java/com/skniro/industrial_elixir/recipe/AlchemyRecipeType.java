@@ -2,6 +2,7 @@ package com.skniro.industrial_elixir.recipe;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.recipe.machine.PatternStorageCraftingRecipe;
+import com.skniro.industrial_elixir.recipe.machine.CoffeeMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,6 +42,8 @@ public interface AlchemyRecipeType<T extends Recipe<?>> {
             register("heat_centrifuge", HeatCentrifugeCraftingRecipe.SERIALIZER);
     public static final RecipeRegistration<PatternStorageCraftingRecipe> PATTERN_STORAGE =
             register("pattern_storage", PatternStorageCraftingRecipe.SERIALIZER);
+    public static final RecipeRegistration<CoffeeMachineCraftingRecipe> COFFEE_MACHINE =
+            register("coffee_machine", CoffeeMachineCraftingRecipe.SERIALIZER);
 
 
     public static <R extends Recipe<?>> RecipeRegistration<R> register(String idName, RecipeSerializer<R> serializer) {

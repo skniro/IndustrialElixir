@@ -61,6 +61,18 @@ public class FluidOutputMap {
                             GrowableOresItems.EMPTY_CELL,
                             IndustrialElixirFluidItems.AIR_CELL
                     )
+            ),
+
+            IndustrialElixirFluids.STILL_Hot_Spring,
+            List.of(
+                    new ContainerInfo(
+                            Items.BUCKET,
+                            IndustrialElixirFluidItems.Hot_Spring_BUCKET
+                    ),
+                    new ContainerInfo(
+                            GrowableOresItems.EMPTY_CELL,
+                            IndustrialElixirFluidItems.Hot_Spring_CELL
+                    )
             )
     );
 

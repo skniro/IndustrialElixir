@@ -2,8 +2,10 @@ package com.skniro.industrial_elixir.block;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.entity.MapleSignTypes;
+import com.skniro.industrial_elixir.block.init.CoffeeBlock;
 import com.skniro.industrial_elixir.block.init.LogCropBlock;
 import com.skniro.industrial_elixir.block.init.MapleBlockSetType;
+import com.skniro.industrial_elixir.block.init.machine.fluid.CoffeeMachineBlock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import com.skniro.industrial_elixir.world.Tree.RubberSaplingGenerator;
@@ -143,7 +145,8 @@ public class GeneralBlocks {
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CONCRETE)));
 
     //Coffee
-    public static final Block Coffee_Block = registerBlock("coffee_block", (properties)-> new LogCropBlock(properties, MapleFoodComponents.Coffee_Beans),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
+    public static final Block Coffee_Block = registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties, MapleFoodComponents.Coffee_Beans),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
+    public static final Block COFFEE_MACHINE_Block =registerBlock("coffee_machine_block", CoffeeMachineBlock::new, BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
 
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {

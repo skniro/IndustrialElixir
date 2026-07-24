@@ -829,8 +829,7 @@ public class MapleModelDatagenHelper {
         generator.registerSimpleFlatItemModel(fruititem);
         generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
                 .with(PropertyDispatch.initial(BlockStateProperties.AGE_3).generate(stage ->
-                                plainVariant(
-                                generator.createSuffixedVariant(block, "_stage" + stage, ModelTemplates.CROSS, TextureMapping::cross)
+                        plainVariant(generator.createSuffixedVariant(block, "_stage" + stage, ModelTemplates.CROSS, TextureMapping::cross)
                         )
                 ))
         );

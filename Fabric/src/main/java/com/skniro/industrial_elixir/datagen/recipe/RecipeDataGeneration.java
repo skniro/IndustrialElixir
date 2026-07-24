@@ -27,5 +27,6 @@ public class RecipeDataGeneration {
         fabricDataGenerator.createPack().addProvider(OreWashingRecipeGenerator::new);
         fabricDataGenerator.createPack().addProvider(ModBlastFurnaceRecipeGenerator::new);
         fabricDataGenerator.createPack().addProvider(HeatCentrifugeRecipeGenerator::new);
+        fabricDataGenerator.createPack().addProvider(CoffeeMachineRecipeGenerator::new);
     }
 }

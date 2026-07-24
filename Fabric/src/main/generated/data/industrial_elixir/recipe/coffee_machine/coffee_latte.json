@@ -1,0 +1,10 @@
+{
+  "type": "industrial_elixir:coffee_machine",
+  "count": 1,
+  "fluid": "minecraft:water",
+  "fluid_amount": 1000,
+  "ingredient": "industrial_elixir:coffee_beans",
+  "result": {
+    "id": "industrial_elixir:latte"
+  }
+}

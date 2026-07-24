@@ -10,6 +10,7 @@ import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
 import com.skniro.industrial_elixir.item.AdvancedItems;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.MapleArmorItems;
+import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -138,6 +139,8 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         mapleModelDatagenHelper.registerMachineDiffBottom(GrowableOresBlocks.PATTERN_STORAGE, true);
         mapleModelDatagenHelper.registerBaseMachineBlock(GrowableOresBlocks.Replicator, true);
         mapleModelDatagenHelper.registerMachineSolidHeater(GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR, true);
+
+        mapleModelDatagenHelper.registerModSweetBerryBush(MapleFoodComponents.Coffee_Beans, GeneralBlocks.Coffee_Block);
     }
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
