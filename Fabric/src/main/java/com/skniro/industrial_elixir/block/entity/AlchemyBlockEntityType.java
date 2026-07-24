@@ -18,6 +18,7 @@ import com.skniro.industrial_elixir.block.entity.generator.GeneratorWindMillBloc
 import com.skniro.industrial_elixir.block.entity.generator.NuclearReactorBlockEntity;
 import com.skniro.industrial_elixir.block.entity.generator.SacredGeneratorBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.*;
+import com.skniro.industrial_elixir.block.entity.machine.CropFarmBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.PatternStorageBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.heat.ModBlastFurnaceBlockEntity;
 import com.skniro.industrial_elixir.block.entity.pipe.StoneFluidPipeBlockEntity;
@@ -74,6 +75,7 @@ public class AlchemyBlockEntityType {
     public static final BlockEntityType<FluidGeneratorEntity> FLUID_GENERATOR_BE;
     public static final BlockEntityType<ChunkLoaderEntity> CHUNK_LOADER_BE;
     public static final BlockEntityType<CoffeeMachineBlockEntity> COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE;
+    public static final BlockEntityType<CropFarmBlockEntity> CROP_FARM_BLOCK_ENTITY;
 
 
     static {
@@ -142,6 +144,7 @@ public class AlchemyBlockEntityType {
         FLUID_GENERATOR_BE = create("fluid_generator_be", FabricBlockEntityTypeBuilder.create(FluidGeneratorEntity::new, GrowableOresBlocks.FLUID_GENERATOR));
         CHUNK_LOADER_BE = create("chunk_loader_be", FabricBlockEntityTypeBuilder.create(ChunkLoaderEntity::new, GrowableOresBlocks.CHUNK_LOADER));
         COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE= create("coffee_machine_block_entity", FabricBlockEntityTypeBuilder.create(CoffeeMachineBlockEntity::new, GeneralBlocks.COFFEE_MACHINE_Block));
+        CROP_FARM_BLOCK_ENTITY = create("crop_farm_block_entity", FabricBlockEntityTypeBuilder.create(CropFarmBlockEntity::new, GrowableOresBlocks.CROP_FARM_Block));
     }
 
 
@@ -180,6 +183,7 @@ public class AlchemyBlockEntityType {
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), CHUNK_LOADER_BE);
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), SOLID_FUEL_HEATER_BE);
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE);
+        EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), CROP_FARM_BLOCK_ENTITY);
         FluidStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.fluidContainer, FLUID_TANK_BLOCK_ENTITY);
         FluidStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.fluidContainer, Brew_Reactor_BLOCK_ENTITY);
         FluidStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.fluidContainer, Ore_Washing_BLOCK_ENTITY);

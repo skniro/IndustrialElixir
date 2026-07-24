@@ -215,6 +215,7 @@ public class ModCreativeTab {
             content.accept(GrowableOresBlocks.Replicator);
             content.accept(GrowableOresBlocks.PATTERN_STORAGE);
             content.accept(GrowableOresBlocks.CHUNK_LOADER);
+            content.accept(GrowableOresBlocks.CROP_FARM_Block);
         });
 
         CreativeModeTabEvents.modifyOutputEvent(Tool_And_Utilities).register(content -> {

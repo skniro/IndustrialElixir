@@ -9,6 +9,7 @@ import com.skniro.industrial_elixir.screen.handler.machine.*;
 import com.skniro.industrial_elixir.screen.handler.machine.PatternStorageScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.BrewReactorScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.CoffeeMachineScreenHandler;
+import com.skniro.industrial_elixir.screen.handler.machine.CropFarmScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.MatterGeneratorScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.OreWashingScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.ReplicatorScreenHandler;
@@ -149,6 +150,10 @@ public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
     public static final MenuType<CoffeeMachineScreenHandler> CoffeeMachine =
             Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "coffee_machine_screen_handler"),
                     new ExtendedMenuType<>(CoffeeMachineScreenHandler::new, BlockPos.STREAM_CODEC));
+
+    public static final MenuType<CropFarmScreenHandler> CropFarm =
+            Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "crop_farm_screen_handler"),
+                    new ExtendedMenuType<>(CropFarmScreenHandler::new, BlockPos.STREAM_CODEC));
 
     public static void registeralchemyscreenhandlertype() {
 

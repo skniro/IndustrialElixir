@@ -51,4 +51,5 @@ public class FurnitureStrings {
     public static final String Fluid_Generator = "gui.industrial_elixir.fluid_generator";
     public static final String ChunkLoader = "gui.industrial_elixir.chunk_loader";
     public static final String CoffeeMachine = "gui.industrial_elixir.coffee_machine";
+    public static final String CropFarm = "gui.industrial_elixir.crop_farm";
 }

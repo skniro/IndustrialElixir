@@ -21,6 +21,7 @@ import com.skniro.industrial_elixir.screen.ingame.machine.*;
 import com.skniro.industrial_elixir.screen.ingame.machine.ChunkLoaderScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.BrewReactorScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.CoffeeMachineScreen;
+import com.skniro.industrial_elixir.screen.ingame.machine.CropFarmBlockScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.PatternStorageScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.MatterGeneratorScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.OreWashingScreen;
@@ -121,6 +122,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         MenuScreens.register(AlchemyScreenHandlerType.FluidGenerator, FluidGeneratorScreen::new);
         MenuScreens.register(AlchemyScreenHandlerType.ChunkLoader, ChunkLoaderScreen::new);
         MenuScreens.register(AlchemyScreenHandlerType.CoffeeMachine, CoffeeMachineScreen::new);
+        MenuScreens.register(AlchemyScreenHandlerType.CropFarm, CropFarmBlockScreen::new);
 
         BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, AlchemyblockentityRenderer::new);
         //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_BLOCK_ENTITY, WoodenPipeRenderer::new);

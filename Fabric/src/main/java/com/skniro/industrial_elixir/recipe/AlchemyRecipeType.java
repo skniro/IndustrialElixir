@@ -44,6 +44,8 @@ public interface AlchemyRecipeType<T extends Recipe<?>> {
             register("pattern_storage", PatternStorageCraftingRecipe.SERIALIZER);
     public static final RecipeRegistration<CoffeeMachineCraftingRecipe> COFFEE_MACHINE =
             register("coffee_machine", CoffeeMachineCraftingRecipe.SERIALIZER);
+    public static final RecipeRegistration<CropFarmCraftingRecipe> CROP_FARM =
+            register("crop_farm", CropFarmCraftingRecipe.SERIALIZER);
 
 
     public static <R extends Recipe<?>> RecipeRegistration<R> register(String idName, RecipeSerializer<R> serializer) {
