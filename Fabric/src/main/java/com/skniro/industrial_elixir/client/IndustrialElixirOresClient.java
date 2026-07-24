@@ -51,6 +51,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.renderer.block.FluidModel;
@@ -123,6 +124,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         MenuScreens.register(AlchemyScreenHandlerType.ChunkLoader, ChunkLoaderScreen::new);
         MenuScreens.register(AlchemyScreenHandlerType.CoffeeMachine, CoffeeMachineScreen::new);
         MenuScreens.register(AlchemyScreenHandlerType.CropFarm, CropFarmBlockScreen::new);
+        MenuScreens.register(AlchemyScreenHandlerType.VendorMachine, VendorMachineScreen::new);
 
         BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, AlchemyblockentityRenderer::new);
         //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_BLOCK_ENTITY, WoodenPipeRenderer::new);

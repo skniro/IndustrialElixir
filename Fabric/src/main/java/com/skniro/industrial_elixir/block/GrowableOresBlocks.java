@@ -113,6 +113,7 @@ public class GrowableOresBlocks {
     public static final Block SOLID_FUEL_HEATER_GENERATOR = registerBlock("solid_fuel_heater_generator", (properties)-> new SolidFuelHeaterBlock(properties,1000), (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
     public static final Block BLAST_FURNACE_BLOCK =registerBlock("blast_furnace", ModBlastFurnaceBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
     public static final Block CROP_FARM_Block =registerBlock("crop_farm", CropFarmBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
+    public static final Block VENDOR_MACHINE_Block =registerBlock("vendor_machine", VendorMachineBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
 
     private static Block registerSolar(String name, EnergyTier tier, int DayPower, int NightPower, long capacity) {
         return registerBlock(name, (settings) -> new GeneratorSolarPanelBlock(settings, tier, DayPower, NightPower, capacity),

@@ -29,6 +29,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.item.trading.Merchant;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
     public static final MenuType<AlchemyBlockScreenHandler> ALCHEMY =
@@ -154,6 +157,10 @@ public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
     public static final MenuType<CropFarmScreenHandler> CropFarm =
             Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "crop_farm_screen_handler"),
                     new ExtendedMenuType<>(CropFarmScreenHandler::new, BlockPos.STREAM_CODEC));
+
+    public static final MenuType<VendorMachineScreenHandler> VendorMachine =
+            Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "vendor_machine_screen_handler"),
+                    new ExtendedMenuType<>(VendorMachineScreenHandler::new, BlockPos.STREAM_CODEC));
 
     public static void registeralchemyscreenhandlertype() {
 

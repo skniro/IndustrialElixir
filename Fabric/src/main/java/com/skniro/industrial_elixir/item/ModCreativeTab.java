@@ -401,6 +401,7 @@ public class ModCreativeTab {
         CreativeModeTabEvents.modifyOutputEvent(AGRICULTURE).register(content -> {
             content.accept(GeneralBlocks.COFFEE_MACHINE_Block);
             content.accept(GrowableOresBlocks.CROP_FARM_Block);
+            content.accept(GrowableOresBlocks.VENDOR_MACHINE_Block);
             content.accept(MapleFoodComponents.Coffee_Beans);
             content.accept(MapleFoodComponents.Coffee_Black);
             content.accept(MapleFoodComponents.Cappuccino);
