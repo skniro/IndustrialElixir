@@ -215,7 +215,6 @@ public class ModCreativeTab {
             content.accept(GrowableOresBlocks.Replicator);
             content.accept(GrowableOresBlocks.PATTERN_STORAGE);
             content.accept(GrowableOresBlocks.CHUNK_LOADER);
-            content.accept(GrowableOresBlocks.CROP_FARM_Block);
         });
 
         CreativeModeTabEvents.modifyOutputEvent(Tool_And_Utilities).register(content -> {
@@ -401,6 +400,7 @@ public class ModCreativeTab {
 
         CreativeModeTabEvents.modifyOutputEvent(AGRICULTURE).register(content -> {
             content.accept(GeneralBlocks.COFFEE_MACHINE_Block);
+            content.accept(GrowableOresBlocks.CROP_FARM_Block);
             content.accept(MapleFoodComponents.Coffee_Beans);
             content.accept(MapleFoodComponents.Coffee_Black);
             content.accept(MapleFoodComponents.Cappuccino);
