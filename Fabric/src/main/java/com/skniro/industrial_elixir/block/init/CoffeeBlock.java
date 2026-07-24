@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.block.init;
 
 import com.mojang.serialization.MapCodec;
+import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -39,12 +40,10 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
     public static final IntegerProperty AGE;
     private static final VoxelShape SMALL_SHAPE;
     private static final VoxelShape LARGE_SHAPE;
-    public final Item fruitItem;
 
-    public CoffeeBlock(Properties settings, Item fruitItem) {
+    public CoffeeBlock(Properties settings) {
         super(settings);
         this.registerDefaultState((BlockState)((BlockState)this.stateDefinition.any()).setValue(AGE, 0));
-        this.fruitItem = fruitItem;
     }
 
     @Override
@@ -90,7 +89,7 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
         boolean bl = i == 3;
         if (i > 1) {
             int j = 1 + world.getRandom().nextInt(2);
-            popResource(world, pos, new ItemStack(fruitItem, j + (bl ? 1 : 0)));
+            popResource(world, pos, new ItemStack(MapleFoodComponents.Coffee_Beans, j + (bl ? 1 : 0)));
             world.playSound((Player)null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + world.getRandom().nextFloat() * 0.4F);
             BlockState blockState = (BlockState)state.setValue(AGE, 1);
             world.setBlock(pos, blockState, 2);

@@ -2,6 +2,7 @@ package com.skniro.industrial_elixir.item;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
+import com.skniro.industrial_elixir.item.init.CoffeeBeansItem;
 import com.skniro.industrial_elixir.item.init.ItemBottle;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

@@ -145,7 +145,7 @@ public class GeneralBlocks {
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CONCRETE)));
 
     //Coffee
-    public static final Block Coffee_Block = registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties, MapleFoodComponents.Coffee_Beans),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
+    public static final Block Coffee_Block = registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
     public static final Block COFFEE_MACHINE_Block =registerBlock("coffee_machine_block", CoffeeMachineBlock::new, BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
 
 
