@@ -373,6 +373,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(ModCreativeTab.Tool_And_Utilities, "Tools & Utilities");
         translationBuilder.add(ModCreativeTab.Combat, "Combat");
         translationBuilder.add(ModCreativeTab.Materials, "Materials");
+        translationBuilder.add(ModCreativeTab.AGRICULTURE, "Agriculture");
 
         translationBuilder.add(GrowableOresBlocks.ElectricFurnace_Block, "Electric Furnace");
         translationBuilder.add(GrowableOresBlocks.RECYCLER_Block, "Recycler");

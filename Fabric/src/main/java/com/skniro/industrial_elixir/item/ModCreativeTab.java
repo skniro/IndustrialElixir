@@ -67,7 +67,7 @@ public class ModCreativeTab {
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AGRICULTURE, FabricCreativeModeTab.builder()
                 .icon(() -> new ItemStack(MapleFoodComponents.Coffee_Black.asItem()))
-                .title(Component.translatable("itemGroup.industrial_elixir.materials"))
+                .title(Component.translatable("itemGroup.industrial_elixir.agriculture"))
                 .build()); // build() no longer registers by itself
     }
 
@@ -398,7 +398,7 @@ public class ModCreativeTab {
             content.accept(AdvancedItems.MT_Core);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Materials).register(content -> {
+        CreativeModeTabEvents.modifyOutputEvent(AGRICULTURE).register(content -> {
             content.accept(GeneralBlocks.COFFEE_MACHINE_Block);
             content.accept(MapleFoodComponents.Coffee_Beans);
             content.accept(MapleFoodComponents.Coffee_Black);

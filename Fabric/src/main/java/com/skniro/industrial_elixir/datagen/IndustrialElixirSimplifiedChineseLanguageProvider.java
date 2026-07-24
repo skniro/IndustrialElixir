@@ -373,6 +373,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(ModCreativeTab.Tool_And_Utilities, "工具与实用物品");
         translationBuilder.add(ModCreativeTab.Combat, "战斗");
         translationBuilder.add(ModCreativeTab.Materials, "材料");
+        translationBuilder.add(ModCreativeTab.AGRICULTURE, "农业");
 
         translationBuilder.add(GrowableOresBlocks.ElectricFurnace_Block, "电炉");
         translationBuilder.add(GrowableOresBlocks.RECYCLER_Block, "回收机");
