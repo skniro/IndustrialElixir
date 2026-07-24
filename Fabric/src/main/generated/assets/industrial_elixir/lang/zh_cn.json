@@ -342,6 +342,7 @@
   "item.industrial_elixir.transformer": "高压升级",
   "item.industrial_elixir.uu_cell": "UU物质单元",
   "item.industrial_elixir.water_cell": "水单元",
+  "itemGroup.industrial_elixir.agriculture": "农业",
   "itemGroup.industrial_elixir.combat": "战斗",
   "itemGroup.industrial_elixir.general": "基本",
   "itemGroup.industrial_elixir.generators_and_wiring": "发电机与导线",

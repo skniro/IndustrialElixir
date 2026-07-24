@@ -342,6 +342,7 @@
   "item.industrial_elixir.transformer": "Transformer Upgrade",
   "item.industrial_elixir.uu_cell": "UU Matter Cell",
   "item.industrial_elixir.water_cell": "Water Cell",
+  "itemGroup.industrial_elixir.agriculture": "Agriculture",
   "itemGroup.industrial_elixir.combat": "Combat",
   "itemGroup.industrial_elixir.general": "General",
   "itemGroup.industrial_elixir.generators_and_wiring": "Generators & Wiring",
