@@ -76,6 +76,12 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(FurnitureStrings.ChunkLoader, "Chunk Loader");
         translationBuilder.add(FurnitureStrings.Matter_Generator, "Matter Generator");
 
+        translationBuilder.add(FurnitureStrings.CropFarm, "Crop Planting");
+        translationBuilder.add(FurnitureStrings.VendorMachine, "Vendor Machine");
+        translationBuilder.add(FurnitureStrings.CoffeeMachine, "Coffee Maker");
+
+
+
         translationBuilder.add("gui.industrial_elixir.pattern_storage.copy", "Copy");
         translationBuilder.add("gui.industrial_elixir.pattern_storage.uu_tooltip", "UU Matter cost per replication");
         translationBuilder.add("gui.industrial_elixir.pattern_storage.energy_tooltip", "Energy cost per replication");
@@ -200,6 +206,10 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(GrowableOresBlocks.Pipe_Wooden_Fluid_Block, "Wooden Fluid Pipe");
         translationBuilder.add(GrowableOresBlocks.Pipe_Wooden_Iten_Block, "Wooden Item Pipe");
         translationBuilder.add(GrowableOresBlocks.MATTER_GENERATOR, "Matter Generator");
+
+        translationBuilder.add(GrowableOresBlocks.CROP_FARM_Block, "Crop Planting");
+        translationBuilder.add(GrowableOresBlocks.VENDOR_MACHINE_Block, "Vendor Machine");
+        translationBuilder.add(GrowableOresBlocks.COFFEE_MACHINE_Block, "Coffee Maker");
 
         translationBuilder.add(MapleSignBlocks.Rubber_SIGN, "Rubber Sign");
         translationBuilder.add(MapleSignBlocks.Rubber_WALL_SIGN, "Rubber Wall Sign");

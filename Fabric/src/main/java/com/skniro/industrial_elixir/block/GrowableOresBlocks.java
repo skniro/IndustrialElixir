@@ -20,6 +20,7 @@ import com.skniro.industrial_elixir.block.init.generator.NuclearReactorBlock;
 import com.skniro.industrial_elixir.block.init.machine.*;
 import com.skniro.industrial_elixir.block.init.machine.MatterGeneratorBlock;
 import com.skniro.industrial_elixir.block.init.machine.PatternStorageBlock;
+import com.skniro.industrial_elixir.block.init.machine.fluid.CoffeeMachineBlock;
 import com.skniro.industrial_elixir.block.init.machine.fluid.OreWashingBlock;
 import com.skniro.industrial_elixir.block.init.machine.fluid.ReplicatorBlock;
 import com.skniro.industrial_elixir.block.init.machine.heat.ModBlastFurnaceBlock;
@@ -114,6 +115,7 @@ public class GrowableOresBlocks {
     public static final Block BLAST_FURNACE_BLOCK =registerBlock("blast_furnace", ModBlastFurnaceBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
     public static final Block CROP_FARM_Block =registerBlock("crop_farm", CropFarmBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
     public static final Block VENDOR_MACHINE_Block =registerBlock("vendor_machine", VendorMachineBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.METAL).mapColor(MapColor.METAL)));
+    public static final Block COFFEE_MACHINE_Block =registerBlock("coffee_machine_block", CoffeeMachineBlock::new, BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
 
     private static Block registerSolar(String name, EnergyTier tier, int DayPower, int NightPower, long capacity) {
         return registerBlock(name, (settings) -> new GeneratorSolarPanelBlock(settings, tier, DayPower, NightPower, capacity),

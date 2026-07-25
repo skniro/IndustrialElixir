@@ -77,6 +77,10 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(FurnitureStrings.ChunkLoader, "区块加载器");
         translationBuilder.add(FurnitureStrings.Matter_Generator, "物质生成机");
 
+        translationBuilder.add(FurnitureStrings.CropFarm, "作物种植机");
+        translationBuilder.add(FurnitureStrings.VendorMachine, "自动售货机");
+        translationBuilder.add(FurnitureStrings.CoffeeMachine, "咖啡机");
+
         translationBuilder.add("gui.industrial_elixir.pattern_storage.copy", "复制");
         translationBuilder.add("gui.industrial_elixir.pattern_storage.uu_tooltip", "每次复制消耗的液态UU");
         translationBuilder.add("gui.industrial_elixir.pattern_storage.energy_tooltip", "每次复制消耗的电量");
@@ -201,6 +205,11 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(GrowableOresBlocks.Pipe_Wooden_Fluid_Block, "木制流体管道");
         translationBuilder.add(GrowableOresBlocks.Pipe_Wooden_Iten_Block, "木制物品管道");
         translationBuilder.add(GrowableOresBlocks.MATTER_GENERATOR, "物质生成机");
+
+
+        translationBuilder.add(GrowableOresBlocks.CROP_FARM_Block, "作物种植机");
+        translationBuilder.add(GrowableOresBlocks.VENDOR_MACHINE_Block, "自动售货机");
+        translationBuilder.add(GrowableOresBlocks.COFFEE_MACHINE_Block, "咖啡机");
 
         translationBuilder.add(MapleSignBlocks.Rubber_SIGN, "橡胶木告示牌");
         translationBuilder.add(MapleSignBlocks.Rubber_WALL_SIGN, "橡胶木墙上告示牌");

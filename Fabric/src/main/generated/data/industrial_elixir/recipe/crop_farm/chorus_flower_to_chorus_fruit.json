@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:chorus_flower",
+  "process_time": 1200,
+  "result": {
+    "id": "minecraft:chorus_flower"
+  },
+  "result2": {
+    "count": 4,
+    "id": "minecraft:chorus_fruit"
+  }
+}

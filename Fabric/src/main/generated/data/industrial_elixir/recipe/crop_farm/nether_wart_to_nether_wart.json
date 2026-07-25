@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 3,
+  "ingredient": "minecraft:nether_wart",
+  "process_time": 800,
+  "result": {
+    "id": "minecraft:nether_wart"
+  }
+}

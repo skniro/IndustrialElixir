@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lead_ore_cane": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:ier_lead_ore_cane"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:ier_lead_ore_cane_to_ier_lead_ore_cane"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lead_ore_cane"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:ier_lead_ore_cane_to_ier_lead_ore_cane"
+    ]
+  }
+}

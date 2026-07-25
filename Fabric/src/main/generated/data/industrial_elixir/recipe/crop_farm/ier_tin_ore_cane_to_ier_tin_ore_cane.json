@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "industrial_elixir:ier_tin_ore_cane",
+  "process_time": 2400,
+  "result": {
+    "id": "industrial_elixir:ier_tin_ore_cane"
+  }
+}

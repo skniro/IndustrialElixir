@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 3,
+  "ingredient": "minecraft:cocoa_beans",
+  "process_time": 800,
+  "result": {
+    "id": "minecraft:cocoa_beans"
+  }
+}

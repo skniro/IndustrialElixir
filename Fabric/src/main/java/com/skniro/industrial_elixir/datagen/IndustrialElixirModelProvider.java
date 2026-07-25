@@ -81,6 +81,8 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         blockStateModelGenerator.family(GeneralBlocks.Reinforced_Glass);
         blockStateModelGenerator.createDoor(GeneralBlocks.Reinforced_DOOR);
 
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(GrowableOresBlocks.VENDOR_MACHINE_Block);
+
         MapleModelDatagenHelper mapleModelDatagenHelper = new MapleModelDatagenHelper(blockStateModelGenerator);
 
         mapleModelDatagenHelper.registerModLogs(GeneralBlocks.Rubber_Rubber_LOG);
@@ -139,6 +141,9 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         mapleModelDatagenHelper.registerMachineDiffBottom(GrowableOresBlocks.PATTERN_STORAGE, true);
         mapleModelDatagenHelper.registerBaseMachineBlock(GrowableOresBlocks.Replicator, true);
         mapleModelDatagenHelper.registerMachineSolidHeater(GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR, true);
+
+        mapleModelDatagenHelper.registerMachine(GrowableOresBlocks.CROP_FARM_Block, true);
+        mapleModelDatagenHelper.registerMachine(GrowableOresBlocks.COFFEE_MACHINE_Block, true);
 
         mapleModelDatagenHelper.registerModSweetBerryBush(MapleFoodComponents.Coffee_Beans, GeneralBlocks.Coffee_Block);
     }
@@ -320,6 +325,9 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(GrowableOresItems.PATTERN_STORAGE_CRYSTAL, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.RAW_PATTERN_STORAGE_CRYSTAL, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.HEAT_CONDUCTOR, ModelTemplates.FLAT_ITEM);
+
+        itemModelGenerator.generateFlatItem(IndustrialElixirFluidItems.Hot_Spring_CELL, ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(IndustrialElixirFluidItems.Hot_Spring_BUCKET, ModelTemplates.FLAT_ITEM);
 
         MapleItemModelDatagenHelper mapleItemModelDatagenHelper = new MapleItemModelDatagenHelper(itemModelGenerator);
         mapleItemModelDatagenHelper.registerDurabilityItem(GrowableOresItems.RE_BATTERY);

@@ -144,7 +144,7 @@ public class AlchemyBlockEntityType {
         REPLICATOR_BE = create("replicator_be", FabricBlockEntityTypeBuilder.create(ReplicatorBlockEntity::new, GrowableOresBlocks.Replicator));
         FLUID_GENERATOR_BE = create("fluid_generator_be", FabricBlockEntityTypeBuilder.create(FluidGeneratorEntity::new, GrowableOresBlocks.FLUID_GENERATOR));
         CHUNK_LOADER_BE = create("chunk_loader_be", FabricBlockEntityTypeBuilder.create(ChunkLoaderEntity::new, GrowableOresBlocks.CHUNK_LOADER));
-        COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE= create("coffee_machine_block_entity", FabricBlockEntityTypeBuilder.create(CoffeeMachineBlockEntity::new, GeneralBlocks.COFFEE_MACHINE_Block));
+        COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE= create("coffee_machine_block_entity", FabricBlockEntityTypeBuilder.create(CoffeeMachineBlockEntity::new, GrowableOresBlocks.COFFEE_MACHINE_Block));
         CROP_FARM_BLOCK_ENTITY = create("crop_farm_block_entity", FabricBlockEntityTypeBuilder.create(CropFarmBlockEntity::new, GrowableOresBlocks.CROP_FARM_Block));
         VENDOR_MACHINE_BLOCK_ENTITY = create("vendor_machine_block_entity", FabricBlockEntityTypeBuilder.create(VendorMachineBlockEntity::new, GrowableOresBlocks.VENDOR_MACHINE_Block));
     }

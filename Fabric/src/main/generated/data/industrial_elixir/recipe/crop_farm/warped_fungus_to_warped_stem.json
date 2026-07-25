@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:warped_fungus",
+  "process_time": 1000,
+  "result": {
+    "id": "minecraft:warped_fungus"
+  },
+  "result2": {
+    "count": 8,
+    "id": "minecraft:warped_stem"
+  }
+}

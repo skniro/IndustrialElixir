@@ -23,15 +23,8 @@ import org.jetbrains.annotations.Nullable;
 public class CoffeeMachineBlock extends AbstractMachineblock {
     public static final MapCodec<CoffeeMachineBlock> CODEC = simpleCodec(CoffeeMachineBlock::new);
 
-    private static final VoxelShape SHAPE = Block.box(5, 0, 5, 11, 14, 11);
-
     public CoffeeMachineBlock(Properties settings) {
         super(settings, EnergyTier.TIER1);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter world, BlockPos pos, CollisionContext context) {
-        return SHAPE;
     }
 
     @Override

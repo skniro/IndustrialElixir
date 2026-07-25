@@ -78,7 +78,6 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
         if (recipe.isEmpty()) return;
 
         CropFarmCraftingRecipe cropRecipe = (CropFarmCraftingRecipe) recipe.get().value();
-        this.removeItem(INPUT_SLOT, cropRecipe.requiredCount());
 
         insertOutput(OUTPUT_SLOT, cropRecipe.output().create());
         cropRecipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));

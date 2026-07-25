@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 2,
+  "ingredient": "minecraft:dark_oak_sapling",
+  "process_time": 1000,
+  "result": {
+    "id": "minecraft:dark_oak_sapling"
+  },
+  "result2": {
+    "count": 10,
+    "id": "minecraft:dark_oak_log"
+  }
+}
