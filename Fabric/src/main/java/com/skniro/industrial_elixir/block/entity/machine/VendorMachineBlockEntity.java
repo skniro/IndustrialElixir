@@ -34,7 +34,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class VendorMachineBlockEntity extends BlockEntity implements Merchant, ExtendedMenuProvider<BlockPos> {
     private final MerchantOffers offers = new MerchantOffers();
@@ -45,18 +46,101 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, E
         super(AlchemyBlockEntityType.VENDOR_MACHINE_BLOCK_ENTITY, pos, state);
     }
 
+    private static final int TRADE_COUNT = 20;
+
+    private record WeightedTrade(Supplier<MerchantOffer> trade, int weight) {}
+
+    private static List<WeightedTrade> WEIGHTED_POOL = null;
+
     private void initOffers() {
-        // 所有交易不限量（maxUses = Integer.MAX_VALUE）、全解锁、无经验
-        // 1.21 格式: new MerchantOffer(ItemCost 输入1, Optional<ItemCost> 输入2, ItemStack 输出, maxUses, xp, priceMultiplier)
+        if (WEIGHTED_POOL == null) {
+            WEIGHTED_POOL = createWeightedPool();
+        }
         offers.clear();
-        offers.add(makeOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(Items.IRON_INGOT, 4)));
-        offers.add(makeOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(Items.GOLD_INGOT, 2)));
-        offers.add(makeOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(Items.DIAMOND, 1)));
-        offers.add(makeOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(Items.REDSTONE, 8)));
-        offers.add(makeOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(Items.LAPIS_LAZULI, 8)));
-        offers.add(makeOffer(new ItemStack(Items.EMERALD, 2), new ItemStack(Items.COAL, 16)));
-        offers.add(makeOffer(new ItemStack(Items.COAL, 8), new ItemStack(Items.EMERALD, 1)));
-        offers.add(makeOffer(new ItemStack(Items.IRON_INGOT, 8), new ItemStack(Items.EMERALD, 1)));
+        List<WeightedTrade> available = new ArrayList<>(WEIGHTED_POOL);
+        Random rand = new Random(worldPosition.asLong());
+
+        for (int pick = 0; pick < TRADE_COUNT && !available.isEmpty(); pick++) {
+            int totalWeight = 0;
+            for (WeightedTrade wt : available) {
+                totalWeight += wt.weight;
+            }
+            int roll = rand.nextInt(totalWeight);
+            int cumulative = 0;
+            for (int i = 0; i < available.size(); i++) {
+                cumulative += available.get(i).weight;
+                if (roll < cumulative) {
+                    offers.add(available.get(i).trade.get());
+                    available.remove(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    private static List<WeightedTrade> createWeightedPool() {
+        List<WeightedTrade> pool = new ArrayList<>();
+
+        // ========== COMMON（权重 30）：基础物资 ==========
+        pool.add(wt(() -> makeOffer(em(1), items(Items.IRON_INGOT, 4)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.COPPER_INGOT, 4)), 30));
+        pool.add(wt(() -> makeOffer(em(2), items(Items.COAL, 16)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.ARROW, 16)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.BONE, 16)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.STRING, 8)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.WHEAT, 16)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.CARROT, 8)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.POTATO, 8)), 30));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.BEETROOT, 16)), 30));
+        // 卖出
+        pool.add(wt(() -> makeOffer(items(Items.COAL, 8), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.IRON_INGOT, 8), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.WHEAT, 16), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.CARROT, 16), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.POTATO, 16), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.ROTTEN_FLESH, 8), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.BONE, 16), em(1)), 30));
+        pool.add(wt(() -> makeOffer(items(Items.STRING, 8), em(1)), 30));
+
+        // ========== UNCOMMON（权重 20）：中等价值 ==========
+        pool.add(wt(() -> makeOffer(em(1), items(Items.GOLD_INGOT, 2)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.REDSTONE, 8)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.LAPIS_LAZULI, 8)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.LEATHER, 4)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.SUGAR_CANE, 16)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.GUNPOWDER, 8)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.EGG, 12)), 20));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.INK_SAC, 8)), 20));
+        // 卖出
+        pool.add(wt(() -> makeOffer(items(Items.GOLD_INGOT, 4), em(1)), 20));
+        pool.add(wt(() -> makeOffer(items(Items.GUNPOWDER, 8), em(1)), 20));
+
+        // ========== RARE（权重 10）：稀有物资 ==========
+        pool.add(wt(() -> makeOffer(em(1), items(Items.DIAMOND, 1)), 10));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.QUARTZ, 4)), 10));
+        pool.add(wt(() -> makeOffer(em(2), items(Items.OBSIDIAN, 8)), 10));
+        pool.add(wt(() -> makeOffer(em(1), items(Items.GLOWSTONE_DUST, 4)), 10));
+        pool.add(wt(() -> makeOffer(em(3), items(Items.SLIME_BALL, 4)), 10));
+        pool.add(wt(() -> makeOffer(em(2), items(Items.ENDER_PEARL, 8)), 10));
+        pool.add(wt(() -> makeOffer(em(2), items(Items.BLAZE_ROD, 8)), 10));
+
+        // ========== LEGENDARY（权重 3）：极稀有 ==========
+        pool.add(wt(() -> makeOffer(em(3), items(Items.NETHERITE_INGOT, 1)), 3));
+        pool.add(wt(() -> makeOffer(em(2), items(Items.HEART_OF_THE_SEA, 1)), 3));
+
+        return pool;
+    }
+
+    private static ItemStack em(int count) {
+        return new ItemStack(Items.EMERALD, count);
+    }
+
+    private static ItemStack items(net.minecraft.world.level.ItemLike item, int count) {
+        return new ItemStack(item, count);
+    }
+
+    private static WeightedTrade wt(Supplier<MerchantOffer> trade, int weight) {
+        return new WeightedTrade(trade, weight);
     }
 
     private static MerchantOffer makeOffer(ItemStack cost, ItemStack result) {
