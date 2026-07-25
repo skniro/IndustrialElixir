@@ -12,6 +12,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundMerchantOffersPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -82,6 +84,10 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, E
     public MerchantOffers getOffers() {
         return this.offers;
     }
+
+    protected void updateTrades(ServerLevel level){
+        initOffers();
+    };
 
     @Override
     public void overrideOffers(MerchantOffers offers) {
@@ -193,6 +199,6 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, E
                     )
             );
         }
-        return new VendorMachineScreenHandler(syncId, playerInventory, this);
+        return new VendorMachineScreenHandler(syncId, playerInventory, this, this);
     }
 }

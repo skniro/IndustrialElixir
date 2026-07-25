@@ -156,7 +156,7 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
 
     public void extractContents(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractContents(graphics, mouseX, mouseY, a);
-        MerchantOffers offers = (this.menu).getOffers();
+        MerchantOffers offers = this.menu.getOffers();
         IndustrialElixir.LOGGER.info(
                 "CLIENT MERCHANT OFFERS = "
                         + offers.size()
@@ -168,9 +168,8 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
             int sellItem1X = xo + 5 + 5;
             this.extractScroller(graphics, xo, yo, mouseX, mouseY, offers);
             int currentOfferIndex = 0;
-
             for(MerchantOffer offer : offers) {
-                if (!this.canScroll(offers.size()) || currentOfferIndex >= this.scrollOff && currentOfferIndex < 20 + this.scrollOff) {
+                if (!this.canScroll(offers.size()) || currentOfferIndex >= this.scrollOff && currentOfferIndex < 7 + this.scrollOff) {
                     ItemStack baseCostA = offer.getBaseCostA();
                     ItemStack costA = offer.getCostA();
                     ItemStack costB = offer.getCostB();

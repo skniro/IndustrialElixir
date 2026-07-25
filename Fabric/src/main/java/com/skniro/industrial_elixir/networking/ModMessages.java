@@ -26,6 +26,6 @@ public class ModMessages {
     }
 
     public static void registerS2CPackets(PayloadTypeRegistry<RegistryFriendlyByteBuf> registry) {
-        //registry.register(VendorMachineSynPayload.TYPE, VendorMachineSynPayload.CODEC);
+        registry.register(VendorMachineSynPayload.TYPE, VendorMachineSynPayload.CODEC);
     }
 }

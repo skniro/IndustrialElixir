@@ -119,7 +119,7 @@ public class NetworkUtilsImpl {
 
     private static class ClientNetworking {
         private static void initialize() {
-/*            ClientPlayNetworking.registerGlobalReceiver(VendorMachineSynPayload.TYPE,
+            ClientPlayNetworking.registerGlobalReceiver(VendorMachineSynPayload.TYPE,
                     (payload, context) -> {
                         context.client().execute(() -> {
                             if (Minecraft.getInstance().player != null
@@ -127,7 +127,7 @@ public class NetworkUtilsImpl {
                                 menu.setOffers(payload.toMerchantOffers());
                             }
                         });
-                    });*/
+                    });
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.skniro.industrial_elixir.screen.handler.machine;
 
+import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
+import com.skniro.industrial_elixir.block.entity.machine.ChunkLoaderEntity;
+import com.skniro.industrial_elixir.block.entity.machine.VendorMachineBlockEntity;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +21,7 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class VendorMachineScreenHandler extends AbstractContainerMenu {
     protected static final int PAYMENT1_SLOT = 0;
@@ -32,19 +36,21 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
     private static final int BUYSLOT_X = 220;
     private static final int ROW_Y = 37;
     private final Merchant trader;
+    public final VendorMachineBlockEntity blockEntity;
     private final MerchantContainer tradeContainer;
     private int merchantLevel;
     private boolean showProgressBar;
     private boolean canRestock;
 
-    public VendorMachineScreenHandler(final int containerId, final Inventory inventory, BlockPos blockPos) {
-        this(containerId, inventory, new ClientSideMerchant(inventory.player));
+    public VendorMachineScreenHandler(final int containerId, final Inventory playerInventory, BlockPos pos) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new ClientSideMerchant(playerInventory.player));
     }
 
-    public VendorMachineScreenHandler(final int containerId, final Inventory inventory, final Merchant merchant) {
+    public VendorMachineScreenHandler(final int containerId, final Inventory inventory, BlockEntity blockEntity, final Merchant merchant) {
         super(AlchemyScreenHandlerType.VendorMachine, containerId);
         this.trader = merchant;
         this.tradeContainer = new MerchantContainer(merchant);
+        this.blockEntity = (VendorMachineBlockEntity) blockEntity;
         this.addSlot(new Slot(this.tradeContainer, 0, 136, 37));
         this.addSlot(new Slot(this.tradeContainer, 1, 162, 37));
         this.addSlot(new MerchantResultSlot(inventory.player, merchant, this.tradeContainer, 2, 220, 37));
@@ -225,7 +231,7 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
     }
 
     public MerchantOffers getOffers() {
-        return this.trader.getOffers();
+        return this.blockEntity.getOffers();
     }
 
     public boolean showProgressBar() {
