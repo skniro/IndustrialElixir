@@ -1,0 +1,6 @@
+{
+  "parent": "industrial_elixir:block/coffee/coffee_sp",
+  "textures": {
+    "coffee": "industrial_elixir:block/coffee/americano"
+  }
+}

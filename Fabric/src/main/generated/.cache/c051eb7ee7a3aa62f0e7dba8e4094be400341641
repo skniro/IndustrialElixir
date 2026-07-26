@@ -3,8 +3,8 @@ ec3d8c143c74329da1d635288ef8573a0fb45e1b data/minecraft/tags/block/doors.json
 ee6e428c1f978c73d50cda8eec042f1daf60f028 data/minecraft/tags/block/fences.json
 68c79ea0f8f557c121d95a0c2d7fe83dd8415c19 data/minecraft/tags/block/leaves.json
 0e0388bc7555cc27e0dfab3c1354d65608240196 data/minecraft/tags/block/logs_that_burn.json
-92ce333df32457bb10f5685dde5fcca36000d4bf data/minecraft/tags/block/mineable/pickaxe.json
-9529016cf6f4b950e64eec125040ea31638f15a8 data/minecraft/tags/block/needs_iron_tool.json
+b3ddf0ea8f5a28398468bd9caa73db1894e7104a data/minecraft/tags/block/mineable/pickaxe.json
+3c5e0067b592eb8ad06cec6bc4bd985043926444 data/minecraft/tags/block/needs_iron_tool.json
 7d64dbb2da296de73bb64a22f53428fb47aeecea data/minecraft/tags/block/needs_stone_tool.json
 ba9208221aa25e0c4407be7aa11952241dc91589 data/minecraft/tags/block/planks.json
 376a593c654d1761ee15ef6a44721e3af7e8e166 data/minecraft/tags/block/saplings.json

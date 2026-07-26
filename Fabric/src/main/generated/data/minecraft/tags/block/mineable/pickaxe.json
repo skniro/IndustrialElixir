@@ -73,6 +73,9 @@
     "industrial_elixir:chunk_loader",
     "industrial_elixir:electric_heater",
     "industrial_elixir:solid_fuel_heater_generator",
-    "industrial_elixir:blast_furnace"
+    "industrial_elixir:blast_furnace",
+    "industrial_elixir:vendor_machine",
+    "industrial_elixir:crop_farm",
+    "industrial_elixir:coffee_machine_block"
   ]
 }

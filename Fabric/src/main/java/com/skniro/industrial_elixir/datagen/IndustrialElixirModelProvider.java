@@ -83,6 +83,12 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
 
         blockStateModelGenerator.createNonTemplateHorizontalBlock(GrowableOresBlocks.VENDOR_MACHINE_Block);
 
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(GeneralBlocks.COFFEE_BLACK);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(GeneralBlocks.CAPPUCCINO);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(GeneralBlocks.MOCHA);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(GeneralBlocks.LATTE);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(GeneralBlocks.HOT_COCOA);
+
         MapleModelDatagenHelper mapleModelDatagenHelper = new MapleModelDatagenHelper(blockStateModelGenerator);
 
         mapleModelDatagenHelper.registerModLogs(GeneralBlocks.Rubber_Rubber_LOG);

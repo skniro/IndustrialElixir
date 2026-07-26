@@ -6,10 +6,7 @@ import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
-import com.skniro.industrial_elixir.item.AdvancedItems;
-import com.skniro.industrial_elixir.item.GrowableOresItems;
-import com.skniro.industrial_elixir.item.MapleArmorItems;
-import com.skniro.industrial_elixir.item.ModCreativeTab;
+import com.skniro.industrial_elixir.item.*;
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
 import com.skniro.industrial_elixir.keybind.ModKeyMappings;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -458,5 +455,17 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"温泉桶");
         translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"温泉");
         translationBuilder.add("fluid.industrial_elixir.hot_spring","Hot Spring");
+
+        translationBuilder.add(GeneralBlocks.COFFEE_BLACK, "美式咖啡");
+        translationBuilder.add(GeneralBlocks.CAPPUCCINO, "卡布奇诺");
+        translationBuilder.add(GeneralBlocks.MOCHA, "摩卡咖啡");
+        translationBuilder.add(GeneralBlocks.LATTE, "拿铁咖啡");
+        translationBuilder.add(GeneralBlocks.HOT_COCOA, "热可可");
+
+        translationBuilder.add(MapleFoodComponents.Coffee_Black, "美式咖啡");
+        translationBuilder.add(MapleFoodComponents.Cappuccino, "卡布奇诺");
+        translationBuilder.add(MapleFoodComponents.Mocha, "摩卡咖啡");
+        translationBuilder.add(MapleFoodComponents.Latte, "拿铁咖啡");
+        translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "热可可");;
     }
 }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "industrial_elixir:block/coffee_black",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "industrial_elixir:block/coffee_black"
+    },
+    "facing=south": {
+      "model": "industrial_elixir:block/coffee_black",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "industrial_elixir:block/coffee_black",
+      "y": 270
+    }
+  }
+}

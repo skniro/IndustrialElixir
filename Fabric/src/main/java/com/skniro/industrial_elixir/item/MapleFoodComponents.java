@@ -39,7 +39,7 @@ public class MapleFoodComponents {
 
     public static final Item Coffee_Black = registerItem(
             "coffee_black",
-            Item::new,
+            createBlockItemWithUniqueName(GeneralBlocks.COFFEE_BLACK),
             new Item.Properties()
                     .food(
                             new FoodProperties.Builder()
@@ -59,7 +59,7 @@ public class MapleFoodComponents {
 
     public static final Item Cappuccino = registerItem(
             "cappuccino",
-            Item::new,
+            createBlockItemWithUniqueName(GeneralBlocks.CAPPUCCINO),
             new Item.Properties()
                     .food(
                             new FoodProperties.Builder()
@@ -79,7 +79,7 @@ public class MapleFoodComponents {
 
     public static final Item Latte = registerItem(
             "latte",
-            Item::new,
+            createBlockItemWithUniqueName(GeneralBlocks.LATTE),
             new Item.Properties()
                     .food(
                             new FoodProperties.Builder()
@@ -98,7 +98,7 @@ public class MapleFoodComponents {
 
     public static final Item Mocha = registerItem(
             "mocha",
-            Item::new,
+            createBlockItemWithUniqueName(GeneralBlocks.MOCHA),
             new Item.Properties()
                     .food(
                             new FoodProperties.Builder()
@@ -118,7 +118,7 @@ public class MapleFoodComponents {
 
     public static final Item Hot_Cocoa = registerItem(
             "hot_cocoa",
-            Item::new,
+            createBlockItemWithUniqueName(GeneralBlocks.HOT_COCOA),
             new Item.Properties()
                     .food(
                             new FoodProperties.Builder()

@@ -2,9 +2,7 @@ package com.skniro.industrial_elixir.block;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.entity.MapleSignTypes;
-import com.skniro.industrial_elixir.block.init.CoffeeBlock;
-import com.skniro.industrial_elixir.block.init.LogCropBlock;
-import com.skniro.industrial_elixir.block.init.MapleBlockSetType;
+import com.skniro.industrial_elixir.block.init.*;
 import com.skniro.industrial_elixir.block.init.machine.fluid.CoffeeMachineBlock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.MapleFoodComponents;
@@ -146,6 +144,12 @@ public class GeneralBlocks {
 
     //Coffee
     public static final Block Coffee_Block = registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
+
+    public static final Block COFFEE_BLACK = registerBlockWithoutItem("coffee_black", CupSpecialBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
+    public static final Block CAPPUCCINO = registerBlockWithoutItem("cappuccino", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
+    public static final Block LATTE = registerBlockWithoutItem("latte", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
+    public static final Block MOCHA = registerBlockWithoutItem("mocha", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
+    public static final Block HOT_COCOA = registerBlockWithoutItem("hot_cocoa", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
         Block block = (Block)factory.apply(settings.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name))));

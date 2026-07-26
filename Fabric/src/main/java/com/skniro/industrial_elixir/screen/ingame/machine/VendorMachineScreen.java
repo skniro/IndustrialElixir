@@ -157,10 +157,10 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
     public void extractContents(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractContents(graphics, mouseX, mouseY, a);
         MerchantOffers offers = this.menu.getOffers();
-        IndustrialElixir.LOGGER.info(
+/*        IndustrialElixir.LOGGER.info(
                 "CLIENT MERCHANT OFFERS = "
                         + offers.size()
-        );
+        );*/
         if (!offers.isEmpty()) {
             int xo = (this.width - this.imageWidth) / 2;
             int yo = (this.height - this.imageHeight) / 2;

@@ -7,10 +7,7 @@ import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
-import com.skniro.industrial_elixir.item.AdvancedItems;
-import com.skniro.industrial_elixir.item.GrowableOresItems;
-import com.skniro.industrial_elixir.item.MapleArmorItems;
-import com.skniro.industrial_elixir.item.ModCreativeTab;
+import com.skniro.industrial_elixir.item.*;
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
 import com.skniro.industrial_elixir.keybind.ModKeyMappings;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -460,5 +457,17 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"Hot Spring Bucket");
         translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"Hot Spring");
         translationBuilder.add("fluid.industrial_elixir.hot_spring","Hot Spring");
+
+        translationBuilder.add(GeneralBlocks.COFFEE_BLACK, "Americano");
+        translationBuilder.add(GeneralBlocks.CAPPUCCINO, "Cappuccino");
+        translationBuilder.add(GeneralBlocks.MOCHA, "Mocha");
+        translationBuilder.add(GeneralBlocks.LATTE, "Latte");
+        translationBuilder.add(GeneralBlocks.HOT_COCOA, "Hot Cocoa");
+
+        translationBuilder.add(MapleFoodComponents.Coffee_Black, "Americano");
+        translationBuilder.add(MapleFoodComponents.Cappuccino, "Cappuccino");
+        translationBuilder.add(MapleFoodComponents.Mocha, "Mocha");
+        translationBuilder.add(MapleFoodComponents.Latte, "Latte");
+        translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "Hot Cocoa");
     }
 }

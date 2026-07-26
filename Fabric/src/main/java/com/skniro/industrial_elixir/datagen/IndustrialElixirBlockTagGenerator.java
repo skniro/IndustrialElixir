@@ -106,7 +106,10 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
                       GrowableOresBlocks.CHUNK_LOADER,
                       GrowableOresBlocks.Electric_Heater_Block,
                       GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR,
-                      GrowableOresBlocks.BLAST_FURNACE_BLOCK)
+                      GrowableOresBlocks.BLAST_FURNACE_BLOCK,
+                      GrowableOresBlocks.VENDOR_MACHINE_Block,
+                      GrowableOresBlocks.CROP_FARM_Block,
+                      GrowableOresBlocks.COFFEE_MACHINE_Block)
               .setReplace(false);
       valueLookupBuilder(NEEDS_IRON_TOOL)
               .add(GeneralBlocks.Deepslate_Lead_Ore)
@@ -186,7 +189,10 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
                       GrowableOresBlocks.CHUNK_LOADER,
                       GrowableOresBlocks.Electric_Heater_Block,
                       GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR,
-                      GrowableOresBlocks.BLAST_FURNACE_BLOCK)
+                      GrowableOresBlocks.BLAST_FURNACE_BLOCK,
+                      GrowableOresBlocks.VENDOR_MACHINE_Block,
+                      GrowableOresBlocks.CROP_FARM_Block,
+                      GrowableOresBlocks.COFFEE_MACHINE_Block)
               .setReplace(false);
       valueLookupBuilder(NEEDS_STONE_TOOL)
               .add(GeneralBlocks.Deepslate_Tin_Ore)
