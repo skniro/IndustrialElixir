@@ -62,7 +62,7 @@ public class CropFarmBlockScreen extends AbstractContainerScreen<CropFarmScreenH
 
     private void renderProgressArrow(GuiGraphicsExtractor guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 76, y + 36, 176, 16, menu.getScaledProgress(), 13, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 32, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 }

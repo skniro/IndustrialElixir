@@ -34,7 +34,7 @@ public class CropFarmScreenHandler extends AbstractContainerMenu {
         this.inventory = blockEntity;
         inventory.startOpen(playerInventory.player);
 
-        this.addSlot(new Slot(inventory, 1, 44, 34));
+        this.addSlot(new Slot(inventory, 1, 52, 33));
         this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 104, 16));
         this.addSlot(new BatteryFuelSlot(inventory, 3, 131, 63, blockEntity.getEnergyTier()));
         this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 10, 104, 34));

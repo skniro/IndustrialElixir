@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class CoffeeMachineScreenHandler extends AbstractContainerMenu {
-    private static final int MACHINE_MENU_SLOT_COUNT = 11;
     private final Container inventory;
     public final CoffeeMachineBlockEntity blockEntity;
     final ContainerData propertyDelegate;
@@ -29,25 +28,25 @@ public class CoffeeMachineScreenHandler extends AbstractContainerMenu {
     public CoffeeMachineScreenHandler(int containerId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
         super(AlchemyScreenHandlerType.CoffeeMachine, containerId);
         blockEntity = (CoffeeMachineBlockEntity) entity;
-        checkContainerSize(blockEntity, 11);
+        checkContainerSize(blockEntity, 13);
         this.propertyDelegate = delegate;
         this.inventory = blockEntity;
         inventory.startOpen(playerInventory.player);
 
-        // Fluid item slot (water bucket/cell)
-        this.addSlot(new Slot(inventory, 0, 8, 10));
-        // Main input (coffee beans)
-        this.addSlot(new Slot(inventory, 1, 44, 34));
+        // Fluid item slot
+        this.addSlot(new Slot(inventory,0, 8, 58));
+        // Main input
+        this.addSlot(new Slot(inventory, 1, 52, 15));
         // Output (coffee drink)
-        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 116, 34));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 104, 34));
         // Battery/energy slot
         this.addSlot(new BatteryFuelSlot(inventory, 3, 131, 63, blockEntity.getEnergyTier()));
-        // Empty container return slot
-        this.addSlot(new Slot(inventory, 8, 26, 10));
-        // Second input (cup/glass)
-        this.addSlot(new Slot(inventory, 9, 44, 10));
-        // Third input (sugar/milk)
-        this.addSlot(new Slot(inventory, 10, 62, 10));
+        // Fluid item return slot
+        this.addSlot(new Slot(inventory,8, 26, 58));
+        // Second input
+        this.addSlot(new Slot(inventory, 9, 52, 33));
+        // Third input
+        this.addSlot(new Slot(inventory, 12, 52, 51));
 
         addBasic(inventory, playerInventory, delegate);
     }
@@ -93,11 +92,11 @@ public class CoffeeMachineScreenHandler extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack originalStack = slot.getItem();
             newStack = originalStack.copy();
-            if (invSlot < MACHINE_MENU_SLOT_COUNT) {
-                if (!this.moveItemStackTo(originalStack, MACHINE_MENU_SLOT_COUNT, this.slots.size(), true)) {
+            if (invSlot < this.inventory.getContainerSize()) {
+                if (!this.moveItemStackTo(originalStack, this.inventory.getContainerSize(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(originalStack, 0, MACHINE_MENU_SLOT_COUNT, false)) {
+            } else if (!this.moveItemStackTo(originalStack, 0, this.inventory.getContainerSize(), false)) {
                 return ItemStack.EMPTY;
             }
 

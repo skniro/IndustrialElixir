@@ -36,19 +36,20 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public abstract class BasePowerBlockBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineEnergyProvider {
-    public NonNullList<ItemStack> inventory = NonNullList.withSize(12, ItemStack.EMPTY);
+    public NonNullList<ItemStack> inventory = NonNullList.withSize(13, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
     protected static final int INPUT_SLOT = 1;
     protected static final int OUTPUT_SLOT = 2;
-    protected static final int OUTPUT_SLOT_2 = 10;
-    protected static final int OUTPUT_SLOT_3 = 11;
     protected static final int ENERGY_ITEM_SLOT = 3;
     protected static final int UPGRADE_START = 4;
     protected static final int UPGRADE_END = 7;
     protected static final int EMPTY_FLUID_ITEM_SLOT = 8;
     // Additional second input slot (used by machines that need two inputs, e.g. Brew Reactor)
     protected static final int SECOND_INPUT_SLOT = 9;
+    protected static final int OUTPUT_SLOT_2 = 10;
+    protected static final int OUTPUT_SLOT_3 = 11;
+    protected static final int THIRD_INPUT_SLOT = 12;
     protected static final int ENERGY_CRAFTING_AMOUNT = 32;
     protected final EnergyTier energyTier;
     public SimpleSidedEnergyContainer energyContainer;

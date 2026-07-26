@@ -31,11 +31,10 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 
 public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
-    private static final int THIRD_INPUT_SLOT = 10;
+
 
     public CoffeeMachineBlockEntity(BlockPos pos, BlockState blockState) {
         super(AlchemyBlockEntityType.COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE, pos, blockState);
-        this.inventory = NonNullList.withSize(12, ItemStack.EMPTY);
     }
 
     @Override

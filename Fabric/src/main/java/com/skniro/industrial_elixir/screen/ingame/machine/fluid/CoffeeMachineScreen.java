@@ -50,7 +50,7 @@ public class CoffeeMachineScreen extends AbstractContainerScreen<CoffeeMachineSc
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 14)) {
             graphics.setTooltipForNextFrame(Screens.getFont(this), getTooltips(), Optional.empty(), xm - x, ym - y);
         }
-        if (MouseUtil.isMouseOver(xm, ym, x + 8, y + 30, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
+        if (MouseUtil.isMouseOver(xm, ym, x + 8, y + 5, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
             graphics.setComponentTooltipForNextFrame(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), xm, ym);
         }
     }
@@ -63,13 +63,13 @@ public class CoffeeMachineScreen extends AbstractContainerScreen<CoffeeMachineSc
 
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         renderEnergyArea(graphics, x, y);
-        fluidRenderer.render(graphics, x + 8, y + 30, menu.blockEntity.fluidContainer);
+        fluidRenderer.render(graphics, x + 8, y + 5, menu.blockEntity.fluidContainer);
         renderProgressArrow(graphics, x, y);
     }
 
     private void renderProgressArrow(GuiGraphicsExtractor guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 36, 176, 16, menu.getScaledProgress(), 13, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 32, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 }
