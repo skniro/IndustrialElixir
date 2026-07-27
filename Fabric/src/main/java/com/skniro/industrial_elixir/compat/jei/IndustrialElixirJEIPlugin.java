@@ -8,6 +8,7 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.MaceratorCraftingRecipe;
 import com.skniro.industrial_elixir.screen.ingame.machine.*;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.BrewReactorScreen;
+import com.skniro.industrial_elixir.screen.ingame.machine.fluid.CoffeeMachineScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.OreWashingScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
 import mezz.jei.api.IModPlugin;
@@ -48,7 +49,9 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
                 new BrewReactorCategory(registration.getJeiHelpers().getGuiHelper()),
                 new HeatCentrifugeCategory(registration.getJeiHelpers().getGuiHelper()),
                 new OreWashingCategory(registration.getJeiHelpers().getGuiHelper()),
-                new BlastFurnaceCategory(registration.getJeiHelpers().getGuiHelper())
+                new BlastFurnaceCategory(registration.getJeiHelpers().getGuiHelper()),
+                new CoffeeMachineCategory(registration.getJeiHelpers().getGuiHelper()),
+                new CropFarmCategory(registration.getJeiHelpers().getGuiHelper())
         );
     }
 
@@ -124,6 +127,16 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
                     BlastFurnaceCategory.TYPE,
                     new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.MOD_BLAST_FURNACE.type))
             );
+
+            registration.addRecipes(
+                    CoffeeMachineCategory.TYPE,
+                    new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.COFFEE_MACHINE.type))
+            );
+
+            registration.addRecipes(
+                    CropFarmCategory.TYPE,
+                    new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.CROP_FARM.type))
+            );
         } else {
             IndustrialElixir.LOGGER.info("JEI recipe registration: recipeMap not available yet; deferring recipes until sync event.");
         }
@@ -147,6 +160,8 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
         registration.addCraftingStation(HeatCentrifugeCategory.TYPE, new ItemStack(GrowableOresBlocks.HEAT_CENTRIFUGE));
         registration.addCraftingStation(OreWashingCategory.TYPE, new ItemStack(GrowableOresBlocks.Ore_Washing_Block));
         registration.addCraftingStation(BlastFurnaceCategory.TYPE, new ItemStack(GrowableOresBlocks.BLAST_FURNACE_BLOCK));
+        registration.addCraftingStation(CoffeeMachineCategory.TYPE, new ItemStack(GrowableOresBlocks.COFFEE_MACHINE_Block));
+        registration.addCraftingStation(CropFarmCategory.TYPE, new ItemStack(GrowableOresBlocks.CROP_FARM_Block));
 
     }
 
@@ -168,6 +183,8 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
         registration.addRecipeClickArea(HeatCentrifugeBlockScreen.class, 79, 32, 21, 16, HeatCentrifugeCategory.TYPE);
         registration.addRecipeClickArea(OreWashingScreen.class, 79, 32, 11, 16, OreWashingCategory.TYPE);
         registration.addRecipeClickArea(ModBlastFurnaceScreen.class, 73, 34, 21, 16, BlastFurnaceCategory.TYPE);
+        registration.addRecipeClickArea(CoffeeMachineScreen.class, 70, 34, 24, 16, CoffeeMachineCategory.TYPE);
+        registration.addRecipeClickArea(CropFarmBlockScreen.class, 70, 34, 24, 16, CropFarmCategory.TYPE);
     }
 
     @Override
@@ -199,6 +216,8 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
                 rm.addRecipes(HeatCentrifugeCategory.TYPE, new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.HEAT_CENTRIFUGE.type)));
                 rm.addRecipes(OreWashingCategory.TYPE, new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.ORE_WASHING.type)));
                 rm.addRecipes(BlastFurnaceCategory.TYPE, new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.MOD_BLAST_FURNACE.type)));
+                rm.addRecipes(CoffeeMachineCategory.TYPE, new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.COFFEE_MACHINE.type)));
+                rm.addRecipes(CropFarmCategory.TYPE, new ArrayList<>(recipeMap.getAllOfType(AlchemyRecipeType.CROP_FARM.type)));
             } catch (Throwable t) {
                 IndustrialElixir.LOGGER.warn("Unable to push recipes into JEI runtime: {}", t.toString());
             }

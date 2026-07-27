@@ -60,6 +60,12 @@ public class IndustrialModREICommon implements REICommonPlugin {
         registry.beginRecipeFiller(ModBlastFurnaceCraftingRecipe.class)
                 .filterType(AlchemyRecipeType.MOD_BLAST_FURNACE.type)
                 .fill(BlastFurnaceDisplay::new);
+        registry.beginRecipeFiller(CoffeeMachineCraftingRecipe.class)
+                .filterType(AlchemyRecipeType.COFFEE_MACHINE.type)
+                .fill(CoffeeMachineDisplay::new);
+        registry.beginRecipeFiller(CropFarmCraftingRecipe.class)
+                .filterType(AlchemyRecipeType.CROP_FARM.type)
+                .fill(CropFarmDisplay::new);
     }
 
     @Override
@@ -78,5 +84,7 @@ public class IndustrialModREICommon implements REICommonPlugin {
         registry.register(HeatCentrifugeDisplay.HEAT_CENTRIFUGE.getIdentifier(), HeatCentrifugeDisplay.SERIALIZER);
         registry.register(OreWashingDisplay.ORE_WASHING.getIdentifier(), OreWashingDisplay.SERIALIZER);
         registry.register(BlastFurnaceDisplay.BLAST_FURNACE.getIdentifier(), BlastFurnaceDisplay.SERIALIZER);
+        registry.register(CoffeeMachineDisplay.COFFEE_MACHINE.getIdentifier(), CoffeeMachineDisplay.SERIALIZER);
+        registry.register(CropFarmDisplay.CROP_FARM.getIdentifier(), CropFarmDisplay.SERIALIZER);
     }
 }

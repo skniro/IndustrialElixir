@@ -6,6 +6,7 @@ import com.skniro.industrial_elixir.compat.rei.category.*;
 import com.skniro.industrial_elixir.compat.rei.display.*;
 import com.skniro.industrial_elixir.screen.ingame.machine.*;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.BrewReactorScreen;
+import com.skniro.industrial_elixir.screen.ingame.machine.fluid.CoffeeMachineScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.OreWashingScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
 import me.shedaniel.math.Rectangle;
@@ -39,6 +40,8 @@ public class IndustrialModREIClient implements REIClientPlugin {
         registry.add(new HeatCentrifugeCategory());
         registry.add(new OreWashingCategory());
         registry.add(new BlastFurnaceCategory());
+        registry.add(new CoffeeMachineCategory());
+        registry.add(new CropFarmCategory());
         registry.addWorkstations(BuiltinPlugin.SMELTING, EntryStacks.of(GrowableOresBlocks.ElectricFurnace_Block));
         registry.addWorkstations(MaceratorDisplay.MACERATOR, EntryStacks.of(GrowableOresBlocks.Macerator_Block));
         registry.addWorkstations(CompressorDisplay.Compressor, EntryStacks.of(GrowableOresBlocks.Compressor_Block));
@@ -55,6 +58,8 @@ public class IndustrialModREIClient implements REIClientPlugin {
         registry.addWorkstations(HeatCentrifugeDisplay.HEAT_CENTRIFUGE, EntryStacks.of(GrowableOresBlocks.HEAT_CENTRIFUGE));
         registry.addWorkstations(OreWashingDisplay.ORE_WASHING, EntryStacks.of(GrowableOresBlocks.Ore_Washing_Block));
         registry.addWorkstations(BlastFurnaceDisplay.BLAST_FURNACE, EntryStacks.of(GrowableOresBlocks.BLAST_FURNACE_BLOCK));
+        registry.addWorkstations(CoffeeMachineDisplay.COFFEE_MACHINE, EntryStacks.of(GrowableOresBlocks.COFFEE_MACHINE_Block));
+        registry.addWorkstations(CropFarmDisplay.CROP_FARM, EntryStacks.of(GrowableOresBlocks.CROP_FARM_Block));
     }
 
     @Override
@@ -126,5 +131,13 @@ public class IndustrialModREIClient implements REIClientPlugin {
         registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 73,
                         ((screen.height - 166) / 2) + 34, 21, 16), ModBlastFurnaceScreen.class,
                 BlastFurnaceDisplay.BLAST_FURNACE);
+
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 70,
+                        ((screen.height - 166) / 2) + 34, 24, 16), CoffeeMachineScreen.class,
+                CoffeeMachineDisplay.COFFEE_MACHINE);
+
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 70,
+                        ((screen.height - 166) / 2) + 34, 24, 16), CropFarmBlockScreen.class,
+                CropFarmDisplay.CROP_FARM);
     }
 }

@@ -446,12 +446,16 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT key");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "Mode Switch Key");
         translationBuilder.add("key.industrial_elixir.boost_key", "Boost Key");
-        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity:", "Capacity:");
-        translationBuilder.add("industrial_elixir.tooltip.liquid.amount:", "Liquid Amount:");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "Capacity: %s");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount", "Liquid Amount: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.stored", "Stored: %s / %s EP");
         translationBuilder.add("tooltip.industrial_elixir.energy.tier", "Tier: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.capacity", "Capacity: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.max_io", "Max I/O: %s / %s EP/t");
+        translationBuilder.add("tooltip.industrial_elixir.cable.transfer_rate", "Transfer Rate: %s EP/t");
+        translationBuilder.add("tooltip.industrial_elixir.cable.tier", "Cable Tier: %s");
+        translationBuilder.add("tooltip.industrial_elixir.cable.insulated", "Insulated");
+        translationBuilder.add("tooltip.industrial_elixir.cable.uninsulated", "Uninsulated");
 
 
         translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"Hot Spring Bucket");

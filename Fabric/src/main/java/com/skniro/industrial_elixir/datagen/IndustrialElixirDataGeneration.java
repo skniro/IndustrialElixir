@@ -20,6 +20,7 @@ public class IndustrialElixirDataGeneration implements DataGeneratorEntrypoint {
         fabricDataGenerator.createPack().addProvider(IndustrialElixirSimplifiedChineseLanguageProvider::new);
         fabricDataGenerator.createPack().addProvider(IndustrialElixirBlockTagGenerator::new);
         fabricDataGenerator.createPack().addProvider(IndustrialElixirItemTagGenerator::new);
+        fabricDataGenerator.createPack().addProvider(IndustrialElixirBiomeTagGeneration::new);
         fabricDataGenerator.createPack().addProvider(ModDynamicGenerator::new);
         RecipeDataGeneration.onInit(fabricDataGenerator);
     }

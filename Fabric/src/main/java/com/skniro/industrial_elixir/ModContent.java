@@ -99,6 +99,8 @@ public class  ModContent {
             RecipeSynchronization.synchronizeRecipeSerializer(OreWashingCraftingRecipe.SERIALIZER);
             RecipeSynchronization.synchronizeRecipeSerializer(HeatCentrifugeCraftingRecipe.SERIALIZER);
             RecipeSynchronization.synchronizeRecipeSerializer(ModBlastFurnaceCraftingRecipe.SERIALIZER);
+            RecipeSynchronization.synchronizeRecipeSerializer(CoffeeMachineCraftingRecipe.SERIALIZER);
+            RecipeSynchronization.synchronizeRecipeSerializer(CropFarmCraftingRecipe.SERIALIZER);
         }
     }
 

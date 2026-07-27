@@ -445,12 +445,16 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT键");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "模式切换键");
         translationBuilder.add("key.industrial_elixir.boost_key", "加速键");
-        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "容器容量:");
-        translationBuilder.add("industrial_elixir.tooltip.liquid.amount", "液体容量:");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount.with.capacity", "容器容量: %s");
+        translationBuilder.add("industrial_elixir.tooltip.liquid.amount", "液体容量: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.stored", "储存电量: %s / %s EP");
         translationBuilder.add("tooltip.industrial_elixir.energy.tier", "电压等级: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.capacity", "最大容量: %s");
         translationBuilder.add("tooltip.industrial_elixir.energy.max_io", "最大输入/输出: %s / %s EP/t");
+        translationBuilder.add("tooltip.industrial_elixir.cable.transfer_rate", "传输速率: %s EP/t");
+        translationBuilder.add("tooltip.industrial_elixir.cable.tier", "导线等级: %s");
+        translationBuilder.add("tooltip.industrial_elixir.cable.insulated", "已绝缘");
+        translationBuilder.add("tooltip.industrial_elixir.cable.uninsulated", "未绝缘（危险！接触会触电）");
 
         translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"温泉桶");
         translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"温泉");
