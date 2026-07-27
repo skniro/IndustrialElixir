@@ -154,7 +154,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
                         new Material(Identifier.parse("industrial_elixir:block/spring_still")),
                         new Material(Identifier.parse("industrial_elixir:block/spring_flow")),
                         null,
-                        _ -> -6141935
+                        _ -> 0xA1E0E7EC
                 ));
 
 

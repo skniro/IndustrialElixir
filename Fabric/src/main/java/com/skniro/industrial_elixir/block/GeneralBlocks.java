@@ -84,7 +84,7 @@ public class GeneralBlocks {
     public static final Block Rubber_BUTTON = registerBlock("rubber_button",
             (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), Blocks.buttonProperties());
     public static final Block Rubber_STAIRS = registerBlock("rubber_stairs",
-            (settings)-> new StairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+            (settings)-> new StairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Block Rubber_SLAB = registerBlock("rubber_slab",
             SlabBlock::new, (BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
     public static final Block Rubber_FENCE_GATE = registerBlock("rubber_fence_gate",

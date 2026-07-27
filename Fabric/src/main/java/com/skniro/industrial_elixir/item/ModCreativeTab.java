@@ -89,6 +89,7 @@ public class ModCreativeTab {
             content.accept(GeneralBlocks.Bronze_Block);
             content.accept(GeneralBlocks.Steel_Block);
 
+            content.accept(GeneralBlocks.Rubber_PLANKS);
             content.accept(GeneralBlocks.Rubber_STAIRS);
             content.accept(GeneralBlocks.Rubber_SLAB);
             content.accept(GeneralBlocks.Rubber_BUTTON);
@@ -96,9 +97,7 @@ public class ModCreativeTab {
             content.accept(GeneralBlocks.Rubber_FENCE);
             content.accept(GeneralBlocks.Rubber_FENCE_GATE);
             content.accept(GeneralBlocks.Rubber_LOG);
-            content.accept(GeneralBlocks.Rubber_LOG);
             content.accept(GeneralBlocks.Rubber_WOOD);
-            content.accept(GeneralBlocks.STRIPPED_Rubber_LOG);
             content.accept(GeneralBlocks.STRIPPED_Rubber_LOG);
             content.accept(GeneralBlocks.STRIPPED_Rubber_WOOD);
             content.accept(GeneralBlocks.Rubber_DOOR);
