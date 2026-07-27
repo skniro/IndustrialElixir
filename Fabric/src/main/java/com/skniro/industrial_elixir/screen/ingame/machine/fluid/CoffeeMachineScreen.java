@@ -69,7 +69,7 @@ public class CoffeeMachineScreen extends AbstractContainerScreen<CoffeeMachineSc
 
     private void renderProgressArrow(GuiGraphicsExtractor guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 32, 189, 0, menu.getScaledProgress(), 16, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 }

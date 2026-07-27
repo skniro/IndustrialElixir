@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.block.entity.machine;
 
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
+import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
@@ -17,6 +18,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +71,41 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
         if (cropRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, cropRecipe.output2().get().create())) return false;
         if (cropRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, cropRecipe.output3().get().create())) return false;
 
-        return hasEnoughEnergyToCraft();
+        return true;
+    }
+
+    @Override
+    protected boolean hasEnoughEnergyToCraft() {
+        return this.energyContainer.amount >= getCraftEnergyCost() / 20;
+    }
+
+    @Override
+    public void tick(Level world, BlockPos pos, BlockState state) {
+        if (world.isClientSide()) return;
+
+        charge(ENERGY_ITEM_SLOT);
+
+        boolean hasInput = hasRecipe();
+        boolean hasEnergy = hasEnoughEnergyToCraft();
+        boolean canOutput = canInsertIntoOutputSlot();
+
+        if (hasInput && hasEnergy && canOutput) {
+            increaseCraftingProgress();
+            useEnergyForCrafting();
+            setChanged(world, pos, state);
+
+            if (hasCraftingFinished()) {
+                craftItem();
+                resetProgress();
+            }
+        } else if (!hasInput || !canOutput) {
+            resetProgress();
+        }
+
+        boolean isWorking = hasInput && hasEnergy;
+        if (state.getValue(AbstractMachineblock.LIT) != isWorking) {
+            world.setBlock(pos, state.setValue(AbstractMachineblock.LIT, isWorking), 3);
+        }
     }
 
     @Override
@@ -78,6 +114,8 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
         if (recipe.isEmpty()) return;
 
         CropFarmCraftingRecipe cropRecipe = (CropFarmCraftingRecipe) recipe.get().value();
+
+        setChanged();
 
         insertOutput(OUTPUT_SLOT, cropRecipe.output().create());
         cropRecipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
