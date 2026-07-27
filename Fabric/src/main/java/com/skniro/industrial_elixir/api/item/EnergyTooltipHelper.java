@@ -1,7 +1,9 @@
 package com.skniro.industrial_elixir.api.item;
 
+import com.skniro.industrial_elixir.ModContent;
 import com.skniro.industrial_elixir.api.block.TieredEnergyBlock;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.block.init.CableBlock;
 import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,6 +44,23 @@ public class EnergyTooltipHelper {
 
         // For machine block items
         if (stack.getItem() instanceof BlockItem blockItem) {
+            if (blockItem.getBlock() instanceof CableBlock cableBlock) {
+                ModContent.Cables cable = cableBlock.type;
+                tooltip.accept(Component.translatable("tooltip.industrial_elixir.cable.transfer_rate",
+                                formatNumber(cable.transferRate))
+                        .withStyle(ChatFormatting.GOLD));
+                tooltip.accept(Component.translatable("tooltip.industrial_elixir.cable.tier",
+                                cable.tier.name())
+                        .withStyle(ChatFormatting.GRAY));
+                if (cable.canKill) {
+                    tooltip.accept(Component.translatable("tooltip.industrial_elixir.cable.uninsulated")
+                            .withStyle(ChatFormatting.RED));
+                } else {
+                    tooltip.accept(Component.translatable("tooltip.industrial_elixir.cable.insulated")
+                            .withStyle(ChatFormatting.DARK_GREEN));
+                }
+            }
+
             if (blockItem.getBlock() instanceof TieredEnergyBlock energyBlock) {
                 EnergyTier tier = energyBlock.getEnergyTier();
                 long capacity = energyBlock.getMaxCapacity();

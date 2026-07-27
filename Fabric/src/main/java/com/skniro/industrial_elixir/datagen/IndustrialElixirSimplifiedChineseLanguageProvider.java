@@ -454,7 +454,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add("tooltip.industrial_elixir.cable.transfer_rate", "传输速率: %s EP/t");
         translationBuilder.add("tooltip.industrial_elixir.cable.tier", "导线等级: %s");
         translationBuilder.add("tooltip.industrial_elixir.cable.insulated", "已绝缘");
-        translationBuilder.add("tooltip.industrial_elixir.cable.uninsulated", "未绝缘（危险！接触会触电）");
+        translationBuilder.add("tooltip.industrial_elixir.cable.uninsulated", "未绝缘");
 
         translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"温泉桶");
         translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"温泉");
