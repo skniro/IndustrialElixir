@@ -24,8 +24,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     private static final long STEP = 100;
@@ -115,7 +117,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
 
         Direction preferredDir = getPreferredExtractDirection();
         if (preferredDir != null) {
-            if (tryExtractFromSide(world, pos, preferredDir)) {
+            if (hasOutputPath(world, pos, preferredDir) && tryExtractFromSide(world, pos, preferredDir)) {
                 onExtractDirectionChanged(preferredDir);
             } else {
                 onExtractDirectionChanged(null);
@@ -124,6 +126,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         }
 
         for (Direction dir : Direction.values()) {
+            if (!hasOutputPath(world, pos, dir)) continue;
             if (tryExtractFromSide(world, pos, dir)) {
                 onExtractDirectionChanged(dir);
                 return;
@@ -146,6 +149,32 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             total += packet.amount;
         }
         return total;
+    }
+
+    private boolean hasOutputPath(Level world, BlockPos pos, Direction extractDir) {
+        return searchOutputPath(world, pos, extractDir, new HashSet<>());
+    }
+
+    private boolean searchOutputPath(Level world, BlockPos pos, Direction excludeDir, Set<BlockPos> visited) {
+        if (!visited.add(pos)) return false;
+        BlockState state = world.getBlockState(pos);
+        BlockEntity be = world.getBlockEntity(pos);
+        if (!(be instanceof FluidPipeBlockEntity pipe)) return false;
+
+        for (Direction dir : Direction.values()) {
+            if (dir == excludeDir) continue;
+            if (pipe.isBlocked(dir)) continue;
+            if (!state.getValue(PipeBlock.PROPERTY_MAP.get(dir))) continue;
+
+            BlockPos next = pos.relative(dir);
+            if (FluidStorage.SIDED.find(world, next, dir.getOpposite()) != null) return true;
+
+            BlockEntity nextBe = world.getBlockEntity(next);
+            if (nextBe instanceof FluidPipeBlockEntity) {
+                if (searchOutputPath(world, next, dir.getOpposite(), visited)) return true;
+            }
+        }
+        return false;
     }
 
     private boolean tryMoveToNext(Level world, BlockPos pos, FluidPacket packet) {
