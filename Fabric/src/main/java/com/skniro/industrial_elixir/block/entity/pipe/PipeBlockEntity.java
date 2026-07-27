@@ -88,6 +88,12 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
     @Override
     protected void loadAdditional(ValueInput nbt) {
         preferredExtractDirection = readDirection(nbt.getIntOr("pipe.preferred_extract_side", -1));
+        blocked.clear();
+        for (Direction dir : Direction.values()) {
+            if (nbt.getIntOr("pipe.blocked_" + dir.name(), 0) == 1) {
+                blocked.add(dir);
+            }
+        }
         super.loadAdditional(nbt);
     }
 
@@ -96,6 +102,9 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
         super.saveAdditional(nbt);
         nbt.putInt("pipe.preferred_extract_side",
                 preferredExtractDirection == null ? -1 : preferredExtractDirection.get3DDataValue());
+        for (Direction dir : Direction.values()) {
+            nbt.putInt("pipe.blocked_" + dir.name(), blocked.contains(dir) ? 1 : 0);
+        }
     }
 
     protected void updateConnections() {

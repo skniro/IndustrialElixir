@@ -5,17 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity;
-import com.skniro.industrial_elixir.item.init.PipePlugItem;
+import com.skniro.industrial_elixir.block.entity.pipe.PipeExtractDirectionController;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 
 import net.minecraft.world.level.*;
@@ -71,24 +69,15 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
 
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
-        if (world.isClientSide()) return InteractionResult.SUCCESS;
         BlockEntity be = world.getBlockEntity(pos);
-        ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-        if (!(be instanceof PipeBlockEntity pipe)) return InteractionResult.PASS;
+        if (!(be instanceof PipeExtractDirectionController controller)) return InteractionResult.PASS;
 
         Direction side = hit.getDirection();
-        if (!(stack.getItem() instanceof PipePlugItem)) {
-            if (pipe.isBlocked(side)) {
-                pipe.setBlocked(side, false);
-            } else {
-                pipe.setBlocked(side, true);
-                if (!player.isCreative()) {
-                    stack.shrink(1);
-                }
-            }
-            return InteractionResult.PASS;
+        if (player.isShiftKeyDown()) {
+            controller.clearPreferredExtractDirection();
+        } else {
+            controller.togglePreferredExtractDirection(side);
         }
-        world.setBlock(pos, state, Block.UPDATE_ALL);
         return InteractionResult.SUCCESS;
     }
 
