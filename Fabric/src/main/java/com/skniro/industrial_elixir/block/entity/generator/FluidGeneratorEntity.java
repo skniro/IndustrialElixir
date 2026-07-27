@@ -1,5 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.generator;
 
+import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.fluid.AbstractFluidMachineEntity;
@@ -7,6 +8,7 @@ import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
+import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.screen.handler.generator.fluid.FluidGeneratorScreenHandler;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -125,6 +127,19 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
 
             // If lava didn't work, try water
             if (!working && !fluid.isBlank() && fluid.getFluid() == Fluids.WATER) {
+                if (fluidContainer.getAmount() >= WATER_CONSUME_PER_TICK) {
+                    try (Transaction tx = Transaction.openOuter()) {
+                        long extracted = fluidContainer.extract(fluid, WATER_CONSUME_PER_TICK, tx);
+                        if (extracted == WATER_CONSUME_PER_TICK) {
+                            energyContainer.getSideStorage(null).insert(WATER_EU_PER_TICK, tx);
+                            tx.commit();
+                            working = true;
+                        }
+                    }
+                }
+            }
+
+            if (!working && !fluid.isBlank() && fluid.getFluid() == IndustrialElixirFluids.STILL_Hot_Spring) {
                 if (fluidContainer.getAmount() >= WATER_CONSUME_PER_TICK) {
                     try (Transaction tx = Transaction.openOuter()) {
                         long extracted = fluidContainer.extract(fluid, WATER_CONSUME_PER_TICK, tx);
