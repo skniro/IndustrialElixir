@@ -93,10 +93,10 @@ public class GuiFluidTankRenderer {
 
         long amount = fluidStorage.getAmount();
         if (tooltipMode == TooltipMode.SHOW_AMOUNT_AND_CAPACITY) {
-            MutableComponent amountString = Component.translatable("industrial_elixir.tooltip.liquid.amount.with.capacity" + ":" + nf.format(amount)+ "Mb" + " / " + nf.format(capacityMb) + "Mb");
+            MutableComponent amountString = Component.translatable("industrial_elixir.tooltip.liquid.amount.with.capacity",   nf.format(amount)+ "Mb" + " / " + nf.format(capacityMb) + "Mb");
             tooltip.add(amountString.withStyle(Style.EMPTY.withColor(CommonColors.DARK_GRAY)));
         } else if (tooltipMode == TooltipMode.SHOW_AMOUNT) {
-            MutableComponent amountString = Component.translatable("industrial_elixir.tooltip.liquid.amount" + ":" + nf.format(amount) + "Mb");
+            MutableComponent amountString = Component.translatable("industrial_elixir.tooltip.liquid.amount",  nf.format(amount) + "Mb");
             tooltip.add(amountString.withStyle(Style.EMPTY.withColor(CommonColors.DARK_GRAY)));
         }
 
