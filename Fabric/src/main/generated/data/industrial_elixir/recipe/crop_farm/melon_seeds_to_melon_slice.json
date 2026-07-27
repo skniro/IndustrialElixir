@@ -4,7 +4,7 @@
   "ingredient": "minecraft:melon_seeds",
   "process_time": 1200,
   "result": {
-    "id": "minecraft:melon"
+    "id": "minecraft:melon_seeds"
   },
   "result2": {
     "count": 9,

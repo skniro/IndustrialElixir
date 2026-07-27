@@ -1,9 +1,10 @@
 {
   "type": "industrial_elixir:crop_farm",
-  "count": 9,
+  "count": 1,
   "ingredient": "minecraft:bamboo",
   "process_time": 1800,
   "result": {
+    "count": 9,
     "id": "minecraft:bamboo"
   }
 }

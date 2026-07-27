@@ -22,21 +22,20 @@ public class IndustrialElixir implements ModInitializer {
     @Override
     public void onInitialize() {
         checkExpiration();
-        if(!DISABLED){
-            ModContent.registerCommand();
-            ModContent.registerItem();
-            ModContent.registerBlock();
-            ModContent.registerFluids();
-            ModContent.registerEntity();
-            ModContent.CreativeTab();
-            ModContent.WorldGen();
-            ModContent.registerOthers();
 
-            EnergyImpl.init();
-            HeatImpl.init();
-            ModMessages.register();
-            ModContent.Compat();
-        }
+        ModContent.registerCommand();
+        ModContent.registerItem();
+        ModContent.registerBlock();
+        ModContent.registerFluids();
+        ModContent.registerEntity();
+        ModContent.CreativeTab();
+        ModContent.WorldGen();
+        ModContent.registerOthers();
+
+        EnergyImpl.init();
+        HeatImpl.init();
+        ModMessages.register();
+        ModContent.Compat();
     }
 
     public static void checkExpiration() {

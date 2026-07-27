@@ -1,9 +1,10 @@
 {
   "type": "industrial_elixir:crop_farm",
-  "count": 3,
+  "count": 1,
   "ingredient": "minecraft:carrot",
   "process_time": 600,
   "result": {
+    "count": 3,
     "id": "minecraft:carrot"
   }
 }

@@ -3,6 +3,8 @@ package com.skniro.industrial_elixir.datagen.recipe.machine;
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
 import com.skniro.industrial_elixir.api.data.recipe.CraftingDataHelper;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
+import com.skniro.industrial_elixir.block.GeneralBlocks;
+import com.skniro.industrial_elixir.item.GrowableOresItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -21,42 +23,42 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
             @Override
             public void buildRecipes() {
                 // 小麦
-                createCropFarm(Items.WHEAT)
-                        .input(Items.WHEAT_SEEDS, 1)
-                        .output2(Items.WHEAT, 3)
+                createCropFarm(Items.WHEAT,3)
+                        .input(Items.WHEAT_SEEDS)
+                        .output2(Items.WHEAT_SEEDS)
                         .processTime(600)
                         .unlockedBy("has_wheat_seeds", has(Items.WHEAT_SEEDS))
                         .save(output, "wheat_seeds_to_wheat");
 
 
                 // 胡萝卜
-                createCropFarm(Items.CARROT)
-                        .input(Items.CARROT, 3)
+                createCropFarm(Items.CARROT,3)
+                        .input(Items.CARROT)
                         .processTime(600)
                         .unlockedBy("has_carrot", has(Items.CARROT))
                         .save(output, "carrot_to_carrot");
 
 
                 // 马铃薯
-                createCropFarm(Items.POTATO)
-                        .input(Items.POTATO, 3)
+                createCropFarm(Items.POTATO,3)
+                        .input(Items.POTATO)
                         .processTime(600)
                         .unlockedBy("has_potato", has(Items.POTATO))
                         .save(output, "potato_to_potato");
 
 
                 // 甜菜根
-                createCropFarm(Items.BEETROOT)
-                        .input(Items.BEETROOT_SEEDS, 1)
-                        .output2(Items.BEETROOT, 3)
+                createCropFarm(Items.BEETROOT,3)
+                        .input(Items.BEETROOT_SEEDS)
+                        .output2(Items.BEETROOT_SEEDS)
                         .processTime(600)
                         .unlockedBy("has_beetroot_seeds", has(Items.BEETROOT_SEEDS))
                         .save(output, "beetroot_seeds_to_beetroot");
 
 
                 // 甘蔗
-                createCropFarm(Items.SUGAR_CANE)
-                        .input(Items.SUGAR_CANE, 1)
+                createCropFarm(Items.SUGAR_CANE,2)
+                        .input(Items.SUGAR_CANE)
                         .processTime(2400)
                         .unlockedBy("has_sugar_cane", has(Items.SUGAR_CANE))
                         .save(output, "sugar_cane_to_sugar_cane");
@@ -64,23 +66,23 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // 仙人掌
                 createCropFarm(Items.CACTUS)
-                        .input(Items.CACTUS, 1)
+                        .input(Items.CACTUS)
                         .processTime(2400)
                         .unlockedBy("has_cactus", has(Items.CACTUS))
                         .save(output, "cactus_to_cactus");
 
 
                 // 竹子
-                createCropFarm(Items.BAMBOO)
-                        .input(Items.BAMBOO, 9)
+                createCropFarm(Items.BAMBOO,9)
+                        .input(Items.BAMBOO)
                         .processTime(1800)
                         .unlockedBy("has_bamboo", has(Items.BAMBOO))
                         .save(output, "bamboo_to_bamboo");
 
 
                 // 可可豆
-                createCropFarm(Items.COCOA_BEANS)
-                        .input(Items.COCOA_BEANS, 3)
+                createCropFarm(Items.COCOA_BEANS,3)
+                        .input(Items.COCOA_BEANS)
                         .processTime(800)
                         .unlockedBy("has_cocoa_beans", has(Items.COCOA_BEANS))
                         .save(output, "cocoa_beans_to_cocoa_beans");
@@ -88,16 +90,16 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // 南瓜
                 createCropFarm(Items.PUMPKIN)
-                        .input(Items.PUMPKIN_SEEDS, 1)
-                        .output2(Items.PUMPKIN, 1)
+                        .input(Items.PUMPKIN_SEEDS)
+                        .output2(Items.PUMPKIN_SEEDS)
                         .processTime(1200)
                         .unlockedBy("has_pumpkin_seeds", has(Items.PUMPKIN_SEEDS))
                         .save(output, "pumpkin_seeds_to_pumpkin");
 
 
                 // 西瓜
-                createCropFarm(Items.MELON)
-                        .input(Items.MELON_SEEDS, 1)
+                createCropFarm(Items.MELON_SEEDS)
+                        .input(Items.MELON_SEEDS)
                         .output2(Items.MELON_SLICE, 9)
                         .processTime(1200)
                         .unlockedBy("has_melon_seeds", has(Items.MELON_SEEDS))
@@ -105,21 +107,21 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
 
                 // 下界疣
-                createCropFarm(Items.NETHER_WART)
-                        .input(Items.NETHER_WART, 3)
+                createCropFarm(Items.NETHER_WART, 3)
+                        .input(Items.NETHER_WART)
                         .processTime(800)
                         .unlockedBy("has_nether_wart", has(Items.NETHER_WART))
                         .save(output, "nether_wart_to_nether_wart");
 
                 createCropFarm(GrowableICOresBlocks.IER_Bronze_Cane)
-                        .input(GrowableICOresBlocks.IER_Bronze_Cane, 1)
+                        .input(GrowableICOresBlocks.IER_Bronze_Cane)
                         .processTime(2400)
                         .unlockedBy("has_sugar_cane", has(GrowableICOresBlocks.IER_Bronze_Cane))
                         .save(output, "ier_bronze_ore_cane_to_ier_bronze_ore_cane");
 
                 // Steel Ore Cane
                 createCropFarm(GrowableICOresBlocks.IER_steel_Cane)
-                        .input(GrowableICOresBlocks.IER_steel_Cane, 1)
+                        .input(GrowableICOresBlocks.IER_steel_Cane)
                         .processTime(3000)
                         .unlockedBy("has_steel_ore_cane", has(GrowableICOresBlocks.IER_steel_Cane))
                         .save(output, "ier_steel_ore_cane_to_ier_steel_ore_cane");
@@ -127,7 +129,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // Silver Ore Cane
                 createCropFarm(GrowableICOresBlocks.IER_silver_Cane)
-                        .input(GrowableICOresBlocks.IER_silver_Cane, 1)
+                        .input(GrowableICOresBlocks.IER_silver_Cane)
                         .processTime(2400)
                         .unlockedBy("has_silver_ore_cane", has(GrowableICOresBlocks.IER_silver_Cane))
                         .save(output, "ier_silver_ore_cane_to_ier_silver_ore_cane");
@@ -135,7 +137,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // Tin Ore Cane
                 createCropFarm(GrowableICOresBlocks.IER_Tin_Cane)
-                        .input(GrowableICOresBlocks.IER_Tin_Cane, 1)
+                        .input(GrowableICOresBlocks.IER_Tin_Cane)
                         .processTime(2400)
                         .unlockedBy("has_tin_ore_cane", has(GrowableICOresBlocks.IER_Tin_Cane))
                         .save(output, "ier_tin_ore_cane_to_ier_tin_ore_cane");
@@ -143,7 +145,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // Sacred Ore Cane
                 createCropFarm(GrowableICOresBlocks.IER_SACRED_Cane)
-                        .input(GrowableICOresBlocks.IER_SACRED_Cane, 1)
+                        .input(GrowableICOresBlocks.IER_SACRED_Cane)
                         .processTime(2400)
                         .unlockedBy("has_sacred_ore_cane", has(GrowableICOresBlocks.IER_SACRED_Cane))
                         .save(output, "ier_sacred_ore_cane_to_ier_sacred_ore_cane");
@@ -151,7 +153,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // Lead Ore Cane
                 createCropFarm(GrowableICOresBlocks.IER_LEAD_Cane)
-                        .input(GrowableICOresBlocks.IER_LEAD_Cane, 1)
+                        .input(GrowableICOresBlocks.IER_LEAD_Cane)
                         .processTime(2400)
                         .unlockedBy("has_lead_ore_cane", has(GrowableICOresBlocks.IER_LEAD_Cane))
                         .save(output, "ier_lead_ore_cane_to_ier_lead_ore_cane");
@@ -159,7 +161,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 橡树
                 createCropFarm(Items.OAK_SAPLING)
-                        .input(Items.OAK_SAPLING, 1)
+                        .input(Items.OAK_SAPLING)
                         .output2(Items.OAK_LOG, 5)
                         .output3(Items.APPLE, 1)
                         .processTime(1600)
@@ -168,7 +170,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 //苍白橡树
                 createCropFarm(Items.PALE_OAK_SAPLING)
-                        .input(Items.PALE_OAK_SAPLING, 1)
+                        .input(Items.PALE_OAK_SAPLING)
                         .output2(Items.PALE_OAK_LOG, 5)
                         .output3(Items.RESIN_CLUMP, 1)
                         .processTime(1600)
@@ -178,7 +180,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 云杉
                 createCropFarm(Items.SPRUCE_SAPLING)
-                        .input(Items.SPRUCE_SAPLING, 1)
+                        .input(Items.SPRUCE_SAPLING)
                         .output2(Items.SPRUCE_LOG, 6)
                         .processTime(1600)
                         .unlockedBy("has_spruce_sapling", has(Items.SPRUCE_SAPLING))
@@ -187,7 +189,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 白桦
                 createCropFarm(Items.BIRCH_SAPLING)
-                        .input(Items.BIRCH_SAPLING, 1)
+                        .input(Items.BIRCH_SAPLING)
                         .output2(Items.BIRCH_LOG, 5)
                         .processTime(1600)
                         .unlockedBy("has_birch_sapling", has(Items.BIRCH_SAPLING))
@@ -196,7 +198,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 丛林木
                 createCropFarm(Items.JUNGLE_SAPLING)
-                        .input(Items.JUNGLE_SAPLING, 1)
+                        .input(Items.JUNGLE_SAPLING)
                         .output2(Items.JUNGLE_LOG, 6)
                         .processTime(1000)
                         .unlockedBy("has_jungle_sapling", has(Items.JUNGLE_SAPLING))
@@ -205,7 +207,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 金合欢
                 createCropFarm(Items.ACACIA_SAPLING)
-                        .input(Items.ACACIA_SAPLING, 1)
+                        .input(Items.ACACIA_SAPLING)
                         .output2(Items.ACACIA_LOG, 5)
                         .processTime(1000)
                         .unlockedBy("has_acacia_sapling", has(Items.ACACIA_SAPLING))
@@ -213,8 +215,8 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
 
                // 深色橡木
-                createCropFarm(Items.DARK_OAK_SAPLING)
-                        .input(Items.DARK_OAK_SAPLING, 2)
+                createCropFarm(Items.DARK_OAK_SAPLING,2)
+                        .input(Items.DARK_OAK_SAPLING)
                         .output2(Items.DARK_OAK_LOG, 10)
                         .processTime(1000)
                         .unlockedBy("has_dark_oak_sapling", has(Items.DARK_OAK_SAPLING))
@@ -223,7 +225,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 红树
                 createCropFarm(Items.MANGROVE_PROPAGULE)
-                        .input(Items.MANGROVE_PROPAGULE, 1)
+                        .input(Items.MANGROVE_PROPAGULE)
                         .output2(Items.MANGROVE_LOG, 6)
                         .processTime(1000)
                         .unlockedBy("has_mangrove_propagule", has(Items.MANGROVE_PROPAGULE))
@@ -232,7 +234,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 樱花
                 createCropFarm(Items.CHERRY_SAPLING)
-                        .input(Items.CHERRY_SAPLING, 1)
+                        .input(Items.CHERRY_SAPLING)
                         .output2(Items.CHERRY_LOG, 6)
                         .processTime(1000)
                         .unlockedBy("has_cherry_sapling", has(Items.CHERRY_SAPLING))
@@ -240,7 +242,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 绯红菌树
                 createCropFarm(Items.CRIMSON_FUNGUS)
-                        .input(Items.CRIMSON_FUNGUS, 1)
+                        .input(Items.CRIMSON_FUNGUS)
                         .output2(Items.CRIMSON_STEM, 8)
                         .processTime(1000)
                         .unlockedBy("has_crimson_fungus", has(Items.CRIMSON_FUNGUS))
@@ -249,7 +251,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                // 诡异菌树
                 createCropFarm(Items.WARPED_FUNGUS)
-                        .input(Items.WARPED_FUNGUS, 1)
+                        .input(Items.WARPED_FUNGUS)
                         .output2(Items.WARPED_STEM, 8)
                         .processTime(1000)
                         .unlockedBy("has_warped_fungus", has(Items.WARPED_FUNGUS))
@@ -257,7 +259,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // 紫颂果
                 createCropFarm(Items.CHORUS_FLOWER)
-                        .input(Items.CHORUS_FLOWER, 1)
+                        .input(Items.CHORUS_FLOWER)
                         .output2(Items.CHORUS_FRUIT, 4)
                         .processTime(1200)
                         .unlockedBy("has_chorus_flower", has(Items.CHORUS_FLOWER))
@@ -265,7 +267,7 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // 火把花
                 createCropFarm(Items.TORCHFLOWER_SEEDS)
-                        .input(Items.TORCHFLOWER_SEEDS, 1)
+                        .input(Items.TORCHFLOWER_SEEDS)
                         .output2(Items.TORCHFLOWER, 1)
                         .processTime(600)
                         .unlockedBy("has_torchflower_seeds", has(Items.TORCHFLOWER_SEEDS))
@@ -274,11 +276,19 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
 
                 // 瓶子草
                 createCropFarm(Items.PITCHER_POD)
-                        .input(Items.PITCHER_POD, 1)
+                        .input(Items.PITCHER_POD)
                         .output2(Items.PITCHER_PLANT, 1)
                         .processTime(600)
                         .unlockedBy("has_pitcher_pod", has(Items.PITCHER_POD))
                         .save(output, "pitcher_pod_to_pitcher_plant");
+
+                createCropFarm(GrowableOresItems.Rubber, 3)
+                        .input(GeneralBlocks.Rubber_SAPLING)
+                        .output2(GeneralBlocks.Rubber_LOG, 6)
+                        .output3(GeneralBlocks.Rubber_SAPLING)
+                        .processTime(600)
+                        .unlockedBy("has_rubber_sapling", has(GeneralBlocks.Rubber_SAPLING))
+                        .save(output, "rubber_sapling_to_rubber");
             }
         };
     }
