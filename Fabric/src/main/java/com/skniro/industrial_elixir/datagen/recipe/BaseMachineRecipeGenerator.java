@@ -4,6 +4,7 @@ import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
+import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
@@ -276,6 +277,26 @@ public class BaseMachineRecipeGenerator extends FabricRecipeProvider {
                         .define('A', GeneralBlocks.Advanced_Machine)
                         .define('M', GeneralBlocks.Machine)
                         .pattern("LCL").pattern("MAM").pattern("LGL")
+                        .unlockedBy("has_item", this.has(GeneralBlocks.Machine))
+                        .save(this.output);
+
+                shaped(RecipeCategory.MISC, GrowableOresBlocks.CROP_FARM_Block)
+                        .define('C', GrowableOresItems.Advanced_Circuit)
+                        .define('L', GrowableOresItems.LAPOTRON_CRYSTAL)
+                        .define('A', GrowableOresItems.ALLOY_PLATE)
+                        .define('S', GeneralBlocks.Super_Machine)
+                        .define('M', GeneralBlocks.Advanced_Machine)
+                        .pattern("ACA").pattern("MSM").pattern("ALA")
+                        .unlockedBy("has_item", this.has(GeneralBlocks.Super_Machine))
+                        .save(this.output);
+
+                shaped(RecipeCategory.MISC, GrowableOresBlocks.COFFEE_MACHINE_Block)
+                        .define('C', MapleFoodComponents.Coffee_Beans)
+                        .define('L', GrowableOresItems.RE_BATTERY)
+                        .define('A', GrowableOresItems.IRON_CASING)
+                        .define('I', GrowableOresItems.IRON_PLATE)
+                        .define('M', GeneralBlocks.Machine)
+                        .pattern("ACA").pattern("IMI").pattern("ALA")
                         .unlockedBy("has_item", this.has(GeneralBlocks.Machine))
                         .save(this.output);
             }
