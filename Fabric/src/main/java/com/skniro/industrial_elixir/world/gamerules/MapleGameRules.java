@@ -8,7 +8,7 @@ import net.minecraft.world.level.gamerules.GameRule;
 
 public class MapleGameRules {
     public static final GameRule<Boolean> HOT_SPRING_SOURCE_CONVERSION =
-            GameRuleBuilder.forBoolean(false).buildAndRegister(Helper.id("hot_spring_source_conversion"));
+            GameRuleBuilder.forBoolean(true).buildAndRegister(Helper.id("hot_spring_source_conversion"));
 
     public static void maplegamerule() {
         IndustrialElixir.LOGGER.debug("Registering IndustrialElixir Game Rules for " + IndustrialElixir.MOD_ID);

@@ -209,5 +209,7 @@ public class IndustrialElixirLootTableGenerator extends FabricBlockLootSubProvid
         dropSelf(GrowableICOresBlocks.IER_steel_Cane);
         dropSelf(GrowableICOresBlocks.IER_LEAD_Cane);
 
+        dropSelf(GeneralBlocks.COBBLESTONE_STAIRS);
+
     }
 }

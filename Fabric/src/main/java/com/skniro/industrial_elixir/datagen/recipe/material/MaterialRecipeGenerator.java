@@ -447,6 +447,16 @@ public class MaterialRecipeGenerator extends FabricRecipeProvider {
                                 has(Items.RED_DYE))
                         .save(output);
 
+                shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.COBBLESTONE_STAIRS,6)
+                        .pattern("b  ")
+                        .pattern("bi ")
+                        .pattern("bbb")
+                        .define('b', Blocks.COBBLESTONE)
+                        .define('i', Items.BLUE_DYE)
+                        .unlockedBy(getHasName(Items.BLUE_DYE),
+                                has(Items.BLUE_DYE))
+                        .save(output);
+
             }
         };
     }

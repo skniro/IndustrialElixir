@@ -8,6 +8,7 @@ b3ddf0ea8f5a28398468bd9caa73db1894e7104a data/minecraft/tags/block/mineable/pick
 7d64dbb2da296de73bb64a22f53428fb47aeecea data/minecraft/tags/block/needs_stone_tool.json
 ba9208221aa25e0c4407be7aa11952241dc91589 data/minecraft/tags/block/planks.json
 376a593c654d1761ee15ef6a44721e3af7e8e166 data/minecraft/tags/block/saplings.json
+f2f9d46db4a2e92eca62cef138d89ac6180c1d97 data/minecraft/tags/block/stairs.json
 cfcef389ce888886eb02f4e91c7e467b463584fc data/minecraft/tags/block/wooden_buttons.json
 0adfa47030f07069791fec825555cb45a6cbc6dc data/minecraft/tags/block/wooden_doors.json
 dca3593c4e8daf8b80ecb67ba5d2a396aa6f7898 data/minecraft/tags/block/wooden_pressure_plates.json

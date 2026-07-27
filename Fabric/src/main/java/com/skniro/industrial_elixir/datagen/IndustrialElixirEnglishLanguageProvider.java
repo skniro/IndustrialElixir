@@ -473,5 +473,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(MapleFoodComponents.Mocha, "Mocha");
         translationBuilder.add(MapleFoodComponents.Latte, "Latte");
         translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "Hot Cocoa");
+
+        translationBuilder.add(GeneralBlocks.COBBLESTONE_STAIRS, "Cobblestone stairs(Hot spring)");
     }
 }

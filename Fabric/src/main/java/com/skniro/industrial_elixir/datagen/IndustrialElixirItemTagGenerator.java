@@ -92,5 +92,8 @@ public class IndustrialElixirItemTagGenerator extends FabricTagsProvider.ItemTag
       valueLookupBuilder(ItemTags.DOORS)
               .add(Item.byBlock(GeneralBlocks.Reinforced_DOOR))
               .setReplace(false);
+      valueLookupBuilder(ItemTags.STAIRS)
+              .add(Item.byBlock(GeneralBlocks.COBBLESTONE_STAIRS))
+              .setReplace(false);
    }
 }

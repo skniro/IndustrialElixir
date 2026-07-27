@@ -22,11 +22,11 @@ public class IndustrialElixir implements ModInitializer {
     @Override
     public void onInitialize() {
         checkExpiration();
-
+        
         ModContent.registerCommand();
+        ModContent.registerFluids();
         ModContent.registerItem();
         ModContent.registerBlock();
-        ModContent.registerFluids();
         ModContent.registerEntity();
         ModContent.CreativeTab();
         ModContent.WorldGen();

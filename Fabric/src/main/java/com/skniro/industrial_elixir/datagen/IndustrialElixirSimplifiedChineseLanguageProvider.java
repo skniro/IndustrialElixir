@@ -470,6 +470,8 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(MapleFoodComponents.Cappuccino, "卡布奇诺");
         translationBuilder.add(MapleFoodComponents.Mocha, "摩卡咖啡");
         translationBuilder.add(MapleFoodComponents.Latte, "拿铁咖啡");
-        translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "热可可");;
+        translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "热可可");
+
+        translationBuilder.add(GeneralBlocks.COBBLESTONE_STAIRS, "圆石楼梯（温泉版）");
     }
 }

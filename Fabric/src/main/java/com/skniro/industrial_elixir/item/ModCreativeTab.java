@@ -105,6 +105,7 @@ public class ModCreativeTab {
             content.accept(GeneralBlocks.Rubber_SAPLING);
             content.accept(GeneralBlocks.Rubber_LEAVES);
             content.accept(GeneralBlocks.Rubber_Rubber_LOG);
+            content.accept(GeneralBlocks.COBBLESTONE_STAIRS);
             content.accept(GrowableOresItems.Sticky_Resin);
             content.accept(MapleArmorItems.Rubber_SIGN);
             content.accept(MapleArmorItems.Rubber_HANGING_SIGN);

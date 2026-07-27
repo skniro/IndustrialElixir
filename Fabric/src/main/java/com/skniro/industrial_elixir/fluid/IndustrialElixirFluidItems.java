@@ -4,6 +4,7 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.fluid.init.MapleHotSpringFluidBlock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.init.FluidCellItem;
+import com.skniro.industrial_elixir.item.init.ModBucketItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +28,7 @@ public class IndustrialElixirFluidItems {
     public static final Item AIR_CELL = registerItem("air_cell",
             (properties)-> new FluidCellItem(properties, IndustrialElixirFluids.STILL_Fluid_AIR), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL).stacksTo(16));
     public static final Item Hot_Spring_BUCKET = registerItem("hot_spring_bucket",
-            (settings)->  new BucketItem(IndustrialElixirFluids.STILL_Hot_Spring, settings), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
+            (settings)->  new ModBucketItem(IndustrialElixirFluids.STILL_Hot_Spring, settings), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
     public static final Item Hot_Spring_CELL = registerItem("hot_spring_cell",
             (settings)->  new FluidCellItem(settings, IndustrialElixirFluids.STILL_Hot_Spring), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL).stacksTo(16));
 

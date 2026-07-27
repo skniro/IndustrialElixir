@@ -6,6 +6,9 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
+
 import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.tags.BlockTags.*;
@@ -247,7 +250,9 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
       valueLookupBuilder(DOORS)
               .add(GeneralBlocks.Reinforced_DOOR)
               .setReplace(false);
-
+      valueLookupBuilder(STAIRS)
+              .add(GeneralBlocks.COBBLESTONE_STAIRS)
+              .setReplace(false);
 
    }
 }

@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.world.level.block.Blocks;
 
 import static net.minecraft.client.data.models.ItemModelGenerators.*;
 
@@ -132,6 +133,9 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_SACRED_Cane, BlockModelGenerators.PlantType.TINTED);
         blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_steel_Cane, BlockModelGenerators.PlantType.TINTED);
         blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_LEAD_Cane, BlockModelGenerators.PlantType.TINTED);
+
+        BlockModelGenerators.BlockFamilyProvider blue = blockStateModelGenerator.family(Blocks.COBBLESTONE);
+        blue.stairs(GeneralBlocks.COBBLESTONE_STAIRS);
 
         mapleModelDatagenHelper.registerMachineExtractor(GrowableOresBlocks.MolecularTransformerBlock, true);
         mapleModelDatagenHelper.registerMachineDiffBottom(GrowableOresBlocks.Brew_Reactor_BLOCK, true);

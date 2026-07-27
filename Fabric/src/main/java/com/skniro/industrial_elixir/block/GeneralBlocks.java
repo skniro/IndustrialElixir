@@ -84,7 +84,7 @@ public class GeneralBlocks {
     public static final Block Rubber_BUTTON = registerBlock("rubber_button",
             (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), Blocks.buttonProperties());
     public static final Block Rubber_STAIRS = registerBlock("rubber_stairs",
-            (settings)-> new StairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+            (settings)-> new ModStairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Block Rubber_SLAB = registerBlock("rubber_slab",
             SlabBlock::new, (BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
     public static final Block Rubber_FENCE_GATE = registerBlock("rubber_fence_gate",
@@ -150,6 +150,9 @@ public class GeneralBlocks {
     public static final Block LATTE = registerBlockWithoutItem("latte", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
     public static final Block MOCHA = registerBlockWithoutItem("mocha", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
     public static final Block HOT_COCOA = registerBlockWithoutItem("hot_cocoa", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
+
+    public static final Block COBBLESTONE_STAIRS = registerBlock("cobblestone_stairs",
+            (settings)-> new ModStairBlock(Blocks.COBBLESTONE_STAIRS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_STAIRS));
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
         Block block = (Block)factory.apply(settings.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name))));

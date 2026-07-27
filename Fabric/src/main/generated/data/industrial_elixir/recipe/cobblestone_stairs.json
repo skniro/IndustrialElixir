@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "b": "minecraft:cobblestone",
+    "i": "minecraft:blue_dye"
+  },
+  "pattern": [
+    "b  ",
+    "bi ",
+    "bbb"
+  ],
+  "result": {
+    "count": 6,
+    "id": "industrial_elixir:cobblestone_stairs"
+  }
+}
