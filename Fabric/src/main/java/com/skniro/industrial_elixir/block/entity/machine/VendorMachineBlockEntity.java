@@ -115,11 +115,6 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, E
         pool.add(wt(() -> makeOffer(em(4), items(GrowableOresItems.ADVANCED_HEAT_VENT, 1)), 10));
         pool.add(wt(() -> makeOffer(em(8), items(GrowableOresItems.OVERCLOCKED_HEAT_VENT, 1)), 5));
 
-        pool.add(wt(() -> makeOffer(em(2), items(GrowableOresItems.REACTOR_PLATING, 1)), 15));
-        pool.add(wt(() -> makeOffer(em(12), items(GrowableOresItems.NEUTRON_REFLECTOR, 1)), 5));
-        pool.add(wt(() -> makeOffer(em(10), items(GrowableOresItems.HEAT_EXCHANGER, 1)), 5));
-
-
         // ==================== 原矿 ====================
         pool.add(wt(() -> makeOffer(em(1), items(GrowableOresItems.Raw_Lead, 4)), 25));
         pool.add(wt(() -> makeOffer(em(1), items(GrowableOresItems.Raw_Tin, 4)), 25));

@@ -154,13 +154,18 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
                         new Material(Identifier.parse("industrial_elixir:block/spring_still")),
                         new Material(Identifier.parse("industrial_elixir:block/spring_flow")),
                         null,
-                        _ -> 0xA1E0E7EC
+                        _ -> 0xEDDBDBDB
                 ));
+
+        final FluidModel.Unbaked Fluid_UU_MODEL = new FluidModel.Unbaked(
+                new Material(Identifier.withDefaultNamespace("block/water_still")),
+                new Material(Identifier.withDefaultNamespace("block/water_flow")),
+                new Material(Identifier.withDefaultNamespace("block/water_overlay")), _ -> 0xA1C64CEB);
 
 
         ParticleProviderRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING, MapleCampfireSmokeParticle.CosySmokeFactory::new);
 
-        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU, IndustrialElixirFluids.FLOWING_Fluid_UU, IndustrialElixirFluids.Fluid_UU_MODEL);
+        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU, IndustrialElixirFluids.FLOWING_Fluid_UU, Fluid_UU_MODEL);
     }
 
     private void renderHud(GuiGraphicsExtractor context, DeltaTracker tickCounter) {

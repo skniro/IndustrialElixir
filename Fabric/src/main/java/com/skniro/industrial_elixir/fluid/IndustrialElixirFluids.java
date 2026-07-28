@@ -37,10 +37,5 @@ import net.minecraft.world.level.material.FlowingFluid;
             FLOWING_Hot_Spring = Registry.register(BuiltInRegistries.FLUID,
                     Helper.id( "flowing_hot_spring_water"), new MapleHotSpringFluid.Flowing());
         }
-
-        public static final FluidModel.Unbaked Fluid_UU_MODEL = new FluidModel.Unbaked(
-                new Material(Identifier.withDefaultNamespace("block/water_still")),
-                new Material(Identifier.withDefaultNamespace("block/water_flow")),
-                new Material(Identifier.withDefaultNamespace("block/water_overlay")), _ -> 0xA1C64CEB);
     }
 

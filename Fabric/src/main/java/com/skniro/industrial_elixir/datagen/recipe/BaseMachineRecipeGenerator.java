@@ -37,10 +37,10 @@ public class BaseMachineRecipeGenerator extends FabricRecipeProvider {
                         .pattern(" E ").pattern(" S ").pattern(" G ")
                         .unlockedBy("has_item", this.has(GrowableOresItems.RE_BATTERY)).save(this.output,"base_machine_to_coal_generator");
 
-                shaped(RecipeCategory.MISC, GrowableOresBlocks.NUCLEAR_REACTOR)
+/*                shaped(RecipeCategory.MISC, GrowableOresBlocks.NUCLEAR_REACTOR)
                         .define('M', GeneralBlocks.Advanced_Machine).define('C', GrowableOresItems.Advanced_Circuit).define('P', GrowableOresItems.REACTOR_PLATING).define('U', GrowableOresItems.SACRED_INGOT)
                         .pattern("PCP").pattern("UMU").pattern("PCP")
-                        .unlockedBy("has_item", this.has(GrowableOresItems.SACRED_INGOT)).save(this.output);
+                        .unlockedBy("has_item", this.has(GrowableOresItems.SACRED_INGOT)).save(this.output);*/
 
                 shaped(RecipeCategory.MISC, GrowableOresBlocks.GENERATOR_SolarPanel)
                         .define('G', Items.GLASS).define('E', GrowableOresItems.COAL_DUST).define('S', GrowableOresBlocks.COAL_GENERATOR).define('C', GrowableOresItems.Circuit)
