@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:feather_cane",
-    "result": {
-        "id": "minecraft:feather",
-        "count": 2
-    }
-}

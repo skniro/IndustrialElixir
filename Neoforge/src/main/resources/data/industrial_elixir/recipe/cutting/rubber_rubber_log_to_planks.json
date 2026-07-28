@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "industrial_elixir:rubber_rubber_log",
+  "result": {
+    "count": 6,
+    "id": "industrial_elixir:rubber_planks"
+  }
+}

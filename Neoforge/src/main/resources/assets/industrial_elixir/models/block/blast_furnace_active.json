@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/blast_furnace_bottom",
+    "east": "industrial_elixir:block/blast_furnace_side_active",
+    "north": "industrial_elixir:block/blast_furnace_front",
+    "particle": "industrial_elixir:block/blast_furnace_side",
+    "south": "industrial_elixir:block/blast_furnace_back",
+    "up": "industrial_elixir:block/blast_furnace_top_active",
+    "west": "industrial_elixir:block/blast_furnace_side_active"
+  }
+}

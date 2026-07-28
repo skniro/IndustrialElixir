@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:tool_rolling",
+    "industrial_elixir:lead_plate"
+  ],
+  "result": {
+    "count": 2,
+    "id": "industrial_elixir:lead_casing"
+  }
+}

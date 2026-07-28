@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "industrial_elixir:gold_plate",
+    "H": "industrial_elixir:advanced_heat_vent"
+  },
+  "pattern": [
+    " G ",
+    "GHG",
+    " G "
+  ],
+  "result": {
+    "id": "industrial_elixir:overclocked_heat_vent"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:generator_solar_panel",
+    "D": "industrial_elixir:alloy_plate",
+    "E": "industrial_elixir:irradiant_reinforced_plate",
+    "P": "industrial_elixir:advanced_circuit",
+    "R": "industrial_elixir:irradiant_glass_pane"
+  },
+  "pattern": [
+    "RRR",
+    "DAD",
+    "PEP"
+  ],
+  "result": {
+    "id": "industrial_elixir:generator_advanced_solar_panel"
+  }
+}

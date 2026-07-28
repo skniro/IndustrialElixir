@@ -1,0 +1,12 @@
+{
+  "type": "industrial_elixir:heat_centrifuge",
+  "count": 1,
+  "ingredient": "industrial_elixir:slag",
+  "result": {
+    "count": 5,
+    "id": "industrial_elixir:coal_dust"
+  },
+  "result2": {
+    "id": "industrial_elixir:small_gold_dust"
+  }
+}

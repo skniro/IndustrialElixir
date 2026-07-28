@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:alloy_plate",
+    "D": "industrial_elixir:carbon_plate",
+    "R": "industrial_elixir:iridium_amethyst_plate"
+  },
+  "pattern": [
+    "ADA",
+    "DRD",
+    "ADA"
+  ],
+  "result": {
+    "id": "industrial_elixir:reinforced_iridium_amethyst_plate"
+  }
+}

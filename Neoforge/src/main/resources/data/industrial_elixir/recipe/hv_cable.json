@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:tool_cutting",
+    "industrial_elixir:iron_plate"
+  ],
+  "result": {
+    "count": 4,
+    "id": "industrial_elixir:hv_cable"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:metal_former_extruding",
+  "count": 1,
+  "ingredient": "minecraft:iron_ingot",
+  "result": {
+    "count": 4,
+    "id": "industrial_elixir:hv_cable"
+  }
+}

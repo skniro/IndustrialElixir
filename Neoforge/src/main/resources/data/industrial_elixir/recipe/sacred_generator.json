@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:advanced_machine",
+    "C": "industrial_elixir:advanced_circuit",
+    "G": "industrial_elixir:coal_generator",
+    "L": "industrial_elixir:dense_lead_plate",
+    "M": "industrial_elixir:machine"
+  },
+  "pattern": [
+    "LCL",
+    "MAM",
+    "LGL"
+  ],
+  "result": {
+    "id": "industrial_elixir:sacred_generator"
+  }
+}

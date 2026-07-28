@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crushed_tin": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:crushed_tin"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "industrial_elixir:tin_ingot_from_smelting_crushed_tin"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_crushed_tin"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "industrial_elixir:tin_ingot_from_smelting_crushed_tin"
+    ]
+  }
+}

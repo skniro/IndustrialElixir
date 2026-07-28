@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:glass",
+    "I": "industrial_elixir:iron_casing",
+    "M": "industrial_elixir:coal_generator",
+    "T": "industrial_elixir:empty_cell"
+  },
+  "pattern": [
+    "GTG",
+    "GTG",
+    "IMI"
+  ],
+  "result": {
+    "id": "industrial_elixir:fluid_generator"
+  }
+}

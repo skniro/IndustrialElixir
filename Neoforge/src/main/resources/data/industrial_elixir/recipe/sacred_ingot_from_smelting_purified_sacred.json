@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 300,
+  "experience": 0.45,
+  "group": "sacred_ingot",
+  "ingredient": "industrial_elixir:purified_sacred",
+  "result": {
+    "id": "industrial_elixir:sacred_ingot"
+  }
+}

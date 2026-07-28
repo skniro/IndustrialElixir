@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "industrial_elixir:alloy_plate",
+    "P": "minecraft:glass"
+  },
+  "pattern": [
+    "PPP",
+    "CPC",
+    "PPP"
+  ],
+  "result": {
+    "count": 7,
+    "id": "industrial_elixir:reinforced_glass"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:metal_former_extruding",
+  "count": 1,
+  "ingredient": "industrial_elixir:tin_ingot",
+  "result": {
+    "count": 3,
+    "id": "industrial_elixir:tin_cable"
+  }
+}

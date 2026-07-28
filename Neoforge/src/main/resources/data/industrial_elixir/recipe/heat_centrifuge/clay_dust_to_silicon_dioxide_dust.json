@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:heat_centrifuge",
+  "count": 4,
+  "ingredient": "industrial_elixir:clay_dust",
+  "result": {
+    "count": 5,
+    "id": "industrial_elixir:silicon_dioxide_dust"
+  }
+}

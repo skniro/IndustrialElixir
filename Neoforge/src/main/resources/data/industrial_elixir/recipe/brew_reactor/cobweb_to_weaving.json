@@ -1,0 +1,16 @@
+{
+  "type": "industrial_elixir:brew_reactor",
+  "count": 1,
+  "fluid": "minecraft:water",
+  "fluid_amount": 1000,
+  "ingredient": "minecraft:cobweb",
+  "ingredient2": "minecraft:glass_bottle",
+  "result": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "minecraft:weaving"
+      }
+    },
+    "id": "minecraft:potion"
+  }
+}

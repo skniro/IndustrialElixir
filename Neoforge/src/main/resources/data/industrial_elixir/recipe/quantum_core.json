@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:ender_eye",
+    "P": "minecraft:nether_star",
+    "R": "industrial_elixir:enriched_luminite_alloy"
+  },
+  "pattern": [
+    "RPR",
+    "PEP",
+    "RPR"
+  ],
+  "result": {
+    "id": "industrial_elixir:quantum_core"
+  }
+}

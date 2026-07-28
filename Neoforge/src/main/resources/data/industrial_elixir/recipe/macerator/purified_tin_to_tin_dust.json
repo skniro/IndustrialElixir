@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:purified_tin",
+  "result": {
+    "id": "industrial_elixir:tin_dust"
+  }
+}

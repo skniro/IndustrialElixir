@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 2,
+  "ingredient": "minecraft:ice",
+  "result": {
+    "id": "minecraft:packed_ice"
+  }
+}

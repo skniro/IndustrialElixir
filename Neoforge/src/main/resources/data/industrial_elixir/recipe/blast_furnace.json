@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "industrial_elixir:heat_conductor",
+    "G": "industrial_elixir:machine",
+    "I": "industrial_elixir:iron_casing"
+  },
+  "pattern": [
+    "III",
+    "IGI",
+    "ICI"
+  ],
+  "result": {
+    "id": "industrial_elixir:blast_furnace"
+  }
+}

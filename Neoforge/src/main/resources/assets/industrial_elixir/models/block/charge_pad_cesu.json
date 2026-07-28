@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/charge_pad_cesu_bottom",
+    "east": "industrial_elixir:block/charge_pad_cesu_side",
+    "north": "industrial_elixir:block/charge_pad_cesu_front",
+    "particle": "industrial_elixir:block/charge_pad_cesu_side",
+    "south": "industrial_elixir:block/charge_pad_cesu_back",
+    "up": "industrial_elixir:block/charge_pad_cesu_top",
+    "west": "industrial_elixir:block/charge_pad_cesu_side"
+  }
+}

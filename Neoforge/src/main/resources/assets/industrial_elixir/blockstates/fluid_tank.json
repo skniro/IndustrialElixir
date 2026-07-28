@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "industrial_elixir:block/fluid_tank",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "industrial_elixir:block/fluid_tank"
+    },
+    "facing=south": {
+      "model": "industrial_elixir:block/fluid_tank",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "industrial_elixir:block/fluid_tank",
+      "y": 270
+    }
+  }
+}

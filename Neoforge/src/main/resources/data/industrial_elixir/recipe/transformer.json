@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "industrial_elixir:circuit",
+    "G": "#minecraft:planks",
+    "M": "industrial_elixir:re_battery",
+    "S": "industrial_elixir:insulated_copper_cable"
+  },
+  "pattern": [
+    "GGG",
+    "SMS",
+    "GEG"
+  ],
+  "result": {
+    "id": "industrial_elixir:transformer"
+  }
+}

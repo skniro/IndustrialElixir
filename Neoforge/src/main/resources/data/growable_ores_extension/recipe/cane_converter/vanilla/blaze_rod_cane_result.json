@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:blaze_rod_cane",
-    "result": {
-        "id": "minecraft:blaze_rod",
-        "count": 1
-    }
-}

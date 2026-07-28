@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:bamboo_block",
+  "result": {
+    "count": 6,
+    "id": "minecraft:bamboo_planks"
+  }
+}

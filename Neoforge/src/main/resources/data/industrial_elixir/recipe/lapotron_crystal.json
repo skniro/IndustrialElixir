@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "industrial_elixir:energy_crystal",
+    "I": "industrial_elixir:lapis_dust",
+    "T": "industrial_elixir:advanced_circuit"
+  },
+  "pattern": [
+    "ITI",
+    "IBI",
+    "ITI"
+  ],
+  "result": {
+    "id": "industrial_elixir:lapotron_crystal"
+  }
+}

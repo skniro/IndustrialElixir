@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "industrial_elixir:tool_rolling",
+    "minecraft:gold_ingot"
+  ],
+  "result": {
+    "id": "industrial_elixir:gold_plate"
+  }
+}

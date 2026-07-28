@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:wool_cane",
-    "result": {
-        "id": "minecraft:white_wool",
-        "count": 2
-    }
-}

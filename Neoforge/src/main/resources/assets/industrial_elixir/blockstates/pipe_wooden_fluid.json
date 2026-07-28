@@ -1,0 +1,128 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_core"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_side"
+      },
+      "when": {
+        "north": "true",
+        "pull_north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_pull_side"
+      },
+      "when": {
+        "north": "true",
+        "pull_north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "pull_east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_pull_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "pull_east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_side",
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "pull_south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_pull_side",
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "pull_south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_side",
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "pull_west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_pull_side",
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "pull_west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_side",
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "pull_up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_pull_side",
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "pull_up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_side",
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "pull_down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "industrial_elixir:block/pipes/pipe_wooden_fluid_pull_side",
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "pull_down": "true"
+      }
+    }
+  ]
+}
+

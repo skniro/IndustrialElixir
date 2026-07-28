@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/mfe_top",
+    "east": "industrial_elixir:block/mfe_side",
+    "north": "industrial_elixir:block/mfe_front",
+    "particle": "industrial_elixir:block/mfe_side",
+    "south": "industrial_elixir:block/mfe_side",
+    "up": "industrial_elixir:block/mfe_top",
+    "west": "industrial_elixir:block/mfe_side"
+  }
+}

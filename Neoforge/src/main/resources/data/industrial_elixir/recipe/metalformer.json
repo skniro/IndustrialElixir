@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "industrial_elixir:circuit",
+    "F": "industrial_elixir:coil",
+    "G": "industrial_elixir:bronze_casing",
+    "S": "industrial_elixir:machine"
+  },
+  "pattern": [
+    " C ",
+    "GSG",
+    "FFF"
+  ],
+  "result": {
+    "id": "industrial_elixir:metalformer"
+  }
+}

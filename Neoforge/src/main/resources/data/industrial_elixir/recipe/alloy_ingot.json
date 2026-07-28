@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "industrial_elixir:bronze_plate",
+    "I": "industrial_elixir:iron_plate",
+    "T": "industrial_elixir:tin_plate"
+  },
+  "pattern": [
+    "III",
+    "BBB",
+    "TTT"
+  ],
+  "result": {
+    "id": "industrial_elixir:alloy_ingot"
+  }
+}

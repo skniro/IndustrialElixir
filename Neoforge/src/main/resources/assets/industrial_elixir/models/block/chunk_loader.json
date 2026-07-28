@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/chunk_loader_bottom",
+    "east": "industrial_elixir:block/chunk_loader_side",
+    "north": "industrial_elixir:block/chunk_loader_side",
+    "particle": "industrial_elixir:block/chunk_loader_side",
+    "south": "industrial_elixir:block/chunk_loader_side",
+    "up": "industrial_elixir:block/chunk_loader_top",
+    "west": "industrial_elixir:block/chunk_loader_side"
+  }
+}

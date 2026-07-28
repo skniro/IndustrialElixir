@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 1,
+  "ingredient": "industrial_elixir:crushed_sacred",
+  "result": {
+    "id": "industrial_elixir:sacred_ingot"
+  }
+}

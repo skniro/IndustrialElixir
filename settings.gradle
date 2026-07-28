@@ -20,6 +20,6 @@ pluginManagement {
 }
 
 
-rootProject.name = 'GrowableExtension-1.21.6'
-//include("Fabric", "Neoforge")
-include("Fabric")
+rootProject.name = 'IndustrialElixir-26.1'
+include("Fabric", "Neoforge")
+//include("Fabric")

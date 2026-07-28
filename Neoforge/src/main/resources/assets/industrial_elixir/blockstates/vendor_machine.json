@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "industrial_elixir:block/vendor_machine",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "industrial_elixir:block/vendor_machine"
+    },
+    "facing=south": {
+      "model": "industrial_elixir:block/vendor_machine",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "industrial_elixir:block/vendor_machine",
+      "y": 270
+    }
+  }
+}

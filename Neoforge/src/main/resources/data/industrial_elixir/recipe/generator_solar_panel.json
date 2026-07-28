@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "industrial_elixir:circuit",
+    "E": "industrial_elixir:coal_dust",
+    "G": "minecraft:glass",
+    "S": "industrial_elixir:coal_generator"
+  },
+  "pattern": [
+    "EGE",
+    "GEG",
+    "CSC"
+  ],
+  "result": {
+    "id": "industrial_elixir:generator_solar_panel"
+  }
+}

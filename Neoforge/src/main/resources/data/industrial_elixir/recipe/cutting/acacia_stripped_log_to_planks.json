@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:stripped_acacia_log",
+  "result": {
+    "count": 6,
+    "id": "minecraft:acacia_planks"
+  }
+}

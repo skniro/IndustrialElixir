@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:ore_washing",
+  "count": 1,
+  "fluid": "minecraft:water",
+  "fluid_amount": 1000,
+  "ingredient": "industrial_elixir:crushed_sacred",
+  "result": {
+    "id": "industrial_elixir:purified_sacred"
+  },
+  "result3": {
+    "id": "industrial_elixir:stone_dust"
+  }
+}

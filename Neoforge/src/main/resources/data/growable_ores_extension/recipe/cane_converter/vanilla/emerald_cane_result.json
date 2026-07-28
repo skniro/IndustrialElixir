@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:emerald_cane",
-    "result": {
-        "id": "minecraft:emerald",
-        "count": 1
-    }
-}

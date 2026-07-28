@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "industrial_elixir:machine",
+    "G": "industrial_elixir:energy_crystal",
+    "S": "industrial_elixir:insulated_gold_cable"
+  },
+  "pattern": [
+    "SGS",
+    "GFG",
+    "SGS"
+  ],
+  "result": {
+    "id": "industrial_elixir:mfe"
+  }
+}

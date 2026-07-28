@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "industrial_elixir:stripped_rubber_wood",
+  "result": {
+    "count": 6,
+    "id": "industrial_elixir:rubber_planks"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "industrial_elixir:item/bronze_pickaxe"
+  }
+}

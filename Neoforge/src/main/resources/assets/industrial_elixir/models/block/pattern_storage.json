@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/pattern_storage_bottom",
+    "east": "industrial_elixir:block/pattern_storage_side",
+    "north": "industrial_elixir:block/pattern_storage_front",
+    "particle": "industrial_elixir:block/pattern_storage_side",
+    "south": "industrial_elixir:block/pattern_storage_side",
+    "up": "industrial_elixir:block/pattern_storage_top",
+    "west": "industrial_elixir:block/pattern_storage_side"
+  }
+}

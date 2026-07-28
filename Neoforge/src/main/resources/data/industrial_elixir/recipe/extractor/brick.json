@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:extractor",
+  "ingredient": "minecraft:bricks",
+  "result": {
+    "count": 4,
+    "id": "minecraft:brick"
+  }
+}

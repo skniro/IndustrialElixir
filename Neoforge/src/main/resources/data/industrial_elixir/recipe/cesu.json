@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "industrial_elixir:advanced_re_battery",
+    "G": "industrial_elixir:bronze_plate",
+    "S": "industrial_elixir:insulated_copper_cable"
+  },
+  "pattern": [
+    "GSG",
+    "FFF",
+    "GGG"
+  ],
+  "result": {
+    "id": "industrial_elixir:cesu"
+  }
+}

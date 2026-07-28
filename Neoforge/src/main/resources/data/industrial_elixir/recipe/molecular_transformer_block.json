@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:advanced_machine",
+    "E": "industrial_elixir:ev_transformer",
+    "P": "industrial_elixir:advanced_circuit",
+    "R": "industrial_elixir:mt_core"
+  },
+  "pattern": [
+    "AEA",
+    "PRP",
+    "AEA"
+  ],
+  "result": {
+    "id": "industrial_elixir:molecular_transformer_block"
+  }
+}

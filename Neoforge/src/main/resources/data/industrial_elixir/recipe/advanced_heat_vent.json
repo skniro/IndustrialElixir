@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "D": "minecraft:diamond",
+    "H": "industrial_elixir:heat_vent"
+  },
+  "pattern": [
+    "BHB",
+    "BDB",
+    "BHB"
+  ],
+  "result": {
+    "id": "industrial_elixir:advanced_heat_vent"
+  }
+}

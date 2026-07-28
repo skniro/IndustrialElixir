@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:raw_lead",
+  "result": {
+    "count": 2,
+    "id": "industrial_elixir:crushed_lead"
+  }
+}

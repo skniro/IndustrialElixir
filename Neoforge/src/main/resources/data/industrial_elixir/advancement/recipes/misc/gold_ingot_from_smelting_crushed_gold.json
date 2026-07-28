@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crushed_gold": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:crushed_gold"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "industrial_elixir:gold_ingot_from_smelting_crushed_gold"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_crushed_gold"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "industrial_elixir:gold_ingot_from_smelting_crushed_gold"
+    ]
+  }
+}

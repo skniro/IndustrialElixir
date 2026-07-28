@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/electric_furnace_bottom",
+    "east": "industrial_elixir:block/electric_furnace_side",
+    "north": "industrial_elixir:block/electric_furnace_front",
+    "particle": "industrial_elixir:block/electric_furnace_side",
+    "south": "industrial_elixir:block/electric_furnace_side",
+    "up": "industrial_elixir:block/electric_furnace_top",
+    "west": "industrial_elixir:block/electric_furnace_side"
+  }
+}

@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:redstone_cane",
-    "result": {
-        "id": "minecraft:redstone",
-        "count": 4
-    }
-}

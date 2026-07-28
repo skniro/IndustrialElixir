@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "industrial_elixir:advanced_circuit",
+    "C": "industrial_elixir:copper_plate",
+    "E": "industrial_elixir:electric_furnace",
+    "M": "industrial_elixir:advanced_machine"
+  },
+  "pattern": [
+    "CAC",
+    "EAE",
+    "CMC"
+  ],
+  "result": {
+    "id": "industrial_elixir:induction_furnace"
+  }
+}

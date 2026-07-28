@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:clay_cane",
-    "result": {
-        "id": "minecraft:clay",
-        "count": 1
-    }
-}

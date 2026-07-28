@@ -1,0 +1,288 @@
+package com.skniro.industrial_elixir.block.entity.machine;
+
+import com.skniro.industrial_elixir.api.block.ImplementedInventory;
+import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
+import com.skniro.industrial_elixir.api.block.MachineRecipeProvider;
+import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
+import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
+import com.skniro.industrial_elixir.energy.api.EnergyStorage;
+import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
+import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
+import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
+import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
+import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+
+public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity implements MachineRecipeProvider  {
+    public int progress = 0;
+    public int maxProgress = 72;
+    private final int DEFAULT_MAX_PROGRESS = 72;
+    protected final ContainerData propertyDelegate;
+
+    public AbstractMachineEntity(BlockEntityType entityType, BlockPos pos, BlockState state) {
+        super(entityType, pos, state);
+
+        this.propertyDelegate = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> AbstractMachineEntity.this.progress;
+                    case 1 -> AbstractMachineEntity.this.maxProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0: AbstractMachineEntity.this.progress = value;
+                    case 1: AbstractMachineEntity.this.maxProgress = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
+    }
+
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        Direction localDir = this.getLevel().getBlockState(worldPosition).getValue(AbstractMachineblock.FACING);
+
+        if(side == null) {
+            return false;
+        }
+
+        if(side == Direction.DOWN) {
+            return false;
+        }
+
+        if(side == Direction.UP) {
+            return slot == INPUT_SLOT;
+        }
+
+        return switch (localDir) {
+            default -> //NORTH
+                    side == Direction.NORTH && slot == INPUT_SLOT ||
+                            side == Direction.EAST && slot == INPUT_SLOT ||
+                            side == Direction.WEST && slot == INPUT_SLOT;
+            case EAST ->
+                    side.getCounterClockWise() == Direction.NORTH && slot == INPUT_SLOT ||
+                            side.getCounterClockWise() == Direction.EAST && slot == INPUT_SLOT ||
+                            side.getCounterClockWise() == Direction.WEST && slot == INPUT_SLOT;
+            case SOUTH ->
+                    side.getOpposite() == Direction.NORTH && slot == INPUT_SLOT ||
+                            side.getOpposite()  == Direction.EAST && slot == INPUT_SLOT ||
+                            side.getOpposite()  == Direction.WEST && slot == INPUT_SLOT;
+            case WEST ->
+                    side.getClockWise() == Direction.NORTH && slot == INPUT_SLOT ||
+                            side.getClockWise() == Direction.EAST && slot == INPUT_SLOT ||
+                            side.getClockWise() == Direction.WEST && slot == INPUT_SLOT;
+        };
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        Direction localDir = this.getLevel().getBlockState(this.worldPosition).getValue(AbstractMachineblock.FACING);
+
+        if(side == Direction.UP) {
+            return false;
+        }
+
+        // Down extract
+        if(side == Direction.DOWN) {
+            return slot == OUTPUT_SLOT;
+        }
+
+        // backside extract
+        // right extract
+        return switch (localDir) {
+            default ->  side == Direction.SOUTH && slot == OUTPUT_SLOT ||
+                    side == Direction.EAST && slot == OUTPUT_SLOT;
+
+            case EAST -> side.getCounterClockWise() == Direction.SOUTH && slot == OUTPUT_SLOT ||
+                    side.getCounterClockWise() == Direction.EAST && slot == OUTPUT_SLOT;
+
+            case SOUTH ->  side.getOpposite() == Direction.SOUTH && slot == OUTPUT_SLOT ||
+                    side.getOpposite() == Direction.EAST && slot == OUTPUT_SLOT;
+
+            case WEST -> side.getClockWise() == Direction.SOUTH && slot == OUTPUT_SLOT ||
+                    side.getClockWise() == Direction.EAST && slot == OUTPUT_SLOT;
+        };
+    }
+
+    public ItemStack getRenderStack() {
+            return this.getItem(INPUT_SLOT);
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput nbt) {
+        super.saveAdditional(nbt);
+        ContainerHelper.saveAllItems(nbt, inventory);
+        nbt.putInt("abstract_machine.progress", progress);
+        nbt.putInt("abstract_machine.max_progress", maxProgress);
+        nbt.putLong("abstract_machine.energy", energyContainer.amount);
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput nbt) {
+        ContainerHelper.loadAllItems(nbt, inventory);
+        progress = nbt.getIntOr("abstract_machine.progress", 0);
+        maxProgress = nbt.getIntOr("abstract_machine.max_progress", 72);
+        energyContainer.amount = nbt.getLongOr("abstract_machine.energy", 300);
+        super.loadAdditional(nbt);
+    }
+
+    public void tick(Level world, BlockPos pos, BlockState state) {
+        if(world.isClientSide()) {
+            return;
+        }
+        charge(ENERGY_ITEM_SLOT);
+
+        if (hasRecipe() && canInsertIntoOutputSlot()) {
+            increaseCraftingProgress();
+            useEnergyForCrafting();
+            setChanged(world, pos, state);
+
+            if (hasCraftingFinished()) {
+                craftItem();
+                resetProgress();
+            }
+        } else {
+            resetProgress();
+        }
+
+        boolean isWorking = hasRecipe() && hasEnoughEnergyToCraft();
+        if (state.getValue(AbstractMachineblock.LIT) != isWorking) {
+            world.setBlock(pos, state.setValue(AbstractMachineblock.LIT, isWorking), 3);
+        }
+    }
+
+    public void useEnergyForCrafting() {
+        long baseUse = getCraftEnergyCost() / 20;
+        long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
+        try (Transaction tx = Transaction.openOuter()) {
+            energyContainer.getSideStorage(null).extract(effectiveUse, tx);
+            tx.commit();
+        }
+    }
+
+
+    public void resetProgress() {
+        this.progress = 0;
+        this.maxProgress = DEFAULT_MAX_PROGRESS;
+    }
+
+    protected void craftItem() {
+        Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
+        ItemStack output = recipe.get().value().output().create();
+        this.removeItem(INPUT_SLOT, recipe.get().value().requiredCount());
+        if (this.getItem(OUTPUT_SLOT).isEmpty()) {
+            this.setItem(OUTPUT_SLOT, output.copy());
+        } else {
+            this.getItem(OUTPUT_SLOT).grow(output.getCount());
+        }
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        if (direction != Direction.DOWN) {
+            return new int[]{INPUT_SLOT};
+        } else {
+            return new int[]{OUTPUT_SLOT};
+        }
+    }
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return slot != OUTPUT_SLOT;
+    }
+
+    public boolean hasCraftingFinished() {
+        return this.progress >= this.maxProgress;
+    }
+
+    // 处理速度受 Overclocker 升级影响
+    public void increaseCraftingProgress() {
+        double speedMult = getProcessTimeMultiplier();
+        this.progress += (int) speedMult;
+    }
+
+    protected boolean canInsertIntoOutputSlot() {
+        return this.getItem(OUTPUT_SLOT).isEmpty() ||
+                this.getItem(OUTPUT_SLOT).getCount() < this.getItem(OUTPUT_SLOT).getMaxStackSize();
+    }
+
+    public boolean hasRecipe() {
+        Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
+        if(recipe.isEmpty()) {
+            return false;
+        }
+
+        ItemStack output = recipe.get().value().output().create();
+        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft();
+    }
+
+    protected boolean hasEnoughEnergyToCraft() {
+        return this.energyContainer.amount >= (long) (getCraftEnergyCost()/ 20) * maxProgress;
+    }
+
+    protected Optional<RecipeHolder<AbstractMachineCraftingRecipe>> getCurrentRecipe() {
+        return this.getLevel().getServer().getRecipeManager()
+                .getRecipeFor((RecipeType<AbstractMachineCraftingRecipe>) getCurrentRecipeType(), new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
+    }
+
+    protected boolean canInsertItemIntoOutputSlot(ItemStack output) {
+        return this.getItem(OUTPUT_SLOT).isEmpty() || ItemStack.isSameItemSameComponents(this.getItem(OUTPUT_SLOT), output);
+    }
+
+    protected boolean canInsertAmountIntoOutputSlot(int count) {
+        int maxCount = this.getItem(OUTPUT_SLOT).isEmpty() ? 64 : this.getItem(OUTPUT_SLOT).getMaxStackSize();
+        int currentCount = this.getItem(OUTPUT_SLOT).getCount();
+
+        return maxCount >= currentCount + count;
+    }
+
+    @Override
+    public long getMachineCapacity() {
+        long extra = getEnergyStorageUpgrade();
+        return energyTier == EnergyTier.INFINITE ? Long.MAX_VALUE : 512 + extra;
+    }
+
+    @Override
+    public long getCraftEnergyCost(){
+        return ENERGY_CRAFTING_AMOUNT;
+    }
+}

@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:coal_cane",
-    "result": {
-        "id": "minecraft:coal",
-        "count": 4
-    }
-}

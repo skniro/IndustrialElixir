@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "industrial_elixir:irradiant_sacred",
+    "R": "industrial_elixir:luminite"
+  },
+  "pattern": [
+    "DDD",
+    "DRD",
+    "DDD"
+  ],
+  "result": {
+    "id": "industrial_elixir:enriched_luminite"
+  }
+}

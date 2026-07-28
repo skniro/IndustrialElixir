@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:dark_oak_wood",
+  "result": {
+    "count": 6,
+    "id": "minecraft:dark_oak_planks"
+  }
+}

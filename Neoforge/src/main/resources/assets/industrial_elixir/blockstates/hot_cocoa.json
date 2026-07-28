@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "industrial_elixir:block/hot_cocoa",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "industrial_elixir:block/hot_cocoa"
+    },
+    "facing=south": {
+      "model": "industrial_elixir:block/hot_cocoa",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "industrial_elixir:block/hot_cocoa",
+      "y": 270
+    }
+  }
+}
