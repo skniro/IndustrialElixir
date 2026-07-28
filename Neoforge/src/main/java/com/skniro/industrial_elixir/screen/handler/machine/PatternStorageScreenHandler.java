@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class PatternStorageScreenHandler extends AbstractContainerMenu {
     final Container inventory;
@@ -25,13 +26,13 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
     public static final int COPY_BUTTON_ID = 0;
 
     // Client-side constructor
-    public PatternStorageScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public PatternStorageScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     // Server-side constructor
     public PatternStorageScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.PatternStorage, syncId);
+        super(AlchemyScreenHandlerType.PatternStorage.get(), syncId);
         checkContainerSize((Container) blockEntity, 12);
         this.inventory = (Container) blockEntity;
         this.blockEntity = (PatternStorageBlockEntity) blockEntity;

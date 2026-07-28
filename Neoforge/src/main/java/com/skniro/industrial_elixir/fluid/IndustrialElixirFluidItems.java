@@ -30,14 +30,14 @@ public class IndustrialElixirFluidItems {
             (settings)->  new BucketItem(IndustrialElixirFluids.STILL_Fluid_UU.get(), settings), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
     public static final Supplier<Item> Fluid_AIR_BUCKET = registerItem("fluid_air_bucket",
             (settings)->  new BucketItem(IndustrialElixirFluids.STILL_Fluid_AIR.get(), settings), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
-    public static final Supplier<Item> UU_CELL = registerItem("uu_cell",
-            (properties)-> new FluidCellItem(properties, IndustrialElixirFluids.STILL_Fluid_UU.get()), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
-    public static final Supplier<Item> AIR_CELL = registerItem("air_cell",
-            (properties)-> new FluidCellItem(properties, IndustrialElixirFluids.STILL_Fluid_AIR.get()), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
+    public static final Supplier<Item> UU_CELL = registerItemDeferred("uu_cell",
+            (properties)-> new FluidCellItem(properties, IndustrialElixirFluids.STILL_Fluid_UU.get()), () -> new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
+    public static final Supplier<Item> AIR_CELL = registerItemDeferred("air_cell",
+            (properties)-> new FluidCellItem(properties, IndustrialElixirFluids.STILL_Fluid_AIR.get()), () -> new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
     public static final Supplier<Item> Hot_Spring_BUCKET = registerItem("hot_spring_bucket",
             (settings)->  new ModBucketItem(IndustrialElixirFluids.STILL_Hot_Spring.get(), settings), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
-    public static final Supplier<Item> Hot_Spring_CELL = registerItem("hot_spring_cell",
-            (settings)->  new FluidCellItem(settings, IndustrialElixirFluids.STILL_Hot_Spring.get()), new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
+    public static final Supplier<Item> Hot_Spring_CELL = registerItemDeferred("hot_spring_cell",
+            (settings)->  new FluidCellItem(settings, IndustrialElixirFluids.STILL_Hot_Spring.get()), () -> new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
 
     public static <B extends Item> Supplier<Item> register(String name, Function<Item.Properties, ? extends B> func, Item.Properties props) {
         return ITEMS.register(name, () -> {
@@ -48,6 +48,13 @@ public class IndustrialElixirFluidItems {
     private static <T extends Item> Supplier<Item> registerItem(String name, Function<Item.Properties, ? extends T> item, Item.Properties properties) {
         Supplier<Item> toReturn = register(name, item, properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
         return toReturn;
+    }
+
+    private static <T extends Item> Supplier<Item> registerItemDeferred(String name, Function<Item.Properties, ? extends T> item, Supplier<Item.Properties> propertiesSupplier) {
+        return ITEMS.register(name, () -> {
+            Item.Properties properties = propertiesSupplier.get();
+            return item.apply(properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
+        });
     }
 
     public static void registerFluidItems(IEventBus eventBus) {

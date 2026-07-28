@@ -82,7 +82,7 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new FluidGeneratorScreenHandler(syncId, playerInventory, worldPosition);
+        return new FluidGeneratorScreenHandler(syncId, playerInventory,  this, propertyDelegate);
     }
 
     @Override

@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class MolecularTransformerCategory implements IRecipeCategory<RecipeHolder<MolecularTransformerCraftingRecipe>> {
 
     public static final IRecipeHolderType<MolecularTransformerCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type);
+            IRecipeHolderType.create(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

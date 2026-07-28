@@ -25,7 +25,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class CropFarmCategory implements IRecipeCategory<RecipeHolder<CropFarmCraftingRecipe>> {
     public static final IRecipeHolderType<CropFarmCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.CROP_FARM.type);
+            IRecipeHolderType.create(AlchemyRecipeType.CROP_FARM.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

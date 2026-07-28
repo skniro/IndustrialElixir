@@ -29,12 +29,12 @@ public class ModBlastFurnaceCraftingRecipe extends AbstractMachineCraftingRecipe
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.MOD_BLAST_FURNACE.serializer;
+        return AlchemyRecipeType.MOD_BLAST_FURNACE.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.MOD_BLAST_FURNACE.type;
+        return AlchemyRecipeType.MOD_BLAST_FURNACE.type.get();
     }
 
     @Override

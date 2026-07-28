@@ -404,7 +404,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
 
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
         return this.getLevel().getServer().getRecipeManager()
-                .getRecipeFor(AlchemyRecipeType.CANE_CONVERTER.type, new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
+                .getRecipeFor(AlchemyRecipeType.CANE_CONVERTER.type.get(), new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {

@@ -37,7 +37,7 @@ import java.util.Optional;
 
 public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewReactorCraftingRecipe>> {
     public static final IRecipeHolderType<BrewReactorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.BREW_REACTOR.type);
+            IRecipeHolderType.create(AlchemyRecipeType.BREW_REACTOR.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

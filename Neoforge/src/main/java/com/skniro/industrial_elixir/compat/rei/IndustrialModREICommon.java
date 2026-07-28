@@ -19,52 +19,52 @@ public class IndustrialModREICommon implements REICommonPlugin {
     @Override
     public void registerDisplays(ServerDisplayRegistry registry) {
         registry.beginRecipeFiller(MaceratorCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.MACERATOR.type)
+                .filterType(AlchemyRecipeType.MACERATOR.type.get())
                 .fill(MaceratorDisplay::new);
         registry.beginRecipeFiller(CompressorCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.COMPRESSOR.type)
+                .filterType(AlchemyRecipeType.COMPRESSOR.type.get())
                 .fill(CompressorDisplay::new);
         registry.beginRecipeFiller(MetalFormerExtrudingCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.METALFORMER_EXTRUDING.type)
+                .filterType(AlchemyRecipeType.METALFORMER_EXTRUDING.type.get())
                 .fill(MetalFormerExtrudingDisplay::new);
         registry.beginRecipeFiller(MetalFormerRollingCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.METALFORMER_ROLLING.type)
+                .filterType(AlchemyRecipeType.METALFORMER_ROLLING.type.get())
                 .fill(MetalFormerRollingDisplay::new);
         registry.beginRecipeFiller(MetalFormerCuttingCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.METALFORMER_CUTTING.type)
+                .filterType(AlchemyRecipeType.METALFORMER_CUTTING.type.get())
                 .fill(MetalFormerCuttingDisplay::new);
         registry.beginRecipeFiller(MolecularTransformerCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type)
+                .filterType(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get())
                 .fill(MolecularTransformerDisplay::new);
         registry.beginRecipeFiller(ExtractorCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.EXTRACTOR.type)
+                .filterType(AlchemyRecipeType.EXTRACTOR.type.get())
                 .fill(ExtractorDisplay::new);
         registry.beginRecipeFiller(AlchemyCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.CANE_CONVERTER.type)
+                .filterType(AlchemyRecipeType.CANE_CONVERTER.type.get())
                 .fill(GrowableOresDisplay::new);
         registry.beginRecipeFiller(RecyclerCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.RECYCLER.type)
+                .filterType(AlchemyRecipeType.RECYCLER.type.get())
                 .fill(RecyclerDisplay::new);
         registry.beginRecipeFiller(CuttingCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.CUTTING.type)
+                .filterType(AlchemyRecipeType.CUTTING.type.get())
                 .fill(BlockCutterDisplay::new);
         registry.beginRecipeFiller(BrewReactorCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.BREW_REACTOR.type)
+                .filterType(AlchemyRecipeType.BREW_REACTOR.type.get())
                 .fill(BrewReactorDisplay::new);
         registry.beginRecipeFiller(HeatCentrifugeCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.HEAT_CENTRIFUGE.type)
+                .filterType(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get())
                 .fill(HeatCentrifugeDisplay::new);
         registry.beginRecipeFiller(OreWashingCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.ORE_WASHING.type)
+                .filterType(AlchemyRecipeType.ORE_WASHING.type.get())
                 .fill(OreWashingDisplay::new);
         registry.beginRecipeFiller(ModBlastFurnaceCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.MOD_BLAST_FURNACE.type)
+                .filterType(AlchemyRecipeType.MOD_BLAST_FURNACE.type.get())
                 .fill(BlastFurnaceDisplay::new);
         registry.beginRecipeFiller(CoffeeMachineCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.COFFEE_MACHINE.type)
+                .filterType(AlchemyRecipeType.COFFEE_MACHINE.type.get())
                 .fill(CoffeeMachineDisplay::new);
         registry.beginRecipeFiller(CropFarmCraftingRecipe.class)
-                .filterType(AlchemyRecipeType.CROP_FARM.type)
+                .filterType(AlchemyRecipeType.CROP_FARM.type.get())
                 .fill(CropFarmDisplay::new);
     }
 

@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class NuclearReactorScreenHandler extends AbstractContainerMenu {
     private static final int REACTOR_GRID_X = 26;
@@ -24,12 +25,12 @@ public class NuclearReactorScreenHandler extends AbstractContainerMenu {
     private final ContainerData propertyDelegate;
     public final NuclearReactorBlockEntity blockEntity;
 
-    public NuclearReactorScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(4));
+    public NuclearReactorScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(4));
     }
 
     public NuclearReactorScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData propertyDelegate) {
-        super(AlchemyScreenHandlerType.NuclearReactor, syncId);
+        super(AlchemyScreenHandlerType.NuclearReactor.get(), syncId);
         checkContainerSize((Container) blockEntity, NuclearReactorBlockEntity.REACTOR_SLOT_COUNT + 1);
         this.inventory = (Container) blockEntity;
         this.blockEntity = (NuclearReactorBlockEntity) blockEntity;

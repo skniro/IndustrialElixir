@@ -25,7 +25,7 @@ public class CuttingEntity extends AbstractMachineEntity {
     }
 
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.CUTTING.type;
+        return AlchemyRecipeType.CUTTING.type.get();
     }
 
     @Nullable

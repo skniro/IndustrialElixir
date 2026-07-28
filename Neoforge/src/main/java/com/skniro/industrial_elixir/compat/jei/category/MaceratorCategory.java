@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class MaceratorCategory implements IRecipeCategory<RecipeHolder<MaceratorCraftingRecipe>> {
 
     public static final IRecipeHolderType<MaceratorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.MACERATOR.type);
+            IRecipeHolderType.create(AlchemyRecipeType.MACERATOR.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

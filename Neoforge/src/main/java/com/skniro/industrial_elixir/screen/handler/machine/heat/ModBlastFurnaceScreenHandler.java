@@ -11,18 +11,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ModBlastFurnaceScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
     public final ModBlastFurnaceBlockEntity blockEntity;
     final ContainerData propertyDelegate;
 
-    public ModBlastFurnaceScreenHandler(int pContainerId, Inventory playerInventory, BlockPos pos) {
-        this(pContainerId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public ModBlastFurnaceScreenHandler(int pContainerId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(pContainerId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public ModBlastFurnaceScreenHandler(int pContainerId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.ModBlastFurnace, pContainerId);
+        super(AlchemyScreenHandlerType.ModBlastFurnace.get(), pContainerId);
         blockEntity = ((ModBlastFurnaceBlockEntity) entity);
         checkContainerSize(blockEntity, 10);
         this.propertyDelegate = delegate;

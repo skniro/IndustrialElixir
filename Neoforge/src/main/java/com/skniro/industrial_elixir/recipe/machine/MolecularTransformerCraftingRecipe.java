@@ -30,12 +30,12 @@ public class MolecularTransformerCraftingRecipe extends AbstractMachineCraftingR
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.MOLECULAR_TRANSFORMER.serializer;
+        return AlchemyRecipeType.MOLECULAR_TRANSFORMER.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.MOLECULAR_TRANSFORMER.type;
+        return AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get();
     }
 
     @Override

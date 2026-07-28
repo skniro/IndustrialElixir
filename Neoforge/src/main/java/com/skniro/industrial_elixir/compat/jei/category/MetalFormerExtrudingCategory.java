@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class MetalFormerExtrudingCategory implements IRecipeCategory<RecipeHolder<MetalFormerExtrudingCraftingRecipe>> {
 
     public static final IRecipeHolderType<MetalFormerExtrudingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.METALFORMER_EXTRUDING.type);
+            IRecipeHolderType.create(AlchemyRecipeType.METALFORMER_EXTRUDING.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<AlchemyCraftingRecipe>> {
 
     public static final IRecipeHolderType<AlchemyCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.CANE_CONVERTER.type);
+            IRecipeHolderType.create(AlchemyRecipeType.CANE_CONVERTER.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

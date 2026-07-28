@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class MetalFormerRollingCategory implements IRecipeCategory<RecipeHolder<MetalFormerRollingCraftingRecipe>> {
     public static final IRecipeHolderType<MetalFormerRollingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.METALFORMER_ROLLING.type);
+            IRecipeHolderType.create(AlchemyRecipeType.METALFORMER_ROLLING.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

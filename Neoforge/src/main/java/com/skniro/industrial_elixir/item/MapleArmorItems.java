@@ -31,12 +31,12 @@ public class MapleArmorItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, IndustrialElixir.MOD_ID);
 
     //Tool
-    public static final Supplier<Item> BRONZE_HELMET = registerItem("bronze_helmet", Item::new,(new Item.Properties()).humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.HELMET));
-    public static final Supplier<Item> BRONZE_CHESTPLATE = registerItem("bronze_chestplate", Item::new,(new Item.Properties()).humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.CHESTPLATE));
-    public static final Supplier<Item> BRONZE_LEGGINGS = registerItem("bronze_leggings", Item::new,(new Item.Properties()).humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.LEGGINGS));
-    public static final Supplier<Item> BRONZE_BOOTS = registerItem("bronze_boots", Item::new,(new Item.Properties()).humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.BOOTS));
+    public static final Supplier<Item> BRONZE_HELMET = registerItem("bronze_helmet", (settings) -> new Item(settings.humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.HELMET)),new Item.Properties());
+    public static final Supplier<Item> BRONZE_CHESTPLATE = registerItem("bronze_chestplate", (settings) -> new Item(settings.humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.CHESTPLATE)),new Item.Properties());
+    public static final Supplier<Item> BRONZE_LEGGINGS = registerItem("bronze_leggings", (settings) -> new Item(settings.humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.LEGGINGS)),new Item.Properties());
+    public static final Supplier<Item> BRONZE_BOOTS = registerItem("bronze_boots", (settings) -> new Item(settings.humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.BOOTS)),new Item.Properties());
 
-    public static final Supplier<Item> BRONZE_SWORD = registerItem("bronze_sword", Item::new,(new Item.Properties()).sword(MapleToolMaterials.BRONZE, 3.0F, -2.4F));
+    public static final Supplier<Item> BRONZE_SWORD = registerItem("bronze_sword", (settings) -> new Item(settings.sword(MapleToolMaterials.BRONZE, 3.0F, -2.4F)),new Item.Properties());
     public static final Supplier<Item> BRONZE_SHOVEL = registerItem("bronze_shovel", (settings) -> new ShovelItem(MapleToolMaterials.BRONZE, 1.5F, -3.0F, settings), new Item.Properties());
     public static final Supplier<Item> BRONZE_PICKAXE = registerItem("bronze_pickaxe", (settings) ->new Item(settings.pickaxe(MapleToolMaterials.BRONZE, 1.0F, -2.8F)), new Item.Properties());
     public static final Supplier<Item> BRONZE_AXE = registerItem("bronze_axe", (settings) -> new AxeItem(MapleToolMaterials.BRONZE, 6.0F, -3.1F, settings), new Item.Properties());

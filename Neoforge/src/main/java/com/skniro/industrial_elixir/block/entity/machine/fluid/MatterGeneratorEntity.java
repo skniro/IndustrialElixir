@@ -56,7 +56,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 	@Override
 	public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
 		// No menu by default - implement if you want a GUI
-		return new MatterGeneratorScreenHandler(syncId, playerInventory, worldPosition);
+		return new MatterGeneratorScreenHandler(syncId, playerInventory, this, propertyDelegate);
 	}
 
 	@Override

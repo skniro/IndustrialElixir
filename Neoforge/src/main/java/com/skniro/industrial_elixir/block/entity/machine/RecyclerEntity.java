@@ -34,7 +34,7 @@ public class RecyclerEntity extends AbstractMachineEntity {
     }
 
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.RECYCLER.type;
+        return AlchemyRecipeType.RECYCLER.type.get();
     }
 
     @Override

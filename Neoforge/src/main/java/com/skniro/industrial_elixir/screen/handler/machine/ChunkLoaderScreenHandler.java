@@ -10,18 +10,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ChunkLoaderScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
     public final ChunkLoaderEntity blockEntity;
     final ContainerData propertyDelegate;
 
-    public ChunkLoaderScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public ChunkLoaderScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public ChunkLoaderScreenHandler(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.ChunkLoader, syncId);
+        super(AlchemyScreenHandlerType.ChunkLoader.get(), syncId);
         blockEntity = (ChunkLoaderEntity) entity;
         checkContainerSize(blockEntity, 12);
         this.propertyDelegate = delegate;

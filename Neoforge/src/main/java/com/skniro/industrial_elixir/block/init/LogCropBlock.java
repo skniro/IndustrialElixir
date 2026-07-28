@@ -26,13 +26,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.function.Supplier;
+
 public class LogCropBlock extends Block {
     public static final IntegerProperty AGE;
     private static final VoxelShape SHAPE;
-    public final Item fruitItem;
+    public final Supplier<Item>  fruitItem;
     public static final EnumProperty<Direction.Axis> AXIS;
 
-    public LogCropBlock(Properties settings, Item fruitItem) {
+    public LogCropBlock(Properties settings, Supplier<Item> fruitItem) {
         super(settings.noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y).setValue(AGE, 0));
         this.fruitItem = fruitItem;
@@ -65,7 +67,7 @@ public class LogCropBlock extends Block {
         boolean bl = i == 2;
         if (i > 1) {
             int j = 1;
-            popResource(world, pos, new ItemStack(fruitItem, j ));
+            popResource(world, pos, new ItemStack(fruitItem.get(), j ));
             world.playSound((Player)null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + world.getRandom().nextFloat() * 0.4F);
             BlockState blockState = (BlockState)state.setValue(AGE, 0);
             world.setBlock(pos, blockState, 2);

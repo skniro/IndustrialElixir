@@ -25,7 +25,7 @@ public class MaceratorEntity extends AbstractMachineEntity {
     }
 
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.MACERATOR.type;
+        return AlchemyRecipeType.MACERATOR.type.get();
     }
 
     @Nullable

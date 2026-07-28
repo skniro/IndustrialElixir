@@ -364,7 +364,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
 
     @Override
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.MOD_BLAST_FURNACE.type;
+        return AlchemyRecipeType.MOD_BLAST_FURNACE.type.get();
     }
 
 

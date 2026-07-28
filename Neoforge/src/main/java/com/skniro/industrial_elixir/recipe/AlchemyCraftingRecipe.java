@@ -62,12 +62,12 @@ public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput>
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.CANE_CONVERTER.serializer;
+        return AlchemyRecipeType.CANE_CONVERTER.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.CANE_CONVERTER.type;
+        return AlchemyRecipeType.CANE_CONVERTER.type.get();
     }
 
     @Override

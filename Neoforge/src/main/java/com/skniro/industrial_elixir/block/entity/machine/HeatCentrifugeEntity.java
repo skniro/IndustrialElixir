@@ -107,7 +107,7 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
 
     @Override
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.HEAT_CENTRIFUGE.type;
+        return AlchemyRecipeType.HEAT_CENTRIFUGE.type.get();
     }
 
     @Override

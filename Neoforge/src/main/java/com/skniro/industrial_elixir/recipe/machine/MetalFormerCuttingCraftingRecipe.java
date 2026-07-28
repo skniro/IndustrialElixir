@@ -23,12 +23,12 @@ public class MetalFormerCuttingCraftingRecipe extends AbstractMachineCraftingRec
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.METALFORMER_CUTTING.serializer;
+        return AlchemyRecipeType.METALFORMER_CUTTING.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.METALFORMER_CUTTING.type;
+        return AlchemyRecipeType.METALFORMER_CUTTING.type.get();
     }
 
     @Override

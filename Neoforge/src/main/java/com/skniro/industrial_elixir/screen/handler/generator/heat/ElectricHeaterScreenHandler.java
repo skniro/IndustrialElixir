@@ -14,19 +14,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.List;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ElectricHeaterScreenHandler extends AbstractContainerMenu {
     final Container inventory;
     final ContainerData propertyDelegate;
     public final ElectricHeaterBlockEntity blockEntity;;
 
-    public ElectricHeaterScreenHandler(int syncId, Inventory playerInventory, BlockPos pos){
-        this(syncId,playerInventory, playerInventory.player.level().getBlockEntity(pos),new SimpleContainerData(2));
+    public ElectricHeaterScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf){
+        this(syncId,playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()),new SimpleContainerData(2));
     }
 
 
     public ElectricHeaterScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.ElectricHeater, syncId);
+        super(AlchemyScreenHandlerType.ElectricHeater.get(), syncId);
         checkContainerSize((Container) blockEntity,21);
         this.inventory = (Container) blockEntity;
         inventory.startOpen(playerInventory.player);

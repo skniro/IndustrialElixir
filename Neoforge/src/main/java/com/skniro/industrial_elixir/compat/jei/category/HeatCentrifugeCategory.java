@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<HeatCentrifugeCraftingRecipe>> {
 
     public static final IRecipeHolderType<HeatCentrifugeCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.HEAT_CENTRIFUGE.type);
+            IRecipeHolderType.create(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

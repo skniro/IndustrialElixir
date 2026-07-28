@@ -29,7 +29,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class CompressorCategory implements IRecipeCategory<RecipeHolder<CompressorCraftingRecipe>> {
 
     public static final IRecipeHolderType<CompressorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.COMPRESSOR.type);
+            IRecipeHolderType.create(AlchemyRecipeType.COMPRESSOR.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

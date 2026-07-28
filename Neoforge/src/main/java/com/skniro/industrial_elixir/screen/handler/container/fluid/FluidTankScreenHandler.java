@@ -13,18 +13,19 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class FluidTankScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
     public final FluidTankBlockEntity blockEntity;
     private final ContainerData propertyDelegate;
 
-    public FluidTankScreenHandler(int pContainerId, Inventory inv, BlockPos blockPos) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(blockPos), new SimpleContainerData(2));
+    public FluidTankScreenHandler(int pContainerId, Inventory inv, FriendlyByteBuf packetByteBuf) {
+        this(pContainerId, inv, inv.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public FluidTankScreenHandler(int pContainerId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.FluidTank, pContainerId);
+        super(AlchemyScreenHandlerType.FluidTank.get(), pContainerId);
         blockEntity = ((FluidTankBlockEntity) entity);
         this.propertyDelegate = delegate;
         this.inventory = blockEntity;

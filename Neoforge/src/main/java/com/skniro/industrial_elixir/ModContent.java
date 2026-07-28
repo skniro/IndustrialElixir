@@ -1,8 +1,8 @@
 package com.skniro.industrial_elixir;
 
 
+import com.skniro.growableoresir.block.GrowableICOresBlocks;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
-import com.skniro.industrial_elixir.api.item.replicator.ReplicatorValueMap;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
@@ -20,7 +20,6 @@ import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.*;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
-import com.skniro.industrial_elixir.util.ModFuel;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
@@ -39,17 +38,15 @@ public class  ModContent {
         MapleArmorItems.registerMapleArmorItems(eventBus);
         MapleFoodComponents.registerMapleFoodItems(eventBus);
         MapleEquipmentAssetKeys.registerMapleArmorAssetsKeys();
-        ModFuel.registerFuel();
-        IndustrialElixirPotions.registerPotions();
-        ReplicatorValueMap.registerDefaults();
+        IndustrialElixirPotions.registerPotions(eventBus);
     }
 
     public static void registerBlock(IEventBus eventBus) {
+        GrowableICOresBlocks.registerModBlocks(eventBus);
         GrowableOresBlocks.registerGrowableOresBlocks(eventBus);
-        AlchemyRecipeType.registerRecipes();
+        AlchemyRecipeType.registerRecipes(eventBus);
         AlchemyBlockEntityType.registerMapleBlockEntityType(eventBus);
-        AlchemyBlockEntityType.registerMachineEnergyEntity();
-        AlchemyScreenHandlerType.registeralchemyscreenhandlertype();
+        AlchemyScreenHandlerType.registeralchemyscreenhandlertype(eventBus);
         GeneralBlocks.registerNetherOresBlock(eventBus);
         MapleSignBlocks.registerMapleSignBlocks(eventBus);
     }
@@ -78,7 +75,7 @@ public class  ModContent {
     }
 
     public static void registerOthers(IEventBus eventBus) {
-        MapleParticleTypes.registerParticleTypes();
+        MapleParticleTypes.registerParticleTypes(eventBus);
     }
 
     public static void Compat() {

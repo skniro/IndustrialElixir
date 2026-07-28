@@ -145,7 +145,7 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
 
     @Override
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.COFFEE_MACHINE.type;
+        return AlchemyRecipeType.COFFEE_MACHINE.type.get();
     }
 
     @Override

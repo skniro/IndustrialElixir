@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class OreWashingScreenHandler extends AbstractContainerMenu {
     private static final int MACHINE_MENU_SLOT_COUNT = 11;
@@ -22,12 +23,12 @@ public class OreWashingScreenHandler extends AbstractContainerMenu {
     public final OreWashingBlockEntity blockEntity;
     final ContainerData propertyDelegate;
 
-    public OreWashingScreenHandler(int containerId, Inventory playerInventory, BlockPos pos) {
-        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public OreWashingScreenHandler(int containerId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public OreWashingScreenHandler(int containerId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.OreWashing, containerId);
+        super(AlchemyScreenHandlerType.OreWashing.get(), containerId);
         blockEntity = (OreWashingBlockEntity) entity;
         checkContainerSize(blockEntity, 12);
         this.propertyDelegate = delegate;

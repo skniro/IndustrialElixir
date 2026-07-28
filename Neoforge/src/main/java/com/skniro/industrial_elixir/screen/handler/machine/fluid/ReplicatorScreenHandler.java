@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ReplicatorScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
@@ -22,12 +23,12 @@ public class ReplicatorScreenHandler extends AbstractContainerMenu {
     public static final int BUTTON_SINGLE = 1;
     public static final int BUTTON_LOOP = 2;
 
-    public ReplicatorScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public ReplicatorScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public ReplicatorScreenHandler(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.Replicator, syncId);
+        super(AlchemyScreenHandlerType.Replicator.get(), syncId);
         blockEntity = (ReplicatorBlockEntity) entity;
         checkContainerSize(blockEntity, 12);
         this.propertyDelegate = delegate;

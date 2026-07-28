@@ -42,12 +42,12 @@ public class BrewReactorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.BREW_REACTOR.serializer;
+        return AlchemyRecipeType.BREW_REACTOR.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.BREW_REACTOR.type;
+        return AlchemyRecipeType.BREW_REACTOR.type.get();
     }
 
     @Override

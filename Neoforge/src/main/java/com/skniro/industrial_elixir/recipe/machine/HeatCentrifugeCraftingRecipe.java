@@ -27,12 +27,12 @@ public class HeatCentrifugeCraftingRecipe extends AbstractMachineCraftingRecipe 
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.HEAT_CENTRIFUGE.serializer;
+        return AlchemyRecipeType.HEAT_CENTRIFUGE.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.HEAT_CENTRIFUGE.type;
+        return AlchemyRecipeType.HEAT_CENTRIFUGE.type.get();
     }
 
     @Override

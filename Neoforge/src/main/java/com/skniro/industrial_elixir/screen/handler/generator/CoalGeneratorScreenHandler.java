@@ -15,19 +15,20 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class CoalGeneratorScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
     private final ContainerData propertyDelegate;
     public final CoalGeneratorBlockEntity blockEntity;
 
-    public CoalGeneratorScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos),
+    public CoalGeneratorScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()),
                 new SimpleContainerData(2));
     }
 
     public CoalGeneratorScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData arrayPropertyDelegate) {
-        super(AlchemyScreenHandlerType.COAL_GENERATOR_SCREEN_HANDLER, syncId);
+        super(AlchemyScreenHandlerType.COAL_GENERATOR_SCREEN_HANDLER.get(), syncId);
         checkContainerSize(((Container) blockEntity), 2);
         this.inventory = (Container)blockEntity;
         this.blockEntity = (CoalGeneratorBlockEntity) blockEntity;

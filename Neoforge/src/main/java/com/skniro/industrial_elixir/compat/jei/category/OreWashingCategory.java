@@ -40,7 +40,7 @@ import static mezz.jei.library.plugins.vanilla.crafting.CraftingRecipeCategory.w
 public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashingCraftingRecipe>> {
 
     public static final IRecipeHolderType<OreWashingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.ORE_WASHING.type);
+            IRecipeHolderType.create(AlchemyRecipeType.ORE_WASHING.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

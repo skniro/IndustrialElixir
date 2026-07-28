@@ -36,7 +36,7 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new ChunkLoaderScreenHandler(syncId, playerInventory, worldPosition);
+        return new ChunkLoaderScreenHandler(syncId, playerInventory,  this, propertyDelegate);
     }
 
     @Override

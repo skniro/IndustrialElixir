@@ -157,6 +157,13 @@ public class MapleFoodComponents {
         return toReturn;
     }
 
+    private static <T extends Item> Supplier<Item> registerItemDeferred(String name, Function<Item.Properties, ? extends T> item, Supplier<Item.Properties> propertiesSupplier) {
+        return ITEMS.register(name, () -> {
+            Item.Properties properties = propertiesSupplier.get();
+            return item.apply(properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
+        });
+    }
+
     private static Function<Item.Properties, Item> createBlockItemWithUniqueName(Supplier<Block> block) {
         return (properties) -> {
             return new MapleBlockItem(block, properties.useItemDescriptionPrefix());

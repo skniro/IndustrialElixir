@@ -36,12 +36,12 @@ public class OreWashingCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.ORE_WASHING.serializer;
+        return AlchemyRecipeType.ORE_WASHING.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.ORE_WASHING.type;
+        return AlchemyRecipeType.ORE_WASHING.type.get();
     }
 
     @Override

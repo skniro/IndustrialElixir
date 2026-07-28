@@ -46,7 +46,7 @@ public class MapleHotSpringFluid extends FlowingFluid {
             world.addParticle(ParticleTypes.UNDERWATER, (double)pos.getX() + random.nextDouble(), (double)pos.getY() + random.nextDouble(), (double)pos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
         }
         if (random.nextFloat() < 0.07F) {
-            world.addParticle(MapleParticleTypes.HOT_SPRING, (double) pos.getX() + random.nextDouble(), (double) pos.getY() + random.nextDouble(), (double) pos.getZ() + random.nextDouble(), 0.0, 0.03, 0.0);
+            world.addParticle(MapleParticleTypes.HOT_SPRING.get(), (double) pos.getX() + random.nextDouble(), (double) pos.getY() + random.nextDouble(), (double) pos.getZ() + random.nextDouble(), 0.0, 0.03, 0.0);
         }
     }
 

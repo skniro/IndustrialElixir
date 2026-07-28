@@ -118,7 +118,7 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
 
     @Override
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.BREW_REACTOR.type;
+        return AlchemyRecipeType.BREW_REACTOR.type.get();
     }
 
     @Override

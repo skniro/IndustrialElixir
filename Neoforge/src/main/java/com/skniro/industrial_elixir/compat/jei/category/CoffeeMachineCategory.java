@@ -33,7 +33,7 @@ import net.minecraft.world.level.material.Fluids;
 
 public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<CoffeeMachineCraftingRecipe>> {
     public static final IRecipeHolderType<CoffeeMachineCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.COFFEE_MACHINE.type);
+            IRecipeHolderType.create(AlchemyRecipeType.COFFEE_MACHINE.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

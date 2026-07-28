@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class ExtractorCategory implements IRecipeCategory<RecipeHolder<ExtractorCraftingRecipe>> {
 
     public static final IRecipeHolderType<ExtractorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.EXTRACTOR.type);
+            IRecipeHolderType.create(AlchemyRecipeType.EXTRACTOR.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

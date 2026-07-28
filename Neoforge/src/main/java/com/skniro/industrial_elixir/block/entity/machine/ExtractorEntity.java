@@ -25,7 +25,7 @@ public class ExtractorEntity extends AbstractMachineEntity {
     }
 
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.EXTRACTOR.type;
+        return AlchemyRecipeType.EXTRACTOR.type.get();
     }
 
     @Nullable

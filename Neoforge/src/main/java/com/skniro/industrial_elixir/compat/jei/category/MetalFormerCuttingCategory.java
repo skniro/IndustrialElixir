@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class MetalFormerCuttingCategory implements IRecipeCategory<RecipeHolder<MetalFormerCuttingCraftingRecipe>> {
 
     public static final IRecipeHolderType<MetalFormerCuttingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.METALFORMER_CUTTING.type);
+            IRecipeHolderType.create(AlchemyRecipeType.METALFORMER_CUTTING.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

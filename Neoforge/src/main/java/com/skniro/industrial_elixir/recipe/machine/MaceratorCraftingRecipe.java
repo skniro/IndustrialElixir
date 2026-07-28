@@ -21,12 +21,12 @@ public class MaceratorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.MACERATOR.serializer;
+        return AlchemyRecipeType.MACERATOR.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.MACERATOR.type;
+        return AlchemyRecipeType.MACERATOR.type.get();
     }
 
     @Override

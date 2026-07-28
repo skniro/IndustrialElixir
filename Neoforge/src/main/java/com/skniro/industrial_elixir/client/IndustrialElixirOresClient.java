@@ -99,9 +99,7 @@ public class IndustrialElixirOresClient {
         registerClientEntityRenderer();
 
         HudElementRegistry.addFirst(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "water"), (context, deltaTracker)->  WindowsWatermarkRenderer.render(context));
-
-        GrowableOresClienttwo.onClientSetup();
-
+        
         ClientRecipeSynchronizedEvent.EVENT.register((minecraft, synchronizedRecipes) -> {
             if (IndustrialElixirJEIUtils.isJEIAvailable()) {
                 IndustrialElixirJEIPlugin.recipeMap = synchronizedRecipes;
@@ -131,7 +129,7 @@ public class IndustrialElixirOresClient {
                 new Material(Identifier.withDefaultNamespace("block/water_overlay")), _ -> 0xA1C64CEB);
 
 
-        ParticleProviderRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING, MapleCampfireSmokeParticle.CosySmokeFactory::new);
+        ParticleProviderRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING.get(), MapleCampfireSmokeParticle.CosySmokeFactory::new);
 
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU.get(), IndustrialElixirFluids.FLOWING_Fluid_UU.get(), Fluid_UU_MODEL);
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_AIR.get(), IndustrialElixirFluids.FLOWING_Fluid_AIR.get(), Fluid_AIR_MODEL);
@@ -150,38 +148,38 @@ public class IndustrialElixirOresClient {
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(AlchemyScreenHandlerType.ALCHEMY, AlchemyBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.COAL_GENERATOR_SCREEN_HANDLER, CoalGeneratorScreen::new);
-        event.register(AlchemyScreenHandlerType.NuclearReactor, NuclearReactorScreen::new);
-        event.register(AlchemyScreenHandlerType.SACRED_GENERATOR, SacredGeneratorScreen::new);
-        event.register(AlchemyScreenHandlerType.Macerator, MaceratorBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.Compressor, CompressorBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.GENERATOR_Wind_Mill_SCREEN_HANDLER, GeneratorWindMillScreen::new);
-        event.register(AlchemyScreenHandlerType.GENERATOR_Solar_Panel_SCREEN_HANDLER, GeneratorSolarPanelScreen::new);
-        event.register(AlchemyScreenHandlerType.MetalFormer, MetalFormerBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.ChargePad, ChargePadBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.EnergyBox, EnergyBoxBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.MolecularTransformer, MolecularTransformerBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.Extractor, ExtractorBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.ElectricFurnace, ElectricFurnaceBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.InductionFurnace, InductionFurnaceBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.Cutting, CuttingBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.Recycler, RecyclerBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.BrewReactor, BrewReactorScreen::new);
-        event.register(AlchemyScreenHandlerType.OreWashing, OreWashingScreen::new);
-        event.register(AlchemyScreenHandlerType.FluidTank, FluidTankScreen::new);
-        event.register(AlchemyScreenHandlerType.ElectricHeater, ElectricHeaterBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.SolidFuelHeater, SolidFuelHeaterScreen::new);
-        event.register(AlchemyScreenHandlerType.ModBlastFurnace, ModBlastFurnaceScreen::new);
-        event.register(AlchemyScreenHandlerType.HeatCentrifuge, HeatCentrifugeBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.MatterGenerator, MatterGeneratorScreen::new);
-        event.register(AlchemyScreenHandlerType.PatternStorage, PatternStorageScreen::new);
-        event.register(AlchemyScreenHandlerType.Replicator, ReplicatorScreen::new);
-        event.register(AlchemyScreenHandlerType.FluidGenerator, FluidGeneratorScreen::new);
-        event.register(AlchemyScreenHandlerType.ChunkLoader, ChunkLoaderScreen::new);
-        event.register(AlchemyScreenHandlerType.CoffeeMachine, CoffeeMachineScreen::new);
-        event.register(AlchemyScreenHandlerType.CropFarm, CropFarmBlockScreen::new);
-        event.register(AlchemyScreenHandlerType.VendorMachine, VendorMachineScreen::new);
+        event.register(AlchemyScreenHandlerType.ALCHEMY.get(), AlchemyBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.COAL_GENERATOR_SCREEN_HANDLER.get(), CoalGeneratorScreen::new);
+        event.register(AlchemyScreenHandlerType.NuclearReactor.get(), NuclearReactorScreen::new);
+        event.register(AlchemyScreenHandlerType.SACRED_GENERATOR.get(), SacredGeneratorScreen::new);
+        event.register(AlchemyScreenHandlerType.Macerator.get(), MaceratorBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.Compressor.get(), CompressorBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.GENERATOR_Wind_Mill_SCREEN_HANDLER.get(), GeneratorWindMillScreen::new);
+        event.register(AlchemyScreenHandlerType.GENERATOR_Solar_Panel_SCREEN_HANDLER.get(), GeneratorSolarPanelScreen::new);
+        event.register(AlchemyScreenHandlerType.MetalFormer.get(), MetalFormerBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.ChargePad.get(), ChargePadBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.EnergyBox.get(), EnergyBoxBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.MolecularTransformer.get(), MolecularTransformerBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.Extractor.get(), ExtractorBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.ElectricFurnace.get(), ElectricFurnaceBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.InductionFurnace.get(), InductionFurnaceBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.Cutting.get(), CuttingBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.Recycler.get(), RecyclerBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.BrewReactor.get(), BrewReactorScreen::new);
+        event.register(AlchemyScreenHandlerType.OreWashing.get(), OreWashingScreen::new);
+        event.register(AlchemyScreenHandlerType.FluidTank.get(), FluidTankScreen::new);
+        event.register(AlchemyScreenHandlerType.ElectricHeater.get(), ElectricHeaterBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.SolidFuelHeater.get(), SolidFuelHeaterScreen::new);
+        event.register(AlchemyScreenHandlerType.ModBlastFurnace.get(), ModBlastFurnaceScreen::new);
+        event.register(AlchemyScreenHandlerType.HeatCentrifuge.get(), HeatCentrifugeBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.MatterGenerator.get(), MatterGeneratorScreen::new);
+        event.register(AlchemyScreenHandlerType.PatternStorage.get(), PatternStorageScreen::new);
+        event.register(AlchemyScreenHandlerType.Replicator.get(), ReplicatorScreen::new);
+        event.register(AlchemyScreenHandlerType.FluidGenerator.get(), FluidGeneratorScreen::new);
+        event.register(AlchemyScreenHandlerType.ChunkLoader.get(), ChunkLoaderScreen::new);
+        event.register(AlchemyScreenHandlerType.CoffeeMachine.get(), CoffeeMachineScreen::new);
+        event.register(AlchemyScreenHandlerType.CropFarm.get(), CropFarmBlockScreen::new);
+        event.register(AlchemyScreenHandlerType.VendorMachine.get(), VendorMachineScreen::new);
     }
 
     @SubscribeEvent

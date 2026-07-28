@@ -23,12 +23,12 @@ public class PatternStorageCraftingRecipe extends AbstractMachineCraftingRecipe 
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.PATTERN_STORAGE.serializer;
+        return AlchemyRecipeType.PATTERN_STORAGE.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.PATTERN_STORAGE.type;
+        return AlchemyRecipeType.PATTERN_STORAGE.type.get();
     }
 
     @Override

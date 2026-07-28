@@ -96,7 +96,7 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
     }
 
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.MOLECULAR_TRANSFORMER.type;
+        return AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get();
     }
 
     @Nullable

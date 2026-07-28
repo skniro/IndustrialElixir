@@ -15,19 +15,20 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ElectricFurnaceScreenHandler extends AbstractContainerMenu {
     final Container inventory;
     final ContainerData propertyDelegate;
     public final AbstractMachineEntity blockEntity;
 
-    public ElectricFurnaceScreenHandler(int syncId, Inventory playerInventory, BlockPos pos){
-        this(syncId,playerInventory, playerInventory.player.level().getBlockEntity(pos),new SimpleContainerData(2));
+    public ElectricFurnaceScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf){
+        this(syncId,playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()),new SimpleContainerData(2));
     }
 
 
     public ElectricFurnaceScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.ElectricFurnace, syncId);
+        super(AlchemyScreenHandlerType.ElectricFurnace.get(), syncId);
         checkContainerSize((Container) blockEntity,8);
         this.inventory = (Container) blockEntity;
         inventory.startOpen(playerInventory.player);

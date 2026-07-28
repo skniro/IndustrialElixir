@@ -5,6 +5,7 @@ import com.skniro.industrial_elixir.block.entity.machine.ChunkLoaderEntity;
 import com.skniro.industrial_elixir.block.entity.machine.VendorMachineBlockEntity;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -42,12 +43,12 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
     private boolean showProgressBar;
     private boolean canRestock;
 
-    public VendorMachineScreenHandler(final int containerId, final Inventory playerInventory, BlockPos pos) {
-        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new ClientSideMerchant(playerInventory.player));
+    public VendorMachineScreenHandler(final int containerId, final Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new ClientSideMerchant(playerInventory.player));
     }
 
     public VendorMachineScreenHandler(final int containerId, final Inventory inventory, BlockEntity blockEntity, final Merchant merchant) {
-        super(AlchemyScreenHandlerType.VendorMachine, containerId);
+        super(AlchemyScreenHandlerType.VendorMachine.get(), containerId);
         this.trader = merchant;
         this.tradeContainer = new MerchantContainer(merchant);
         this.blockEntity = (VendorMachineBlockEntity) blockEntity;

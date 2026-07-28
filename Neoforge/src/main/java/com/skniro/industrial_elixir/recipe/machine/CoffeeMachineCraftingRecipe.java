@@ -37,12 +37,12 @@ public class CoffeeMachineCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.COFFEE_MACHINE.serializer;
+        return AlchemyRecipeType.COFFEE_MACHINE.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.COFFEE_MACHINE.type;
+        return AlchemyRecipeType.COFFEE_MACHINE.type.get();
     }
 
     @Override

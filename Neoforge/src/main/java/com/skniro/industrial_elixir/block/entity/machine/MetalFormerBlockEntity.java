@@ -57,9 +57,9 @@ public class MetalFormerBlockEntity extends AbstractMachineEntity {
 
     public RecipeType<?> getCurrentRecipeType() {
         return switch (recipe_state) {
-            case ROLLING -> AlchemyRecipeType.METALFORMER_ROLLING.type;
-            case CUTTING -> AlchemyRecipeType.METALFORMER_CUTTING.type;
-            case EXTRUDING -> AlchemyRecipeType.METALFORMER_EXTRUDING.type;
+            case ROLLING -> AlchemyRecipeType.METALFORMER_ROLLING.type.get();
+            case CUTTING -> AlchemyRecipeType.METALFORMER_CUTTING.type.get();
+            case EXTRUDING -> AlchemyRecipeType.METALFORMER_EXTRUDING.type.get();
         };
     }
 

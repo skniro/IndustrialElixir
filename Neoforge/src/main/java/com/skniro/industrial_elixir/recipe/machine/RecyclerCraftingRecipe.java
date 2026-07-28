@@ -52,12 +52,12 @@ public class RecyclerCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.RECYCLER.serializer;
+        return AlchemyRecipeType.RECYCLER.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.RECYCLER.type;
+        return AlchemyRecipeType.RECYCLER.type.get();
     }
 
     @Override

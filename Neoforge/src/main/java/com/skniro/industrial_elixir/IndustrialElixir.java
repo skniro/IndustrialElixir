@@ -1,11 +1,16 @@
 package com.skniro.industrial_elixir;
 
+import com.skniro.industrial_elixir.api.item.replicator.ReplicatorValueMap;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
 import com.skniro.industrial_elixir.item.ModCreativeTab;
 import com.skniro.industrial_elixir.networking.ModMessages;
+import com.skniro.industrial_elixir.util.ModFuel;
 
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.alchemy.Potion;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -22,14 +27,16 @@ public class IndustrialElixir {
 
     public IndustrialElixir(IEventBus modEventBus) {
         ModContent.registerCommand(modEventBus);
-        ModContent.registerFluids(modEventBus);
         ModContent.registerItem(modEventBus);
+        ModContent.registerFluids(modEventBus);
         ModContent.registerBlock(modEventBus);
         ModContent.registerEntity(modEventBus);
         ModContent.CreativeTab(modEventBus);
         ModContent.WorldGen(modEventBus);
         ModContent.registerOthers(modEventBus);
 
+        EnergyImpl.register(modEventBus);
+        HeatImpl.register(modEventBus);
         EnergyImpl.init();
         HeatImpl.init();
         ModMessages.register();
@@ -37,6 +44,8 @@ public class IndustrialElixir {
 
         modEventBus.addListener(FMLCommonSetupEvent.class, event -> {
             AlchemyBlockEntityType.registerMachineEnergyEntity();
+            ReplicatorValueMap.registerDefaults();
+            ModFuel.registerFuel();
         });
 
         NeoForge.EVENT_BUS.register(this);

@@ -9,6 +9,7 @@ import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.screen.slot.BatteryChargeSlot;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,12 +28,12 @@ public class SacredGeneratorScreenHandler extends AbstractContainerMenu {
     private final ContainerData propertyDelegate;
     public final SacredGeneratorBlockEntity blockEntity;
 
-    public SacredGeneratorScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(4));
+    public SacredGeneratorScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(4));
     }
 
     public SacredGeneratorScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData propertyDelegate) {
-        super(AlchemyScreenHandlerType.SACRED_GENERATOR, syncId);
+        super(AlchemyScreenHandlerType.SACRED_GENERATOR.get(), syncId);
         checkContainerSize((Container) blockEntity, SacredGeneratorBlockEntity.REACTOR_SLOT_COUNT + 5);
         this.inventory = (Container) blockEntity;
         this.blockEntity = (SacredGeneratorBlockEntity) blockEntity;

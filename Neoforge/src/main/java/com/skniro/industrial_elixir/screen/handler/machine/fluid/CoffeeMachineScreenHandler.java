@@ -15,18 +15,19 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class CoffeeMachineScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
     public final CoffeeMachineBlockEntity blockEntity;
     final ContainerData propertyDelegate;
 
-    public CoffeeMachineScreenHandler(int containerId, Inventory playerInventory, BlockPos pos) {
-        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public CoffeeMachineScreenHandler(int containerId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public CoffeeMachineScreenHandler(int containerId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.CoffeeMachine, containerId);
+        super(AlchemyScreenHandlerType.CoffeeMachine.get(), containerId);
         blockEntity = (CoffeeMachineBlockEntity) entity;
         checkContainerSize(blockEntity, 13);
         this.propertyDelegate = delegate;

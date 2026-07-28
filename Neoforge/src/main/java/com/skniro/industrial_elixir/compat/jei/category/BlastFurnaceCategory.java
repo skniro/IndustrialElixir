@@ -35,7 +35,7 @@ import net.minecraft.world.level.material.Fluids;
 public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBlastFurnaceCraftingRecipe>> {
 
     public static final IRecipeHolderType<ModBlastFurnaceCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.MOD_BLAST_FURNACE.type);
+            IRecipeHolderType.create(AlchemyRecipeType.MOD_BLAST_FURNACE.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

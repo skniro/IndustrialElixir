@@ -27,7 +27,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<CuttingCraftingRecipe>> {
     public static final IRecipeHolderType<CuttingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.CUTTING.type);
+            IRecipeHolderType.create(AlchemyRecipeType.CUTTING.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

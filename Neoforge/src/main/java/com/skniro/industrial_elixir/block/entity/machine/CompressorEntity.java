@@ -25,7 +25,7 @@ public class CompressorEntity extends AbstractMachineEntity {
     }
 
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.COMPRESSOR.type;
+        return AlchemyRecipeType.COMPRESSOR.type.get();
     }
 
     @Nullable

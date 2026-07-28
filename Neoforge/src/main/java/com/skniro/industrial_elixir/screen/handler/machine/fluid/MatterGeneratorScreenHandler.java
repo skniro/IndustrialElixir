@@ -12,18 +12,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class MatterGeneratorScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
     public final MatterGeneratorEntity blockEntity;
     final ContainerData propertyDelegate;
 
-    public MatterGeneratorScreenHandler(int containerId, Inventory playerInventory, BlockPos pos) {
-        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+    public MatterGeneratorScreenHandler(int containerId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(packetByteBuf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public MatterGeneratorScreenHandler(int containerId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
-        super(AlchemyScreenHandlerType.MatterGenerator, containerId);
+        super(AlchemyScreenHandlerType.MatterGenerator.get(), containerId);
         blockEntity = (MatterGeneratorEntity) entity;
         checkContainerSize(blockEntity, 12);
         this.propertyDelegate = delegate;

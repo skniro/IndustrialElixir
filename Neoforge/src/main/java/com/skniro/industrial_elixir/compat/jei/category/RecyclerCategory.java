@@ -30,7 +30,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCraftingRecipe>> {
 
     public static final IRecipeHolderType<RecyclerCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.RECYCLER.type);
+            IRecipeHolderType.create(AlchemyRecipeType.RECYCLER.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;

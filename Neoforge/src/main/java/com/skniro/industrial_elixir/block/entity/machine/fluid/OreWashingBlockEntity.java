@@ -129,7 +129,7 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
 
     @Override
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.ORE_WASHING.type;
+        return AlchemyRecipeType.ORE_WASHING.type.get();
     }
 
     @Override

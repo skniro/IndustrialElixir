@@ -77,7 +77,7 @@ public class GeneralBlocks {
             (settings)-> new TintedParticleLeavesBlock(0.1f, settings), (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN)));
 
     public static final Supplier<Block> Rubber_Rubber_LOG =registerBlock("rubber_rubber_log",
-            (settings)-> new LogCropBlock(settings, GrowableOresItems.Sticky_Resin.get()), BlockBehaviour.Properties.of().noOcclusion().mapColor(MapColor.NETHER));
+            (settings)-> new LogCropBlock(settings, GrowableOresItems.Sticky_Resin), BlockBehaviour.Properties.of().noOcclusion().mapColor(MapColor.NETHER));
 
     public static final Supplier<Block> Rubber_LOG = registerBlock("rubber_log",RotatedPillarBlock::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(MapColor.COLOR_BROWN)));
     public static final Supplier<Block> STRIPPED_Rubber_LOG = registerBlock("stripped_rubber_log",
@@ -95,17 +95,17 @@ public class GeneralBlocks {
             (settings)-> new ModStairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Supplier<Block> Rubber_SLAB = registerBlock("rubber_slab",
             SlabBlock::new, (BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-    public static final Supplier<Block> Rubber_FENCE_GATE = registerBlock("rubber_fence_gate",
-            (settings)-> new FenceGateBlock(MapleSignTypes.Rubber, settings),  BlockBehaviour.Properties.of().mapColor(Rubber_PLANKS.get().defaultMapColor()).strength(2.0F, 3.0F));
-    public static final Supplier<Block> Rubber_FENCE = registerBlock("rubber_fence",
-            FenceBlock::new, (BlockBehaviour.Properties.of().mapColor(Rubber_PLANKS.get().defaultMapColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-    public static final Supplier<Block> Rubber_DOOR = registerBlock("rubber_door",
-            (settings)-> new DoorBlock(BlockSetType.CHERRY, settings), BlockBehaviour.Properties.of().mapColor(Rubber_PLANKS.get().defaultMapColor()).strength(3.0f).sound(SoundType.WOOD).noOcclusion());
+    public static final Supplier<Block> Rubber_FENCE_GATE = registerBlockDeferred("rubber_fence_gate",
+            (settings)-> new FenceGateBlock(MapleSignTypes.Rubber, settings),  () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(2.0F, 3.0F));
+    public static final Supplier<Block> Rubber_FENCE = registerBlockDeferred("rubber_fence",
+            FenceBlock::new, () -> (BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+    public static final Supplier<Block> Rubber_DOOR = registerBlockDeferred("rubber_door",
+            (settings)-> new DoorBlock(BlockSetType.CHERRY, settings), () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(3.0f).sound(SoundType.WOOD).noOcclusion());
     public static final Supplier<Block> Rubber_TRAPDOOR = registerBlock("rubber_trapdoor",
             (settings)-> new TrapDoorBlock(MapleBlockSetType.Rubber, settings),BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(3.0F).noOcclusion());
-    public static final Supplier<Block> Rubber_PRESSURE_PLATE = registerBlock("rubber_pressure_plate",
-            (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), BlockBehaviour.Properties.of().mapColor(
-                    Rubber_PLANKS.get().defaultMapColor()).noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
+    public static final Supplier<Block> Rubber_PRESSURE_PLATE = registerBlockDeferred("rubber_pressure_plate",
+            (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN)
+                    .noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
 
     public static final Supplier<Block> Rubber_SHELF = registerBlock("rubber_shelf",
             ShelfBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.SHELF).ignitedByLava().strength(2.0F, 3.0F));
@@ -175,6 +175,15 @@ public class GeneralBlocks {
 
     private static <B extends Block> Supplier<Block> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> block, BlockBehaviour.Properties properties) {
         Supplier<Block> bSupplier = registerBlockWithoutItem(name, block, properties);
+        registerBlockItem(name, bSupplier);
+        return bSupplier;
+    }
+
+    private static <B extends Block> Supplier<Block> registerBlockDeferred(String name, Function<BlockBehaviour.Properties, ? extends B> block, Supplier<BlockBehaviour.Properties> propertiesSupplier) {
+        Supplier<Block> bSupplier = BLOCKS.register(name, () -> {
+            BlockBehaviour.Properties properties = propertiesSupplier.get();
+            return block.apply(properties.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
+        });
         registerBlockItem(name, bSupplier);
         return bSupplier;
     }

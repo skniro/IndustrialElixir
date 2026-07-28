@@ -3,15 +3,13 @@ package com.skniro.industrial_elixir.block.init.machine;
 
 import com.skniro.industrial_elixir.api.block.TieredEnergyBlock;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -100,13 +98,11 @@ public abstract class AbstractMachineblock extends BaseEntityBlock implements Ti
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide()) {
-            MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
-
-            if (screenHandlerFactory != null) {
-                player.openMenu(screenHandlerFactory);
+            BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof BasePowerBlockBlockEntity abstractMachineEntity) {
+                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(abstractMachineEntity, abstractMachineEntity.getDisplayName()), pos);
             }
         }
-
         return InteractionResult.SUCCESS;
     }
 

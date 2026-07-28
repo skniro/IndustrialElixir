@@ -43,7 +43,7 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
 
     @Override
     public RecipeType<?> getCurrentRecipeType() {
-        return AlchemyRecipeType.CROP_FARM.type;
+        return AlchemyRecipeType.CROP_FARM.type.get();
     }
 
     @Override

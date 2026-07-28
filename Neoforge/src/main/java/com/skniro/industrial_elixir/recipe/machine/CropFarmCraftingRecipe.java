@@ -33,12 +33,12 @@ public class CropFarmCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.CROP_FARM.serializer;
+        return AlchemyRecipeType.CROP_FARM.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.CROP_FARM.type;
+        return AlchemyRecipeType.CROP_FARM.type.get();
     }
 
     @Override

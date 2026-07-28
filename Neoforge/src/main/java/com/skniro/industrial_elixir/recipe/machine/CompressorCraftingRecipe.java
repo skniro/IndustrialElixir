@@ -23,12 +23,12 @@ public class CompressorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
-        return AlchemyRecipeType.COMPRESSOR.serializer;
+        return AlchemyRecipeType.COMPRESSOR.serializer.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
-        return AlchemyRecipeType.COMPRESSOR.type;
+        return AlchemyRecipeType.COMPRESSOR.type.get();
     }
 
     @Override
