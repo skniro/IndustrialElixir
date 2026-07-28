@@ -1,0 +1,172 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.18
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:bronze_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:bronze_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:bronze_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:bronze_boots"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.3
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:bronze_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:clay_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:coal_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:copper_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:diamond_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:energium_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:gold_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:iron_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:lapis_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:lead_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:lithium_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:obsidian_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:silicon_dioxide_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:silver_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:stone_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:sulfur_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:tin_dust"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "min": 1,
+            "max": 2,
+            "type": "minecraft:uniform"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.05
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:iridium_ore"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "min": 1,
+            "max": 1,
+            "type": "minecraft:uniform"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.02
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "industrial_elixir:iridium_shard"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
