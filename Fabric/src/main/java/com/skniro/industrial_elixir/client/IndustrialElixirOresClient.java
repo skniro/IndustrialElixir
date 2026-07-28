@@ -160,12 +160,18 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         final FluidModel.Unbaked Fluid_UU_MODEL = new FluidModel.Unbaked(
                 new Material(Identifier.withDefaultNamespace("block/water_still")),
                 new Material(Identifier.withDefaultNamespace("block/water_flow")),
+                new Material(Identifier.withDefaultNamespace("block/water_overlay")), _ -> 0xA1BFBFBF);
+
+        final FluidModel.Unbaked Fluid_AIR_MODEL = new FluidModel.Unbaked(
+                new Material(Identifier.withDefaultNamespace("block/water_still")),
+                new Material(Identifier.withDefaultNamespace("block/water_flow")),
                 new Material(Identifier.withDefaultNamespace("block/water_overlay")), _ -> 0xA1C64CEB);
 
 
         ParticleProviderRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING, MapleCampfireSmokeParticle.CosySmokeFactory::new);
 
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU, IndustrialElixirFluids.FLOWING_Fluid_UU, Fluid_UU_MODEL);
+        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_AIR, IndustrialElixirFluids.FLOWING_Fluid_AIR, Fluid_AIR_MODEL);
     }
 
     private void renderHud(GuiGraphicsExtractor context, DeltaTracker tickCounter) {

@@ -20,7 +20,7 @@
 		"yellow": "industrial_elixir:block/yellow_terracotta",
 		"red": "industrial_elixir:block/red_terracotta",
 		"light_blue": "industrial_elixir:block/light_blue_terracotta",
-		"particle": "industrial_elixir:block/glass"
+		"particle": "block/glass"
 	},
 	"elements": [
 		{
@@ -108,7 +108,7 @@
 			"faces": {
 				"north": {"uv": [0, 0, 16, 1], "texture": "#glass"},
 				"east": {"uv": [0, 0, 16, 1], "texture": "#glass"},
-				"south": {"uv": [0, 0, 16, 1], "texture": "#plank"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#glass"},
 				"west": {"uv": [0, 0, 16, 1], "texture": "#glass"},
 				"up": {"uv": [0, 0, 16, 16], "rotation": 270, "texture": "#glass"},
 				"down": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#glass"}
