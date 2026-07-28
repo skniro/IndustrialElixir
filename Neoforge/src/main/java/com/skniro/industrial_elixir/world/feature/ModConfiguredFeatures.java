@@ -31,17 +31,17 @@ public class ModConfiguredFeatures {
         RuleTest endStoneReplaceables = new BlockMatchTest(Blocks.END_STONE);
 
         List<OreConfiguration.TargetBlockState> deepslateleadOres =
-                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_Lead_Ore.defaultBlockState()));
+                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_Lead_Ore.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> deepslateTinOres =
-                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_Tin_Ore.defaultBlockState()));
+                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_Tin_Ore.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> deepslateSACREDOres =
-                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_SACRED_Ore.defaultBlockState()));
+                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_SACRED_Ore.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> leadOres =
-                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.Lead_Ore.defaultBlockState()));
+                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.Lead_Ore.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> TinOres =
-                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.Tin_Ore.defaultBlockState()));
+                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.Tin_Ore.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> SACREDOres =
-                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.SACRED_Ore.defaultBlockState()));
+                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.SACRED_Ore.get().defaultBlockState()));
 
 
         register(context, Deepslate_Lead_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateleadOres, 8));

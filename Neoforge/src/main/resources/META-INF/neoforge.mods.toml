@@ -32,7 +32,7 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies.industrial_elixir]]
-modId="growable_ores"
+modId="fabric_api"
 mandatory=true
 versionRange="*"
 ordering="NONE"

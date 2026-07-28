@@ -59,9 +59,9 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
             }
             private void setButtonIcon() {
                 switch (state) {
-                    case ROLLING -> this.buttonIcon = new ItemStack(MapleArmorItems.ROLLING);
-                    case CUTTING -> this.buttonIcon = new ItemStack(MapleArmorItems.CUTTING);
-                    case EXTRUDING -> this.buttonIcon = new ItemStack(GrowableOresBlocks.COPPER_CABLE);
+                    case ROLLING -> this.buttonIcon = new ItemStack(MapleArmorItems.ROLLING.get());
+                    case CUTTING -> this.buttonIcon = new ItemStack(MapleArmorItems.CUTTING.get());
+                    case EXTRUDING -> this.buttonIcon = new ItemStack(GrowableOresBlocks.COPPER_CABLE.get());
                     default -> this.buttonIcon = new ItemStack(Items.FURNACE);
                 }
             }

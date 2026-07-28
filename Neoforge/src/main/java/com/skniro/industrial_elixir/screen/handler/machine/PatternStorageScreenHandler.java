@@ -42,7 +42,7 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
         this.addSlot(new Slot(inventory, 1, 74, 34) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL);
+                return stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL.get());
             }
         });
 
@@ -50,7 +50,7 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
         this.addSlot(new Slot(inventory, 9, 23, 34) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return !stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL);
+                return !stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL.get());
             }
         });
 
@@ -61,7 +61,7 @@ public class PatternStorageScreenHandler extends AbstractContainerMenu {
         this.addSlot(new Slot(inventory, 10, 111, 34) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL)
+                return stack.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL.get())
                         && !PatternStorageBlockEntity.hasPatternData(stack);
             }
             @Override

@@ -189,7 +189,7 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
 
     public BlockState getAppearance(BlockState state, BlockAndTintGetter renderView, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
         if ((Boolean)state.getValue(COVERED)) {
-            Object var9 = renderView.getBlockEntityRenderData(pos);
+            Object var9 = renderView.getBlockEntity(pos);
             BlockState cover;
             if (var9 instanceof BlockState) {
                 BlockState blockState = (BlockState)var9;

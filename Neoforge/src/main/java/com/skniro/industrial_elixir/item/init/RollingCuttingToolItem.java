@@ -1,8 +1,10 @@
 package com.skniro.industrial_elixir.item.init;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
+import org.jspecify.annotations.Nullable;
 
 public class RollingCuttingToolItem extends Item {
 
@@ -10,9 +12,10 @@ public class RollingCuttingToolItem extends Item {
         super(settings.durability(80));
     }
 
+
     @Override
-    public ItemStackTemplate getCraftingRemainder(ItemStack stack) {
-        ItemStack copy = stack.copy();
+    public ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
+        var copy = new ItemStack(instance.typeHolder());
         copy.setDamageValue(copy.getDamageValue() + 1);
 
         if (copy.getDamageValue() >= copy.getMaxDamage()) {

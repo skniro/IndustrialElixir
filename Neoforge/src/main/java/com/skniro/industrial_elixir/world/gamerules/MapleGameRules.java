@@ -1,16 +1,36 @@
 package com.skniro.industrial_elixir.world.gamerules;
 
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.serialization.Codec;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.Helper;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleBuilder;
-import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.gamerules.*;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.ToIntFunction;
 
 
 public class MapleGameRules {
-    public static final GameRule<Boolean> HOT_SPRING_SOURCE_CONVERSION =
-            GameRuleBuilder.forBoolean(true).buildAndRegister(Helper.id("hot_spring_source_conversion"));
+    public static final DeferredRegister<GameRule<?>> GAME_RULES = DeferredRegister.create(BuiltInRegistries.GAME_RULE, IndustrialElixir.MOD_ID);
 
-    public static void maplegamerule() {
+    public static DeferredHolder<GameRule<?>, GameRule<Boolean>> HOT_SPRING_SOURCE_CONVERSION = registerBoolean("hot_spring_source_conversion", GameRuleCategory.UPDATES, true);
+
+    private static DeferredHolder<GameRule<?>, GameRule<Boolean>> registerBoolean(String id, GameRuleCategory category, boolean defaultValue) {
+        return register(id, category, GameRuleType.BOOL, BoolArgumentType.bool(), Codec.BOOL, defaultValue, FeatureFlagSet.of(), GameRuleTypeVisitor::visitBoolean, (b) -> b ? 1 : 0);
+    }
+
+    private static <T> DeferredHolder<GameRule<?>, GameRule<Boolean>> register(String id, GameRuleCategory category, GameRuleType typeHint, ArgumentType<T> argumentType, Codec<T> codec, T defaultValue, FeatureFlagSet requiredFeatures, GameRules.VisitorCaller<T> visitorCaller, ToIntFunction<T> commandResultFunction) {
+        return GAME_RULES.register(id, ()-> new GameRule(category, typeHint, argumentType, visitorCaller, codec, commandResultFunction, defaultValue, requiredFeatures));
+    }
+
+    public static void maplegamerule(IEventBus eventBus) {
         IndustrialElixir.LOGGER.debug("Registering IndustrialElixir Game Rules for " + IndustrialElixir.MOD_ID);
+        GAME_RULES.register(eventBus);
     }
 }

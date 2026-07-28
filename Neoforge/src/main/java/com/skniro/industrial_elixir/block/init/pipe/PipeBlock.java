@@ -154,7 +154,7 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
                                     Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
 
         if (state.getValue(COVERED)) {
-            Object data = view.getBlockEntityRenderData(pos);
+            Object data = view.getBlockEntity(pos);
             if (data instanceof BlockState cover) {
                 return cover;
             }

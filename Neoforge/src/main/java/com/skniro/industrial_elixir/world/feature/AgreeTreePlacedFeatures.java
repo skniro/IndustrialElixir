@@ -23,7 +23,7 @@ public class AgreeTreePlacedFeatures {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.lookup(Registries.CONFIGURED_FEATURE);
         register(context, Rubber_TREE_PLACED, configuredFeatureRegistryEntryLookup.getOrThrow(AgreeTreeConfiguredFeatures.Rubber_TREE),
-                VegetationPlacements.treePlacement(PlacementUtils.countExtra(1, 0.1f, 2), GeneralBlocks.Rubber_SAPLING));
+                VegetationPlacements.treePlacement(PlacementUtils.countExtra(1, 0.1f, 2), GeneralBlocks.Rubber_SAPLING.get()));
     }
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {

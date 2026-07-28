@@ -37,7 +37,7 @@ public class RubberTrunkPlacer extends StraightTrunkPlacer {
             if (random.nextFloat() < extraChance) {
                 replacer.accept(pos, blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y).setValue(LogCropBlock.AGE, 2));
             } else {
-                replacer.accept(pos, GeneralBlocks.Rubber_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+                replacer.accept(pos, GeneralBlocks.Rubber_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y));
             }
         }
         return List.of(new FoliagePlacer.FoliageAttachment(startPos.above(height), 0, false));

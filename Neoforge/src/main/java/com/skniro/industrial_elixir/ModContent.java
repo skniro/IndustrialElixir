@@ -21,7 +21,6 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.*;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.util.ModFuel;
-import com.skniro.industrial_elixir.util.ModLootTableModifiers;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
@@ -72,11 +71,10 @@ public class  ModContent {
     public static void WorldGen(IEventBus eventBus) {
         ModOreGeneration.generateOres();
         ModTreeGeneration.generateTrees();
-        ModLootTableModifiers.modifyLootTables();
     }
 
     public static void registerCommand(IEventBus eventBus) {
-        MapleGameRules.maplegamerule();
+        MapleGameRules.maplegamerule(eventBus);
     }
 
     public static void registerOthers(IEventBus eventBus) {

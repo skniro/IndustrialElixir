@@ -98,7 +98,7 @@ public class IndustrialElixirOresClient {
 
         registerClientEntityRenderer();
 
-        HudElementRegistry.addFirst(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "water"), this::renderHud);
+        HudElementRegistry.addFirst(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "water"), (context, deltaTracker)->  WindowsWatermarkRenderer.render(context));
 
         GrowableOresClienttwo.onClientSetup();
 
@@ -135,10 +135,6 @@ public class IndustrialElixirOresClient {
 
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU.get(), IndustrialElixirFluids.FLOWING_Fluid_UU.get(), Fluid_UU_MODEL);
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_AIR.get(), IndustrialElixirFluids.FLOWING_Fluid_AIR.get(), Fluid_AIR_MODEL);
-    }
-
-    private void renderHud(GuiGraphicsExtractor context, DeltaTracker tickCounter) {
-        WindowsWatermarkRenderer.render(context);
     }
 
     public static void registerClientEntityRenderer() {
