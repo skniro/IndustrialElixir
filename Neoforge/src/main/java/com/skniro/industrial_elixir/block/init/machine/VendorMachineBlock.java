@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -80,9 +81,9 @@ public class VendorMachineBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos,
                                                Player player, BlockHitResult hit) {
         if (!world.isClientSide()) {
-            MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
-            if (screenHandlerFactory != null) {
-                player.openMenu(screenHandlerFactory);
+            BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof VendorMachineBlockEntity abstractMachineEntity) {
+                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(abstractMachineEntity, abstractMachineEntity.getDisplayName()), pos);
             }
         }
         return InteractionResult.SUCCESS;
