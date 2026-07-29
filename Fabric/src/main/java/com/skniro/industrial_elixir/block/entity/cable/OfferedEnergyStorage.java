@@ -7,7 +7,6 @@ import net.minecraft.core.Direction;
 // Under MIT-License: https://github.com/TechReborn/TechReborn/blob/26.1/LICENSE.md
 record OfferedEnergyStorage(CableBlockEntity sourceCable, Direction direction, EnergyStorage storage) {
     void afterTransfer() {
-        CableBlockEntity var10000 = this.sourceCable;
-        var10000.blockedSides |= 1 << this.direction.ordinal();
+        sourceCable.blockedSides |= 1 << direction.ordinal();
     }
 }

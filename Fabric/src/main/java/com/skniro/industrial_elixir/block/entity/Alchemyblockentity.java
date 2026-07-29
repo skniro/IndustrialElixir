@@ -5,6 +5,7 @@ import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
 import com.skniro.industrial_elixir.api.block.TieredEnergyBlock;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.block.init.machine.Alchemyblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
@@ -15,6 +16,7 @@ import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
+import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.screen.AlchemyBlockScreenHandler;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -39,6 +41,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,10 +50,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineEnergyProvider {
-    private final NonNullList<ItemStack> inventory = NonNullList.withSize(8, ItemStack.EMPTY);
-    private float rotation = 0;
-    private static final int FLUID_ITEM_SLOT = 0;
+public class Alchemyblockentity extends AbstractMachineEntity {
     private static final int INPUT_SLOT = 1;
     private static final int OUTPUT_SLOT = 2;
     private static final int ENERGY_ITEM_SLOT = 3;
@@ -58,9 +58,6 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     private static final int UPGRADE_END = 7;
     private static final int ENERGY_CRAFTING_AMOUNT = 32;
     protected final EnergyTier energyTier;
-
-    public SimpleSidedEnergyContainer energyContainer;
-
     protected final ContainerData propertyDelegate;
     private int progress = 0;
     private int maxProgress = 72;
@@ -69,35 +66,6 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     public Alchemyblockentity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, pos, state);
         this.energyTier = EnergyTier.TIER1;
-
-        energyContainer = new SimpleSidedEnergyContainer() {
-            @Override
-            public long getCapacity() {
-                return getMachineCapacity();
-            }
-
-            @Override
-            public long getMaxInsert(@Nullable Direction side) {
-                return getEffectiveTier().getMaxInput();
-            }
-
-            @Override
-            public long getMaxExtract(@Nullable Direction side) {
-                return getEffectiveTier().getMaxOutput();
-            }
-
-            @Override
-            protected void onFinalCommit() {
-                setChanged();
-                getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
-
-/*            if(!world.isClient()) {
-                for(ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
-                    ServerPlayNetworking.send(player, new EnergySyncS2CPayload(amount, getPos()));
-                }
-            }*/
-            }
-        };
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
@@ -124,7 +92,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
     // 计算处理速度倍率
-    private double getProcessTimeMultiplier() {
+    public double getProcessTimeMultiplier() {
         double multiplier = 1.0;
         for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
             ItemStack stack = inventory.get(i);
@@ -136,7 +104,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
     // 计算能耗倍率
-    private double getEnergyDemandMultiplier() {
+    public double getEnergyDemandMultiplier() {
         double multiplier = 1.0;
         for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
             ItemStack stack = inventory.get(i);
@@ -148,7 +116,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
     // 计算额外储能
-    private int getEnergyStorageUpgrade() {
+    public int getEnergyStorageUpgrade() {
         int total = 0;
         for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
             ItemStack stack = inventory.get(i);
@@ -160,7 +128,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
     // 获取有效的 EnergyTier（支持 Transformer 升级）
-    private EnergyTier getEffectiveTier() {
+    public EnergyTier getEffectiveTier() {
         int tierBoost = 0;
         for (int i = UPGRADE_START; i <= UPGRADE_END; i++) {
             ItemStack stack = inventory.get(i);
@@ -338,7 +306,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
         return this.energyContainer.getSideStorage(side);
     }
 
-    private void useEnergyForCrafting() {
+    public void useEnergyForCrafting() {
         long baseUse = getCraftEnergyCost() / 20;
         long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
         try (Transaction tx = Transaction.openOuter()) {
@@ -348,13 +316,13 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     }
 
 
-    private void resetProgress() {
+    public void resetProgress() {
         this.progress = 0;
         this.maxProgress = DEFAULT_MAX_PROGRESS;
     }
 
-    private void craftItem() {
-        Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
+    public void craftItem() {
+        Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
         this.removeItem(INPUT_SLOT, 1);
         this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().item(),
                 this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().count()));
@@ -373,23 +341,23 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
         return slot != OUTPUT_SLOT;
     }
 
-    private boolean hasCraftingFinished() {
+    public boolean hasCraftingFinished() {
         return this.progress >= this.maxProgress;
     }
 
     // 处理速度受 Overclocker 升级影响
-    private void increaseCraftingProgress() {
+    public void increaseCraftingProgress() {
         double speedMult = getProcessTimeMultiplier();
         this.progress += (int) speedMult;
     }
 
-    private boolean canInsertIntoOutputSlot() {
+    public boolean canInsertIntoOutputSlot() {
         return this.getItem(OUTPUT_SLOT).isEmpty() ||
                 this.getItem(OUTPUT_SLOT).getCount() < this.getItem(OUTPUT_SLOT).getMaxStackSize();
     }
 
-    private boolean hasRecipe() {
-        Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
+    public boolean hasRecipe() {
+        Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
         if(recipe.isEmpty()) {
             return false;
         }
@@ -398,20 +366,15 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft();
     }
 
-    private boolean hasEnoughEnergyToCraft() {
+    public boolean hasEnoughEnergyToCraft() {
         return this.energyContainer.amount >= (long) (getCraftEnergyCost()/ 20) * maxProgress;
     }
 
-    private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
-        return this.getLevel().getServer().getRecipeManager()
-                .getRecipeFor(AlchemyRecipeType.CANE_CONVERTER.type, new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
-    }
-
-    private boolean canInsertItemIntoOutputSlot(ItemStack output) {
+    public boolean canInsertItemIntoOutputSlot(ItemStack output) {
         return this.getItem(OUTPUT_SLOT).isEmpty() || this.getItem(OUTPUT_SLOT).getItem() == output.getItem();
     }
 
-    private boolean canInsertAmountIntoOutputSlot(int count) {
+    public boolean canInsertAmountIntoOutputSlot(int count) {
     int maxCount = this.getItem(OUTPUT_SLOT).isEmpty() ? 64 : this.getItem(OUTPUT_SLOT).getMaxStackSize();
     int currentCount = this.getItem(OUTPUT_SLOT).getCount();
 
@@ -461,5 +424,10 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedMenuProvi
     @Override
     public long getCraftEnergyCost() {
         return ENERGY_CRAFTING_AMOUNT;
+    }
+
+    @Override
+    public RecipeType<?> getCurrentRecipeType() {
+        return AlchemyRecipeType.CANE_CONVERTER.type;
     }
 }

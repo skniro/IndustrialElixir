@@ -157,6 +157,7 @@ public class AlchemyBlockEntityType {
     }
 
     public static void registerMachineEnergyEntity() {
+        EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), CABLE);
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), ALCHEMY_BLOCK_ENTITY);
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), COAL_GENERATOR_BE);
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyContainer.getSideStorage(direction), NUCLEAR_REACTOR_BE);

@@ -2,8 +2,6 @@ package com.skniro.industrial_elixir.block.entity;
 
 import com.skniro.industrial_elixir.api.block.ImplementedInventory;
 import com.skniro.industrial_elixir.api.block.MachineEnergyProvider;
-import com.skniro.industrial_elixir.api.block.MachineRecipeProvider;
-import com.skniro.industrial_elixir.api.block.TieredEnergyBlock;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
@@ -24,7 +22,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.ItemOwner;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

@@ -3,6 +3,7 @@ package com.skniro.industrial_elixir.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 
-public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput> {
+public class AlchemyCraftingRecipe extends AbstractMachineCraftingRecipe {
     final ItemStackTemplate output;
     final Ingredient ingredient;
     @Nullable
@@ -25,6 +26,7 @@ public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput>
 
 
     public AlchemyCraftingRecipe(Ingredient ingredients, ItemStackTemplate output) {
+        super(ingredients, output);
         this.output = output;
         this.ingredient = ingredients;
     }

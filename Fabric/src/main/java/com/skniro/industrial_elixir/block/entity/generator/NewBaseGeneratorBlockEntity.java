@@ -33,13 +33,13 @@ public abstract class NewBaseGeneratorBlockEntity extends BasePowerBlockBlockEnt
         return this.energyContainer.getSideStorage(side);
     }
 
-    public void pushEnergyToNeighbours() {
+/*    public void pushEnergyToNeighbours() {
         for (Direction dir : Direction.values()) {
             EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
             if (target == null) continue;
             EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, ((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier().getMaxOutput(), null);
         }
-    }
+    }*/
 
     public void discharge(int slot) {
         if (this.level != null) {

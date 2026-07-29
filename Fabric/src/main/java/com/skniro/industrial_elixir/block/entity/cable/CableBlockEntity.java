@@ -6,12 +6,10 @@ import com.skniro.industrial_elixir.block.init.CableBlock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -30,7 +28,7 @@ import java.util.List;
 // CREDIT: https://github.com/techreborn/techreborn
 // Under MIT-License: https://github.com/TechReborn/TechReborn/blob/26.1/LICENSE.md
 public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<CableBlockEntity> {
-    final SimpleSidedEnergyContainer energyContainer;
+    public final SimpleSidedEnergyContainer energyContainer;
     private ModContent.Cables cableType;
     private @Nullable BlockState cover;
     long lastTick;
@@ -206,15 +204,6 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
         if (world != null && !world.isClientSide()) {
             CableTickManager.handleCableTick(this);
         }
-    }
-
-    public void addInfo(List<Component> info, boolean isReal, boolean hasData) {
-        info.add(Component.translatable("techreborn.tooltip.transferRate").withStyle(ChatFormatting.GRAY).append(": ").append(PowerSystem.getLocalizedPower((double)this.getCableType().transferRate)).withStyle(ChatFormatting.GOLD).append("/t"));
-        info.add(Component.translatable("techreborn.tooltip.tier").withStyle(ChatFormatting.GRAY).append(": ").append(Component.literal(StringUtils.toFirstCapitalAllLowercase(this.getCableType().tier.toString())).withStyle(ChatFormatting.GOLD)));
-        if (!this.getCableType().canKill) {
-            info.add(Component.translatable("techreborn.tooltip.cable.can_cover").withStyle(ChatFormatting.GRAY));
-        }
-
     }
 
     public @Nullable BlockState getRenderData() {

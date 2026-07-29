@@ -33,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -73,6 +74,30 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
             @Override
             public int getCount() {
                 return 2;
+            }
+        };
+
+        energyContainer = new SimpleSidedEnergyContainer() {
+            @Override
+            public long getCapacity() {
+                return getMachineCapacity();
+            }
+
+            @Override
+            public long getMaxInsert(@Nullable Direction side) {
+                return getEffectiveTier().getMaxInput();
+            }
+
+            @Override
+            public long getMaxExtract(@Nullable Direction side) {
+                if (side == null) return getEffectiveTier().getMaxOutput();
+                return 0;
+            }
+
+            @Override
+            protected void onFinalCommit() {
+                setChanged();
+                getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
             }
         };
     }
