@@ -8,7 +8,8 @@ import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
-import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
+import com.skniro.industrial_elixir.energy.api.EnergyStorage;
+import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
 import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
@@ -22,11 +23,9 @@ import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
-import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
 import java.util.Locale;
 
@@ -81,6 +80,23 @@ public class  ModContent {
         MapleParticleTypes.registerParticleTypes(eventBus);
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(EnergyStorage.ITEM,
+                (stack, context) -> SimpleEnergyItem.createStorage(context,
+                        ((SimpleEnergyItem) stack.getItem()).getEnergyCapacity(stack),
+                        ((SimpleEnergyItem) stack.getItem()).getEnergyMaxInput(stack),
+                        ((SimpleEnergyItem) stack.getItem()).getEnergyMaxOutput(stack)),
+                GrowableOresItems.RE_BATTERY.get(),
+                GrowableOresItems.ADVANCED_RE_BATTERY.get(),
+                GrowableOresItems.ENERGY_CRYSTAL.get(),
+                GrowableOresItems.LAPOTRON_CRYSTAL.get(),
+                MapleArmorItems.Quantum_HELMET.get(),
+                MapleArmorItems.Quantum_CHESTPLATE.get(),
+                MapleArmorItems.Quantum_LEGGINGS.get(),
+                MapleArmorItems.Quantum_BOOTS.get(),
+                MapleArmorItems.Electric_Jetpack.get()
+        );
+    }
 
     public enum Cables {
         COPPER(128, 12.0F, true, EnergyTier.TIER2),

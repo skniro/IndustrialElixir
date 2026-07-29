@@ -39,11 +39,6 @@ public class ElectricJetpackItem extends Item implements SimpleEnergyItem, Tiere
         this.energyTier = energyTier;
     }
 
-    @SubscribeEvent
-    public void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerItem(EnergyStorage.ITEM, (stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
-    }
-
     // ===============================================
     // Energy
     // ===============================================

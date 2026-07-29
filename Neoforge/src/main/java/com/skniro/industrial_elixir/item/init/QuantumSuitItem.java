@@ -101,11 +101,6 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
         }
     }
 
-    @SubscribeEvent
-    public void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerItem(EnergyStorage.ITEM, (stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
-    }
-
     private static ImmutableMultimap<Holder<net.minecraft.world.entity.ai.attributes.Attribute>, AttributeModifier> createAttrs(
             double armor, double toughness, double knockback, double speed
     ) {

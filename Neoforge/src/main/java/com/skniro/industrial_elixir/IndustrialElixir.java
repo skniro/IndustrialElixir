@@ -4,13 +4,19 @@ import com.skniro.industrial_elixir.api.item.replicator.ReplicatorValueMap;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
 import com.skniro.industrial_elixir.compat.rei.IndustrialModREIUtils;
+import com.skniro.industrial_elixir.energy.api.EnergyStorage;
+import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
 import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
+import com.skniro.industrial_elixir.item.GrowableOresItems;
+import com.skniro.industrial_elixir.item.MapleArmorItems;
 import com.skniro.industrial_elixir.item.ModCreativeTab;
+import com.skniro.industrial_elixir.item.init.ElectricJetpackItem;
 import com.skniro.industrial_elixir.networking.ModMessages;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.util.ModFuel;
 
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.alchemy.Potion;
@@ -43,6 +49,7 @@ public class IndustrialElixir {
         HeatImpl.register(modEventBus);
         ModMessages.register();
 
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, ModContent::registerCapabilities);
         modEventBus.addListener(FMLCommonSetupEvent.class, event -> {
             AlchemyBlockEntityType.registerMachineEnergyEntity();
             ReplicatorValueMap.registerDefaults();
