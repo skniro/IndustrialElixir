@@ -17,15 +17,16 @@ import com.skniro.industrial_elixir.fluid.MapleFluidTypes;
 import com.skniro.industrial_elixir.item.*;
 import com.skniro.industrial_elixir.item.alchemy.IndustrialElixirPotions;
 import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
-import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
-import com.skniro.industrial_elixir.recipe.machine.*;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 
 import java.util.Locale;
 
@@ -79,27 +80,6 @@ public class  ModContent {
     public static void registerOthers(IEventBus eventBus) {
         MapleParticleTypes.registerParticleTypes(eventBus);
     }
-
-/*    public static void Compat() {
-        if (IndustrialElixirJEIUtils.isJEIAvailable()) {
-            RecipeSynchronization.synchronizeRecipeSerializer(MaceratorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CompressorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MetalFormerRollingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MetalFormerCuttingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MetalFormerExtrudingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MolecularTransformerCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(ExtractorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(AlchemyCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(RecyclerCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CuttingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(BrewReactorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(OreWashingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(HeatCentrifugeCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(ModBlastFurnaceCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CoffeeMachineCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CropFarmCraftingRecipe.SERIALIZER);
-        }
-    }*/
 
 
     public enum Cables {

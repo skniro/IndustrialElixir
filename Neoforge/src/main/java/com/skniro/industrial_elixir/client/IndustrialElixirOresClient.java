@@ -10,6 +10,8 @@ import com.skniro.industrial_elixir.client.particle.MapleCampfireSmokeParticle;
 import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIPlugin;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
+import com.skniro.industrial_elixir.compat.rei.IndustrialModREIClient;
+import com.skniro.industrial_elixir.compat.rei.IndustrialModREIUtils;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.keybind.ModClientEvents;
 import com.skniro.industrial_elixir.keybind.ModKeyMappings;
@@ -58,6 +60,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 
@@ -99,16 +102,6 @@ public class IndustrialElixirOresClient {
         registerClientEntityRenderer();
 
         HudElementRegistry.addFirst(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "water"), (context, deltaTracker)->  WindowsWatermarkRenderer.render(context));
-        
-        ClientRecipeSynchronizedEvent.EVENT.register((minecraft, synchronizedRecipes) -> {
-            if (IndustrialElixirJEIUtils.isJEIAvailable()) {
-                IndustrialElixirJEIPlugin.recipeMap = synchronizedRecipes;
-                try {
-                    IndustrialElixirJEIPlugin.pushRecipesToJei();
-                } catch (Throwable ignored) {
-                }
-            }
-        });
 
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Hot_Spring.get(), IndustrialElixirFluids.FLOWING_Hot_Spring.get(),
                 new FluidModel.Unbaked(
@@ -133,6 +126,20 @@ public class IndustrialElixirOresClient {
 
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU.get(), IndustrialElixirFluids.FLOWING_Fluid_UU.get(), Fluid_UU_MODEL);
         FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_AIR.get(), IndustrialElixirFluids.FLOWING_Fluid_AIR.get(), Fluid_AIR_MODEL);
+    }
+
+    @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
+    public static class ClientGameEvents {
+        @SubscribeEvent
+        public static void onRecipesReceived(RecipesReceivedEvent event) {
+            if(IndustrialElixirJEIUtils.isJEIAvailable()) {
+                IndustrialElixirJEIPlugin.recipeMap = event.getRecipeMap();
+            }
+
+            if(IndustrialModREIUtils.isREIAvailable()) {
+                IndustrialModREIClient.recipeMap = event.getRecipeMap();
+            }
+        }
     }
 
     public static void registerClientEntityRenderer() {
