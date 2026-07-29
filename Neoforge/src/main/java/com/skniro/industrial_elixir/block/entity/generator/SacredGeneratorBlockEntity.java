@@ -11,7 +11,8 @@ import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
 import com.skniro.industrial_elixir.screen.handler.generator.SacredGeneratorScreenHandler;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -177,7 +178,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
             int pulses = component.getRodCount();
             generation += pulses * ENERGY_PER_PULSE;
             long heatGenerated = pulses * 4L;
-            try (Transaction tx = Transaction.openOuter()) {
+            try (Transaction tx = Transaction.openRoot()) {
                 heatContainer.getSideStorage(null).insert(heatGenerated, tx);
                 tx.commit();
             }
@@ -232,13 +233,13 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     private void fillUpOnEnergy() {
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             this.energyContainer.getSideStorage(null).insert(((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier().getMaxInput(), transaction);
             transaction.commit();
         }
     }
     private void insertGeneratedEnergy(int amount) {
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             energyContainer.getSideStorage(null).insert(amount, transaction);
             transaction.commit();
         }
@@ -272,7 +273,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
 
             if (cooling > 0 && heatContainer.getSideStorage(null).getAmount() > 0) {
                 int actualCooling = (int) Math.min(heatContainer.getSideStorage(null).getAmount(), cooling);
-                try (Transaction tx = Transaction.openOuter()) {
+                try (Transaction tx = Transaction.openRoot()) {
                     heatContainer.getSideStorage(null).extract(actualCooling, tx);
                     tx.commit();
                 }
@@ -298,7 +299,9 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
             if (!this.level.isClientSide()) {
                 if (!this.getOptionalInventory().isEmpty()) {
                     Container inventory = this.getOptionalInventory().get();
-                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
+                    ItemStack stack = inventory.getItem(slot);
+                    EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
+                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE, null);
                 }
             }
         }

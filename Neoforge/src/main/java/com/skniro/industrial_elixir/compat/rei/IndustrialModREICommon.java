@@ -8,7 +8,11 @@ import com.skniro.industrial_elixir.recipe.machine.*;
 import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
 import me.shedaniel.rei.api.common.plugins.REICommonPlugin;
 import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
+import me.shedaniel.rei.forge.REIPluginCommon;
+import me.shedaniel.rei.plugincompatibilities.api.REIPluginCompatIgnore;
 
+@REIPluginCommon
+@REIPluginCompatIgnore
 public class IndustrialModREICommon implements REICommonPlugin {
 
     @Override

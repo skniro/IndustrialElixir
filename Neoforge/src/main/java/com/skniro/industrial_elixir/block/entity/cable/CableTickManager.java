@@ -3,7 +3,7 @@ package com.skniro.industrial_elixir.block.entity.cable;
 import com.skniro.industrial_elixir.ModContent;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -116,7 +116,7 @@ class CableTickManager {
         Collections.shuffle(sortedTargets);
         sortedTargets.sort(Comparator.comparingLong((sortableStorage) -> sortableStorage.simulationResult));
 
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             long transferredAmount = 0L;
 
             for(int i = 0; i < sortedTargets.size(); ++i) {
@@ -147,7 +147,7 @@ class CableTickManager {
         SortableStorage(TransferOperation operation, OfferedEnergyStorage storage) {
             this.storage = storage;
 
-            try (Transaction tx = Transaction.openOuter()) {
+            try (Transaction tx = Transaction.openRoot()) {
                 this.simulationResult = operation.transfer(storage.storage(), Long.MAX_VALUE, tx);
             }
 

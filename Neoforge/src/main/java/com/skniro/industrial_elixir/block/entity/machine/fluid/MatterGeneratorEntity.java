@@ -11,7 +11,6 @@ import com.skniro.industrial_elixir.screen.handler.machine.fluid.MatterGenerator
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -70,7 +70,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 
 	private boolean generateMatter() {
 		FluidVariant variant = FluidVariant.of(IndustrialElixirFluids.STILL_Fluid_UU.get());
-		try (Transaction tx = Transaction.openOuter()) {
+		try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
 			long inserted = fluidContainer.insert(variant, MB_UNIT, tx);
 			if (inserted == MB_UNIT) {
 				tx.commit();
@@ -114,7 +114,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 			return;
 		}
 
-		try (Transaction tx = Transaction.openOuter()) {
+		try (Transaction tx = Transaction.openRoot()) {
 
 			long extracted = energyContainer.getSideStorage(null).extract(getEffectiveTier().getMaxInput(), tx);
 			if (extracted > 0) {
@@ -171,7 +171,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 			return;
 		}
 
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction transaction = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
 
 			long extracted = fluidContainer.extract(
 					FluidVariant.of(fluid),

@@ -1,8 +1,9 @@
 package com.skniro.industrial_elixir.energy.heat.api.base;
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
@@ -11,10 +12,10 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A base Heat storage implementation with a dynamic capacity, and per-side per-operation insertion and extraction limits.
  * {@link #getSideStorage} can be used to get an {@code HeatStorage} implementation for a given side.
- * Make sure to override {@link #onFinalCommit} to call {@code markDirty} and similar functions.
+ * Make sure to override {@link #onRootCommit} to call {@code markDirty} and similar functions.
  */
 @SuppressWarnings({"unused"})
-public abstract class SimpleSidedHeatContainer extends SnapshotParticipant<Long> {
+public abstract class SimpleSidedHeatContainer extends SnapshotJournal<Long> {
 	public long amount = 0;
 	private final SideStorage[] sideStorages = new SideStorage[7];
 
@@ -51,9 +52,23 @@ public abstract class SimpleSidedHeatContainer extends SnapshotParticipant<Long>
 		return amount;
 	}
 
-	@Override
+
 	protected void readSnapshot(Long snapshot) {
 		amount = snapshot;
+	}
+
+	@Override
+	protected void revertToSnapshot(Long snapshot) {
+		readSnapshot(snapshot);
+	}
+
+	@Override
+	protected void onRootCommit(Long snapshot) {
+		onFinalCommit();
+	}
+
+	protected void onFinalCommit() {
+
 	}
 
 	private class SideStorage implements HeatStorage {
@@ -70,7 +85,7 @@ public abstract class SimpleSidedHeatContainer extends SnapshotParticipant<Long>
 
 		@Override
 		public long insert(long maxAmount, TransactionContext transaction) {
-			StoragePreconditions.notNegative(maxAmount);
+			TransferPreconditions.checkNonNegative((int) maxAmount);
 
 			long inserted = Math.min(getMaxInsert(side), Math.min(maxAmount, getCapacity() - amount));
 
@@ -90,7 +105,7 @@ public abstract class SimpleSidedHeatContainer extends SnapshotParticipant<Long>
 
 		@Override
 		public long extract(long maxAmount, TransactionContext transaction) {
-			StoragePreconditions.notNegative(maxAmount);
+			TransferPreconditions.checkNonNegative((int) maxAmount);
 
 			long extracted = Math.min(getMaxExtract(side), Math.min(maxAmount, amount));
 

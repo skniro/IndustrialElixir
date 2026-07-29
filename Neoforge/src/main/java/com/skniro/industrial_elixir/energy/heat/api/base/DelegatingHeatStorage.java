@@ -3,7 +3,7 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
 

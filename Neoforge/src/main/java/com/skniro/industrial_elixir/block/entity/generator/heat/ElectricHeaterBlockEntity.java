@@ -9,7 +9,7 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContaine
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.generator.heat.ElectricHeaterScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -95,7 +95,7 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
         if (coilCount > 0) {
             long required = coilCount * EU_PER_COIL;
             if (energyContainer.getSideStorage(null).getAmount() >= required) {
-                try (Transaction tx = Transaction.openOuter()) {
+                try (Transaction tx = Transaction.openRoot()) {
                     if (energyContainer.getSideStorage(null).extract(required, tx) == required) {
                         long heat = coilCount * HEAT_PER_COIL;
                         if (heatContainer.getSideStorage(null).insert(heat, tx) == heat) {

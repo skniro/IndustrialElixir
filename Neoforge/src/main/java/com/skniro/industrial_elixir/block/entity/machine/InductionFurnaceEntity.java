@@ -12,7 +12,7 @@ import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.handler.machine.InductionFurnaceScreenHandler;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -205,7 +205,7 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
     }
 
     private void extractEnergy(long amount) {
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             energyContainer.getSideStorage(null).extract(amount, transaction);
             transaction.commit();
         }
@@ -254,19 +254,6 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
             this.setItem(OUTPUT_SLOT, output);
         } else {
             this.getItem(OUTPUT_SLOT).grow(output.getCount());
-        }
-    }
-
-    @Override
-    public void charge(int slot) {
-        if (this.level != null && !this.level.isClientSide() && getFreeSpace() > 0) {
-            Container inventory = this;
-            EnergyStorageUtil.move(
-                    ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM),
-                    this.getSideEnergyStorage(null),
-                    Long.MAX_VALUE,
-                    null
-            );
         }
     }
 

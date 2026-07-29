@@ -15,8 +15,12 @@ import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+import me.shedaniel.rei.plugincompatibilities.api.REIPluginCompatIgnore;
 
+@REIPluginClient
+@REIPluginCompatIgnore
 public class IndustrialModREIClient implements REIClientPlugin {
 
     @Override

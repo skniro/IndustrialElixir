@@ -2,8 +2,9 @@ package com.skniro.industrial_elixir.energy.api;
 
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 // CREDIT: https://github.com/TechReborn/energy
@@ -31,11 +32,11 @@ public class EnergyStorageUtil {
 		// Simulate extraction first.
 		long maxExtracted;
 
-		try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+		try (Transaction extractionTestTransaction = Transaction.open(transaction)) {
 			maxExtracted = from.extract(maxAmount, extractionTestTransaction);
 		}
 
-		try (Transaction moveTransaction = Transaction.openNested(transaction)) {
+		try (Transaction moveTransaction = Transaction.open(transaction)) {
 			// Then insert what can be extracted.
 			long accepted = to.insert(maxExtracted, moveTransaction);
 
@@ -55,7 +56,7 @@ public class EnergyStorageUtil {
 	 * This can typically be used for inventories or slots that want to accept energy storages only.
 	 */
 	public static boolean isEnergyStorage(ItemStack stack) {
-		return ContainerItemContext.withConstant(stack).find(EnergyStorage.ITEM) != null;
+		return stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack)) != null;
 	}
 
 	private EnergyStorageUtil() {

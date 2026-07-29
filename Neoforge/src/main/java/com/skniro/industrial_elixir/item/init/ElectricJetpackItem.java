@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
@@ -35,9 +37,11 @@ public class ElectricJetpackItem extends Item implements SimpleEnergyItem, Tiere
                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
                 .component(DataComponents.TOOLTIP_DISPLAY, UNBREAKABLE_HIDE));
         this.energyTier = energyTier;
-        EnergyStorage.ITEM.registerForItems((stack, context) ->
-                SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack),
-                        this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
+    }
+
+    @SubscribeEvent
+    public void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(EnergyStorage.ITEM, (stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
     }
 
     // ===============================================

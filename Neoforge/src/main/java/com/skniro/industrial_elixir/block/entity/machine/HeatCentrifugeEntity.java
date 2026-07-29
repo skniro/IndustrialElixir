@@ -10,7 +10,7 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.HeatCentrifugeCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.HeatCentrifugeScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
@@ -195,7 +195,7 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
     }
 
     private void extractEnergy(long amount) {
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             energyContainer.getSideStorage(null).extract(amount, transaction);
             transaction.commit();
         }

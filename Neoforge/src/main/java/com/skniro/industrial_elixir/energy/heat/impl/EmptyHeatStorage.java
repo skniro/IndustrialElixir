@@ -1,7 +1,7 @@
 package com.skniro.industrial_elixir.energy.heat.impl;
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.ApiStatus;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE

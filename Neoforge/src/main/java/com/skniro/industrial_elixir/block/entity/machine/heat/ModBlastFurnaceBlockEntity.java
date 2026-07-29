@@ -18,7 +18,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -127,7 +127,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         HeatStorage input = HeatStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
         if (input == null) return;
 
-        try (Transaction tx = Transaction.openOuter()) {
+        try (Transaction tx = Transaction.openRoot()) {
             long moved = input.extract(1, tx);
 
             if (moved > 0) {
@@ -156,7 +156,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         boolean heated = stored >= cap;
 
         if (!receivingHeat && stored > 0) {
-            try (Transaction tx = Transaction.openOuter()) {
+            try (Transaction tx = Transaction.openRoot()) {
                 heatContainer.getSideStorage(null).extract(Math.min(20, stored), tx);
                 tx.commit();
             }
@@ -217,7 +217,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
             return;
         }
 
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction transaction = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
             long inserted = this.fluidContainer.insert(fluidStorage.getResource(), 1000, transaction);
             if (inserted != 1000) {
                 return;
@@ -264,7 +264,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         this.removeItem(INPUT_SLOT, recipe.requiredCount());
         insertOutput(OUTPUT_SLOT, recipe.output().create());
         recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
-        try (Transaction tx = Transaction.openOuter()) {
+        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
             fluidContainer.extract(fluidContainer.getResource(), recipe.requiredFluidAmount(), tx);
             tx.commit();
         }

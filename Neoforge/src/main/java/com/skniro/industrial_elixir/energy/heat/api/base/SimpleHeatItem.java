@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -29,7 +30,7 @@ public interface SimpleHeatItem {
 	 * <p>Stackable Heat containers are supported just fine, and they will distribute Heat evenly.
 	 * For example, insertion of 3 units of Heat into a stack of 2 items using this class will either insert 0 or 2 depending on the remaining capacity.
 	 */
-	static HeatStorage createStorage(ContainerItemContext ctx, long capacity, long maxInsert, long maxExtract) {
+	static HeatStorage createStorage(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
 		return SimpleItemHeatStorageImpl.createSimpleStorage(ctx, capacity, maxInsert, maxExtract);
 	}
 

@@ -9,6 +9,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -28,8 +30,9 @@ public class HeatImpl {
 		DATA_COMPONENTS.register("heat", () -> Heat_COMPONENT);
 	}
 
-	public static void init() {
-		HeatStorage.ITEM.registerFallback((stack, ctx) -> {
+	@SubscribeEvent
+	public static void init(RegisterCapabilitiesEvent event) {
+		event.registerItem(HeatStorage.ITEM, (stack, ctx) -> {
 			if (stack.getItem() instanceof SimpleHeatItem HeatItem) {
 				return SimpleHeatItem.createStorage(ctx, HeatItem.getHeatCapacity(stack), HeatItem.getHeatMaxInput(stack), HeatItem.getHeatMaxOutput(stack));
 			} else {

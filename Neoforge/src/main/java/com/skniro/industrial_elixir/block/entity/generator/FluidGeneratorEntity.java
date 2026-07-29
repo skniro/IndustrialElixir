@@ -16,7 +16,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -114,12 +114,14 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
             // Try lava first (priority)
             if (!fluid.isBlank() && fluid.getFluid() == Fluids.LAVA) {
                 if (fluidContainer.getAmount() >= LAVA_CONSUME_PER_TICK) {
-                    try (Transaction tx = Transaction.openOuter()) {
-                        long extracted = fluidContainer.extract(fluid, LAVA_CONSUME_PER_TICK, tx);
-                        if (extracted == LAVA_CONSUME_PER_TICK) {
-                            energyContainer.getSideStorage(null).insert(LAVA_EU_PER_TICK, tx);
-                            tx.commit();
-                            working = true;
+                    try (Transaction tx = Transaction.openRoot()) {
+                        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx2 = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+                            long extracted = fluidContainer.extract(fluid, LAVA_CONSUME_PER_TICK, tx2);
+                            if (extracted == LAVA_CONSUME_PER_TICK) {
+                                energyContainer.getSideStorage(null).insert(LAVA_EU_PER_TICK, tx);
+                                tx.commit();
+                                working = true;
+                            }
                         }
                     }
                 }
@@ -128,12 +130,14 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
             // If lava didn't work, try water
             if (!working && !fluid.isBlank() && fluid.getFluid() == Fluids.WATER) {
                 if (fluidContainer.getAmount() >= WATER_CONSUME_PER_TICK) {
-                    try (Transaction tx = Transaction.openOuter()) {
-                        long extracted = fluidContainer.extract(fluid, WATER_CONSUME_PER_TICK, tx);
-                        if (extracted == WATER_CONSUME_PER_TICK) {
-                            energyContainer.getSideStorage(null).insert(WATER_EU_PER_TICK, tx);
-                            tx.commit();
-                            working = true;
+                    try (Transaction tx = Transaction.openRoot()) {
+                        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx2 = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+                            long extracted = fluidContainer.extract(fluid, WATER_CONSUME_PER_TICK, tx2);
+                            if (extracted == WATER_CONSUME_PER_TICK) {
+                                energyContainer.getSideStorage(null).insert(WATER_EU_PER_TICK, tx);
+                                tx.commit();
+                                working = true;
+                            }
                         }
                     }
                 }
@@ -141,12 +145,14 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
 
             if (!working && !fluid.isBlank() && fluid.getFluid() == IndustrialElixirFluids.STILL_Hot_Spring) {
                 if (fluidContainer.getAmount() >= WATER_CONSUME_PER_TICK) {
-                    try (Transaction tx = Transaction.openOuter()) {
-                        long extracted = fluidContainer.extract(fluid, WATER_CONSUME_PER_TICK, tx);
-                        if (extracted == WATER_CONSUME_PER_TICK) {
-                            energyContainer.getSideStorage(null).insert(WATER_EU_PER_TICK, tx);
-                            tx.commit();
-                            working = true;
+                    try (Transaction tx = Transaction.openRoot()) {
+                        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx2 = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+                            long extracted = fluidContainer.extract(fluid, WATER_CONSUME_PER_TICK, tx2);
+                            if (extracted == WATER_CONSUME_PER_TICK) {
+                                energyContainer.getSideStorage(null).insert(WATER_EU_PER_TICK, tx);
+                                tx.commit();
+                                working = true;
+                            }
                         }
                     }
                 }
@@ -158,20 +164,6 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
         }
 
         setChanged(world, pos, state);
-    }
-
-    public void discharge(int slot) {
-        if (this.level != null && !this.level.isClientSide()) {
-            if (!this.getOptionalInventory().isEmpty()) {
-                Container inventory = this.getOptionalInventory().get();
-                EnergyStorageUtil.move(
-                        energyContainer.getSideStorage(null),
-                        ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM),
-                        Long.MAX_VALUE,
-                        null
-                );
-            }
-        }
     }
 
     public Optional<ImplementedInventory> getOptionalInventory() {

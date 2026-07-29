@@ -9,7 +9,7 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContaine
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -226,7 +226,7 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
             HeatStorage input = SimpleHeatStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
             if (input == null) continue;
 
-            try (Transaction tx = Transaction.openOuter()) {
+            try (Transaction tx = Transaction.openRoot()) {
                 long moved = input.extract(1, tx);
 
                 if (moved > 0) {

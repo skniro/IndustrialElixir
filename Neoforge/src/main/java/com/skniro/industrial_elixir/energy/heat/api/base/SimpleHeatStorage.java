@@ -3,16 +3,18 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
  * A base Heat storage implementation with fixed capacity, and per-operation insertion and extraction limits.
- * Make sure to override {@link #onFinalCommit} to call {@code markDirty} and similar functions.
+ * Make sure to override {@link #onRootCommit} to call {@code markDirty} and similar functions.
  */
 @SuppressWarnings({"unused"})
-public class SimpleHeatStorage extends SnapshotParticipant<Long> implements HeatStorage {
+public class SimpleHeatStorage extends SnapshotJournal<Long> implements HeatStorage {
 	public long amount = 0;
 	public final long capacity;
 	public final long maxInsert, maxExtract;
@@ -32,7 +34,6 @@ public class SimpleHeatStorage extends SnapshotParticipant<Long> implements Heat
 		return amount;
 	}
 
-	@Override
 	protected void readSnapshot(Long snapshot) {
 		amount = snapshot;
 	}
@@ -43,8 +44,21 @@ public class SimpleHeatStorage extends SnapshotParticipant<Long> implements Heat
 	}
 
 	@Override
+	protected void revertToSnapshot(Long snapshot) {
+		readSnapshot(snapshot);
+	}
+
+	@Override
+	protected void onRootCommit(Long snapshot) {
+		onFinalCommit();
+	}
+
+	protected void onFinalCommit() {
+
+	}
+	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		long inserted = Math.min(maxInsert, Math.min(maxAmount, capacity - amount));
 
@@ -64,7 +78,7 @@ public class SimpleHeatStorage extends SnapshotParticipant<Long> implements Heat
 
 	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		long extracted = Math.min(maxExtract, Math.min(maxAmount, amount));
 

@@ -2,11 +2,13 @@ package com.skniro.industrial_elixir.block.init.container.fluid;
 
 import com.mojang.serialization.MapCodec;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
+import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.entity.container.fluid.FluidTankBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -93,7 +95,10 @@ public class FluidTankBlock extends BaseEntityBlock {
         }
 
         if (!world.isClientSide()) {
-            player.openMenu(fluidTank);
+            BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof FluidTankBlockEntity abstractMachineEntity) {
+                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(abstractMachineEntity, abstractMachineEntity.getDisplayName()), pos);
+            }
         }
 
         return InteractionResult.SUCCESS;

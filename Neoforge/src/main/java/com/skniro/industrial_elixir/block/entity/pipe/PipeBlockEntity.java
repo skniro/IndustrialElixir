@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ItemOwner;
@@ -261,7 +261,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
                 return false;
             }
         }
-        try (Transaction tx = Transaction.openOuter()) {
+        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
             long inserted = storage.insert(item.variant, item.amount, tx);
 
             if (inserted > 0) {
@@ -379,7 +379,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
             return false;
         }
 
-        try (Transaction tx = Transaction.openOuter()) {
+        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
             StorageView<ItemVariant> view = null;
 
             for (StorageView<ItemVariant> next : storage) {

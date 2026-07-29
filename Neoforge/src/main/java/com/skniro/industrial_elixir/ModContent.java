@@ -13,6 +13,7 @@ import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
+import com.skniro.industrial_elixir.fluid.MapleFluidTypes;
 import com.skniro.industrial_elixir.item.*;
 import com.skniro.industrial_elixir.item.alchemy.IndustrialElixirPotions;
 import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
@@ -52,6 +53,7 @@ public class  ModContent {
     }
 
     public static void registerFluids(IEventBus eventBus) {
+        MapleFluidTypes.register(eventBus);
         IndustrialElixirFluids.registerFluids(eventBus);
         IndustrialElixirFluidItems.registerFluidItems(eventBus);
         IndustrialElixirFluidBlocks.registerFluidBlocks(eventBus);
@@ -78,7 +80,7 @@ public class  ModContent {
         MapleParticleTypes.registerParticleTypes(eventBus);
     }
 
-    public static void Compat() {
+/*    public static void Compat() {
         if (IndustrialElixirJEIUtils.isJEIAvailable()) {
             RecipeSynchronization.synchronizeRecipeSerializer(MaceratorCraftingRecipe.SERIALIZER);
             RecipeSynchronization.synchronizeRecipeSerializer(CompressorCraftingRecipe.SERIALIZER);
@@ -97,7 +99,7 @@ public class  ModContent {
             RecipeSynchronization.synchronizeRecipeSerializer(CoffeeMachineCraftingRecipe.SERIALIZER);
             RecipeSynchronization.synchronizeRecipeSerializer(CropFarmCraftingRecipe.SERIALIZER);
         }
-    }
+    }*/
 
 
     public enum Cables {

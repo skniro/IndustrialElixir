@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -146,13 +147,31 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements E
                 if (chargeEnergy > 0L) {
                     if (!this.getOptionalInventory().isEmpty()) {
                         Container inventory = this.getOptionalInventory().get();
-                        EnergyStorageUtil.move(ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
+                        ItemStack stack = inventory.getItem(slot);
+                        if(!stack.isEmpty()) {
+                            EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
+                            EnergyStorageUtil.move(itemEnergyStorage, this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
+                        }
                     }
                 }
             }
         }
     }
 
+    public void discharge(int slot) {
+        if (this.level != null) {
+            if (!this.level.isClientSide()) {
+                if (!this.getOptionalInventory().isEmpty()) {
+                    Container inventory = this.getOptionalInventory().get();
+                    ItemStack stack = inventory.getItem(slot);
+                    if(!stack.isEmpty()) {
+                        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
+                        EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE, null);
+                    }
+                }
+            }
+        }
+    }
 
     public long getFreeSpace() {
         return this.energyContainer.getCapacity() - energyContainer.amount;

@@ -3,11 +3,11 @@ package com.skniro.industrial_elixir.energy.impl;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.base.DelegatingEnergyStorage;
 import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
@@ -19,24 +19,24 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.Internal
 public class SimpleItemEnergyStorageImpl implements EnergyStorage {
-	public static EnergyStorage createSimpleStorage(ContainerItemContext ctx, long capacity, long maxInsert, long maxExtract) {
-		StoragePreconditions.notNegative(capacity);
-		StoragePreconditions.notNegative(maxInsert);
-		StoragePreconditions.notNegative(maxExtract);
+	public static EnergyStorage createSimpleStorage(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
+		TransferPreconditions.checkNonNegative((int) capacity);
+		TransferPreconditions.checkNonNegative((int) maxInsert);
+		TransferPreconditions.checkNonNegative((int) maxExtract);
 
-		Item startingItem = ctx.getItemVariant().getItem();
+		Item startingItem = ctx.getResource().getItem();
 
 		return new DelegatingEnergyStorage(
 				new SimpleItemEnergyStorageImpl(ctx, capacity, maxInsert, maxExtract),
-				() -> ctx.getItemVariant().isOf(startingItem) && ctx.getAmount() > 0
+				() -> ctx.getResource().is(startingItem) && ctx.getAmount() > 0
 		);
 	}
 
-	private final ContainerItemContext ctx;
+	private final ItemAccess ctx;
 	private final long capacity;
 	private final long maxInsert, maxExtract;
 
-	private SimpleItemEnergyStorageImpl(ContainerItemContext ctx, long capacity, long maxInsert, long maxExtract) {
+	private SimpleItemEnergyStorageImpl(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
 		this.ctx = ctx;
 		this.capacity = capacity;
 		this.maxInsert = maxInsert;
@@ -47,13 +47,13 @@ public class SimpleItemEnergyStorageImpl implements EnergyStorage {
 	 * Try to set the energy of the stack to {@code energyAmountPerCount}, return true if success.
 	 */
 	private boolean trySetEnergy(long energyAmountPerCount, long count, TransactionContext transaction) {
-		ItemStack newStack = ctx.getItemVariant().toStack();
+		ItemStack newStack = ctx.getResource().toStack();
 		SimpleEnergyItem.setStoredEnergyUnchecked(newStack, energyAmountPerCount);
-		ItemVariant newVariant = ItemVariant.of(newStack);
+		ItemResource newVariant = ItemResource.of(newStack);
 
 		// Try to convert exactly `count` items.
-		try (Transaction nested = transaction.openNested()) {
-			if (ctx.extract(ctx.getItemVariant(), count, nested) == count && ctx.insert(newVariant, count, nested) == count) {
+		try (Transaction nested = Transaction.open(transaction)) {
+			if (ctx.extract(ctx.getResource(), (int) count, nested) == count && ctx.insert(newVariant, (int) count, nested) == count) {
 				nested.commit();
 				return true;
 			}
@@ -108,7 +108,7 @@ public class SimpleItemEnergyStorageImpl implements EnergyStorage {
 
 	@Override
 	public long getAmount() {
-		return ctx.getAmount() * SimpleEnergyItem.getStoredEnergyUnchecked(ctx.getItemVariant().getComponents());
+		return ctx.getAmount() * SimpleEnergyItem.getStoredEnergyUnchecked(ctx.getResource().getComponents());
 	}
 
 	@Override

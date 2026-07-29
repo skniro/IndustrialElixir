@@ -1,25 +1,29 @@
 package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
+
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
  * A base energy storage implementation with fixed capacity, and per-operation insertion and extraction limits.
- * Make sure to override {@link #onFinalCommit} to call {@code markDirty} and similar functions.
+ * Make sure to override {@link #onRootCommit} to call {@code markDirty} and similar functions.
  */
 @SuppressWarnings({"unused"})
-public class SimpleEnergyStorage extends SnapshotParticipant<Long> implements EnergyStorage {
+public class SimpleEnergyStorage extends SnapshotJournal<Long> implements EnergyStorage {
 	public long amount = 0;
 	public final long capacity;
 	public final long maxInsert, maxExtract;
 
 	public SimpleEnergyStorage(long capacity, long maxInsert, long maxExtract) {
-		StoragePreconditions.notNegative(capacity);
-		StoragePreconditions.notNegative(maxInsert);
-		StoragePreconditions.notNegative(maxExtract);
+		TransferPreconditions.checkNonNegative((int) capacity);
+		TransferPreconditions.checkNonNegative((int) maxInsert);
+		TransferPreconditions.checkNonNegative((int) maxExtract);
 
 		this.capacity = capacity;
 		this.maxInsert = maxInsert;
@@ -32,8 +36,21 @@ public class SimpleEnergyStorage extends SnapshotParticipant<Long> implements En
 	}
 
 	@Override
+	protected void revertToSnapshot(Long snapshot) {
+		readSnapshot(snapshot);
+	}
+
 	protected void readSnapshot(Long snapshot) {
 		amount = snapshot;
+	}
+
+	@Override
+	protected void onRootCommit(Long snapshot) {
+		onFinalCommit();
+	}
+
+	protected void onFinalCommit() {
+
 	}
 
 	@Override
@@ -43,7 +60,7 @@ public class SimpleEnergyStorage extends SnapshotParticipant<Long> implements En
 
 	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		long inserted = Math.min(maxInsert, Math.min(maxAmount, capacity - amount));
 

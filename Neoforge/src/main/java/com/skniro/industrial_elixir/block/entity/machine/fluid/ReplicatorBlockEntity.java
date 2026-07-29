@@ -9,7 +9,6 @@ import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.ReplicatorScreenHandler;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -25,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
@@ -142,7 +142,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
                 long toExtract = Math.min(energyContainer.amount, needed);
                 toExtract = Math.min(toExtract, getEffectiveTier().getMaxInput());
                 if (toExtract > 0) {
-                    try (Transaction tx = Transaction.openOuter()) {
+                    try (Transaction tx = Transaction.openRoot()) {
                         long extracted = energyContainer.getSideStorage(null).extract(toExtract, tx);
                         if (extracted > 0) {
                             tx.commit();
@@ -157,7 +157,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
             if (fluidProgress < replicatingUUCost) {
                 int needed = replicatingUUCost - fluidProgress;
                 int toExtract = Math.min(needed, 5);
-                try (Transaction tx = Transaction.openOuter()) {
+                try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
                     long extracted = fluidContainer.extract(
                             FluidVariant.of(IndustrialElixirFluids.STILL_Fluid_UU.get()), toExtract, tx);
                     if (extracted > 0) {

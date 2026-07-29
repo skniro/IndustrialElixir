@@ -10,7 +10,7 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContaine
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.generator.heat.SolidFuelHeaterScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -108,7 +108,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
             // Currently burning fuel
             if (heatContainer.amount < HEAT_CAPACITY) {
                 // Heat has room: produce heat and consume burn time
-                try (Transaction tx = Transaction.openOuter()) {
+                try (Transaction tx = Transaction.openRoot()) {
                     heatContainer.getSideStorage(null).insert(HEAT_PER_TICK, tx);
                     tx.commit();
                 }

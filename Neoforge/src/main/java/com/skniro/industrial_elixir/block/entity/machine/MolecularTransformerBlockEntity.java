@@ -6,7 +6,7 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.MolecularTransformerCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.MolecularTransformerScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,7 +43,7 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
             long availableEnergy = Math.min(energyContainer.amount, energyRequired - energyProgress);
             this.energyInputPerTick = availableEnergy;
             if(availableEnergy > 0) {
-                try (Transaction tx = Transaction.openOuter()) {
+                try (Transaction tx = Transaction.openRoot()) {
                     energyContainer.getSideStorage(null).extract(availableEnergy, tx);
                     tx.commit();
                 }

@@ -6,6 +6,8 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
 public class QuantumArmorItem extends Item implements SimpleEnergyItem, TieredEnergyItem {
     private EnergyTier energyTier;
@@ -14,7 +16,11 @@ public class QuantumArmorItem extends Item implements SimpleEnergyItem, TieredEn
     public QuantumArmorItem(Properties settings, EnergyTier energyTier) {
         super(settings);
         this.energyTier = energyTier;
-        EnergyStorage.ITEM.registerForItems((stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
+    }
+
+    @SubscribeEvent
+    public void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(EnergyStorage.ITEM, (stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
     }
 
     @Override

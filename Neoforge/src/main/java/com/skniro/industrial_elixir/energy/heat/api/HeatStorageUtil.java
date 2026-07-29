@@ -1,9 +1,11 @@
 package com.skniro.industrial_elixir.energy.heat.api;
 
+import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,11 +34,11 @@ public class HeatStorageUtil {
 		// Simulate extraction first.
 		long maxExtracted;
 
-		try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+		try (Transaction extractionTestTransaction = Transaction.open(transaction)) {
 			maxExtracted = from.extract(maxAmount, extractionTestTransaction);
 		}
 
-		try (Transaction moveTransaction = Transaction.openNested(transaction)) {
+		try (Transaction moveTransaction = Transaction.open(transaction)) {
 			// Then insert what can be extracted.
 			long accepted = to.insert(maxExtracted, moveTransaction);
 
@@ -56,7 +58,7 @@ public class HeatStorageUtil {
 	 * This can typically be used for inventories or slots that want to accept Heat storages only.
 	 */
 	public static boolean isHeatStorage(ItemStack stack) {
-		return ContainerItemContext.withConstant(stack).find(HeatStorage.ITEM) != null;
+		return stack.getCapability(HeatStorage.ITEM, ItemAccess.forStack(stack)) != null;
 	}
 
 	private HeatStorageUtil() {

@@ -9,7 +9,9 @@ import com.skniro.industrial_elixir.screen.ingame.machine.fluid.BrewReactorScree
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.CoffeeMachineScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.OreWashingScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
+import me.shedaniel.rei.plugincompatibilities.api.REIPluginCompatIgnore;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
@@ -19,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 
+@JeiPlugin
+@REIPluginCompatIgnore
 public class IndustrialElixirJEIPlugin implements IModPlugin {
     public static SynchronizedRecipes recipeMap = null;
     private static IJeiRuntime jeiRuntime = null;

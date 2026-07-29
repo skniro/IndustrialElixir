@@ -14,7 +14,7 @@ import com.skniro.industrial_elixir.screen.handler.generator.NuclearReactorScree
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -143,7 +143,6 @@ public class NuclearReactorBlockEntity extends BlockEntity implements ExtendedMe
             return;
         }
 
-        chargeBattery();
         pushEnergyToNeighbours();
         maxHeat = calculateMaxHeat();
         generation = 0;
@@ -179,20 +178,10 @@ public class NuclearReactorBlockEntity extends BlockEntity implements ExtendedMe
     }
 
     private void insertGeneratedEnergy(int amount) {
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             energyContainer.getSideStorage(null).insert(amount, transaction);
             transaction.commit();
         }
-    }
-
-    private void chargeBattery() {
-        Container inventory = this;
-        EnergyStorageUtil.move(
-                this.energyContainer.getSideStorage(null),
-                ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(BATTERY_SLOT)).find(EnergyStorage.ITEM),
-                Long.MAX_VALUE,
-                null
-        );
     }
 
     private void pushEnergyToNeighbours() {

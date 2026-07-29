@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -28,7 +29,7 @@ public interface SimpleEnergyItem {
 	 * <p>Stackable energy containers are supported just fine, and they will distribute energy evenly.
 	 * For example, insertion of 3 units of energy into a stack of 2 items using this class will either insert 0 or 2 depending on the remaining capacity.
 	 */
-	static EnergyStorage createStorage(ContainerItemContext ctx, long capacity, long maxInsert, long maxExtract) {
+	static EnergyStorage createStorage(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
 		return SimpleItemEnergyStorageImpl.createSimpleStorage(ctx, capacity, maxInsert, maxExtract);
 	}
 

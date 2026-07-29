@@ -6,11 +6,14 @@ import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.capabilities.ItemCapability;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -34,7 +37,7 @@ import java.util.Objects;
  * @see Transaction
  */
 @SuppressWarnings({"unused"})
-public interface EnergyStorage {
+public interface EnergyStorage extends EnergyHandler {
 	/**
 	 * Sided block access to energy storages.
 	 * The {@code Direction} parameter may be null, meaning that the full storage (ignoring side restrictions) should be queried.
@@ -69,8 +72,8 @@ public interface EnergyStorage {
 	 * <p>This may be queried both client-side and server-side.
 	 * Returned APIs should behave the same regardless of the logical side.
 	 */
-	ItemApiLookup<EnergyStorage, ContainerItemContext> ITEM =
-			ItemApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "energy"), EnergyStorage.class, ContainerItemContext.class);
+	ItemCapability<EnergyStorage, ItemAccess> ITEM =
+			ItemCapability.create(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "energy"), EnergyStorage.class, ItemAccess.class);
 
 	/**
 	 * Always empty energy storage.
@@ -133,4 +136,23 @@ public interface EnergyStorage {
 	 * Return the maximum amount of energy that could be stored.
 	 */
 	long getCapacity();
+
+	@Override default long getAmountAsLong() {
+		return getAmount();
+	}
+
+	@Override
+	default long getCapacityAsLong() {
+		return getCapacity();
+	}
+
+	@Override
+    default int insert(int amount, TransactionContext transaction){
+		return Math.toIntExact(insert((long) amount, transaction));
+	}
+
+	@Override
+	default int extract(int amount, TransactionContext transaction) {
+		return Math.toIntExact(extract((long) amount, transaction));
+	}
 }

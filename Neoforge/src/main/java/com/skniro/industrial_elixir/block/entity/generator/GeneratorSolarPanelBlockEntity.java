@@ -8,7 +8,7 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.screen.handler.generator.GeneratorSolarPanelScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -136,7 +136,7 @@ public class GeneratorSolarPanelBlockEntity extends NewBaseGeneratorBlockEntity 
 
         if (cachedPower > 0) {
             if (energyContainer.amount < energyContainer.getCapacity()) {
-                try (Transaction transaction = Transaction.openOuter()) {
+                try (Transaction transaction = Transaction.openRoot()) {
                     this.energyContainer.getSideStorage(null).insert(cachedPower, transaction);
                     transaction.commit();
                 }

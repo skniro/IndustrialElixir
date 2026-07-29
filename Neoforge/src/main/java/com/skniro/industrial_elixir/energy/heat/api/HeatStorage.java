@@ -12,8 +12,10 @@ import com.skniro.industrial_elixir.energy.heat.impl.SimpleItemHeatStorageImpl;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.neoforged.neoforge.capabilities.ItemCapability;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
@@ -75,8 +77,8 @@ public interface HeatStorage {
 	 * <p>This may be queried both client-side and server-side.
 	 * Returned APIs should behave the same regardless of the logical side.
 	 */
-	ItemApiLookup<HeatStorage, ContainerItemContext> ITEM =
-			ItemApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), HeatStorage.class, ContainerItemContext.class);
+	ItemCapability<HeatStorage, ItemAccess> ITEM =
+			ItemCapability.create(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), HeatStorage.class, ItemAccess.class);
 
 	/**
 	 * Always empty Heat storage.

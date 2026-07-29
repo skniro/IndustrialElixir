@@ -1,20 +1,20 @@
 package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.core.Direction;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
  * A base energy storage implementation with a dynamic capacity, and per-side per-operation insertion and extraction limits.
  * {@link #getSideStorage} can be used to get an {@code EnergyStorage} implementation for a given side.
- * Make sure to override {@link #onFinalCommit} to call {@code markDirty} and similar functions.
+ * Make sure to override {@link #onRootCommit} to call {@code markDirty} and similar functions.
  */
 @SuppressWarnings({"unused"})
-public abstract class SimpleSidedEnergyContainer extends SnapshotParticipant<Long> {
+public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
 	public long amount = 0;
 	private final SideStorage[] sideStorages = new SideStorage[7];
 
@@ -52,8 +52,21 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotParticipant<Lon
 	}
 
 	@Override
+	protected void revertToSnapshot(Long snapshot) {
+		readSnapshot(snapshot);
+	}
+
 	protected void readSnapshot(Long snapshot) {
 		amount = snapshot;
+	}
+
+	@Override
+	protected void onRootCommit(Long snapshot) {
+		onFinalCommit();
+	}
+
+	protected void onFinalCommit() {
+
 	}
 
 	private class SideStorage implements EnergyStorage {
@@ -70,7 +83,9 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotParticipant<Lon
 
 		@Override
 		public long insert(long maxAmount, TransactionContext transaction) {
-			StoragePreconditions.notNegative(maxAmount);
+			if (maxAmount < 0L) {
+				throw new IllegalArgumentException("Expected value to be non-negative: " + maxAmount);
+			}
 
 			long inserted = Math.min(getMaxInsert(side), Math.min(maxAmount, getCapacity() - amount));
 
@@ -90,7 +105,9 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotParticipant<Lon
 
 		@Override
 		public long extract(long maxAmount, TransactionContext transaction) {
-			StoragePreconditions.notNegative(maxAmount);
+			if (maxAmount < 0L) {
+				throw new IllegalArgumentException("Expected value to be non-negative: " + maxAmount);
+			}
 
 			long extracted = Math.min(getMaxExtract(side), Math.min(maxAmount, amount));
 

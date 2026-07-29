@@ -9,6 +9,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -28,8 +30,9 @@ public class EnergyImpl {
 		DATA_COMPONENTS.register("energy", () -> ENERGY_COMPONENT);
 	}
 
-	public static void init() {
-		EnergyStorage.ITEM.registerFallback((stack, ctx) -> {
+	@SubscribeEvent
+	public static void init(RegisterCapabilitiesEvent event) {
+		event.registerItem(EnergyStorage.ITEM, (stack, ctx) -> {
 			if (stack.getItem() instanceof SimpleEnergyItem energyItem) {
 				return SimpleEnergyItem.createStorage(ctx, energyItem.getEnergyCapacity(stack), energyItem.getEnergyMaxInput(stack), energyItem.getEnergyMaxOutput(stack));
 			} else {

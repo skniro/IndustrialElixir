@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -41,16 +42,6 @@ public abstract class NewBaseGeneratorBlockEntity extends BasePowerBlockBlockEnt
         }
     }
 
-    public void discharge(int slot) {
-        if (this.level != null) {
-            if (!this.level.isClientSide()) {
-                if (!this.getOptionalInventory().isEmpty()) {
-                    Container inventory = this.getOptionalInventory().get();
-                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
-                }
-            }
-        }
-    }
 
     public Optional<ImplementedInventory> getOptionalInventory() {
         if (this instanceof ImplementedInventory inventory) {

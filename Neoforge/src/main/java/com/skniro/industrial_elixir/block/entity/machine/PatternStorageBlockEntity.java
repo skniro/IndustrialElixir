@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public class PatternStorageBlockEntity extends AbstractMachineEntity {
@@ -209,8 +210,7 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
     }
 
     private void useScanEnergy() {
-        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx =
-                     net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+        try (Transaction tx = Transaction.openRoot()) {
             long effectiveUse = (long) (SCAN_ENERGY_PER_TICK * getScanEnergyMultiplier());
             energyContainer.getSideStorage(null).extract(effectiveUse, tx);
             tx.commit();

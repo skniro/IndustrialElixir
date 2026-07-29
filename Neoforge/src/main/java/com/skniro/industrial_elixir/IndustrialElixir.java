@@ -37,10 +37,8 @@ public class IndustrialElixir {
 
         EnergyImpl.register(modEventBus);
         HeatImpl.register(modEventBus);
-        EnergyImpl.init();
-        HeatImpl.init();
         ModMessages.register();
-        ModContent.Compat();
+        //ModContent.Compat();
 
         modEventBus.addListener(FMLCommonSetupEvent.class, event -> {
             AlchemyBlockEntityType.registerMachineEnergyEntity();

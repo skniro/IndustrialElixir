@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 public class IndustrialElixirFluidAIRFluid extends FlowingFluid {
@@ -84,6 +85,11 @@ public class IndustrialElixirFluidAIRFluid extends FlowingFluid {
     @Override
     protected boolean canBeReplacedWith(FluidState state, BlockGetter world, BlockPos pos, Fluid fluid, Direction direction) {
         return false;
+    }
+
+    @Override
+    public FluidType getFluidType() {
+        return MapleFluidTypes.AIR_FLUID_TYPE.get();
     }
 
     @Override

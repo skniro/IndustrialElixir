@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ChunkPos;
@@ -66,7 +66,7 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
         long energyNeeded = loadedCount; // 1 EU per tick per loaded chunk
 
         if (energyContainer.amount >= energyNeeded) {
-            try (Transaction tx = Transaction.openOuter()) {
+            try (Transaction tx = Transaction.openRoot()) {
                 energyContainer.getSideStorage(null).extract(energyNeeded, tx);
                 tx.commit();
             }
