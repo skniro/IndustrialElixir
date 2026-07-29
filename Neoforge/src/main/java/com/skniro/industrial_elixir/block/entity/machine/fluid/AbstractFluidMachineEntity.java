@@ -1,5 +1,7 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
+
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
@@ -12,7 +14,6 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -33,11 +34,7 @@ import java.util.Optional;
 
 public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
     public static int FLUID_CRAFT_AMOUNT = 1000;
-    public SingleVariantStorage<FluidVariant> fluidContainer = new SingleVariantStorage<FluidVariant>() {
-        @Override
-        protected FluidVariant getBlankVariant() {
-            return FluidVariant.blank();
-        }
+    public SingleFluidStorage fluidContainer = new SingleFluidStorage() {
 
         @Override
         protected long getCapacity(FluidVariant variant) {
