@@ -7,6 +7,10 @@ import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,8 +24,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity implements MachineRecipeProvider  {
@@ -29,10 +36,13 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     public int maxProgress = 72;
     private final int DEFAULT_MAX_PROGRESS = 72;
     protected final ContainerData propertyDelegate;
+    private final Map<Direction, ResourceHandler<ItemResource>> itemHandlers = new EnumMap<>(Direction.class);
 
     public AbstractMachineEntity(BlockEntityType entityType, BlockPos pos, BlockState state) {
         super(entityType, pos, state);
-
+        for(Direction direction : Direction.values()) {
+            itemHandlers.put(direction, new WorldlyContainerWrapper(this, direction));
+        }
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
@@ -290,4 +300,108 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     public long getCraftEnergyCost(){
         return ENERGY_CRAFTING_AMOUNT;
     }
+
+    public ResourceHandler<ItemResource> getItemHandler(@Nullable Direction side) {
+
+        return new ResourceHandler<>() {
+
+            @Override
+            public int size() {
+                return inventory.size();
+            }
+
+
+            @Override
+            public ItemResource getResource(int index) {
+                ItemStack stack = inventory.get(index);
+
+                if(stack.isEmpty())
+                    return ItemResource.EMPTY;
+
+                return ItemResource.of(stack);
+            }
+
+
+            @Override
+            public long getAmountAsLong(int index) {
+                return inventory.get(index).getCount();
+            }
+
+
+            @Override
+            public long getCapacityAsLong(int index, ItemResource resource) {
+                return inventory.get(index).getMaxStackSize();
+            }
+
+
+            @Override
+            public boolean isValid(int index, ItemResource resource) {
+
+                ItemStack stack = resource.toStack();
+
+                return canPlaceItemThroughFace(
+                        index,
+                        stack,
+                        side
+                );
+            }
+
+
+            @Override
+            public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+                if(!isValid(index, resource)) return 0;
+                ItemStack insert = resource.toStack(amount);
+                ItemStack old = inventory.get(index);
+                int inserted = Math.min(amount, old.isEmpty() ? insert.getMaxStackSize() : old.getMaxStackSize() - old.getCount());
+                if(inserted <= 0) return 0;
+                inventorySnapshots.updateSnapshots(transaction);
+                if(old.isEmpty()) {
+                    inventory.set(index, insert.copyWithCount(inserted));
+                } else {
+                    old.grow(inserted);
+                }
+                setChanged();
+                return inserted;
+            }
+
+
+
+            @Override
+            public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+
+                ItemStack current = inventory.get(index);
+
+                if(current.isEmpty()) return 0;
+                if(!ItemResource.of(current).equals(resource)) return 0;
+                if(!canTakeItemThroughFace(index, current, side)) return 0;
+                int extracted = Math.min(amount, current.getCount());
+                if(extracted <= 0) return 0;
+                inventorySnapshots.updateSnapshots(transaction);
+                current.shrink(extracted);
+                if(current.isEmpty()) inventory.set(index, ItemStack.EMPTY);
+                setChanged();
+                return extracted;
+            }
+        };
+    }
+
+    private final SnapshotJournal<ItemStack[]> inventorySnapshots = new SnapshotJournal<>() {
+
+        @Override
+        protected ItemStack[] createSnapshot() {
+            ItemStack[] copy = new ItemStack[inventory.size()];
+            for(int i = 0; i < inventory.size(); i++) {
+                copy[i] = inventory.get(i).copy();
+            }
+            return copy;
+        }
+
+        @Override
+        protected void revertToSnapshot(ItemStack[] snapshot) {
+            for(int i = 0; i < snapshot.length; i++) {
+                inventory.set(i, snapshot[i]);
+            }
+            setChanged();
+        }
+    };
 }

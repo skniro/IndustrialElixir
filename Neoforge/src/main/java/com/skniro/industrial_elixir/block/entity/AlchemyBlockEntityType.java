@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -256,6 +257,28 @@ public class AlchemyBlockEntityType {
         HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), SOLID_FUEL_HEATER_BE.get());
         HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), BLAST_FURNACE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE.get());
         HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), SACRED_GENERATOR_BE.get());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, ALCHEMY_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Macerator_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Compressor_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, MetalFormer_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, MolecularTransformer_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Extractor_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Electric_Furnace_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, INDUCTION_FURNACE_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Cutting_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Recycler_BLOCK_ENTITY.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Brew_Reactor_BLOCK_ENTITY.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, Ore_Washing_BLOCK_ENTITY.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, ELECTRIC_HEATER_BLOCK_ENTITY.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, SOLID_FUEL_HEATER_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, MATTER_GENERATOR_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, HEAT_CENTRIFUGE_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, PATTERN_STORAGE_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, REPLICATOR_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, FLUID_GENERATOR_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, CHUNK_LOADER_BE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, CROP_FARM_BLOCK_ENTITY.get(),(blockEntity, direction) -> blockEntity.getItemHandler(direction));
     }
 
     public static void registerMapleBlockEntityType(IEventBus eventBus) {
