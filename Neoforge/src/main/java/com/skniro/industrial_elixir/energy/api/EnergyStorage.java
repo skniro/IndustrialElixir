@@ -3,9 +3,7 @@ package com.skniro.industrial_elixir.energy.api;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.energy.impl.EmptyEnergyStorage;
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
-import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -41,7 +39,6 @@ public interface EnergyStorage extends EnergyHandler {
 	/**
 	 * Sided block access to energy storages.
 	 * The {@code Direction} parameter may be null, meaning that the full storage (ignoring side restrictions) should be queried.
-	 * Refer to {@link BlockApiLookup} for documentation on how to use this field.
 	 *
 	 * <p>The system is push based. That means that power sources are responsible for pushing power to nearby machines.
 	 * Machines and wires should NOT pull power from other sources.
@@ -56,12 +53,11 @@ public interface EnergyStorage extends EnergyHandler {
 	 * On the server thread (i.e. with a server world), all transfer functionality is always supported.
 	 * On the client thread (i.e. with a client world), contents of queried EnergyStorages are unreliable and should not be modified.
 	 */
-	BlockApiLookup<EnergyStorage, @Nullable Direction> SIDED =
-			BlockApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_energy"), EnergyStorage.class, Direction.class);
+	BlockCapability<EnergyStorage, @Nullable Direction> SIDED =
+			BlockCapability.createSided(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_energy"), EnergyStorage.class);
 
 	/**
 	 * Item access to energy storages.
-	 * Querying should always happen through {@link ContainerItemContext#find}.
 	 *
 	 * <p>{@link com.skniro.industrial_elixir.energy.impl.SimpleItemEnergyStorageImpl} is provided as an implementation example.
 	 * Instances of it can be optained through {@link com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem#createStorage}.

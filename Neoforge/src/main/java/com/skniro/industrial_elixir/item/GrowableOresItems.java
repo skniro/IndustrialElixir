@@ -3,14 +3,11 @@ package com.skniro.industrial_elixir.item;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.energy.heat.api.base.SimpleHeatItem;
 import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
-import com.skniro.industrial_elixir.item.init.BatteryItem;
-import com.skniro.industrial_elixir.item.init.FluidCellItem;
-import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
-import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
-import com.skniro.industrial_elixir.item.init.ScrapboxItem;
-import com.skniro.industrial_elixir.item.init.PatternStorageCrystalItem;
+import com.skniro.industrial_elixir.item.init.*;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -178,6 +175,7 @@ public class GrowableOresItems {
     public static final Supplier<Item> PATTERN_STORAGE_CRYSTAL = registerItem("pattern_storage_crystal", PatternStorageCrystalItem::new, new Item.Properties().stacksTo(1));
     public static final Supplier<Item> RAW_PATTERN_STORAGE_CRYSTAL = registerItem("raw_pattern_storage_crystal", Item::new, new Item.Properties().stacksTo(1));
     public static final Supplier<Item> HEAT_CONDUCTOR = registerItem("heat_conductor", Item::new, new Item.Properties());
+    public static final Supplier<Item> HEAT_SIMPLE = registerItem("heat_simple",(properties)-> new HeatItem(properties, 100, 100,100), new Item.Properties());
 
     public static <B extends Item> Supplier<Item> register(String name, Function<Item.Properties, ? extends B> func, Item.Properties props) {
         return ITEMS.register(name, () -> {

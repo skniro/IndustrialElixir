@@ -9,8 +9,6 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
 import com.skniro.industrial_elixir.screen.handler.generator.SacredGeneratorScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -137,11 +135,6 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
-    }
-
-    @Override
     public NonNullList<ItemStack> getItems() {
         return this.inventory;
     }
@@ -221,7 +214,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     public void pushEnergyToNeighbours() {
         if (energyContainer.amount <= 0) return;
         for (Direction direction : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
+            EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(direction), null,null, direction.getOpposite());
             if (target == null) continue;
             EnergyStorageUtil.move(this.energyContainer.getSideStorage(direction), target, ENERGY_TRANSFER_AMOUNT, null);
         }

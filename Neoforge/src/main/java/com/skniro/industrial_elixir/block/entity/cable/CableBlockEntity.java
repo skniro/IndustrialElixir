@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -30,12 +31,12 @@ import java.util.List;
 // CREDIT: https://github.com/techreborn/techreborn
 // Under MIT-License: https://github.com/TechReborn/TechReborn/blob/26.1/LICENSE.md
 public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<CableBlockEntity> {
-    final SimpleSidedEnergyContainer energyContainer;
+    public final SimpleSidedEnergyContainer energyContainer;
     private ModContent.Cables cableType;
     private @Nullable BlockState cover;
     long lastTick;
     List<CableTarget> targets;
-    private final BlockApiCache<EnergyStorage, Direction>[] adjacentCaches;
+    private final BlockCapabilityCache<EnergyStorage, Direction>[] adjacentCaches;
     int blockedSides;
     boolean ioBlocked;
 
@@ -60,7 +61,7 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
         this.cover = null;
         this.lastTick = 0L;
         this.targets = null;
-        this.adjacentCaches = new BlockApiCache[6];
+        this.adjacentCaches = new BlockCapabilityCache[6];
         this.blockedSides = 0;
         this.ioBlocked = false;
     }
@@ -85,7 +86,7 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
         this.cover = null;
         this.lastTick = 0L;
         this.targets = null;
-        this.adjacentCaches = new BlockApiCache[6];
+        this.adjacentCaches = new BlockCapabilityCache[6];
         this.blockedSides = 0;
         this.ioBlocked = false;
         this.cableType = type;
@@ -122,16 +123,16 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
         this.energyContainer.amount = energy;
     }
 
-    private BlockApiCache<EnergyStorage, Direction> getAdjacentCache(Direction direction) {
+    private BlockCapabilityCache<EnergyStorage, Direction> getAdjacentCache(Direction direction) {
         if (this.adjacentCaches[direction.get3DDataValue()] == null) {
-            this.adjacentCaches[direction.get3DDataValue()] = BlockApiCache.create(EnergyStorage.SIDED, (ServerLevel)this.level, this.worldPosition.relative(direction));
+            this.adjacentCaches[direction.get3DDataValue()] = BlockCapabilityCache.create(EnergyStorage.SIDED, (ServerLevel)this.level, this.worldPosition.relative(direction), direction.getOpposite());
         }
 
         return this.adjacentCaches[direction.get3DDataValue()];
     }
 
     @Nullable BlockEntity getAdjacentBlockEntity(Direction direction) {
-        return this.getAdjacentCache(direction).getBlockEntity();
+        return this.getAdjacentCache(direction).level().getBlockEntity(worldPosition.relative(direction));
     }
 
     void appendTargets(List<OfferedEnergyStorage> targetStorages) {
@@ -143,14 +144,14 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
 
                 for(Direction direction : Direction.values()) {
                     boolean foundSomething = false;
-                    BlockApiCache<EnergyStorage, Direction> adjCache = this.getAdjacentCache(direction);
-                    BlockEntity var11 = adjCache.getBlockEntity();
+                    BlockCapabilityCache<EnergyStorage, Direction> adjCache = this.getAdjacentCache(direction);
+                    BlockEntity var11 = adjCache.level().getBlockEntity(adjCache.pos());
                     if (var11 instanceof CableBlockEntity) {
                         CableBlockEntity adjCable = (CableBlockEntity)var11;
                         if (adjCable.getCableType().transferRate == this.getCableType().transferRate) {
                             foundSomething = true;
                         }
-                    } else if (adjCache.find(direction.getOpposite()) != null) {
+                    } else if (adjCache.getCapability() != null) {
                         foundSomething = true;
                         this.targets.add(new CableTarget(direction, adjCache));
                     }
@@ -221,9 +222,9 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
         return this.cover;
     }
 
-    private static record CableTarget(Direction directionTo, BlockApiCache<EnergyStorage, Direction> cache) {
+    private static record CableTarget(Direction directionTo, BlockCapabilityCache<EnergyStorage, Direction> cache) {
         @Nullable EnergyStorage find() {
-            return this.cache.find(this.directionTo.getOpposite());
+            return this.cache.getCapability();
         }
     }
 }

@@ -1,14 +1,9 @@
 package com.skniro.industrial_elixir.block.entity.energybox;
 
 import com.skniro.industrial_elixir.api.block.ImplementedInventory;
-import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
-import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.screen.handler.energybox.EnergyBoxScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -18,7 +13,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -56,11 +50,6 @@ public class EnergyBoxBlockEntity extends BaseEnergyBoxBlockEntity {
         ContainerHelper.loadAllItems(nbt, inventory);
         energyContainer.amount = nbt.getLongOr("coal_generator.energy", 0);
         super.loadAdditional(nbt);
-    }
-
-    @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
     }
 
     @Override

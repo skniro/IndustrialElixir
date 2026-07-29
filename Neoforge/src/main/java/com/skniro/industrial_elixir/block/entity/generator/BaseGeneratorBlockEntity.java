@@ -63,7 +63,7 @@ public abstract class BaseGeneratorBlockEntity extends BlockEntity implements Ex
 
     private void pushEnergyToNeighbours() {
         for (Direction dir : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
+            EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(dir), null,null, dir.getOpposite());
             if (target == null) continue;
             EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, energyTier.getMaxOutput(), null);
         }

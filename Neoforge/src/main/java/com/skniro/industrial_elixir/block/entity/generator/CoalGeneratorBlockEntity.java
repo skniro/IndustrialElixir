@@ -91,11 +91,6 @@ public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
-    }
-
-    @Override
     public NonNullList<ItemStack> getItems() {
         return this.inventory;
     }
@@ -160,9 +155,9 @@ public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
         if (energyContainer.amount <= 0) return;
 
         for (Direction direction : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(
+            EnergyStorage target = EnergyStorage.SIDED.getCapability(
                     level,
-                    worldPosition.relative(direction),
+                    worldPosition.relative(direction), null,null,
                     direction.getOpposite()
             );
 

@@ -8,7 +8,7 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleHeatStorage;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContainer;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.minecraft.world.MenuProvider;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +18,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.inventory.ContainerData;
@@ -36,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class AbstractHeatMachineEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineRecipeProvider {
+public abstract class AbstractHeatMachineEntity extends BlockEntity implements MenuProvider, ImplementedInventory, ItemOwner, MachineRecipeProvider {
     public NonNullList<ItemStack> inventory = NonNullList.withSize(10, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -189,11 +188,6 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
     public void setChanged() {
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         super.setChanged();
-    }
-
-    @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
     }
 
     @Override

@@ -1,14 +1,15 @@
 package com.skniro.growableoresir.client;
 
+import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.client.ModItemBlockRenderTypes;
 import com.skniro.growableoresir.block.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Environment(EnvType.CLIENT)
+@EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
 public class GrowableOresClienttwo {
 
     @SubscribeEvent

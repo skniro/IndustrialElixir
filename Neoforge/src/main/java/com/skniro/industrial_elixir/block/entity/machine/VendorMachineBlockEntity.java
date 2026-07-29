@@ -4,7 +4,6 @@ import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.machine.VendorMachineScreenHandler;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class VendorMachineBlockEntity extends BlockEntity implements Merchant, ExtendedMenuProvider<BlockPos> {
+public class VendorMachineBlockEntity extends BlockEntity implements Merchant, MenuProvider {
     private final MerchantOffers offers = new MerchantOffers();
     @Nullable
     private Player tradingPlayer;
@@ -630,11 +629,6 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, E
         if (this.offers.isEmpty()) {
             initOffers();
         }
-    }
-
-    @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
     }
 
     @Nullable

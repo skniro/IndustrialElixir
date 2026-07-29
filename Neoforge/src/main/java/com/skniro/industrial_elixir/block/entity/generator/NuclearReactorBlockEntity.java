@@ -11,9 +11,7 @@ import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.handler.generator.NuclearReactorScreenHandler;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.minecraft.world.MenuProvider;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +23,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
@@ -41,7 +38,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
-public class NuclearReactorBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory {
+public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvider, ImplementedInventory {
     public static final int GRID_WIDTH = 9;
     public static final int GRID_HEIGHT = 6;
     public static final int REACTOR_SLOT_COUNT = GRID_WIDTH * GRID_HEIGHT;
@@ -189,7 +186,7 @@ public class NuclearReactorBlockEntity extends BlockEntity implements ExtendedMe
             return;
         }
         for (Direction direction : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
+            EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(direction), null, null,direction.getOpposite());
             if (target == null) {
                 continue;
             }
@@ -401,11 +398,6 @@ public class NuclearReactorBlockEntity extends BlockEntity implements ExtendedMe
 
     public int getGeneration() {
         return generation;
-    }
-
-    @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return worldPosition;
     }
 
     @Override

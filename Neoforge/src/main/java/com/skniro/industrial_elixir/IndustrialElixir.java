@@ -49,9 +49,10 @@ public class IndustrialElixir {
         HeatImpl.register(modEventBus);
         ModMessages.register();
 
-        modEventBus.addListener(RegisterCapabilitiesEvent.class, ModContent::registerCapabilities);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, EnergyImpl::init);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, HeatImpl::init);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, AlchemyBlockEntityType::registerMachineEnergyEntity);
         modEventBus.addListener(FMLCommonSetupEvent.class, event -> {
-            AlchemyBlockEntityType.registerMachineEnergyEntity();
             ReplicatorValueMap.registerDefaults();
             ModFuel.registerFuel();
 

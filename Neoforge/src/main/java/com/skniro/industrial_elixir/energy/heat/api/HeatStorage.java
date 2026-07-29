@@ -10,8 +10,6 @@ import com.skniro.industrial_elixir.energy.heat.impl.EmptyHeatStorage;
 import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
 import com.skniro.industrial_elixir.energy.heat.impl.SimpleItemHeatStorageImpl;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
-import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -66,7 +64,6 @@ public interface HeatStorage {
 
 	/**
 	 * Item access to Heat storages.
-	 * Querying should always happen through {@link ContainerItemContext#find}.
 	 *
 	 * <p>{@link SimpleItemHeatStorageImpl} is provided as an implementation example.
 	 * Instances of it can be optained through {@link SimpleHeatItem#createStorage}.

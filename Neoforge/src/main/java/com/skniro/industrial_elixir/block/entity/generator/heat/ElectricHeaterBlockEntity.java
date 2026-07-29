@@ -154,11 +154,6 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
-    }
-
-    @Override
     public Component getDisplayName() {
         return Component.translatable(FurnitureStrings.Electric_Heater);
     }

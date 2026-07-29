@@ -23,6 +23,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class BasePowerBlockBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineEnergyProvider {
+public abstract class BasePowerBlockBlockEntity extends BlockEntity implements MenuProvider, ImplementedInventory, ItemOwner, MachineEnergyProvider {
     public NonNullList<ItemStack> inventory = NonNullList.withSize(13, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -192,7 +193,7 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements E
     public void pushEnergyToNeighbours() {
         if (energyContainer.amount <= 0) return;
         for (Direction dir : Direction.values()) {
-            EnergyStorage target = EnergyStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
+            EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(dir),null,null,dir.getOpposite());
             if (target == null) continue;
             EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, getEffectiveTier().getMaxOutput(), null);
         }
@@ -217,11 +218,6 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements E
     public void setChanged() {
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         super.setChanged();
-    }
-
-    @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
     }
 
     @Override
