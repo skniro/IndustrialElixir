@@ -1,9 +1,13 @@
 package com.skniro.industrial_elixir.client;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import org.joml.Matrix3x2fStack;
 
 public class WindowsWatermarkRenderer {
@@ -24,7 +28,7 @@ public class WindowsWatermarkRenderer {
         String line3 = "and potential civil and criminal liability.";
         String line4 = "Industrial Elixir";
         String line5 = "For testing purposes only.";
-        String line6 = "Build " + FabricLoader.getInstance().getModContainer(IndustrialElixir.MOD_ID).get().getMetadata().getVersion().getFriendlyString();
+        String line6 = "Build " + ModList.get().getModContainerById(IndustrialElixir.MOD_ID).map(container -> container.getModInfo().getVersion().toString()).orElse("unknown");
 
         String playerName = mc.player != null ? mc.player.getName().getString() : "Player";
         int height = mc.getWindow().getGuiScaledHeight();
@@ -40,5 +44,14 @@ public class WindowsWatermarkRenderer {
         context.text(mc.font, playerName, x, y + 60, color, false);
 
         matrices.popMatrix();
+    }
+
+    @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
+    public class ModHudEvents {
+        @SubscribeEvent
+        public static void onRenderGui(RenderGuiEvent.Post event) {
+            GuiGraphicsExtractor guiGraphics = event.getGuiGraphics();
+            render(guiGraphics);
+        }
     }
 }

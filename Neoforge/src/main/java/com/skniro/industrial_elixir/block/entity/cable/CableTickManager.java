@@ -1,8 +1,11 @@
 package com.skniro.industrial_elixir.block.entity.cable;
 
+import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.ModContent;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +15,7 @@ import java.util.*;
 
 // CREDIT: https://github.com/techreborn/techreborn
 // Under MIT-License: https://github.com/TechReborn/TechReborn/blob/26.1/LICENSE.md
+@EventBusSubscriber(modid = IndustrialElixir.MOD_ID)
 class CableTickManager {
     private static final List<CableBlockEntity> cableList = new ArrayList();
     private static final List<OfferedEnergyStorage> targetStorages = new ArrayList();
@@ -136,8 +140,9 @@ class CableTickManager {
         }
     }
 
-    static {
-        ServerTickEvents.START_SERVER_TICK.register((ServerTickEvents.StartTick)(server) -> ++tickCounter);
+    @SubscribeEvent
+    public static void onServerTick(ServerTickEvent.Pre event) {
+        ++tickCounter;
     }
 
     private static class SortableStorage {

@@ -145,7 +145,7 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     if (blockEntity instanceof CableBlockEntity) {
                         CableBlockEntity blockEntityCable = (CableBlockEntity)blockEntity;
                         if (blockEntityCable.getEnergy() > 0L) {
-                            if (((CableElectrocutionEvent)CableElectrocutionEvent.EVENT.invoker()).electrocute((LivingEntity)entity, this.type, pos, world, blockEntityCable)) {
+                            if (CableElectrocutionEvent.electrocute((LivingEntity) entity, this.type, pos, world, blockEntityCable)) {
 
                                 if (this.type == ModContent.Cables.HV) {
                                     entity.igniteForSeconds(1.0F);

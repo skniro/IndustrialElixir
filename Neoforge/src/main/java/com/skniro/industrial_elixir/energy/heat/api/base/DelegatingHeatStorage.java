@@ -2,7 +2,7 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +47,7 @@ public class DelegatingHeatStorage implements HeatStorage {
 
 	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		if (validPredicate.getAsBoolean()) {
 			return backingStorage.get().insert(maxAmount, transaction);
@@ -63,7 +63,7 @@ public class DelegatingHeatStorage implements HeatStorage {
 
 	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		if (validPredicate.getAsBoolean()) {
 			return backingStorage.get().extract(maxAmount, transaction);

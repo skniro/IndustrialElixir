@@ -2,8 +2,6 @@ package com.skniro.industrial_elixir.screen.ingame.generator.heat;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.generator.heat.SolidFuelHeaterScreenHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -12,7 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
-@Environment(EnvType.CLIENT)
+
 public class SolidFuelHeaterScreen extends AbstractContainerScreen<SolidFuelHeaterScreenHandler> {
     private static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/generator/heat/solid_fuel_heater.png");

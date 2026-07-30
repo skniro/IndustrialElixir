@@ -3,7 +3,6 @@ package com.skniro.industrial_elixir.screen.ingame.machine;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.machine.CropFarmScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -45,7 +44,7 @@ public class CropFarmBlockScreen extends AbstractContainerScreen<CropFarmScreenH
         int y = (height - imageHeight) / 2;
 
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 14)) {
-            graphics.setTooltipForNextFrame(Screens.getFont(this), getTooltips(), Optional.empty(), xm - x, ym - y);
+            graphics.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm - x, ym - y);
         }
     }
 

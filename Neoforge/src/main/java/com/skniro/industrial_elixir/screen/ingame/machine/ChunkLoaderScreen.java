@@ -4,9 +4,6 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.chunk.ChunkMapRenderer;
 import com.skniro.industrial_elixir.screen.handler.machine.ChunkLoaderScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -20,7 +17,7 @@ import net.minecraft.world.level.ChunkPos;
 import java.util.List;
 import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
+
 public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreenHandler> {
     private static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/chunk_loader.png");
@@ -66,7 +63,7 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
 
         // Energy tooltip
         if (MouseUtil.isMouseOver(mouseX, mouseY, x + ENERGY_BAR_X, y + ENERGY_BAR_Y, ENERGY_BAR_W, ENERGY_BAR_H)) {
-            graphics.setTooltipForNextFrame(Screens.getFont(this),
+            graphics.setTooltipForNextFrame(this.getFont(),
                     List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()
                             + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EU")),
                     Optional.empty(), mouseX - x, mouseY - y);
@@ -86,7 +83,7 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
                 boolean loaded = (mask & (1 << i)) != 0 || i == 12;
                 String status = loaded ? "\u00a7aForce Loaded" : "\u00a77Not Loaded";
                 if (i == 12) status = "\u00a7aAlways Loaded";
-                graphics.setTooltipForNextFrame(Screens.getFont(this),
+                graphics.setTooltipForNextFrame(this.getFont(),
                         List.of(Component.literal("Chunk (" + chunkOffX + ", " + chunkOffZ + ") " + status)),
                         Optional.empty(), mouseX - x, mouseY - y);
                 break;

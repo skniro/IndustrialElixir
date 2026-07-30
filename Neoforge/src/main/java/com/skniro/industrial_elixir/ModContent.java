@@ -3,6 +3,7 @@ package com.skniro.industrial_elixir;
 
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
+import com.skniro.industrial_elixir.api.fluid.item.FullFluidCellHandler;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
@@ -17,16 +18,19 @@ import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.fluid.MapleFluidTypes;
 import com.skniro.industrial_elixir.item.*;
 import com.skniro.industrial_elixir.item.alchemy.IndustrialElixirPotions;
+import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
-import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
-import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
+import java.util.List;
 import java.util.Locale;
 
 
@@ -68,8 +72,7 @@ public class  ModContent {
     }
 
     public static void WorldGen(IEventBus eventBus) {
-        ModOreGeneration.generateOres();
-        ModTreeGeneration.generateTrees();
+
     }
 
     public static void registerCommand(IEventBus eventBus) {
@@ -95,6 +98,20 @@ public class  ModContent {
                 MapleArmorItems.Quantum_LEGGINGS.get(),
                 MapleArmorItems.Quantum_BOOTS.get(),
                 MapleArmorItems.Electric_Jetpack.get()
+        );
+    }
+
+    @SubscribeEvent
+    public static void FluidCellinit(RegisterCapabilitiesEvent event) {
+        List<Item> items = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof FluidCellItem).toList();
+        event.registerItem(Capabilities.Fluid.ITEM, (stack, ctx) -> {
+                    if (stack.getItem() instanceof FluidCellItem cellItem) {
+                        return new FullFluidCellHandler(stack, ctx, cellItem);
+                    } else {
+                        return null;
+                    }
+                },
+                items.toArray(Item[]::new)
         );
     }
 

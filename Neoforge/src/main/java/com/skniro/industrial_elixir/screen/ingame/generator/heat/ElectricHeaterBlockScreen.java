@@ -3,9 +3,6 @@ package com.skniro.industrial_elixir.screen.ingame.generator.heat;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.generator.heat.ElectricHeaterScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -15,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
+
 public class ElectricHeaterBlockScreen extends AbstractContainerScreen<ElectricHeaterScreenHandler> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/generator/heat/guielectricheatgenerator.png");
 
@@ -36,7 +33,7 @@ public class ElectricHeaterBlockScreen extends AbstractContainerScreen<ElectricH
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 8, 42, 13, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }

@@ -1,13 +1,9 @@
 package com.skniro.industrial_elixir.client.particle;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import com.skniro.industrial_elixir.api.Helper;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 

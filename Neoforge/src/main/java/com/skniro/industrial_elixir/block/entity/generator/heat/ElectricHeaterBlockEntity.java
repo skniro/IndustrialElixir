@@ -3,6 +3,7 @@ package com.skniro.industrial_elixir.block.entity.generator.heat;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
+import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorageUtil;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContainer;
@@ -110,7 +111,7 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     private void pushHeatToNeighbours() {
         if (heatContainer.amount <= 0) return;
         Direction direction = getBlockState().getValue(AbstractMachineblock.FACING);
-        HeatStorage target = HeatStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
+        HeatStorage target = HeatStorage.SIDED.getCapability(level, worldPosition.relative(direction),null,null,direction.getOpposite());
         if (target == null) return;
         HeatStorageUtil.move(this.heatContainer.getSideStorage(direction), target, heatContainer.getSideStorage(null).getAmount(), null);
     }

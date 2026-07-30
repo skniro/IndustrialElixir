@@ -4,11 +4,10 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import com.skniro.industrial_elixir.energy.heat.impl.SimpleItemHeatStorageImpl;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -94,7 +93,7 @@ public interface SimpleHeatItem {
 		return stack.getOrDefault(HeatStorage.Heat_COMPONENT, 0L);
 	}
 
-	static long getStoredHeatUnchecked(ItemVariant variant) {
+	static long getStoredHeatUnchecked(ItemResource variant) {
 		return getStoredHeatUnchecked(variant.getComponents());
 	}
 

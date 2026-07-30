@@ -3,7 +3,6 @@ package com.skniro.industrial_elixir.screen.ingame.generator;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.generator.NuclearReactorScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -40,12 +39,12 @@ public class NuclearReactorScreen extends AbstractContainerScreen<NuclearReactor
         int localX = mouseX - leftPos;
         int localY = mouseY - topPos;
         if (MouseUtil.isMouseOver(mouseX, mouseY, leftPos + HEAT_BAR_X, topPos + STATUS_BAR_Y, 54, 8)) {
-            graphics.setTooltipForNextFrame(Screens.getFont(this),
+            graphics.setTooltipForNextFrame(this.getFont(),
                     List.of(Component.literal("Heat: " + menu.getHeat() + " / " + menu.getMaxHeat())),
                     Optional.empty(), localX, localY);
         }
         if (MouseUtil.isMouseOver(mouseX, mouseY, leftPos + OUTPUT_BAR_X, topPos + STATUS_BAR_Y, 106, 8)) {
-            graphics.setTooltipForNextFrame(Screens.getFont(this),
+            graphics.setTooltipForNextFrame(this.getFont(),
                     List.of(Component.literal("Output: " + menu.getGeneration() + " E/t")),
                     Optional.empty(), localX, localY);
         }

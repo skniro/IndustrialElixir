@@ -8,10 +8,6 @@ import com.skniro.industrial_elixir.screen.ingame.widgets.StateButtonWidget;
 import com.skniro.industrial_elixir.item.MapleArmorItems;
 import com.skniro.industrial_elixir.screen.handler.machine.MetalFormerScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -20,10 +16,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
 import java.util.List;
 import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
+
 public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerScreenHandler> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/metal_former.png");
     MetalFormerBlockEntity.MetalFormerState state = menu.blockEntity.getState();
@@ -69,7 +67,7 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
             @Override
             protected void nextState() {
                 MetalFormerBlockScreen.this.state = MetalFormerBlockEntity.MetalFormerState.values()[(state.ordinal() + 1) % MetalFormerBlockEntity.MetalFormerState.values().length];
-                ClientPlayNetworking.send(new MetalFormerStateC2SPayload(menu.blockEntity.getBlockPos(), state.ordinal()));
+                ClientPacketDistributor.sendToServer(new MetalFormerStateC2SPayload(menu.blockEntity.getBlockPos(), state.ordinal()));
                 this.initialize();
             }
 
@@ -86,7 +84,7 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 21, 31, 13, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }

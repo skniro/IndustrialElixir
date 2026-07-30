@@ -1,7 +1,5 @@
 package com.skniro.industrial_elixir.client.particle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -50,7 +48,6 @@ public class MapleCampfireSmokeParticle extends SingleQuadParticle {
         return Layer.TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class SignalSmokeFactory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteProvider;
 
@@ -65,7 +62,6 @@ public class MapleCampfireSmokeParticle extends SingleQuadParticle {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public static class CosySmokeFactory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteProvider;
 

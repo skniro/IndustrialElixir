@@ -2,19 +2,14 @@ package com.skniro.industrial_elixir.screen.ingame.machine.heat;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
-import com.skniro.industrial_elixir.screen.handler.machine.fluid.BrewReactorScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.heat.ModBlastFurnaceScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.List;
-import java.util.Optional;
 
 public class ModBlastFurnaceScreen extends AbstractContainerScreen<ModBlastFurnaceScreenHandler> {
     private static final Identifier TEXTURE =

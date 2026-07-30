@@ -4,7 +4,6 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.screen.handler.machine.HeatCentrifugeScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -51,7 +50,7 @@ public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentr
         int y = (height - imageHeight) / 2;
         renderHeatAreaTooltips(context);
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(), Optional.empty(), xm - x, ym - y);
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm - x, ym - y);
         }
     }
 

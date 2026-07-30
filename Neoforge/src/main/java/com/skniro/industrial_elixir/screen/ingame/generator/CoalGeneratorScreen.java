@@ -3,7 +3,6 @@ package com.skniro.industrial_elixir.screen.ingame.generator;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.generator.CoalGeneratorScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -36,7 +35,7 @@ public class CoalGeneratorScreen extends AbstractContainerScreen<CoalGeneratorSc
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 76, 36, 31, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
                     Optional.empty(), pMouseX, pMouseY);
         }
     }

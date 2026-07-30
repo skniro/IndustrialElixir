@@ -2,11 +2,9 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.neoforged.neoforge.transfer.TransferPreconditions;
 import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -20,9 +18,9 @@ public class SimpleHeatStorage extends SnapshotJournal<Long> implements HeatStor
 	public final long maxInsert, maxExtract;
 
 	public SimpleHeatStorage(long capacity, long maxInsert, long maxExtract) {
-		StoragePreconditions.notNegative(capacity);
-		StoragePreconditions.notNegative(maxInsert);
-		StoragePreconditions.notNegative(maxExtract);
+		TransferPreconditions.checkNonNegative((int) capacity);
+		TransferPreconditions.checkNonNegative((int) maxInsert);
+		TransferPreconditions.checkNonNegative((int) maxExtract);
 
 		this.capacity = capacity;
 		this.maxInsert = maxInsert;

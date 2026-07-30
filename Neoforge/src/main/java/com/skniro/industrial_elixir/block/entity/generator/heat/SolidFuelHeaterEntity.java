@@ -155,7 +155,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
     private void pushHeatToNeighbours() {
         if (heatContainer.amount <= 0) return;
         Direction direction = getBlockState().getValue(AbstractMachineblock.FACING);
-        HeatStorage target = HeatStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
+        HeatStorage target = HeatStorage.SIDED.getCapability(level, worldPosition.relative(direction),null,null,direction.getOpposite());
         if (target == null) return;
         HeatStorageUtil.move(heatContainer.getSideStorage(direction), target,
                 heatContainer.getSideStorage(null).getAmount(), null);

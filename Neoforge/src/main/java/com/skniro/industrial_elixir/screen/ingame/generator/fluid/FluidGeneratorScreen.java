@@ -4,7 +4,6 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.screen.handler.generator.fluid.FluidGeneratorScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -43,7 +42,7 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 76, 34, 31, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }

@@ -217,7 +217,7 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements M
         receivingHeat = false;
 
         for (Direction dir : Direction.values()) {
-            HeatStorage input = SimpleHeatStorage.SIDED.find(level, worldPosition.relative(dir), dir.getOpposite());
+            HeatStorage input = SimpleHeatStorage.SIDED.getCapability(level, worldPosition.relative(dir), null,null,dir.getOpposite());
             if (input == null) continue;
 
             try (Transaction tx = Transaction.openRoot()) {

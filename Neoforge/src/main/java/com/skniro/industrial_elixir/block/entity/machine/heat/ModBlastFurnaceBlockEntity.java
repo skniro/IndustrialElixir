@@ -1,5 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.machine.heat;
 
+import com.skniro.industrial_elixir.api.fluid.FluidConstants;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
@@ -13,7 +14,6 @@ import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe
 import com.skniro.industrial_elixir.recipe.machine.ModBlastFurnaceCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.heat.ModBlastFurnaceScreenHandler;
 import com.skniro.industrial_elixir.api.fluid.FullItemFluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
@@ -119,7 +119,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         receivingHeat = false;
 
         Direction direction = getBlockState().getValue(AbstractMachineblock.FACING);
-        HeatStorage input = HeatStorage.SIDED.find(level, worldPosition.relative(direction), direction.getOpposite());
+        HeatStorage input = HeatStorage.SIDED.getCapability(level, worldPosition.relative(direction), null, null,direction.getOpposite());
         if (input == null) return;
 
         try (Transaction tx = Transaction.openRoot()) {

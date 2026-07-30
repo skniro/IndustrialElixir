@@ -139,7 +139,7 @@ dependencies {
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
     //runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
 
-    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${project.neo_fabric_version}"
+    //implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${project.neo_fabric_version}"
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

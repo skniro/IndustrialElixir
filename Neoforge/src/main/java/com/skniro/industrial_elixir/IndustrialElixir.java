@@ -2,30 +2,27 @@ package com.skniro.industrial_elixir;
 
 import com.skniro.industrial_elixir.api.item.replicator.ReplicatorValueMap;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
+import com.skniro.industrial_elixir.block.entity.cable.CableElectrocutionEvent;
 import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
 import com.skniro.industrial_elixir.compat.rei.IndustrialModREIUtils;
-import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
 import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
-import com.skniro.industrial_elixir.item.GrowableOresItems;
-import com.skniro.industrial_elixir.item.MapleArmorItems;
-import com.skniro.industrial_elixir.item.ModCreativeTab;
-import com.skniro.industrial_elixir.item.init.ElectricJetpackItem;
-import com.skniro.industrial_elixir.networking.ModMessages;
+import com.skniro.industrial_elixir.item.init.QuantumSuitItem;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.util.ModFuel;
 
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.alchemy.Potion;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,10 +44,10 @@ public class IndustrialElixir {
 
         EnergyImpl.register(modEventBus);
         HeatImpl.register(modEventBus);
-        ModMessages.register();
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, EnergyImpl::init);
         modEventBus.addListener(RegisterCapabilitiesEvent.class, HeatImpl::init);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, ModContent::FluidCellinit);
         modEventBus.addListener(RegisterCapabilitiesEvent.class, AlchemyBlockEntityType::registerMachineEnergyEntity);
         modEventBus.addListener(FMLCommonSetupEvent.class, event -> {
             ReplicatorValueMap.registerDefaults();
@@ -86,4 +83,42 @@ public class IndustrialElixir {
     public void onServerStarting(ServerStartingEvent event) {
 
     }
+
+    @SubscribeEvent
+    public static boolean onLivingDamage(LivingDamageEvent.Pre event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return false;
+        }
+        DamageSource source = event.getSource();
+
+        // Fall damage negation (Quantum Boots)
+        if (source.typeHolder().is(DamageTypeTags.IS_FALL)) {
+            return !QuantumSuitItem.tryNegateFallDamage(player);
+        }
+
+        // Lava immunity (full Quantum set)
+        if (source.typeHolder().is(DamageTypeTags.IS_FIRE)
+                && player.isInLava()
+                && QuantumSuitItem.hasFullQuantumSet(player)) {
+            return false;
+        }
+        float amount = event.getNewDamage();
+        // General damage absorption for all quantum pieces
+        if (amount > 0) {
+            return QuantumSuitItem.absorbDamage(player, amount, source);
+        }
+
+        return true;
+    }
+
+
+
+        @SubscribeEvent
+        public void onElectrocution(CableElectrocutionEvent event) {
+            LivingEntity entity = event.getLivingEntity();
+
+            ModContent.Cables cable = event.getCableType();
+
+            // 你的触电逻辑
+        }
 }

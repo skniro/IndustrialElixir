@@ -1,7 +1,7 @@
 package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,7 @@ public class DelegatingEnergyStorage implements EnergyStorage {
 
 	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		if (validPredicate.getAsBoolean()) {
 			return backingStorage.get().insert(maxAmount, transaction);
@@ -62,7 +62,7 @@ public class DelegatingEnergyStorage implements EnergyStorage {
 
 	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		if (validPredicate.getAsBoolean()) {
 			return backingStorage.get().extract(maxAmount, transaction);

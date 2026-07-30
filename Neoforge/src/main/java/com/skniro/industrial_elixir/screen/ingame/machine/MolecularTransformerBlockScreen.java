@@ -4,9 +4,6 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.entity.machine.MolecularTransformerBlockEntity;
 import com.skniro.industrial_elixir.screen.handler.machine.MolecularTransformerScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -14,11 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
 public class MolecularTransformerBlockScreen extends AbstractContainerScreen<MolecularTransformerScreenHandler> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/molecular_transformer.png");
 

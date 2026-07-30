@@ -3,9 +3,6 @@ package com.skniro.industrial_elixir.screen.ingame.machine;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.machine.InductionFurnaceScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -16,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
+
 public class InductionFurnaceBlockScreen extends AbstractContainerScreen<InductionFurnaceScreenHandler> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/inductionfurnace.png");
 
@@ -36,7 +33,7 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if (MouseUtil.isMouseOver(pMouseX, pMouseY, 15, 32, 13, 13)) {
-            context.setTooltipForNextFrame(Screens.getFont(this),
+            context.setTooltipForNextFrame(this.getFont(),
                     List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EU")),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }

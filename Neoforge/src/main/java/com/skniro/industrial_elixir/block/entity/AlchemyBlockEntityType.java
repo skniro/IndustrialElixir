@@ -242,10 +242,10 @@ public class AlchemyBlockEntityType {
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, REPLICATOR_BE.get(), (blockEntity, direction) -> blockEntity.fluidContainer);
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, FLUID_GENERATOR_BE.get(), (blockEntity, direction) -> blockEntity.fluidContainer);
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE.get(), (blockEntity, direction) -> blockEntity.fluidContainer);
-        HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), ELECTRIC_HEATER_BLOCK_ENTITY.get());
-        HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), SOLID_FUEL_HEATER_BE.get());
-        HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), BLAST_FURNACE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE.get());
-        HeatStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction), SACRED_GENERATOR_BE.get());
+        event.registerBlockEntity(HeatStorage.SIDED, ELECTRIC_HEATER_BLOCK_ENTITY.get(),(blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction));
+        event.registerBlockEntity(HeatStorage.SIDED, SOLID_FUEL_HEATER_BE.get(),(blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction));
+        event.registerBlockEntity(HeatStorage.SIDED, BLAST_FURNACE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE.get(),(blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction));
+        event.registerBlockEntity(HeatStorage.SIDED, SACRED_GENERATOR_BE.get(),(blockEntity, direction) -> blockEntity.heatContainer.getSideStorage(direction));
         event.registerBlockEntity(Capabilities.Item.BLOCK, ALCHEMY_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
         event.registerBlockEntity(Capabilities.Item.BLOCK, Macerator_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));
         event.registerBlockEntity(Capabilities.Item.BLOCK, Compressor_BLOCK_ENTITY.get(), (blockEntity, direction) -> blockEntity.getItemHandler(direction));

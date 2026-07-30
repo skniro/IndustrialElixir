@@ -6,7 +6,7 @@ import com.skniro.industrial_elixir.block.entity.machine.fluid.ReplicatorBlockEn
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.ReplicatorScreenHandler;
 import com.skniro.industrial_elixir.screen.ingame.widgets.ReplicatorModeButton;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -94,7 +94,7 @@ public class ReplicatorScreen extends AbstractContainerScreen<ReplicatorScreenHa
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 131, 45, 13, 14)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }

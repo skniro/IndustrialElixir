@@ -2,17 +2,12 @@ package com.skniro.industrial_elixir.screen.ingame.generator;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.generator.SacredGeneratorScreenHandler;
-import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.List;
-import java.util.Optional;
 
 public class SacredGeneratorScreen extends AbstractContainerScreen<SacredGeneratorScreenHandler> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/generator/guinsacredgenerator.png");

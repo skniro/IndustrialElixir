@@ -1,8 +1,6 @@
 package com.skniro.industrial_elixir.energy.heat.api;
 
-import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
@@ -29,7 +27,7 @@ public class HeatStorageUtil {
 	public static long move(@Nullable HeatStorage from, @Nullable HeatStorage to, long maxAmount, @Nullable TransactionContext transaction) {
 		if (from == null || to == null) return 0;
 
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		// Simulate extraction first.
 		long maxExtracted;

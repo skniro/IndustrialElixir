@@ -1,7 +1,7 @@
 package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.Objects;
@@ -22,8 +22,8 @@ public class LimitingEnergyStorage implements EnergyStorage {
 	 */
 	public LimitingEnergyStorage(EnergyStorage backingStorage, long maxInsert, long maxExtract) {
 		Objects.requireNonNull(backingStorage);
-		StoragePreconditions.notNegative(maxInsert);
-		StoragePreconditions.notNegative(maxExtract);
+		TransferPreconditions.checkNonNegative((int) maxInsert);
+		TransferPreconditions.checkNonNegative((int) maxExtract);
 
 		this.backingStorage = backingStorage;
 		this.maxInsert = maxInsert;

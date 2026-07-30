@@ -4,9 +4,6 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.entity.machine.PatternStorageBlockEntity;
 import com.skniro.industrial_elixir.screen.handler.machine.PatternStorageScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -23,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
+
 public class PatternStorageScreen extends AbstractContainerScreen<PatternStorageScreenHandler> {
     private static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/pattern_storage.png");
@@ -79,7 +76,7 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
 
     private void renderEnergyTooltip(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if (MouseUtil.isMouseOver(pMouseX, pMouseY, x + 130, y + 44, 13, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getEnergyTooltip(),
+            context.setTooltipForNextFrame(this.getFont(), getEnergyTooltip(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
@@ -128,7 +125,7 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
 /*        if (scannedId != null && MouseUtil.isMouseOver(mouseX, mouseY, x + 103, y + 34, 16, 16)) {
             Item item = BuiltInRegistries.ITEM.getOptional(scannedId).orElse(null);
             if (item != null) {
-                context.setTooltipForNextFrame(Screens.getFont(this),
+                context.setTooltipForNextFrame(this.getFont(),
                         List.of(Component.literal(item.getDescriptionId().toString())),
                         Optional.empty(), mouseX - x, mouseY - y);
             }

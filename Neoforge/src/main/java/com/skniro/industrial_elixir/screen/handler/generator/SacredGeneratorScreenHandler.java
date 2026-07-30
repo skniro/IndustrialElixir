@@ -1,14 +1,10 @@
 package com.skniro.industrial_elixir.screen.handler.generator;
 
-import com.skniro.industrial_elixir.block.entity.generator.GeneratorSolarPanelBlockEntity;
 import com.skniro.industrial_elixir.block.entity.generator.SacredGeneratorBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
-import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.screen.slot.BatteryChargeSlot;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;

@@ -2,8 +2,6 @@ package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.neoforged.neoforge.transfer.TransferPreconditions;
 import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
@@ -80,7 +78,7 @@ public class SimpleEnergyStorage extends SnapshotJournal<Long> implements Energy
 
 	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
-		StoragePreconditions.notNegative(maxAmount);
+		TransferPreconditions.checkNonNegative((int) maxAmount);
 
 		long extracted = Math.min(maxExtract, Math.min(maxAmount, amount));
 

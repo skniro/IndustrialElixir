@@ -3,11 +3,10 @@ package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.impl.SimpleItemEnergyStorageImpl;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -93,7 +92,7 @@ public interface SimpleEnergyItem {
 		return stack.getOrDefault(EnergyStorage.ENERGY_COMPONENT, 0L);
 	}
 
-	static long getStoredEnergyUnchecked(ItemVariant variant) {
+	static long getStoredEnergyUnchecked(ItemResource variant) {
 		return getStoredEnergyUnchecked(variant.getComponents());
 	}
 

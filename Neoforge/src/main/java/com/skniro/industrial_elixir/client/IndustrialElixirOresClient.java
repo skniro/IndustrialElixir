@@ -14,8 +14,6 @@ import com.skniro.industrial_elixir.compat.rei.IndustrialModREIClient;
 import com.skniro.industrial_elixir.compat.rei.IndustrialModREIUtils;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.fluid.init.BaseFluidType;
-import com.skniro.industrial_elixir.keybind.ModClientEvents;
-import com.skniro.industrial_elixir.keybind.ModKeyMappings;
 import com.skniro.industrial_elixir.screen.ingame.energybox.ChargePadBlockScreen;
 import com.skniro.industrial_elixir.screen.ingame.energybox.EnergyBoxBlockScreen;
 import com.skniro.industrial_elixir.screen.ingame.generator.heat.ElectricHeaterBlockScreen;
@@ -39,8 +37,6 @@ import com.skniro.industrial_elixir.screen.ingame.generator.SacredGeneratorScree
 import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -59,8 +55,6 @@ public class IndustrialElixirOresClient {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        ModKeyMappings.registerKeys();
-        ClientTickEvents.END_CLIENT_TICK.register(ModClientEvents::onEndTick);
 
         ChunkSectionLayer renderLayer2 = ChunkSectionLayer.CUTOUT;
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING.get(), renderLayer2);
@@ -81,7 +75,6 @@ public class IndustrialElixirOresClient {
 
 
         BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
-        HudElementRegistry.addFirst(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "water"), (context, deltaTracker)->  WindowsWatermarkRenderer.render(context));
     }
 
     @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)

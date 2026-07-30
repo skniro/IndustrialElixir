@@ -3,10 +3,7 @@ package com.skniro.industrial_elixir.screen.ingame.machine;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import java.util.Objects;
 
-import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.screen.handler.machine.VendorMachineScreenHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -23,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 
-@Environment(EnvType.CLIENT)
+
 public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineScreenHandler> {
     private static final Identifier OUT_OF_STOCK_SPRITE = Identifier.withDefaultNamespace("container/villager/out_of_stock");
     private static final Identifier EXPERIENCE_BAR_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("container/villager/experience_bar_background");
@@ -281,7 +278,7 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
         return super.mouseReleased(event);
     }
 
-    @Environment(EnvType.CLIENT)
+    
     private class TradeOfferButton extends Button.Plain {
         final int index;
 

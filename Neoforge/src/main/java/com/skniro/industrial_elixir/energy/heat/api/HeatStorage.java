@@ -9,7 +9,7 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContaine
 import com.skniro.industrial_elixir.energy.heat.impl.EmptyHeatStorage;
 import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
 import com.skniro.industrial_elixir.energy.heat.impl.SimpleItemHeatStorageImpl;
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -44,7 +44,6 @@ public interface HeatStorage {
 	/**
 	 * Sided block access to Heat storages.
 	 * The {@code Direction} parameter may be null, meaning that the full storage (ignoring side restrictions) should be queried.
-	 * Refer to {@link BlockApiLookup} for documentation on how to use this field.
 	 *
 	 * <p>The system is push based. That means that power sources are responsible for pushing power to nearby machines.
 	 * Machines and wires should NOT pull power from other sources.
@@ -59,8 +58,8 @@ public interface HeatStorage {
 	 * On the server thread (i.e. with a server world), all transfer functionality is always supported.
 	 * On the client thread (i.e. with a client world), contents of queried HeatStorages are unreliable and should not be modified.
 	 */
-	BlockApiLookup<HeatStorage, @Nullable Direction> SIDED =
-			BlockApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_heat"), HeatStorage.class, Direction.class);
+	BlockCapability<HeatStorage, @Nullable Direction> SIDED =
+			BlockCapability.createSided(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_heat"), HeatStorage.class);
 
 	/**
 	 * Item access to Heat storages.

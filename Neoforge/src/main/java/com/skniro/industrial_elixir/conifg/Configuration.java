@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -53,7 +53,7 @@ public class Configuration {
     }
 
     private void setup() {
-        final File configDir = new File(FabricLoader.getInstance().getConfigDir().toFile(), modId);
+        final File configDir = new File(FMLPaths.CONFIGDIR.get().resolve("skniro").toFile(), modId);
 
         if (!configDir.exists()) {
             configDir.mkdirs();
