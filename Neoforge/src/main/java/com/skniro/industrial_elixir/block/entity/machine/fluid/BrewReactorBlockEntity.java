@@ -1,5 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.init.machine.fluid.BrewReactorBlock;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
@@ -8,9 +9,6 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.BrewReactorCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.BrewReactorScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,13 +17,13 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
@@ -41,13 +39,13 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+        SingleFluidStorage.writeValue(fluidContainer, output);
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+        SingleFluidStorage.readValue(fluidContainer, input);
     }
 
     public void drops() {
@@ -77,8 +75,8 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
         } else {
             this.getItem(OUTPUT_SLOT).grow(output.getCount());
         }
-        try (Transaction tx = Transaction.openOuter()) {
-            fluidContainer.extract(fluidContainer.getResource(), FLUID_CRAFT_AMOUNT, tx);
+        try (Transaction tx = Transaction.openRoot()) {
+            fluidContainer.extract(fluidContainer.getResource(0), FLUID_CRAFT_AMOUNT, tx);
             tx.commit();
         }
     }
@@ -156,7 +154,7 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
             if (fluidOpt != null && fluidOpt.isPresent()) {
                 try {
                     // compare registry ids to avoid Holder vs Fluid type issues
-                    var currentFluid = this.fluidContainer.getResource().getFluid();
+                    var currentFluid = this.fluidContainer.getResource(0).getFluid();
                     var currentId = BuiltInRegistries.FLUID.getKey(currentFluid);
                     if (currentId == null || !fluidOpt.get().equals(currentId)) return false;
                     int required = (amtOpt != null && amtOpt.isPresent()) ? amtOpt.get() : AbstractFluidMachineEntity.FLUID_CRAFT_AMOUNT;

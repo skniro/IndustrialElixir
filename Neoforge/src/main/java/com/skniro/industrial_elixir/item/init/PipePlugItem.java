@@ -1,6 +1,5 @@
 package com.skniro.industrial_elixir.item.init;
 
-import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity;
 import com.skniro.industrial_elixir.item.AdvancedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

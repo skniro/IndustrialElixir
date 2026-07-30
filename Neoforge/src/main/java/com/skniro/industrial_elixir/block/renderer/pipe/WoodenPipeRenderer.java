@@ -1,8 +1,6 @@
 package com.skniro.industrial_elixir.block.renderer.pipe;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity;
-import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity.PipeItem;
 import com.skniro.industrial_elixir.block.renderer.state.PipeBlockEntityRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;

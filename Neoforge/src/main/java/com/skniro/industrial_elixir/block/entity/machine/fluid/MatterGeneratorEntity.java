@@ -1,16 +1,15 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
 import com.skniro.industrial_elixir.api.fluid.ContainerInfo;
+import com.skniro.industrial_elixir.api.fluid.FluidConstants;
 import com.skniro.industrial_elixir.api.fluid.FluidOutputMap;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.MatterGeneratorScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,8 +31,8 @@ import org.jetbrains.annotations.Nullable;
  * The user will implement the detailed UU-production logic and fluid output.
  */
 public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
-	private static final long BUCKET_VOLUME_MB = FluidConstants.BUCKET / 81;
-	private static final long MB_UNIT = 1L; // 1 mB unit for insertion
+	private static final int BUCKET_VOLUME_MB = Math.toIntExact(FluidConstants.BUCKET / 81);
+	private static final int MB_UNIT = 1; // 1 mB unit for insertion
 	private long progressEU = 0;
 	private static final long EU_PER_MB = 1_000_000;
 	private long scrapAmplifier = 0;
@@ -69,8 +69,8 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 	}
 
 	private boolean generateMatter() {
-		FluidVariant variant = FluidVariant.of(IndustrialElixirFluids.STILL_Fluid_UU.get());
-		try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+		FluidResource variant = FluidResource.of(IndustrialElixirFluids.STILL_Fluid_UU.get());
+		try (Transaction tx = Transaction.openRoot()) {
 			long inserted = fluidContainer.insert(variant, MB_UNIT, tx);
 			if (inserted == MB_UNIT) {
 				tx.commit();
@@ -153,7 +153,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 			return;
 		}
 
-		Fluid fluid = fluidContainer.getResource().getFluid();
+		Fluid fluid = fluidContainer.getResource(0).getFluid();
 		ItemStack emptyContainerStack = inventory.get(OUTPUT_EMPTY_FLUID_ITEM_SLOT);
 		if (emptyContainerStack.isEmpty()) {
 			return;
@@ -171,13 +171,9 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 			return;
 		}
 
-		try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction transaction = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+		try (Transaction transaction = Transaction.openRoot()) {
 
-			long extracted = fluidContainer.extract(
-					FluidVariant.of(fluid),
-					BUCKET_VOLUME_MB,
-					transaction
-			);
+			long extracted = fluidContainer.extract(FluidResource.of(fluid), BUCKET_VOLUME_MB, transaction);
 
 			if (extracted != BUCKET_VOLUME_MB) {
 				return;
@@ -214,7 +210,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 		output.putLong("matter_generator.ProgressEU", progressEU);
 		output.putLong("matter_generator.scrapConsumeTimer", scrapConsumeTimer);
 		output.putLong("matter_generator.scrap_amplifier", scrapAmplifier);
-		SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+		SingleFluidStorage.writeValue(fluidContainer, output);
 	}
 
 	@Override
@@ -223,7 +219,7 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 		progressEU = input.getLongOr("matter_generator.ProgressEU", 0);
 		scrapConsumeTimer = input.getIntOr("matter_generator.scrapConsumeTimer", 0);
 		scrapAmplifier = input.getLongOr("matter_generator.scrap_amplifier", 0L);
-		SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+		SingleFluidStorage.readValue(fluidContainer, input);
 	}
 }
 

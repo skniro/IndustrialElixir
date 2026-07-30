@@ -1,57 +1,72 @@
 package com.skniro.industrial_elixir.api.fluid;
 
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.Objects;
 
-public abstract class SingleFluidStorage extends SnapshotParticipant<ResourceAmount<FluidVariant>> implements SingleSlotStorage<FluidVariant> {
+public abstract class SingleFluidStorage extends SnapshotJournal<ResourceAmount<FluidResource>> implements ResourceHandler<FluidResource> {
 	/**
 	 * Create a fluid storage with a fixed capacity and a change handler.
 	 *
 	 * @param capacity Fixed capacity of the fluid storage. Must be non-negative.
 	 * @param onChange Change handler, generally for {@code setChanged()} or similar calls. May not be null.
 	 */
-    public FluidVariant variant = getBlankVariant();
-    public long amount = 0;
 
-    protected final FluidVariant getBlankVariant() {
-        return FluidVariant.blank();
+    public FluidResource variant = getBlankVariant();
+    public int amount = 0;
+
+    protected final FluidResource getBlankVariant() {
+        return FluidResource.EMPTY;
     }
 
-    protected abstract long getCapacity(FluidVariant variant);
+
+    protected abstract int getCapacity(FluidResource variant);
 
     /**
      * @return {@code true} if the passed non-blank variant can be inserted, {@code false} otherwise.
      */
-    protected boolean canInsert(FluidVariant variant) {
+    protected boolean canInsert(FluidResource variant) {
         return true;
+    }
+
+    @Override
+    public int size() {
+        return 1;
     }
 
     /**
      * @return {@code true} if the passed non-blank variant can be extracted, {@code false} otherwise.
      */
-    protected boolean canExtract(FluidVariant variant) {
+    protected boolean canExtract(FluidResource variant) {
         return true;
     }
 
-    @Override
-    public long insert(FluidVariant insertedVariant, long maxAmount, TransactionContext transaction) {
-        StoragePreconditions.notBlankNotNegative(insertedVariant, maxAmount);
+    protected void onFinalCommit() {
 
-        if ((insertedVariant.equals(variant) || variant.isBlank()) && canInsert(insertedVariant)) {
-            long insertedAmount = Math.min(maxAmount, getCapacity(insertedVariant) - amount);
+    }
+
+    @Override
+    public int insert(int index, FluidResource insertedVariant, int maxAmount, TransactionContext transaction) {
+        return insert(insertedVariant, maxAmount, transaction);
+    }
+
+    @Override
+    public int insert( FluidResource insertedVariant, int maxAmount, TransactionContext transaction) {
+        TransferPreconditions.checkNonEmptyNonNegative(insertedVariant, maxAmount);
+
+        if ((insertedVariant.equals(variant) || variant.isEmpty()) && canInsert(insertedVariant)) {
+            int insertedAmount = Math.min(maxAmount, getCapacity(insertedVariant) - amount);
 
             if (insertedAmount > 0) {
                 updateSnapshots(transaction);
 
-                if (variant.isBlank()) {
+                if (variant.isEmpty()) {
                     variant = insertedVariant;
                     amount = insertedAmount;
                 } else {
@@ -66,8 +81,13 @@ public abstract class SingleFluidStorage extends SnapshotParticipant<ResourceAmo
     }
 
     @Override
-    public long extract(FluidVariant extractedVariant, long maxAmount, TransactionContext transaction) {
-        StoragePreconditions.notBlankNotNegative(extractedVariant, maxAmount);
+    public int extract(int index, FluidResource extractedVariant, int maxAmount, TransactionContext transaction) {
+       return extract(extractedVariant, maxAmount, transaction);
+    }
+
+    @Override
+    public int extract(FluidResource extractedVariant, int maxAmount, TransactionContext transaction) {
+        TransferPreconditions.checkNonEmptyNonNegative(extractedVariant, maxAmount);
 
         if (extractedVariant.equals(variant) && canExtract(extractedVariant)) {
             long extractedAmount = Math.min(maxAmount, amount);
@@ -80,40 +100,53 @@ public abstract class SingleFluidStorage extends SnapshotParticipant<ResourceAmo
                     variant = getBlankVariant();
                 }
 
-                return extractedAmount;
+                return Math.toIntExact(extractedAmount);
             }
         }
 
         return 0;
     }
 
-    @Override
     public boolean isResourceBlank() {
-        return variant.isBlank();
+        return variant.isEmpty();
     }
 
     @Override
-    public FluidVariant getResource() {
+    public boolean isValid(int index, FluidResource resource) {
+        return isResourceBlank();
+    }
+
+    @Override
+    public FluidResource getResource(int index) {
         return variant;
     }
 
     @Override
-    public long getAmount() {
+    public long getAmountAsLong(int index) {
+        return getAmount();
+    }
+
+
+    public int getAmount() {
         return amount;
     }
 
     @Override
-    public long getCapacity() {
+    public long getCapacityAsLong(int index, FluidResource resource) {
+        return getCapacity();
+    }
+
+    public int getCapacity() {
         return getCapacity(variant);
     }
 
     @Override
-    protected ResourceAmount<FluidVariant> createSnapshot() {
+    protected ResourceAmount<FluidResource> createSnapshot() {
         return new ResourceAmount<>(variant, amount);
     }
 
     @Override
-    protected void readSnapshot(ResourceAmount<FluidVariant> snapshot) {
+    protected void revertToSnapshot(ResourceAmount<FluidResource> snapshot) {
         variant = snapshot.resource();
         amount = snapshot.amount();
     }
@@ -123,25 +156,28 @@ public abstract class SingleFluidStorage extends SnapshotParticipant<ResourceAmo
         return "SingleVariantStorage[%d %s]".formatted(amount, variant);
     }
 
-
-
-    public void readValue(ValueInput value) {
-        this.variant = value.read("variant", FluidVariant.CODEC).orElseGet(FluidVariant::blank);
-        this.amount = value.getLongOr("amount", 0L);
+    @Override
+    protected void onRootCommit(ResourceAmount<FluidResource> resource) {
+        onFinalCommit();
     }
 
-    void writeValue(ValueOutput value) {
-        value.store("variant", FluidVariant.CODEC, this.variant);
-        value.putLong("amount", this.amount);
+    public static void readValue(SingleFluidStorage singleFluidStorage, ValueInput value) {
+        singleFluidStorage.variant = value.read("variant", FluidResource.CODEC).orElse(FluidResource.EMPTY);
+        singleFluidStorage.amount = value.getIntOr("amount", 0);
     }
 
-    public static SingleFluidStorage withFixedCapacity(long capacity, Runnable onChange) {
-        StoragePreconditions.notNegative(capacity);
+    public static void writeValue(SingleFluidStorage singleFluidStorage, ValueOutput value) {
+        value.store("variant", FluidResource.CODEC, singleFluidStorage.variant);
+        value.putLong("amount", singleFluidStorage.amount);
+    }
+
+    public static SingleFluidStorage withFixedCapacity(int capacity, Runnable onChange) {
+        TransferPreconditions.checkNonNegative(capacity);
         Objects.requireNonNull(onChange, "onChange may not be null");
 
         return new SingleFluidStorage() {
             @Override
-            protected long getCapacity(FluidVariant variant) {
+            protected int getCapacity(FluidResource variant) {
                 return capacity;
             }
 

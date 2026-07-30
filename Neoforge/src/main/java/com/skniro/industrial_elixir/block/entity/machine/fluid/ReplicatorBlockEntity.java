@@ -1,5 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.block.entity.machine.PatternStorageBlockEntity;
@@ -7,8 +8,6 @@ import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.ReplicatorScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
@@ -157,9 +157,9 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
             if (fluidProgress < replicatingUUCost) {
                 int needed = replicatingUUCost - fluidProgress;
                 int toExtract = Math.min(needed, 5);
-                try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
+                try (Transaction tx = Transaction.openRoot()) {
                     long extracted = fluidContainer.extract(
-                            FluidVariant.of(IndustrialElixirFluids.STILL_Fluid_UU.get()), toExtract, tx);
+                            FluidResource.of(IndustrialElixirFluids.STILL_Fluid_UU.get()), toExtract, tx);
                     if (extracted > 0) {
                         tx.commit();
                         fluidProgress += (int) extracted;
@@ -259,7 +259,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
         }
         output.putLong("replicator.energy_cost", replicatingEnergyCost);
         output.putInt("replicator.uu_cost", replicatingUUCost);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+        SingleFluidStorage.writeValue(fluidContainer, output);
     }
 
     @Override
@@ -273,7 +273,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
         this.replicatingItemId = itemId != null ? Identifier.parse(itemId) : null;
         replicatingEnergyCost = input.getLongOr("replicator.energy_cost", 0);
         replicatingUUCost = input.getIntOr("replicator.uu_cost", 0);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+        SingleFluidStorage.readValue(fluidContainer, input);
     }
 
     public void drops() {

@@ -1,7 +1,6 @@
 package com.skniro.industrial_elixir.block.init.pipe;
 
 import com.mojang.serialization.MapCodec;
-import com.skniro.industrial_elixir.block.entity.pipe.StonePipeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;

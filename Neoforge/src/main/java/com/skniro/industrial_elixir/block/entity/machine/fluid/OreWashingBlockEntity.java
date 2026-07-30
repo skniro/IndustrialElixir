@@ -1,5 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.init.machine.fluid.OreWashingBlock;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
@@ -8,9 +9,6 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.OreWashingCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.OreWashingScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -26,6 +24,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
@@ -42,13 +41,13 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+        SingleFluidStorage.writeValue(fluidContainer, output);
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+        SingleFluidStorage.readValue(fluidContainer, input);
     }
 
     public void drops() {
@@ -72,8 +71,8 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
         insertOutput(OUTPUT_SLOT, recipe.output().create());
         recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
         recipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.create()));
-        try (Transaction tx = Transaction.openOuter()) {
-            fluidContainer.extract(fluidContainer.getResource(), recipe.requiredFluidAmount(), tx);
+        try (Transaction tx = Transaction.openRoot()) {
+            fluidContainer.extract(fluidContainer.getResource(0), recipe.requiredFluidAmount(), tx);
             tx.commit();
         }
     }
@@ -162,7 +161,7 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
         if (washingRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, washingRecipe.output3().get().create())) return false;
         if (!hasEnoughEnergyToCraft()) return false;
 
-        var currentFluid = this.fluidContainer.getResource().getFluid();
+        var currentFluid = this.fluidContainer.getResource(0).getFluid();
         var currentId = BuiltInRegistries.FLUID.getKey(currentFluid);
         return currentId != null
                 && washingRecipe.requiredFluid().equals(currentId)
@@ -185,8 +184,8 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
         if (recipe.isEmpty() || !(recipe.get().value() instanceof OreWashingCraftingRecipe washingRecipe)) {
             return;
         }
-        try (Transaction transaction = Transaction.openOuter()) {
-            fluidContainer.extract(fluidContainer.getResource(), washingRecipe.requiredFluidAmount(), transaction);
+        try (Transaction transaction = Transaction.openRoot()) {
+            fluidContainer.extract(fluidContainer.getResource(0), washingRecipe.requiredFluidAmount(), transaction);
             transaction.commit();
         }
     }

@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity;
 import com.skniro.industrial_elixir.block.entity.pipe.PipeExtractDirectionController;
 
 import net.minecraft.core.BlockPos;

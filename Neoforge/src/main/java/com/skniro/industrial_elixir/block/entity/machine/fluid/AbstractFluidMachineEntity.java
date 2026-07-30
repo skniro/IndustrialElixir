@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
 
+import com.skniro.industrial_elixir.api.fluid.FullItemFluidStorage;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
@@ -8,13 +9,6 @@ import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +22,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -37,8 +35,8 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
     public SingleFluidStorage fluidContainer = new SingleFluidStorage() {
 
         @Override
-        protected long getCapacity(FluidVariant variant) {
-            return (FluidConstants.BUCKET / 81) * 16; // 1 Bucket = 81000 Droplets = 1000mB || * 16 ==> 16,000mB = 16 Buckets
+        protected int getCapacity(FluidResource variant) {
+            return 1000 * 16; // 16 buckets = 16000 mB
         }
 
         @Override
@@ -52,7 +50,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
         super(entityType, pos, state);
     }
 
-    public FluidVariant getFluid() {
+    public FluidResource getFluid() {
         return this.fluidContainer.variant;
     }
 
@@ -90,16 +88,22 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
     }
 
     public boolean hasFluidStackInFluidSlot() {
-        return FluidStorage.ITEM.find(inventory.get(FLUID_ITEM_SLOT), ContainerItemContext.withConstant(inventory.get(FLUID_ITEM_SLOT))) != null
-                && FluidStorage.ITEM.find(inventory.get(FLUID_ITEM_SLOT), ContainerItemContext.withConstant(inventory.get(FLUID_ITEM_SLOT))).supportsExtraction()
-                && FluidStorage.ITEM.find(inventory.get(FLUID_ITEM_SLOT), ContainerItemContext.withConstant(inventory.get(FLUID_ITEM_SLOT))) instanceof CombinedStorage<?, ?> combinedStorage
-                && combinedStorage.parts.get(0) instanceof FullItemFluidStorage;
+        ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
+        if (stack.isEmpty()) {
+            return false;
+        }
+        var fluidHandler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
+        if (fluidHandler == null) {
+            return false;
+        }
+
+        return !fluidHandler.getResource(0).isEmpty();
     }
 
     public void extractFluidForCrafting() {
-        FluidVariant variant = fluidContainer.getResource();
+        FluidResource variant = fluidContainer.getResource(0);
 
-        if (variant.isBlank()) {
+        if (variant.isEmpty()) {
             return;
         }
 
@@ -107,7 +111,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
             return;
         }
 
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             long extracted = fluidContainer.extract(variant, FLUID_CRAFT_AMOUNT, transaction
             );
 
@@ -138,10 +142,8 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
 
     public void fillUpFluidTank() {
         ItemStack inputStack = inventory.get(FLUID_ITEM_SLOT);
-        var itemStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.withConstant(inputStack));
-        if (itemStorage == null || !itemStorage.supportsExtraction()
-                || !(itemStorage instanceof CombinedStorage<?, ?> combinedStorage)
-                || !(combinedStorage.parts.get(0) instanceof FullItemFluidStorage fluidStorage)) {
+        var itemStorage = Capabilities.Fluid.ITEM.getCapability(inputStack, ItemAccess.forStack(inputStack));
+        if (itemStorage == null || itemStorage.getResource(0).isEmpty()) {
             return;
         }
 
@@ -151,11 +153,11 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
                 ? inputStack.getItem().getCraftingRemainder().create()
                 : new ItemStack(Items.BUCKET));
 
-        if (!canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
+        if (!(itemStorage instanceof FullItemFluidStorage fluidStorage) || !canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
             return;
         }
 
-        try (Transaction transaction = Transaction.openOuter()) {
+        try (Transaction transaction = Transaction.openRoot()) {
             long inserted = this.fluidContainer.insert(fluidStorage.getResource(), 1000, transaction);
             if (inserted != 1000) {
                 return;
@@ -172,7 +174,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
     }
 
     private boolean canAcceptFluid(FullItemFluidStorage fluidStorage) {
-        return (fluidContainer.getResource() == fluidStorage.getResource() || fluidContainer.isResourceBlank())
+        return (fluidContainer.getResource(0) == fluidStorage.getResource() || fluidContainer.isResourceBlank())
                 && fluidContainer.getAmount() + 1000 <= fluidContainer.getCapacity();
     }
 

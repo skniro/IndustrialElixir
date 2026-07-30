@@ -1,13 +1,9 @@
 package com.skniro.industrial_elixir.block.entity.pipe;
 
+import com.skniro.industrial_elixir.api.fluid.FluidConstants;
 import com.skniro.industrial_elixir.block.init.pipe.PipeBlock;
 import com.skniro.industrial_elixir.block.init.pipe.WoodPipeBlock;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -22,6 +18,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,10 +29,10 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
-    private static final long STEP = 100;
+    private static final int STEP = 100;
     private static final int MAX_PACKETS = 64;
-    private static final long BUCKET_VOLUME_MB = FluidConstants.BUCKET / 81;
-    private static final long PIPE_CAPACITY = BUCKET_VOLUME_MB * 4;
+    private static final int BUCKET_VOLUME_MB = FluidConstants.BUCKET / 81;
+    private static final int PIPE_CAPACITY = BUCKET_VOLUME_MB * 4;
     private static final double ARRIVAL_EPSILON = 1.0E-6;
     private final List<FluidPacket> fluids = new ArrayList<>();
 
@@ -47,7 +46,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         BlockPos target = worldPosition.relative(dir);
         BlockEntity be = level.getBlockEntity(target);
         if (be instanceof FluidPipeBlockEntity) return true;
-        Storage<FluidVariant> storage = FluidStorage.SIDED.find(level, target, dir.getOpposite());
+        var storage = level.getCapability(Capabilities.Fluid.BLOCK, target, dir.getOpposite());
         return storage != null;
     }
 
@@ -58,7 +57,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         while (it.hasNext()) {
             FluidPacket packet = it.next();
 
-            if (packet.variant.isBlank() || packet.amount <= 0) {
+            if (packet.variant.isEmpty() || packet.amount <= 0) {
                 it.remove();
                 changed = true;
                 continue;
@@ -79,7 +78,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
                 changed = true;
 
                 // 只有 Packet 完全转移后才能删除
-                if (packet.amount <= 0 || packet.variant.isBlank()) {
+                if (packet.amount <= 0 || packet.variant.isEmpty()) {
                     it.remove();
                 } else {
                     // 还有剩余液体，继续留在当前管道
@@ -94,7 +93,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             if (inserted) {
                 changed = true;
 
-                if (packet.amount <= 0 || packet.variant.isBlank()) {
+                if (packet.amount <= 0 || packet.variant.isEmpty()) {
                     it.remove();
                 } else {
                     // 只插入了部分液体
@@ -143,8 +142,8 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         return result;
     }
 
-    private long getFluidVolume() {
-        long total = 0;
+    private int getFluidVolume() {
+        int total = 0;
         for (FluidPacket packet : fluids) {
             total += packet.amount;
         }
@@ -167,8 +166,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             if (!state.getValue(PipeBlock.PROPERTY_MAP.get(dir))) continue;
 
             BlockPos next = pos.relative(dir);
-            if (FluidStorage.SIDED.find(world, next, dir.getOpposite()) != null) return true;
-
+            if (world.getCapability(Capabilities.Fluid.BLOCK, pos, dir.getOpposite()) != null) return true;
             BlockEntity nextBe = world.getBlockEntity(next);
             if (nextBe instanceof FluidPipeBlockEntity) {
                 if (searchOutputPath(world, next, dir.getOpposite(), visited)) return true;
@@ -182,9 +180,9 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         if (!(be instanceof FluidPipeBlockEntity pipe)) return false;
         if (be instanceof WoodFluidPipeBlockEntity) return false;
         if (pipe.fluids.size() >= MAX_PACKETS) return false;
-        long available = PIPE_CAPACITY - pipe.getFluidVolume();
+        int available = PIPE_CAPACITY - pipe.getFluidVolume();
         if (available <= 0) return false;
-        long moveAmount = Math.min(packet.amount, available);
+        int moveAmount = Math.min(packet.amount, available);
         if (moveAmount <= 0) return false;
         Direction newDir = getNextDirection(world, pos, packet);
         FluidPacket moved = new FluidPacket(packet.variant, moveAmount, newDir);
@@ -193,8 +191,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         packet.amount -= moveAmount;
         if (packet.amount <= 0) {
             packet.amount = 0;
-            packet.variant =
-                    FluidVariant.blank();
+            packet.variant = FluidResource.EMPTY;
         }
         pipe.syncToClient();
         return true;
@@ -220,8 +217,10 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
 
     private boolean tryInsert(Level world, BlockPos pos, FluidPacket packet) {
         if (isBlocked(packet.direction)) return false;
-        Storage<FluidVariant> storage = FluidStorage.SIDED.find(world, pos, packet.direction.getOpposite());
-        if (storage == null) return false;
+        var storage = world.getCapability(Capabilities.Fluid.BLOCK, pos, packet.direction.getOpposite());
+        if (storage == null) {
+            return false;
+        }
 
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof WoodFluidPipeBlockEntity) {
@@ -230,15 +229,15 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             BooleanProperty pullProp = WoodPipeBlock.PULL_PROPERTY_MAP.get(insertDir);
             if (pullProp != null && state.getValue(pullProp)) return false;
         }
-        long before = packet.amount;
-        try (Transaction tx = Transaction.openOuter()) {
-            long inserted = storage.insert(packet.variant, before, tx);
+        int before = packet.amount;
+        try (Transaction tx = Transaction.openRoot()) {
+            int inserted = storage.insert(packet.variant, before, tx);
             if (inserted <= 0) return false;
             packet.amount -= inserted;
             tx.commit();
             if (packet.amount <= 0) {
                 packet.amount = 0;
-                packet.variant = FluidVariant.blank();
+                packet.variant = FluidResource.EMPTY;
             }
             syncToClient();
             return true;
@@ -248,27 +247,18 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     private boolean tryExtractFromSide(Level world, BlockPos pos, Direction dir) {
         if (isBlocked(dir)) return false;
         BlockPos targetPos = pos.relative(dir);
-        Storage<FluidVariant> storage = FluidStorage.SIDED.find(world, targetPos, dir.getOpposite());
+        var storage = world.getCapability(Capabilities.Fluid.BLOCK, pos, dir.getOpposite());
         if (storage != null) {
-            try (Transaction tx = Transaction.openOuter()) {
-                StorageView<FluidVariant> view = null;
-                for (StorageView<FluidVariant> v : storage) {
-                    if (!v.isResourceBlank()) {
-                        view = v;
-                        break;
-                    }
-                }
-                if (view != null) {
-                    FluidVariant resource = view.getResource();
-                    long toExtract = Math.min(STEP, PIPE_CAPACITY - getFluidVolume());
-                    if (toExtract <= 0) return false;
-                    long extracted = storage.extract(resource, toExtract, tx);
-                    if (extracted > 0) {
-                        fluids.add(new FluidPacket(resource, extracted, dir.getOpposite()));
-                        tx.commit();
-                        syncToClient();
-                        return true;
-                    }
+            try (Transaction tx = Transaction.openRoot()) {
+                FluidResource resource = storage.getResource(0);
+                int toExtract = Math.min(STEP, PIPE_CAPACITY - getFluidVolume());
+                if (toExtract <= 0) return false;
+                int extracted = storage.extract(resource, toExtract, tx);
+                if (extracted > 0) {
+                    fluids.add(new FluidPacket(resource, extracted, dir.getOpposite()));
+                    tx.commit();
+                    syncToClient();
+                    return true;
                 }
             }
         }
@@ -276,7 +266,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         // Fallback: pull directly from source fluid blocks (e.g. water/lava source).
         FluidState fluidState = world.getFluidState(targetPos);
         if (!fluidState.isEmpty() && fluidState.isSource()) {
-            FluidVariant source = FluidVariant.of(fluidState.getType());
+            FluidResource source = FluidResource.of(fluidState.getType());
             fluids.add(new FluidPacket(source, BUCKET_VOLUME_MB, dir.getOpposite()));
             world.removeBlock(targetPos, false);
             syncToClient();
@@ -287,13 +277,13 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     private static final class FluidPacket {
-        FluidVariant variant;
-        long amount;
+        FluidResource variant;
+        int amount;
         Direction direction;
         Direction lastDirection;
         double progress;
 
-        FluidPacket(FluidVariant variant, long amount, Direction direction) {
+        FluidPacket(FluidResource variant, int amount, Direction direction) {
             this.variant = variant;
             this.amount = amount;
             this.direction = direction;
@@ -309,14 +299,14 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         int count = Math.min(nbt.getIntOr("pipe.fluid_count", 0), MAX_PACKETS);
         for (int i = 0; i < count; i++) {
             int fluidId = nbt.getIntOr("pipe.fid_" + i, -1);
-            long amount = nbt.getLongOr("pipe.amt_" + i, 0L);
+            int amount = nbt.getIntOr("pipe.amt_" + i, 0);
             int dirId = nbt.getIntOr("pipe.dir_" + i, -1);
             int lastDirId = nbt.getIntOr("pipe.ldir_" + i, -1);
             int progress = nbt.getIntOr("pipe.prog_" + i, 0);
             if (fluidId < 0 || dirId < 0 || amount <= 0) continue;
             Direction dir = Direction.from3DDataValue(dirId);
             if (dir == null) continue;
-            FluidPacket packet = new FluidPacket(FluidVariant.of(BuiltInRegistries.FLUID.byId(fluidId)), amount, dir);
+            FluidPacket packet = new FluidPacket(FluidResource.of(BuiltInRegistries.FLUID.byId(fluidId)), amount, dir);
             packet.progress = progress / 1000.0;
             packet.lastDirection = lastDirId >= 0 ? Direction.from3DDataValue(lastDirId) : dir;
             if (packet.lastDirection == null) packet.lastDirection = dir;
@@ -333,7 +323,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         for (int i = 0; i < count; i++) {
             FluidPacket packet = fluids.get(i);
             nbt.putInt("pipe.fid_" + i, BuiltInRegistries.FLUID.getId(packet.variant.getFluid()));
-            nbt.putLong("pipe.amt_" + i, packet.amount);
+            nbt.putInt("pipe.amt_" + i, packet.amount);
             nbt.putInt("pipe.dir_" + i, packet.direction.get3DDataValue());
             nbt.putInt("pipe.ldir_" + i, packet.lastDirection.get3DDataValue());
             nbt.putInt("pipe.prog_" + i, (int) Math.round(packet.progress * 1000.0));
@@ -358,12 +348,12 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     public static final class PipeFluid {
-        public final FluidVariant variant;
+        public final FluidResource variant;
         public final long amount;
         public final Direction direction;
         public final double progress;
 
-        private PipeFluid(FluidVariant variant, long amount, Direction direction, double progress) {
+        private PipeFluid(FluidResource variant, long amount, Direction direction, double progress) {
             this.variant = variant;
             this.amount = amount;
             this.direction = direction;
