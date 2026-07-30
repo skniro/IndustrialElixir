@@ -22,8 +22,7 @@ public class LimitingEnergyStorage implements EnergyStorage {
 	 */
 	public LimitingEnergyStorage(EnergyStorage backingStorage, long maxInsert, long maxExtract) {
 		Objects.requireNonNull(backingStorage);
-		TransferPreconditions.checkNonNegative((int) maxInsert);
-		TransferPreconditions.checkNonNegative((int) maxExtract);
+		if (maxInsert < 0 || maxExtract < 0) throw new IllegalArgumentException("Values must not be negative");
 
 		this.backingStorage = backingStorage;
 		this.maxInsert = maxInsert;

@@ -1,7 +1,8 @@
 package com.skniro.industrial_elixir.block.entity.machine.fluid;
 
 
-import com.skniro.industrial_elixir.api.fluid.FullItemFluidStorage;
+import com.skniro.industrial_elixir.api.fluid.ContainerInfo;
+import com.skniro.industrial_elixir.api.fluid.FluidOutputMap;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
@@ -15,19 +16,20 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
@@ -88,16 +90,20 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
     }
 
     public boolean hasFluidStackInFluidSlot() {
-        ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
-        if (stack.isEmpty()) {
-            return false;
-        }
-        var fluidHandler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
-        if (fluidHandler == null) {
-            return false;
-        }
+        return findFluidInput() != null;
+    }
 
-        return !fluidHandler.getResource(0).isEmpty();
+    private FluidResource findFluidInput() {
+        ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
+        if (stack.isEmpty()) return null;
+        for (Map.Entry<Fluid, List<ContainerInfo>> entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
+            for (ContainerInfo info : entry.getValue()) {
+                if (stack.is(info.fullItem())) {
+                    return FluidResource.of(entry.getKey());
+                }
+            }
+        }
+        return null;
     }
 
     public void extractFluidForCrafting() {
@@ -142,28 +148,23 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
 
     public void fillUpFluidTank() {
         ItemStack inputStack = inventory.get(FLUID_ITEM_SLOT);
-        var itemStorage = Capabilities.Fluid.ITEM.getCapability(inputStack, ItemAccess.forStack(inputStack));
-        if (itemStorage == null || itemStorage.getResource(0).isEmpty()) {
-            return;
-        }
+        FluidResource toInsert = findFluidInput();
+        if (toInsert == null) return;
 
-        ItemStack craftRemainder = inputStack.getItem() instanceof FluidCellItem
-                ? new ItemStack(GrowableOresItems.EMPTY_CELL.get())
-                : (inputStack.getItem().getCraftingRemainder() != null
-                ? inputStack.getItem().getCraftingRemainder().create()
-                : new ItemStack(Items.BUCKET));
+        Item craftRemainderItem = findEmptyContainer(inputStack);
+        if (craftRemainderItem == null) return;
 
-        if (!(itemStorage instanceof FullItemFluidStorage fluidStorage) || !canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
-            return;
-        }
+        if (!canAcceptFluid(toInsert, 1000)) return;
+
+        boolean isFluidCell = inputStack.getItem() instanceof FluidCellItem;
+        ItemStack craftRemainder = new ItemStack(craftRemainderItem);
+        if (isFluidCell && !canStoreCraftRemainder(inputStack, craftRemainder)) return;
 
         try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(fluidStorage.getResource(), 1000, transaction);
-            if (inserted != 1000) {
-                return;
-            }
+            long inserted = this.fluidContainer.insert(toInsert, 1000, transaction);
+            if (inserted != 1000) return;
 
-            if (inputStack.getItem() instanceof FluidCellItem) {
+            if (isFluidCell) {
                 inputStack.shrink(1);
                 storeCraftRemainder(craftRemainder);
             } else {
@@ -173,9 +174,21 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
         }
     }
 
-    private boolean canAcceptFluid(FullItemFluidStorage fluidStorage) {
-        return (fluidContainer.getResource(0) == fluidStorage.getResource() || fluidContainer.isResourceBlank())
-                && fluidContainer.getAmount() + 1000 <= fluidContainer.getCapacity();
+    private Item findEmptyContainer(ItemStack stack) {
+        if (stack.isEmpty()) return null;
+        for (Map.Entry<Fluid, List<ContainerInfo>> entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
+            for (ContainerInfo info : entry.getValue()) {
+                if (stack.is(info.fullItem())) {
+                    return info.emptyItem();
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean canAcceptFluid(FluidResource fluid, int amount) {
+        return (fluidContainer.variant.equals(fluid) || fluidContainer.isResourceBlank())
+                && fluidContainer.getAmount() + amount <= fluidContainer.getCapacity();
     }
 
     private boolean canStoreCraftRemainder(ItemStack inputStack, ItemStack craftRemainder) {

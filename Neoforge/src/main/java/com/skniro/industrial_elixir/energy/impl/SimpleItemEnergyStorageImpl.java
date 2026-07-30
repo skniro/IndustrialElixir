@@ -20,9 +20,7 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public class SimpleItemEnergyStorageImpl implements EnergyStorage {
 	public static EnergyStorage createSimpleStorage(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
-		TransferPreconditions.checkNonNegative((int) capacity);
-		TransferPreconditions.checkNonNegative((int) maxInsert);
-		TransferPreconditions.checkNonNegative((int) maxExtract);
+		if (capacity < 0 || maxInsert < 0 || maxExtract < 0) throw new IllegalArgumentException("Values must not be negative");
 
 		Item startingItem = ctx.getResource().getItem();
 

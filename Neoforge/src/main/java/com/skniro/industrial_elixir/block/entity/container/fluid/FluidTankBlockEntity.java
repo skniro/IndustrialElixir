@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -34,9 +35,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
@@ -184,7 +183,13 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
 
     public boolean hasFluidStackInFluidSlot() {
         ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
-        return !stack.isEmpty() && Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack)) != null;
+        if (stack.isEmpty()) return false;
+        for (var entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
+            for (ContainerInfo info : entry.getValue()) {
+                if (stack.is(info.fullItem())) return true;
+            }
+        }
+        return false;
     }
 
     public void fillUpFluidTank() {
@@ -193,19 +198,27 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
     }
 
     private boolean fillFromKnownContainer(ItemStack inputStack) {
-        ItemAccess itemAccess = ItemAccess.forStack(inputStack);
-        ItemStack remainder = itemAccess.getResource().toStack();
-        var fluidHandler = Capabilities.Fluid.ITEM.getCapability(inputStack, itemAccess);
-        if (fluidHandler == null || !canAcceptFluid(fluidHandler.getResource(0))) {
-            return false;
+        FluidResource toInsert = null;
+        Item remainderItem = null;
+        for (var entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
+            for (ContainerInfo info : entry.getValue()) {
+                if (inputStack.is(info.fullItem())) {
+                    toInsert = FluidResource.of(entry.getKey());
+                    remainderItem = info.emptyItem();
+                    break;
+                }
+            }
+            if (toInsert != null) break;
         }
+        if (toInsert == null || !canAcceptFluid(toInsert)) return false;
 
+        ItemStack remainder = new ItemStack(remainderItem);
         if (inputStack.getItem() instanceof FluidCellItem && !canStoreCraftRemainder(inputStack, remainder)) {
             return false;
         }
 
         try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(fluidHandler.getResource(0), BUCKET_VOLUME_MB, transaction);
+            long inserted = this.fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, transaction);
             if (inserted != BUCKET_VOLUME_MB) {
                 return false;
             }

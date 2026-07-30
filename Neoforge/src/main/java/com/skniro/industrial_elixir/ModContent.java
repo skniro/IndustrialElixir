@@ -106,7 +106,7 @@ public class  ModContent {
         List<Item> items = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof FluidCellItem).toList();
         event.registerItem(Capabilities.Fluid.ITEM, (stack, ctx) -> {
                     if (stack.getItem() instanceof FluidCellItem cellItem) {
-                        return new FullFluidCellHandler(stack, ctx, cellItem);
+                        return new FullFluidCellHandler(ctx, cellItem);
                     } else {
                         return null;
                     }

@@ -8,16 +8,16 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class FullFluidCellHandler implements ResourceHandler<FluidResource> {
 
-    private final ItemStack stack;
     private final ItemAccess access;
     private final Fluid fluid;
 
-    public FullFluidCellHandler(ItemStack stack, ItemAccess access, FluidCellItem cell) {
-        this.stack = stack;
+    public FullFluidCellHandler(ItemAccess access, FluidCellItem cell) {
         this.access = access;
         this.fluid = cell.getFluid();
     }
@@ -36,22 +36,8 @@ public class FullFluidCellHandler implements ResourceHandler<FluidResource> {
     }
 
     @Override
-    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
-        if (!resource.matches(new FluidStack(fluid, amount))) {
-            return 0;
-        }
-
-        if (amount < FluidCellItem.CAPACITY_MB) {
-            return 0;
-        }
-
-        ItemStack emptyCell = new ItemStack(GrowableOresItems.EMPTY_CELL.get());
-        return FluidCellItem.CAPACITY_MB;
-    }
-
-    @Override
     public int size() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -66,11 +52,42 @@ public class FullFluidCellHandler implements ResourceHandler<FluidResource> {
 
     @Override
     public boolean isValid(int index, FluidResource resource) {
-        return false;
+        return resource.matches(new FluidStack(fluid, 1));
+    }
+
+    @Override
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (!resource.matches(new FluidStack(fluid, amount))) return 0;
+        if (amount < FluidCellItem.CAPACITY_MB) return 0;
+
+        ItemStack emptyCell = new ItemStack(GrowableOresItems.EMPTY_CELL.get());
+        ItemResource emptyResource = ItemResource.of(emptyCell);
+
+        try (Transaction nested = Transaction.open(transaction)) {
+            if (access.extract(access.getResource(), 1, nested) == 1
+                    && access.insert(emptyResource, 1, nested) == 1) {
+                nested.commit();
+                return FluidCellItem.CAPACITY_MB;
+            }
+        }
+        return 0;
     }
 
     @Override
     public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (!resource.matches(new FluidStack(fluid, amount))) return 0;
+        if (amount != FluidCellItem.CAPACITY_MB) return 0;
+
+        ItemStack emptyCell = new ItemStack(GrowableOresItems.EMPTY_CELL.get());
+        ItemResource emptyResource = ItemResource.of(emptyCell);
+
+        try (Transaction nested = Transaction.open(transaction)) {
+            if (access.extract(access.getResource(), 1, nested) == 1
+                    && access.insert(emptyResource, 1, nested) == 1) {
+                nested.commit();
+                return FluidCellItem.CAPACITY_MB;
+            }
+        }
         return 0;
     }
 }

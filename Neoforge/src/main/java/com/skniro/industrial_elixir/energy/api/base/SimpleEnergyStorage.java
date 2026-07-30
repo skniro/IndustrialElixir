@@ -19,9 +19,7 @@ public class SimpleEnergyStorage extends SnapshotJournal<Long> implements Energy
 	public final long maxInsert, maxExtract;
 
 	public SimpleEnergyStorage(long capacity, long maxInsert, long maxExtract) {
-		TransferPreconditions.checkNonNegative((int) capacity);
-		TransferPreconditions.checkNonNegative((int) maxInsert);
-		TransferPreconditions.checkNonNegative((int) maxExtract);
+		if (capacity < 0 || maxInsert < 0 || maxExtract < 0) throw new IllegalArgumentException("Values must not be negative");
 
 		this.capacity = capacity;
 		this.maxInsert = maxInsert;

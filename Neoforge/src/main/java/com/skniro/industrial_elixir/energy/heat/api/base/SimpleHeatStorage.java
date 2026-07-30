@@ -18,9 +18,7 @@ public class SimpleHeatStorage extends SnapshotJournal<Long> implements HeatStor
 	public final long maxInsert, maxExtract;
 
 	public SimpleHeatStorage(long capacity, long maxInsert, long maxExtract) {
-		TransferPreconditions.checkNonNegative((int) capacity);
-		TransferPreconditions.checkNonNegative((int) maxInsert);
-		TransferPreconditions.checkNonNegative((int) maxExtract);
+		if (capacity < 0 || maxInsert < 0 || maxExtract < 0) throw new IllegalArgumentException("Values must not be negative");
 
 		this.capacity = capacity;
 		this.maxInsert = maxInsert;
