@@ -68,7 +68,7 @@ public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentr
 
     private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if (menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 32, 189, 0, menu.getScaledProgress(), 16, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 }
