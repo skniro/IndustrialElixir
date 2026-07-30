@@ -18,8 +18,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeHolderType;
 import mezz.jei.api.recipe.types.IRecipeType;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -33,11 +31,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
-
-import java.util.Optional;
-
-import static mezz.jei.library.plugins.vanilla.crafting.CraftingRecipeCategory.height;
-import static mezz.jei.library.plugins.vanilla.crafting.CraftingRecipeCategory.width;
 
 public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashingCraftingRecipe>> {
 

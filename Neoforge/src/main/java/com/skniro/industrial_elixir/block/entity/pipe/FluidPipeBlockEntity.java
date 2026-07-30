@@ -165,7 +165,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             if (!state.getValue(PipeBlock.PROPERTY_MAP.get(dir))) continue;
 
             BlockPos next = pos.relative(dir);
-            if (world.getCapability(Capabilities.Fluid.BLOCK, pos, dir.getOpposite()) != null) return true;
+        if (world.getCapability(Capabilities.Fluid.BLOCK, next, dir.getOpposite()) != null) return true;
             BlockEntity nextBe = world.getBlockEntity(next);
             if (nextBe instanceof FluidPipeBlockEntity) {
                 if (searchOutputPath(world, next, dir.getOpposite(), visited)) return true;
@@ -211,20 +211,30 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
 
         }
         if (possible.isEmpty()) return packet.lastDirection.getOpposite();
-        return possible.get(world.getRandom().nextInt(possible.size()));
+        return possible.get(0);
     }
 
     private boolean tryInsert(Level world, BlockPos pos, FluidPacket packet) {
         if (isBlocked(packet.direction)) return false;
         var storage = world.getCapability(Capabilities.Fluid.BLOCK, pos, packet.direction.getOpposite());
+
         if (storage == null) {
             return false;
         }
 
+        System.out.println(
+                "Pipe fluid="
+                        + packet.variant
+                        + " machine fluid="
+                        + storage.getResource(0)
+                        + " capacity="
+                        + storage.getCapacityAsLong(0, packet.variant)
+        );
+
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof WoodFluidPipeBlockEntity) {
             BlockState state = world.getBlockState(pos);
-            Direction insertDir = packet.direction.getOpposite();
+            Direction insertDir = packet.direction;
             BooleanProperty pullProp = WoodFluidPipeBlock.PULL_PROPERTY_MAP.get(insertDir);
             if (pullProp != null && state.getValue(pullProp)) return false;
         }
@@ -246,10 +256,11 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     private boolean tryExtractFromSide(Level world, BlockPos pos, Direction dir) {
         if (isBlocked(dir)) return false;
         BlockPos targetPos = pos.relative(dir);
-        var storage = world.getCapability(Capabilities.Fluid.BLOCK, pos, dir.getOpposite());
+        var storage = world.getCapability(Capabilities.Fluid.BLOCK, targetPos, dir.getOpposite());
         if (storage != null) {
             try (Transaction tx = Transaction.openRoot()) {
                 FluidResource resource = storage.getResource(0);
+                if (resource.isEmpty()) return false;
                 int toExtract = Math.min(STEP, PIPE_CAPACITY - getFluidVolume());
                 if (toExtract <= 0) return false;
                 int extracted = storage.extract(resource, toExtract, tx);
@@ -266,7 +277,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         FluidState fluidState = world.getFluidState(targetPos);
         if (!fluidState.isEmpty() && fluidState.isSource()) {
             FluidResource source = FluidResource.of(fluidState.getType());
-            fluids.add(new FluidPacket(source, BUCKET_VOLUME_MB, dir.getOpposite()));
+            fluids.add(new FluidPacket(source, BUCKET_VOLUME_MB, dir));
             world.removeBlock(targetPos, false);
             syncToClient();
             return true;

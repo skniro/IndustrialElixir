@@ -57,7 +57,7 @@ public abstract class SingleFluidStorage extends SnapshotJournal<ResourceAmount<
     }
 
     @Override
-    public int insert( FluidResource insertedVariant, int maxAmount, TransactionContext transaction) {
+    public int insert(FluidResource insertedVariant, int maxAmount, TransactionContext transaction) {
         TransferPreconditions.checkNonEmptyNonNegative(insertedVariant, maxAmount);
 
         if ((insertedVariant.equals(variant) || variant.isEmpty()) && canInsert(insertedVariant)) {
@@ -167,7 +167,9 @@ public abstract class SingleFluidStorage extends SnapshotJournal<ResourceAmount<
     }
 
     public static void writeValue(SingleFluidStorage singleFluidStorage, ValueOutput value) {
-        value.store("variant", FluidResource.CODEC, singleFluidStorage.variant);
+        if (!singleFluidStorage.variant.isEmpty()) {
+            value.store("variant", FluidResource.CODEC, singleFluidStorage.variant);
+        }
         value.putLong("amount", singleFluidStorage.amount);
     }
 
