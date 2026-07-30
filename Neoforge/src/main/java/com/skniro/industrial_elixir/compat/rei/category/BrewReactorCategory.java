@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.compat.rei.category;
 
 import com.skniro.industrial_elixir.api.Helper;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.compat.rei.display.BrewReactorDisplay;
@@ -13,8 +14,6 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -25,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -99,7 +99,7 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
         return widgets;
     }
 
-    private SingleVariantStorage<FluidVariant> getFluid(BrewReactorDisplay display) {
+    private SingleFluidStorage getFluid(BrewReactorDisplay display) {
         Optional<Identifier> fid = display.getFluid();
         Optional<Integer> famt = display.getFluidAmount();
 
@@ -108,32 +108,22 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
             Fluid fluid = BuiltInRegistries.FLUID.getOptional(fid.get()).orElse(Fluids.EMPTY);
             int amount = famt.orElse(1000);
 
-            return new SingleVariantStorage<>() {
-                @Override
-                protected FluidVariant
-                getBlankVariant() {
-                    return FluidVariant.blank();
-                }
+            return new SingleFluidStorage() {
 
                 @Override
-                protected long getCapacity(FluidVariant variant) {
+                protected int getCapacity(FluidResource variant) {
                     return 1000;
                 }
                 {
-                    this.variant = FluidVariant.of(fluid);
+                    this.variant = FluidResource.of(fluid);
                     this.amount = amount;
                 }
             };
         }
 
-        return new SingleVariantStorage<>() {
+        return new SingleFluidStorage() {
             @Override
-            protected FluidVariant getBlankVariant() {
-                return FluidVariant.blank();
-            }
-
-            @Override
-            protected long getCapacity(FluidVariant variant) {
+            protected int getCapacity(FluidResource variant) {
                 return 1000;
             }
         };

@@ -5,13 +5,14 @@ import com.skniro.industrial_elixir.block.entity.pipe.StoneFluidPipeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class StoneFluidPipeBlock extends StonePipeBlock {
+public class StoneFluidPipeBlock extends PipeBlock implements SimpleWaterloggedBlock {
     public StoneFluidPipeBlock(Properties settings) {
         super(settings);
     }

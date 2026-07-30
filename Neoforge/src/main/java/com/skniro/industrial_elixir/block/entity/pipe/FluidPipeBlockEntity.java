@@ -2,8 +2,7 @@ package com.skniro.industrial_elixir.block.entity.pipe;
 
 import com.skniro.industrial_elixir.api.fluid.FluidConstants;
 import com.skniro.industrial_elixir.block.init.pipe.PipeBlock;
-import com.skniro.industrial_elixir.block.init.pipe.WoodPipeBlock;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import com.skniro.industrial_elixir.block.init.pipe.WoodFluidPipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -226,7 +225,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         if (be instanceof WoodFluidPipeBlockEntity) {
             BlockState state = world.getBlockState(pos);
             Direction insertDir = packet.direction.getOpposite();
-            BooleanProperty pullProp = WoodPipeBlock.PULL_PROPERTY_MAP.get(insertDir);
+            BooleanProperty pullProp = WoodFluidPipeBlock.PULL_PROPERTY_MAP.get(insertDir);
             if (pullProp != null && state.getValue(pullProp)) return false;
         }
         int before = packet.amount;

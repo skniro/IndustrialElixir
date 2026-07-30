@@ -14,7 +14,6 @@ import com.skniro.industrial_elixir.block.init.container.fluid.FluidTankBlock;
 import com.skniro.industrial_elixir.block.init.generator.CoalGeneratorBlock;
 import com.skniro.industrial_elixir.block.init.generator.FluidGeneratorBlock;
 import com.skniro.industrial_elixir.block.init.generator.SacredGeneratorBlock;
-import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.init.generator.GeneratorSolarPanelBlock;
 import com.skniro.industrial_elixir.block.init.generator.GeneratorWindMillBlock;
 import com.skniro.industrial_elixir.block.init.generator.NuclearReactorBlock;
@@ -26,17 +25,14 @@ import com.skniro.industrial_elixir.block.init.machine.fluid.OreWashingBlock;
 import com.skniro.industrial_elixir.block.init.machine.fluid.ReplicatorBlock;
 import com.skniro.industrial_elixir.block.init.machine.heat.ModBlastFurnaceBlock;
 import com.skniro.industrial_elixir.block.init.pipe.StoneFluidPipeBlock;
-import com.skniro.industrial_elixir.block.init.pipe.StonePipeBlock;
 import com.skniro.industrial_elixir.block.init.pipe.WoodFluidPipeBlock;
-import com.skniro.industrial_elixir.block.init.pipe.WoodPipeBlock;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -107,8 +103,6 @@ public class GrowableOresBlocks {
     public static final Supplier<Block> CUTTING_Block =registerBlock("cutting_block", CuttingBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final Supplier<Block> RECYCLER_Block =registerBlock("recycler_block", RecyclerBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 
-    public static final Supplier<Block> Pipe_Wooden_Iten_Block =registerBlock("pipe_wooden_item", WoodPipeBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-    public static final Supplier<Block> Pipe_Stone_Item_Block =registerBlock("pipe_stone_item", StonePipeBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final Supplier<Block> Pipe_Wooden_Fluid_Block =registerBlock("pipe_wooden_fluid", WoodFluidPipeBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final Supplier<Block> Pipe_Stone_Fluid_Block =registerBlock("pipe_stone_fluid", StoneFluidPipeBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final Supplier<Block> FLUID_TANK_BLOCK =registerBlock("fluid_tank", FluidTankBlock::new, (BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(1.5F).noOcclusion().sound(SoundType.METAL).mapColor(MapColor.METAL)));

@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.compat.rei.category;
 
 import com.skniro.industrial_elixir.api.Helper;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.compat.rei.display.OreWashingDisplay;
@@ -24,6 +25,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,24 +96,19 @@ public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
         return widgets;
     }
 
-    private SingleVariantStorage<FluidVariant> getFluid(OreWashingDisplay display) {
+    private SingleFluidStorage getFluid(OreWashingDisplay display) {
         Identifier fluidId = display.getFluid();
         int amount = display.getFluidAmount();
         Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
 
-        return new SingleVariantStorage<>() {
+        return new SingleFluidStorage() {
             @Override
-            protected FluidVariant getBlankVariant() {
-                return FluidVariant.blank();
-            }
-
-            @Override
-            protected long getCapacity(FluidVariant variant) {
+            protected int getCapacity(FluidResource variant) {
                 return 1000;
             }
 
             {
-                this.variant = FluidVariant.of(fluid);
+                this.variant = FluidResource.of(fluid);
                 this.amount = amount;
             }
         };

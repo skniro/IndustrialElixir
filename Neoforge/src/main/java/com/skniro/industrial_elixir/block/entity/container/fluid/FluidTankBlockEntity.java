@@ -34,7 +34,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
@@ -181,7 +183,8 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedMenuPro
     }
 
     public boolean hasFluidStackInFluidSlot() {
-        return FluidStorage.getKnownFluidInput(inventory.get(FLUID_ITEM_SLOT)) != null;
+        ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
+        return !stack.isEmpty() && Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack)) != null;
     }
 
     public void fillUpFluidTank() {
@@ -190,26 +193,28 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedMenuPro
     }
 
     private boolean fillFromKnownContainer(ItemStack inputStack) {
-        FluidStorage.FluidInput fluidInput = FluidStorage.getKnownFluidInput(inputStack);
-        if (fluidInput == null || !canAcceptFluid(fluidInput.fluid())) {
+        ItemAccess itemAccess = ItemAccess.forStack(inputStack);
+        ItemStack remainder = itemAccess.getResource().toStack();
+        var fluidHandler = Capabilities.Fluid.ITEM.getCapability(inputStack, itemAccess);
+        if (fluidHandler == null || !canAcceptFluid(fluidHandler.getResource(0))) {
             return false;
         }
 
-        if (inputStack.getItem() instanceof FluidCellItem && !canStoreCraftRemainder(inputStack, fluidInput.remainder())) {
+        if (inputStack.getItem() instanceof FluidCellItem && !canStoreCraftRemainder(inputStack, remainder)) {
             return false;
         }
 
         try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(fluidInput.fluid(), BUCKET_VOLUME_MB, transaction);
+            long inserted = this.fluidContainer.insert(fluidHandler.getResource(0), BUCKET_VOLUME_MB, transaction);
             if (inserted != BUCKET_VOLUME_MB) {
                 return false;
             }
 
             if (inputStack.getItem() instanceof FluidCellItem) {
                 inputStack.shrink(1);
-                storeCraftRemainder(fluidInput.remainder());
+                storeCraftRemainder(remainder);
             } else {
-                inventory.set(FLUID_ITEM_SLOT, fluidInput.remainder());
+                inventory.set(FLUID_ITEM_SLOT, remainder);
             }
 
             transaction.commit();

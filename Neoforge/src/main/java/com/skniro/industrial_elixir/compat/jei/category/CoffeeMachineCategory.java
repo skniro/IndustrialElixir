@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.compat.jei.category;
 
 import com.skniro.industrial_elixir.api.Helper;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<CoffeeMachineCraftingRecipe>> {
     public static final IRecipeHolderType<CoffeeMachineCraftingRecipe> TYPE =
@@ -101,23 +103,18 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
         }
     }
 
-    private SingleVariantStorage<FluidVariant> getRecipeFluidStorage(RecipeHolder<CoffeeMachineCraftingRecipe> recipe) {
+    private SingleFluidStorage getRecipeFluidStorage(RecipeHolder<CoffeeMachineCraftingRecipe> recipe) {
         Identifier fluidId = recipe.value().requiredFluid();
         int amount = recipe.value().requiredFluidAmount();
         Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
-        return new SingleVariantStorage<>() {
+        return new SingleFluidStorage() {
             @Override
-            protected FluidVariant getBlankVariant() {
-                return FluidVariant.blank();
-            }
-
-            @Override
-            protected long getCapacity(FluidVariant variant) {
+            protected int getCapacity(FluidResource variant) {
                 return 1000;
             }
 
             {
-                this.variant = FluidVariant.of(fluid);
+                this.variant = FluidResource.of(fluid);
                 this.amount = amount;
             }
         };
@@ -129,7 +126,7 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 70, 34);
 
-        SingleVariantStorage<FluidVariant> storage = getRecipeFluidStorage(recipe);
+        SingleFluidStorage storage = getRecipeFluidStorage(recipe);
         fluidRenderer.render(guiGraphics, 8, 5, storage);
 
         int fx = 8;

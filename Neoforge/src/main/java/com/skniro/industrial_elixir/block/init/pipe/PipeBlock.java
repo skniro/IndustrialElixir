@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.skniro.industrial_elixir.block.entity.pipe.FluidPipeBlockEntity;
 import com.skniro.industrial_elixir.block.entity.pipe.PipeExtractDirectionController;
 
 import net.minecraft.core.BlockPos;
@@ -83,7 +84,7 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, blockEntity) ->
-                ((PipeBlockEntity) blockEntity).tick(world1, pos, state1);
+                ((FluidPipeBlockEntity) blockEntity).tick(world1, pos, state1);
     }
 
     @Override
@@ -105,7 +106,7 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
                                @Nullable Orientation wireOrientation, boolean notify) {
 
         BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof PipeBlockEntity pipe) {
+        if (be instanceof FluidPipeBlockEntity pipe) {
             pipe.neighborUpdate();
         }
 

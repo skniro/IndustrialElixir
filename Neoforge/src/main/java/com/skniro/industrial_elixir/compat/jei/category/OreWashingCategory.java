@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.compat.jei.category;
 
 import com.skniro.industrial_elixir.api.Helper;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.util.Optional;
 
@@ -47,7 +49,7 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
     private final IDrawable energyBar;
     private final IDrawableAnimated arrow;
     private final GuiFluidTankRenderer fluidRenderer;
-    private final SingleVariantStorage<FluidVariant> emptyFluid;
+    private final SingleFluidStorage emptyFluid;
 
     public OreWashingCategory(IGuiHelper helper) {
         Identifier texture = Helper.id("textures/gui/container/machine/orewashing.png");
@@ -59,19 +61,15 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/orewashing.png"),
                 189, 0, 26, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
         this.fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);
-        this.emptyFluid = new SingleVariantStorage<FluidVariant>() {
-            @Override
-            protected FluidVariant getBlankVariant() {
-                return FluidVariant.blank();
-            }
+        this.emptyFluid = new SingleFluidStorage() {
 
             @Override
-            protected long getCapacity(FluidVariant variant) {
-                return 1000L;
+            protected int getCapacity(FluidResource variant) {
+                return 1000;
             }
 
             {
-                this.variant = FluidVariant.blank();
+                this.variant = FluidResource.EMPTY;
                 this.amount = 0;
             }
         };
@@ -127,24 +125,19 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
         }
     }
 
-    private SingleVariantStorage<FluidVariant> getRecipeFluidStorage(RecipeHolder<OreWashingCraftingRecipe> recipe) {
+    private SingleFluidStorage getRecipeFluidStorage(RecipeHolder<OreWashingCraftingRecipe> recipe) {
         try {
             Identifier fluidId = recipe.value().requiredFluid();
             int amount = recipe.value().requiredFluidAmount();
             Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
-            return new SingleVariantStorage<>() {
+            return new SingleFluidStorage() {
                 @Override
-                protected FluidVariant getBlankVariant() {
-                    return FluidVariant.blank();
-                }
-
-                @Override
-                protected long getCapacity(FluidVariant variant) {
+                protected int getCapacity(FluidResource variant) {
                     return 1000;
                 }
 
                 {
-                    this.variant = FluidVariant.of(fluid);
+                    this.variant = FluidResource.of(fluid);
                     this.amount = amount;
                 }
             };
@@ -159,7 +152,7 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 70, 34);
 
-        SingleVariantStorage<FluidVariant> storage = getRecipeFluidStorage(recipe);
+        SingleFluidStorage storage = getRecipeFluidStorage(recipe);
         fluidRenderer.render(guiGraphics, 8, 5, storage);
 
         int fx = 8;

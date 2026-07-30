@@ -2,8 +2,7 @@ package com.skniro.industrial_elixir.api.renderer;
 
 import com.google.common.base.Preconditions;
 import com.skniro.industrial_elixir.IndustrialElixir;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,6 +12,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -57,13 +57,13 @@ public class GuiFluidTankRenderer {
         this.height = height;
     }
 
-    public void render(GuiGraphicsExtractor guiGraphics, int x, int y, SingleVariantStorage<FluidVariant> fluidStorage) {
+    public void render(GuiGraphicsExtractor guiGraphics, int x, int y, SingleFluidStorage fluidStorage) {
         int scaledAmount = getScaledAmount(fluidStorage);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, STILL_FLUID_TEXTURE,
                 x, y + height - scaledAmount, 0f, 0f, width, scaledAmount, 16, 16, getColorTint(fluidStorage));
     }
 
-    private int getScaledAmount(SingleVariantStorage<FluidVariant> fluidStorage) {
+    private int getScaledAmount(SingleFluidStorage fluidStorage) {
         int amount = Math.toIntExact(fluidStorage.getAmount());
         int scaledAmount = (amount * height) / (int)capacityMb;
 
@@ -76,15 +76,15 @@ public class GuiFluidTankRenderer {
         return scaledAmount;
     }
 
-    private int getColorTint(SingleVariantStorage<FluidVariant> fluidStorage) {
+    private int getColorTint(SingleFluidStorage fluidStorage) {
         return fluidStorage.variant.getFluid() == Fluids.WATER ? CommonColors.BLUE :
                 fluidStorage.variant.getFluid() == Fluids.LAVA ? CommonColors.RED : CommonColors.WHITE;
     }
 
-    public List<Component> getTooltip(SingleVariantStorage<FluidVariant> fluidStorage) {
+    public List<Component> getTooltip(SingleFluidStorage fluidStorage) {
         List<Component> tooltip = new ArrayList<>();
-        FluidVariant fluidType = fluidStorage.variant;
-        if (fluidType.isBlank()) {
+        FluidResource fluidType = fluidStorage.variant;
+        if (fluidType.isEmpty()) {
             return List.of(Component.literal("Empty"));
         }
 

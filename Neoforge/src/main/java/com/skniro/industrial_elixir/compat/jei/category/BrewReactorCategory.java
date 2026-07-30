@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.compat.jei.category;
 
 import com.skniro.industrial_elixir.api.Helper;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
@@ -32,6 +33,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.util.Optional;
 
@@ -44,7 +46,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
     private final IDrawable energyBar;
     private final IDrawableAnimated arrow;
     private final GuiFluidTankRenderer fluidRenderer;
-    private final SingleVariantStorage<FluidVariant> emptyFluid;
+    private final SingleFluidStorage emptyFluid;
 
     public BrewReactorCategory(IGuiHelper helper) {
         Identifier texture = Helper.id("textures/gui/container/machine/brewreactor.png");
@@ -54,17 +56,13 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/brewreactor.png"), 189, 0, 11, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
         // fluid renderer for JEI preview (empty storage)
         this.fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);
-        this.emptyFluid = new SingleVariantStorage<FluidVariant>() {
+        this.emptyFluid = new SingleFluidStorage() {
             @Override
-            protected FluidVariant getBlankVariant() {
-                return FluidVariant.blank();
-            }
-            @Override
-            protected long getCapacity(FluidVariant variant) {
-                return 1000L;
+            protected int getCapacity(FluidResource variant) {
+                return 1000;
             }
             {
-                this.variant = FluidVariant.blank();
+                this.variant = FluidResource.EMPTY;
                 this.amount = 0;
             }
         };
@@ -123,7 +121,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
         }
     }
 
-    private SingleVariantStorage<FluidVariant> getRecipeFluidStorage(RecipeHolder<BrewReactorCraftingRecipe> recipe) {
+    private SingleFluidStorage getRecipeFluidStorage(RecipeHolder<BrewReactorCraftingRecipe> recipe) {
         try {
             Optional<Identifier> fid = recipe.value().requiredFluid();
 
@@ -131,19 +129,14 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
 
             if (fid.isPresent()) {Fluid fluid = BuiltInRegistries.FLUID.getOptional(fid.get()).orElse(Fluids.EMPTY);
                 int amount = famt.orElse(1000);
-                return new SingleVariantStorage<>() {
+                return new SingleFluidStorage() {
                     @Override
-                    protected FluidVariant getBlankVariant() {
-                        return FluidVariant.blank();
-                    }
-
-                    @Override
-                    protected long getCapacity(FluidVariant variant) {
+                    protected int getCapacity(FluidResource variant) {
                         return 1000;
                     }
 
                     {
-                        this.variant = FluidVariant.of(fluid);
+                        this.variant = FluidResource.of(fluid);
                         this.amount = amount;
                     }
                 };
@@ -160,7 +153,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 79, 32);
 
-        SingleVariantStorage<FluidVariant> storage = getRecipeFluidStorage(recipe);
+        SingleFluidStorage storage = getRecipeFluidStorage(recipe);
         fluidRenderer.render(guiGraphics, 8, 5, storage);
 
         int fx = 8;

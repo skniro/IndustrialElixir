@@ -51,7 +51,7 @@ public class FluidPipeRenderer implements BlockEntityRenderer<FluidPipeBlockEnti
         ItemModelResolver itemModelResolver = Minecraft.getInstance().getItemModelResolver();
         state.fluids.clear();
         for (FluidPipeBlockEntity.PipeFluid fluid : entity.getFluids()) {
-            if (fluid.variant.isBlank() || fluid.amount <= 0) continue;
+            if (fluid.variant.isEmpty() || fluid.amount <= 0) continue;
 
             PipeBlockEntityRenderState.PipeFluidRender renderFluid = new PipeBlockEntityRenderState.PipeFluidRender();
             renderFluid.offset = new Vec3(

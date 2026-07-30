@@ -1,7 +1,7 @@
 package com.skniro.industrial_elixir.block.entity.pipe;
 
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
-import com.skniro.industrial_elixir.block.init.pipe.WoodPipeBlock;
+import com.skniro.industrial_elixir.block.init.pipe.WoodFluidPipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -27,11 +27,11 @@ public class WoodFluidPipeBlockEntity extends FluidPipeBlockEntity {
     protected void onExtractDirectionChanged(@Nullable Direction direction) {
         if (level == null || level.isClientSide()) return;
         BlockState state = getBlockState();
-        if (!(state.getBlock() instanceof WoodPipeBlock)) return;
+        if (!(state.getBlock() instanceof WoodFluidPipeBlock)) return;
 
         BlockState newState = state;
         for (Direction dir : Direction.values()) {
-            BooleanProperty property = WoodPipeBlock.PULL_PROPERTY_MAP.get(dir);
+            BooleanProperty property = WoodFluidPipeBlock.PULL_PROPERTY_MAP.get(dir);
             boolean active = dir == direction;
             if (newState.getValue(property) != active) {
                 newState = newState.setValue(property, active);

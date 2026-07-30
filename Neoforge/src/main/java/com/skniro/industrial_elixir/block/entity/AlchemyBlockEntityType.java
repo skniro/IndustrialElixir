@@ -131,14 +131,6 @@ public class AlchemyBlockEntityType {
             BLOCK_ENTITIES.register("recycler_be",
                     () -> new BlockEntityType<>(RecyclerEntity::new, GrowableOresBlocks.RECYCLER_Block.get()));
 
-    public static final Supplier<BlockEntityType<StonePipeBlockEntity>> PIPE_Stone_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("pipe_stone_be",
-                    () -> new BlockEntityType<>(StonePipeBlockEntity::new, GrowableOresBlocks.Pipe_Stone_Item_Block.get()));
-
-    public static final Supplier<BlockEntityType<WoodPipeBlockEntity>> PIPE_Wooden_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("pipe_wooden_be",
-                    () -> new BlockEntityType<>(WoodPipeBlockEntity::new, GrowableOresBlocks.Pipe_Wooden_Iten_Block.get()));
-
     public static final Supplier<BlockEntityType<StoneFluidPipeBlockEntity>> PIPE_Stone_Fluid_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("pipe_stone_fluid_be",
                     () -> new BlockEntityType<>(StoneFluidPipeBlockEntity::new, GrowableOresBlocks.Pipe_Stone_Fluid_Block.get()));

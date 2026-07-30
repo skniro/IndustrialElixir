@@ -1,16 +1,11 @@
 package com.skniro.industrial_elixir.block.entity.pipe;
 
 import com.skniro.industrial_elixir.block.init.pipe.PipeBlock;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import com.skniro.industrial_elixir.block.init.pipe.WoodFluidPipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,6 +13,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -126,21 +122,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
     }
 
     protected boolean isConnectable(Direction dir) {
-        if (isBlocked(dir)) {
-            return false;
-        }
-        BlockPos target = worldPosition.relative(dir);
-        BlockState neighborState = level.getBlockState(target);
-        Block neighborBlock = neighborState.getBlock();
-
-        if (neighborBlock instanceof PipeBlock) {
-            return true;
-        }
-
-        Storage<ItemVariant> storage =
-                ItemStorage.SIDED.find(level, target, dir.getOpposite());
-
-        return storage != null;
+        return false;
     }
 
     void moveItems(Level world, BlockPos pos, BlockState state) {
@@ -153,22 +135,11 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
                 continue;
             }
 
-            if (item.variant.isBlank() || item.amount <= 0) {
-                it.remove();
-                continue;
-            }
-
             item.progress += 0.1;
 
             if (item.progress >= 1.0) {
                 BlockPos target = pos.relative(item.direction);
 
-                if (!tryMoveToNext(world, target, item)
-                        && !tryInsert(world, target, item)) {
-
-                    item.progress = 1.0;
-                    continue;
-                }
 
                 it.remove();
             }
@@ -182,10 +153,6 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
     private boolean tryMoveToNext(Level world, BlockPos pos, PipeItem item) {
         BlockEntity be = world.getBlockEntity(pos);
 
-        if (be instanceof WoodPipeBlockEntity) {
-            // 木头管道不接受其他管道的物品
-            return false;
-        }
         if (be instanceof PipeBlockEntity pipe) {
             if (isBlocked(item.direction)) {
                 return false;
@@ -236,49 +203,6 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
         return possible.get(world.getRandom().nextInt(possible.size()));
     }
 
-    private boolean tryInsert(Level world, BlockPos pos, PipeItem item) {
-        if (item.variant.isBlank() || item.amount <= 0) {
-            return false;
-        }
-
-        if (isBlocked(item.direction)) {
-            return false;
-        }
-        Storage<ItemVariant> storage =
-                ItemStorage.SIDED.find(world, pos, item.direction.getOpposite());
-
-        if (storage == null) {
-            return false;
-        }
-
-        // 禁止向木头管道的pull面插入物品
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof WoodPipeBlockEntity) {
-            BlockState state = world.getBlockState(pos);
-            Direction insertDir = item.direction.getOpposite();
-            BooleanProperty pullProp = com.skniro.industrial_elixir.block.init.pipe.WoodPipeBlock.PULL_PROPERTY_MAP.get(insertDir);
-            if (pullProp != null && state.getValue(pullProp)) {
-                return false;
-            }
-        }
-        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
-            long inserted = storage.insert(item.variant, item.amount, tx);
-
-            if (inserted > 0) {
-                item.amount -= inserted;
-                if (item.amount <= 0) {
-                    item.variant = ItemVariant.blank();
-                }
-                tx.commit();
-                return true;
-            } else {
-                // 插入失败，物品保留在当前管道，等待下次tick
-                return false;
-            }
-        }
-
-    }
-
     private Direction getNextDirection(Level world, BlockPos pos, PipeItem item) {
         List<Direction> possible = new ArrayList<>();
 
@@ -303,28 +227,6 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
         return possible.get(world.getRandom().nextInt(possible.size()));
     }
 
-    void extractItems(Level world, BlockPos pos, BlockState state) {
-        if (!items.isEmpty()) {
-            onExtractDirectionChanged(getDisplayExtractDirection(world, pos));
-            return;
-        }
-
-        Direction preferredDir = getActivePreferredExtractDirection(world, pos);
-        if (preferredDir != null) {
-            onExtractDirectionChanged(preferredDir);
-            tryExtractFromSide(world, pos, preferredDir);
-            return;
-        }
-
-        Direction extractedDir = tryExtractFromAuto(world, pos);
-        if (extractedDir != null) {
-            onExtractDirectionChanged(extractedDir);
-            return;
-        }
-
-        onExtractDirectionChanged(findFirstConnectedStorageSide(world, pos));
-    }
-
     protected void onExtractDirectionChanged(@Nullable Direction direction) {
     }
 
@@ -345,7 +247,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
             return null;
         }
 
-        return findStorage(world, pos, preferredExtractDirection) == null ? null : preferredExtractDirection;
+        return null;
     }
 
     private @Nullable Direction findFirstConnectedStorageSide(Level world, BlockPos pos) {
@@ -353,66 +255,18 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
             if (isBlocked(dir)) {
                 continue;
             }
-            if (findStorage(world, pos, dir) != null) {
-                return dir;
-            }
         }
         return null;
     }
 
     private @Nullable Direction tryExtractFromAuto(Level world, BlockPos pos) {
-        for (Direction dir : Direction.values()) {
-            if (tryExtractFromSide(world, pos, dir)) {
-                return dir;
-            }
-        }
         return null;
     }
 
-    private boolean tryExtractFromSide(Level world, BlockPos pos, Direction dir) {
-        if (isBlocked(dir)) {
-            return false;
-        }
 
-        Storage<ItemVariant> storage = findStorage(world, pos, dir);
-        if (storage == null) {
-            return false;
-        }
-
-        try (net.fabricmc.fabric.api.transfer.v1.transaction.Transaction tx = net.fabricmc.fabric.api.transfer.v1.transaction.Transaction.openOuter()) {
-            StorageView<ItemVariant> view = null;
-
-            for (StorageView<ItemVariant> next : storage) {
-                if (!next.isResourceBlank()) {
-                    view = next;
-                    break;
-                }
-            }
-
-            if (view == null) {
-                return false;
-            }
-
-            long extracted = storage.extract(view.getResource(), 1, tx);
-            if (extracted <= 0) {
-                return false;
-            }
-
-            currentExtractingFrom = dir;
-            Direction outDir = dir.getOpposite();
-            items.add(new PipeItem(view.getResource(), extracted, outDir));
-            tx.commit();
-            return true;
-        }
-    }
     
     public @Nullable Direction getCurrentExtractingFrom() {
         return currentExtractingFrom;
-    }
-
-    private @Nullable Storage<ItemVariant> findStorage(Level world, BlockPos pos, Direction dir) {
-        BlockPos target = pos.relative(dir);
-        return ItemStorage.SIDED.find(world, target, dir.getOpposite());
     }
 
     private static @Nullable Direction readDirection(int value) {
@@ -438,7 +292,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
     }
 
     public class PipeItem {
-        public ItemVariant variant;
+        public ItemResource variant;
         public long amount;
 
         public Direction direction;
@@ -446,7 +300,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
 
         public double progress;
 
-        public PipeItem(ItemVariant variant, long amount, Direction dir) {
+        public PipeItem(ItemResource variant, long amount, Direction dir) {
             this.variant = variant;
             this.amount = amount;
             this.direction = dir;

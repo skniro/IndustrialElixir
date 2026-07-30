@@ -1,6 +1,7 @@
 package com.skniro.industrial_elixir.compat.jei.category;
 
 import com.skniro.industrial_elixir.api.Helper;
+import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBlastFurnaceCraftingRecipe>> {
 
@@ -41,7 +43,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
     private final IDrawable icon;
     private final IDrawableAnimated arrow;
     private final GuiFluidTankRenderer fluidRenderer;
-    private final SingleVariantStorage<FluidVariant> emptyFluid;
+    private final SingleFluidStorage emptyFluid;
 
     public BlastFurnaceCategory(IGuiHelper helper) {
         Identifier texture = Helper.id("textures/gui/container/machine/blastfurnace.png");
@@ -52,19 +54,15 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
         this.arrow = helper.drawableBuilder(Helper.id("textures/gui/container/machine/blastfurnace.png"),
                 189, 0, 26, 16).buildAnimated(72, IDrawableAnimated.StartDirection.LEFT, false);
         this.fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);
-        this.emptyFluid = new SingleVariantStorage<FluidVariant>() {
-            @Override
-            protected FluidVariant getBlankVariant() {
-                return FluidVariant.blank();
-            }
+        this.emptyFluid = new SingleFluidStorage() {
 
             @Override
-            protected long getCapacity(FluidVariant variant) {
-                return 1000L;
+            protected int getCapacity(FluidResource variant) {
+                return 1000;
             }
 
             {
-                this.variant = FluidVariant.blank();
+                this.variant = FluidResource.EMPTY;
                 this.amount = 0;
             }
         };
@@ -117,24 +115,20 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
         }
     }
 
-    private SingleVariantStorage<FluidVariant> getRecipeFluidStorage(RecipeHolder<ModBlastFurnaceCraftingRecipe> recipe) {
+    private SingleFluidStorage getRecipeFluidStorage(RecipeHolder<ModBlastFurnaceCraftingRecipe> recipe) {
         try {
             Identifier fluidId = recipe.value().requiredFluid();
             int amount = recipe.value().requiredFluidAmount();
             Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
-            return new SingleVariantStorage<>() {
-                @Override
-                protected FluidVariant getBlankVariant() {
-                    return FluidVariant.blank();
-                }
+            return new SingleFluidStorage() {
 
                 @Override
-                protected long getCapacity(FluidVariant variant) {
+                protected int getCapacity(FluidResource variant) {
                     return 1000;
                 }
 
                 {
-                    this.variant = FluidVariant.of(fluid);
+                    this.variant = FluidResource.of(fluid);
                     this.amount = amount;
                 }
             };
@@ -148,7 +142,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
         background.draw(guiGraphics);
         arrow.draw(guiGraphics, 73, 34);
 
-        SingleVariantStorage<FluidVariant> storage = getRecipeFluidStorage(recipe);
+        SingleFluidStorage storage = getRecipeFluidStorage(recipe);
         fluidRenderer.render(guiGraphics, 8, 5, storage);
 
         int fx = 8;

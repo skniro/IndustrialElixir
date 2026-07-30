@@ -66,8 +66,6 @@ public class IndustrialElixirOresClient {
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_LEAVES.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.GLASSFIBER_CABLE.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Item_Block.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Iten_Block.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Fluid_Block.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass.get(), renderLayer2);

@@ -21,6 +21,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
@@ -140,7 +141,7 @@ public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEnti
         Level level = entity.getLevel();
         state.lightmapCoordinates = level == null ? 15728880 : getLightLevel(level, entity.getBlockPos());
         state.fluidVariant = entity.getFluidVariant();
-        state.hasFluid = entity.getAmount() > 0 && !state.fluidVariant.isBlank();
+        state.hasFluid = entity.getAmount() > 0 && !state.fluidVariant.isEmpty();
         
         if (!state.hasFluid) {
             state.fluidStillSprite = null;
@@ -150,7 +151,7 @@ public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEnti
             return;
         }
 
-        FluidVariant fluid = state.fluidVariant;
+        FluidResource fluid = state.fluidVariant;
         state.fluidFlowSprite = state.fluidStillSprite;
 
         
@@ -173,13 +174,7 @@ public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEnti
         return Math.max(MIN_VISIBLE_HEIGHT, clampedRatio * usableHeight);
     }
 
-    private static int resolveColor(net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant variant) {
-        try {
-            int color = FluidVariantRendering.getColor(variant);
-            return color;
-        } catch (Throwable ignored) {
-        }
-
+    private static int resolveColor(FluidResource variant) {
         Fluid fluid = variant.getFluid();
         // 回退到硬编码的颜色
         if (fluid == Fluids.LAVA || fluid == Fluids.FLOWING_LAVA) {
