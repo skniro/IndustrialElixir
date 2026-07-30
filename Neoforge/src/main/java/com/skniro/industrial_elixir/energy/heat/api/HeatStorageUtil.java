@@ -27,7 +27,7 @@ public class HeatStorageUtil {
 	public static long move(@Nullable HeatStorage from, @Nullable HeatStorage to, long maxAmount, @Nullable TransactionContext transaction) {
 		if (from == null || to == null) return 0;
 
-		TransferPreconditions.checkNonNegative((int) maxAmount);
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		// Simulate extraction first.
 		long maxExtracted;

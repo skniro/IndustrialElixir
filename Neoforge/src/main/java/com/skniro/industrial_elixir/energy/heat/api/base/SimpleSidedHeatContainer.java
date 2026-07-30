@@ -84,7 +84,7 @@ public abstract class SimpleSidedHeatContainer extends SnapshotJournal<Long> {
 
 		@Override
 		public long insert(long maxAmount, TransactionContext transaction) {
-			TransferPreconditions.checkNonNegative((int) maxAmount);
+			if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 			long inserted = Math.min(getMaxInsert(side), Math.min(maxAmount, getCapacity() - amount));
 
@@ -104,7 +104,7 @@ public abstract class SimpleSidedHeatContainer extends SnapshotJournal<Long> {
 
 		@Override
 		public long extract(long maxAmount, TransactionContext transaction) {
-			TransferPreconditions.checkNonNegative((int) maxAmount);
+			if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 			long extracted = Math.min(getMaxExtract(side), Math.min(maxAmount, amount));
 

@@ -85,7 +85,7 @@ public class IndustrialElixir {
     }
 
     @SubscribeEvent
-    public static boolean onLivingDamage(LivingDamageEvent.Pre event) {
+    public boolean onLivingDamage(LivingDamageEvent.Pre event) {
         if (!(event.getEntity() instanceof Player player)) {
             return false;
         }

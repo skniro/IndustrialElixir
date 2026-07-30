@@ -47,7 +47,7 @@ public class DelegatingHeatStorage implements HeatStorage {
 
 	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
-		TransferPreconditions.checkNonNegative((int) maxAmount);
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		if (validPredicate.getAsBoolean()) {
 			return backingStorage.get().insert(maxAmount, transaction);
@@ -63,7 +63,7 @@ public class DelegatingHeatStorage implements HeatStorage {
 
 	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
-		TransferPreconditions.checkNonNegative((int) maxAmount);
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		if (validPredicate.getAsBoolean()) {
 			return backingStorage.get().extract(maxAmount, transaction);

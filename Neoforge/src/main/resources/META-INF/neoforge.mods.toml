@@ -30,10 +30,3 @@ type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
-
-[[dependencies.industrial_elixir]]
-modId="fabric_api"
-mandatory=true
-versionRange="*"
-ordering="NONE"
-side="BOTH"

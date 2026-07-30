@@ -58,7 +58,7 @@ public class SimpleEnergyStorage extends SnapshotJournal<Long> implements Energy
 
 	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
-		TransferPreconditions.checkNonNegative((int) maxAmount);
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		long inserted = Math.min(maxInsert, Math.min(maxAmount, capacity - amount));
 
@@ -78,7 +78,7 @@ public class SimpleEnergyStorage extends SnapshotJournal<Long> implements Energy
 
 	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
-		TransferPreconditions.checkNonNegative((int) maxAmount);
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		long extracted = Math.min(maxExtract, Math.min(maxAmount, amount));
 
