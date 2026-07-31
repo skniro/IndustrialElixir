@@ -17,6 +17,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -116,18 +118,48 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         if (fluids.size() >= MAX_PACKETS) return;
 
         Direction preferredDir = getPreferredExtractDirection();
+
+        // 玩家指定了抽取方向
         if (preferredDir != null) {
-            if (hasOutputPath(world, pos, preferredDir) && tryExtractFromSide(world, pos, preferredDir)) {
+
+            // ① 优先从 FluidStorage 抽取
+            if (tryExtractFromSide(world, pos, preferredDir)) {
                 onExtractDirectionChanged(preferredDir);
-            } else {
-                onExtractDirectionChanged(null);
+                return;
             }
+
+            // ② FluidStorage 抽取失败，尝试吸取水源方块
+            if (tryExtractSourceFluid(world, pos, preferredDir)) {
+                onExtractDirectionChanged(preferredDir);
+                return;
+            }
+
+            // 保持当前指示方向
+            onExtractDirectionChanged(preferredDir);
             return;
         }
+
+/*        if (preferredDir != null) {
+            boolean canExtract = hasOutputPath(world, pos, preferredDir)
+                    || world.getFluidState(pos.relative(preferredDir)).isSource();
+            if (canExtract && tryExtractFromSide(world, pos, preferredDir)) {
+                onExtractDirectionChanged(preferredDir);
+            } else {
+                onExtractDirectionChanged(preferredDir);
+            }
+            return;
+        }*/
 
         for (Direction dir : Direction.values()) {
             if (!hasOutputPath(world, pos, dir)) continue;
             if (tryExtractFromSide(world, pos, dir)) {
+                onExtractDirectionChanged(dir);
+                return;
+            }
+        }
+
+        for (Direction dir : Direction.values()) {
+            if (tryExtractSourceFluid(world, pos, dir)) {
                 onExtractDirectionChanged(dir);
                 return;
             }
@@ -274,16 +306,35 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         }
 
         // Fallback: pull directly from source fluid blocks (e.g. water/lava source).
-        FluidState fluidState = world.getFluidState(targetPos);
+/*        FluidState fluidState = world.getFluidState(targetPos);
         if (!fluidState.isEmpty() && fluidState.isSource()) {
             FluidVariant source = FluidVariant.of(fluidState.getType());
             fluids.add(new FluidPacket(source, BUCKET_VOLUME_MB, dir.getOpposite()));
             world.removeBlock(targetPos, false);
             syncToClient();
             return true;
-        }
+        }*/
 
         return false;
+    }
+
+    private boolean tryExtractSourceFluid(Level world, BlockPos pos, Direction dir) {
+        if (isBlocked(dir)) return false;
+        BlockPos targetPos = pos.relative(dir);
+        FluidState fluidState = world.getFluidState(targetPos);
+        if (!fluidState.isSource()) {
+            return false;
+        }
+        long amount = Math.min(STEP, PIPE_CAPACITY - getFluidVolume());
+        if (amount <= 0) {
+            return false;
+        }
+
+        FluidVariant source = FluidVariant.of(fluidState.getType());
+        fluids.add(new FluidPacket(source, amount, dir.getOpposite()));
+        syncToClient();
+
+        return true;
     }
 
     private static final class FluidPacket {

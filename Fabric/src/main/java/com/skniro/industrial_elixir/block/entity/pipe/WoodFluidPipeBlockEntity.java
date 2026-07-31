@@ -21,6 +21,14 @@ public class WoodFluidPipeBlockEntity extends FluidPipeBlockEntity {
         super.tick(world, pos, state);
         moveFluids(world, pos);
         extractFluids(world, pos);
+        
+    }
+
+    @Override
+    protected boolean isConnectable(Direction dir) {
+        BlockPos target = worldPosition.relative(dir);
+        if (level != null && level.getFluidState(target).isSource()) return true;
+        return super.isConnectable(dir);
     }
 
     @Override

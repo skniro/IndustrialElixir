@@ -24,6 +24,13 @@ public class WoodFluidPipeBlockEntity extends FluidPipeBlockEntity {
     }
 
     @Override
+    protected boolean isConnectable(Direction dir) {
+        BlockPos target = worldPosition.relative(dir);
+        if (level != null && level.getFluidState(target).isSource()) return true;
+        return super.isConnectable(dir);
+    }
+
+    @Override
     protected void onExtractDirectionChanged(@Nullable Direction direction) {
         if (level == null || level.isClientSide()) return;
         BlockState state = getBlockState();
