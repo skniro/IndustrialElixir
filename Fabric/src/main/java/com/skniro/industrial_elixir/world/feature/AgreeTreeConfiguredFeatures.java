@@ -29,7 +29,7 @@ public class AgreeTreeConfiguredFeatures {
         register(featureRegisterable, Rubber_TREE, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(GeneralBlocks.Rubber_LOG),
-                        new RubberTrunkPlacer(4, 2, 0, GeneralBlocks.Rubber_Rubber_LOG.defaultBlockState(), 1.3F),
+                        new RubberTrunkPlacer(4, 2, 0, GeneralBlocks.Rubber_Rubber_LOG.defaultBlockState(), 0.1F),
                         BlockStateProvider.simple(GeneralBlocks.Rubber_LEAVES),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                         new TwoLayersFeatureSize(1, 0, 1)).build());

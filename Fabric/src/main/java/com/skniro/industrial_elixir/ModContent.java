@@ -25,6 +25,7 @@ import com.skniro.industrial_elixir.util.ModLootTableModifiers;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
+import com.skniro.industrial_elixir.world.gen.trunk.RubberTrunkPlacer;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 
 import java.util.Locale;
@@ -52,6 +53,7 @@ public class  ModContent {
         AlchemyScreenHandlerType.registeralchemyscreenhandlertype();
         GeneralBlocks.registerNetherOresBlock();
         MapleSignBlocks.registerMapleSignBlocks();
+        RubberTrunkPlacer.registerTrunkPlacerType();
     }
 
     public static void registerFluids() {

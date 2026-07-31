@@ -1,11 +1,16 @@
 package com.skniro.industrial_elixir.world.gen.trunk;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.init.LogCropBlock;
 import java.util.List;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -13,9 +18,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RubberTrunkPlacer extends StraightTrunkPlacer {
-    private BlockState blockState;
+    public static final MapCodec<RubberTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                    Codec.intRange(0, 32).fieldOf("base_height").forGetter(p -> p.baseHeight),
+                    Codec.intRange(0, 24).fieldOf("height_rand_a").forGetter(p -> p.heightRandA),
+                    Codec.intRange(0, 24).fieldOf("height_rand_b").forGetter(p -> p.heightRandB),
+                    BlockState.CODEC.fieldOf("state").forGetter(p -> p.blockState),
+                    Codec.FLOAT.fieldOf("extra_chance").forGetter(p -> p.extraChance)
+            ).apply(instance, RubberTrunkPlacer::new));
+
+    public static final TrunkPlacerType<RubberTrunkPlacer> TYPE = new TrunkPlacerType<>(CODEC);
+
+    private static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACER_TYPES =
+            DeferredRegister.create(BuiltInRegistries.TRUNK_PLACER_TYPE, IndustrialElixir.MOD_ID);
+
+    private final BlockState blockState;
     private final float extraChance;
 
     public RubberTrunkPlacer(int baseHeight, int firstRandomHeight, int secondRandomHeight, BlockState blockState, float extraChance) {
@@ -24,22 +46,34 @@ public class RubberTrunkPlacer extends StraightTrunkPlacer {
         this.extraChance = extraChance;
     }
 
+    public static void registerTrunkPlacerType(IEventBus eventBus) {
+        TRUNK_PLACER_TYPES.register("rubber_trunk_placer", () -> TYPE);
+        TRUNK_PLACER_TYPES.register(eventBus);
+    }
+
+    @Override
+    protected TrunkPlacerType<?> type() {
+        return TYPE;
+    }
+
     @Override
     public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel world, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration config) {
-        int specialHeight = random.nextInt(height);
+        BlockState rubberRubberState = blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y).setValue(LogCropBlock.AGE, 2);
+        BlockState normalLogState = GeneralBlocks.Rubber_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+
+        // 确保每棵树有 1-2 个 rubber_rubber_log，但至少有一个
+        int specialHeight = height > 0 ? random.nextInt(height) : 0;
         for (int i = 0; i < height; i++) {
             BlockPos pos = startPos.above(i);
-            if (i == specialHeight) {
-                replacer.accept(pos, blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y).setValue(LogCropBlock.AGE, 2));
-                continue;
-            }
-
-            if (random.nextFloat() < extraChance) {
-                replacer.accept(pos, blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y).setValue(LogCropBlock.AGE, 2));
-            } else {
-                replacer.accept(pos, GeneralBlocks.Rubber_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y));
-            }
+            replacer.accept(pos, i == specialHeight ? rubberRubberState : normalLogState);
         }
+
+        // 有 extraChance 的概率额外放置第二个 rubber_rubber_log（总共不超过两个）
+        if (height > 1 && random.nextFloat() < extraChance) {
+            int extraHeight = (specialHeight + 1 + random.nextInt(height - 1)) % height;
+            replacer.accept(startPos.above(extraHeight), rubberRubberState);
+        }
+
         return List.of(new FoliagePlacer.FoliageAttachment(startPos.above(height), 0, false));
     }
 }

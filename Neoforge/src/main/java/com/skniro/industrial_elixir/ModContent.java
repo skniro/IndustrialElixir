@@ -23,6 +23,7 @@ import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
+import com.skniro.industrial_elixir.world.gen.trunk.RubberTrunkPlacer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -72,7 +73,7 @@ public class  ModContent {
     }
 
     public static void WorldGen(IEventBus eventBus) {
-
+        RubberTrunkPlacer.registerTrunkPlacerType(eventBus);
     }
 
     public static void registerCommand(IEventBus eventBus) {
