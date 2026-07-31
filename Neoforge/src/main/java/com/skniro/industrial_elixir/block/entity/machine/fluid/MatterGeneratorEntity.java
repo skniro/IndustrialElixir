@@ -106,6 +106,8 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 
 		if (hasFluidStackInFluidSlot()) {
 			fillUpFluidTank();
+		} else {
+			suckFluidFromAdjacent(100);
 		}
 
 		updateScrapAmplifier();

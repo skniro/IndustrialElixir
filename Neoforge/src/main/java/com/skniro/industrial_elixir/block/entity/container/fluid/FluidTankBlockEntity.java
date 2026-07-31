@@ -5,13 +5,13 @@ import com.skniro.industrial_elixir.api.fluid.ContainerInfo;
 import com.skniro.industrial_elixir.api.fluid.FluidOutputMap;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
+import com.skniro.industrial_elixir.block.entity.machine.fluid.AbstractFluidMachineEntity;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import com.skniro.industrial_elixir.screen.handler.container.fluid.FluidTankScreenHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -35,7 +35,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.TransferPreconditions;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
@@ -98,6 +99,10 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
             fillUpFluidTank();
 
             worked = amount != fluidContainer.getAmount();
+        } else {
+            // Actively pull fluid from adjacent blocks that expose the standard Neoforge
+            // fluid capability (e.g. fluid pipes, tanks) so the tank can be filled by pipes.
+            worked = AbstractFluidMachineEntity.suckFluidFromAdjacent(level, worldPosition, fluidContainer, 100);
         }
 
         if (!worked) {
@@ -184,12 +189,11 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
     public boolean hasFluidStackInFluidSlot() {
         ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
         if (stack.isEmpty()) return false;
-        for (var entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
-            for (ContainerInfo info : entry.getValue()) {
-                if (stack.is(info.fullItem())) return true;
-            }
-        }
-        return false;
+
+        // Use the standard Neoforge fluid item capability to detect the fluid inside
+        // any container (cells, buckets, tanks, etc.) instead of a hard-coded map.
+        var handler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
+        return handler != null && !handler.getResource(0).isEmpty();
     }
 
     public void fillUpFluidTank() {
@@ -325,27 +329,13 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     protected void saveAdditional(ValueOutput nbt) {
         super.saveAdditional(nbt);
-        nbt.putLong("tank.amount", fluidContainer.amount);
-        if (!fluidContainer.variant.isEmpty()) {
-            nbt.putInt("tank.fluid_id", BuiltInRegistries.FLUID.getId(fluidContainer.variant.getFluid()));
-        } else {
-            nbt.putInt("tank.fluid_id", -1);
-        }
+        SingleFluidStorage.writeValue(fluidContainer, nbt);
     }
 
     @Override
     protected void loadAdditional(ValueInput nbt) {
         super.loadAdditional(nbt);
-        int amount = nbt.getIntOr("tank.amount", 0);
-        int fluidId = nbt.getIntOr("tank.fluid_id", -1);
-        if (amount <= 0 || fluidId < 0) {
-            fluidContainer.variant = FluidResource.EMPTY;
-            fluidContainer.amount = 0;
-            return;
-        }
-        fluidContainer.variant = FluidResource.of(BuiltInRegistries.FLUID.byId(fluidId));
-        fluidContainer.amount = Math.min(amount, fluidContainer.getCapacity());
-        TransferPreconditions.checkNonEmptyNonNegative(fluidContainer.variant, fluidContainer.amount);
+        SingleFluidStorage.readValue(fluidContainer, nbt);
     }
 
     @Override

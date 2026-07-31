@@ -11,6 +11,7 @@ import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
@@ -65,6 +68,8 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
 
         if (hasFluidStackInFluidSlot()) {
             fillUpFluidTank();
+        } else {
+            suckFluidFromAdjacent(100);
         }
 
 
@@ -93,17 +98,66 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
         return findFluidInput() != null;
     }
 
+    /**
+     * Actively pull fluid from adjacent blocks that provide a fluid capability
+     * (such as fluid pipes, tanks, etc.).
+     *
+     * @param suckRate maximum amount of fluid to pull per tick (mB)
+     * @return true if any fluid was sucked in
+     */
+    protected boolean suckFluidFromAdjacent(int suckRate) {
+        return suckFluidFromAdjacent(level, worldPosition, fluidContainer, suckRate);
+    }
+
+    /**
+     * Static helper so other entities (e.g. ModBlastFurnaceBlockEntity) can use the same logic.
+     */
+    public static boolean suckFluidFromAdjacent(Level level, BlockPos pos, SingleFluidStorage tank, int suckRate) {
+        if (level == null || level.isClientSide()) return false;
+
+        // Don't suck if tank is full
+        if (tank.getAmount() >= tank.getCapacity()) return false;
+
+        for (Direction dir : Direction.values()) {
+            BlockPos targetPos = pos.relative(dir);
+            var storage = level.getCapability(Capabilities.Fluid.BLOCK, targetPos, dir.getOpposite());
+            if (storage == null) continue;
+
+            FluidResource resource = storage.getResource(0);
+            if (resource.isEmpty()) continue;
+
+            // Only accept fluid that matches the tank's current fluid (or if tank is empty)
+            if (!tank.isResourceBlank() && !resource.equals(tank.variant)) continue;
+
+            int available = Math.min(suckRate, tank.getCapacity() - tank.getAmount());
+            if (available <= 0) continue;
+
+            try (Transaction tx = Transaction.openRoot()) {
+                int extracted = storage.extract(resource, available, tx);
+                if (extracted <= 0) continue;
+
+                int inserted = tank.insert(resource, extracted, tx);
+                if (inserted <= 0) continue;
+
+                tx.commit();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private FluidResource findFluidInput() {
         ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
         if (stack.isEmpty()) return null;
-        for (Map.Entry<Fluid, List<ContainerInfo>> entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
-            for (ContainerInfo info : entry.getValue()) {
-                if (stack.is(info.fullItem())) {
-                    return FluidResource.of(entry.getKey());
-                }
-            }
-        }
-        return null;
+
+        // Use the standard Neoforge fluid item capability to detect the fluid inside
+        // any container (cells, buckets, tanks, etc.) instead of a hard-coded map.
+        var handler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
+        if (handler == null) return null;
+
+        FluidResource fluid = handler.getResource(0);
+        return fluid.isEmpty() ? null : fluid;
     }
 
     public void extractFluidForCrafting() {

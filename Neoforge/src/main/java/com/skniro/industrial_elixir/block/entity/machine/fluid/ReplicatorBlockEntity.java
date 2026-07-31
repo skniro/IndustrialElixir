@@ -126,6 +126,8 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
         // Fill fluid tank from fluid containers
         if (hasFluidStackInFluidSlot()) {
             fillUpFluidTank();
+        } else {
+            suckFluidFromAdjacent(100);
         }
 
         // Update pattern data from crystal periodically

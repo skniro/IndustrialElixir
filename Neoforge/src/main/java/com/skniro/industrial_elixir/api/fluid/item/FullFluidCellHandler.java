@@ -4,7 +4,6 @@ import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
@@ -52,12 +51,12 @@ public class FullFluidCellHandler implements ResourceHandler<FluidResource> {
 
     @Override
     public boolean isValid(int index, FluidResource resource) {
-        return resource.matches(new FluidStack(fluid, 1));
+        return resource.getFluid() == fluid;
     }
 
     @Override
     public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
-        if (!resource.matches(new FluidStack(fluid, amount))) return 0;
+        if (resource.getFluid() != fluid) return 0;
         if (amount < FluidCellItem.CAPACITY_MB) return 0;
 
         ItemStack emptyCell = new ItemStack(GrowableOresItems.EMPTY_CELL.get());
@@ -75,7 +74,7 @@ public class FullFluidCellHandler implements ResourceHandler<FluidResource> {
 
     @Override
     public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
-        if (!resource.matches(new FluidStack(fluid, amount))) return 0;
+        if (resource.getFluid() != fluid) return 0;
         if (amount != FluidCellItem.CAPACITY_MB) return 0;
 
         ItemStack emptyCell = new ItemStack(GrowableOresItems.EMPTY_CELL.get());

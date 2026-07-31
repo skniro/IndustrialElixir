@@ -97,6 +97,8 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
         // Fill from fluid containers
         if (hasFluidStackInFluidSlot()) {
             fillUpFluidTank();
+        } else {
+            suckFluidFromAdjacent(100);
         }
 
         boolean working = false;

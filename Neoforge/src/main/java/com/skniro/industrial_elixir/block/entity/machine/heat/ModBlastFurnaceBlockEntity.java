@@ -3,6 +3,7 @@ package com.skniro.industrial_elixir.block.entity.machine.heat;
 import com.skniro.industrial_elixir.api.fluid.FluidConstants;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
+import com.skniro.industrial_elixir.block.entity.machine.fluid.AbstractFluidMachineEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContainer;
@@ -142,6 +143,8 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
 
         if (hasFluidStackInFluidSlot()) {
             fillUpFluidTank();
+        } else {
+            AbstractFluidMachineEntity.suckFluidFromAdjacent(world, pos, fluidContainer, 100);
         }
 
         updateHeatInput();
