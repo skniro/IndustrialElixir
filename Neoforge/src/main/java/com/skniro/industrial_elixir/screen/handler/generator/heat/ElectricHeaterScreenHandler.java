@@ -35,7 +35,12 @@ public class ElectricHeaterScreenHandler extends AbstractContainerMenu {
         this.blockEntity = (ElectricHeaterBlockEntity) blockEntity;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 5; col++) {
-                this.addSlot(new Slot(inventory, 10 + row * 5 + col, 44 + col * 18, 27 + row * 18));
+                this.addSlot(new Slot(inventory, 11 + row * 5 + col, 44 + col * 18, 27 + row * 18){
+                    @Override
+                    public int getMaxStackSize(ItemStack stack) {
+                        return 1;
+                    }
+                });
             }
         }
         this.addSlot(new BatteryFuelSlot(inventory, 3, 8, 62, ((ElectricHeaterBlockEntity) blockEntity).getEnergyTier()));
