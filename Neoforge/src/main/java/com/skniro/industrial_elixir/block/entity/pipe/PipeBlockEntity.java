@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import org.jetbrains.annotations.Nullable;
 
@@ -238,7 +239,13 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
         return findFirstConnectedStorageSide(world, pos);
     }
 
-    private @Nullable Direction getActivePreferredExtractDirection(Level world, BlockPos pos) {
+    /**
+     * Returns the player-configured extract direction while it is still valid
+     * (not blocked and still connected). The actual presence of fluid is checked
+     * by the extraction logic later, so the displayed direction reflects the
+     * player's choice even while the source is temporarily empty.
+     */
+    protected @Nullable Direction getActivePreferredExtractDirection(Level world, BlockPos pos) {
         if (preferredExtractDirection == null) {
             return null;
         }
@@ -247,13 +254,36 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
             return null;
         }
 
-        return null;
+        BlockState state = world.getBlockState(pos);
+        BooleanProperty property = PipeBlock.PROPERTY_MAP.get(preferredExtractDirection);
+        if (property == null || !state.getValue(property)) {
+            return null;
+        }
+
+        return preferredExtractDirection;
     }
 
+    /**
+     * Finds the first connected, non-blocked side that exposes a fluid capability
+     * or is a source fluid block. Used for the automatic extraction indication
+     * when no preferred direction is configured.
+     */
     private @Nullable Direction findFirstConnectedStorageSide(Level world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
         for (Direction dir : Direction.values()) {
             if (isBlocked(dir)) {
                 continue;
+            }
+            BooleanProperty property = PipeBlock.PROPERTY_MAP.get(dir);
+            if (property == null || !state.getValue(property)) {
+                continue;
+            }
+            BlockPos target = pos.relative(dir);
+            if (world.getCapability(Capabilities.Fluid.BLOCK, target, dir.getOpposite()) != null) {
+                return dir;
+            }
+            if (world.getFluidState(target).isSource()) {
+                return dir;
             }
         }
         return null;

@@ -108,18 +108,20 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         if (getFluidVolume() >= PIPE_CAPACITY) return;
         if (fluids.size() >= MAX_PACKETS) return;
 
-        Direction preferredDir = getPreferredExtractDirection();
+        // If the player has configured a preferred extract direction (via
+        // right-click), only pull from that side and keep it highlighted, even
+        // while the source is temporarily unavailable.
+        Direction preferredDir = getActivePreferredExtractDirection(world, pos);
         if (preferredDir != null) {
-            boolean canExtract = hasOutputPath(world, pos, preferredDir)
-                    || world.getFluidState(pos.relative(preferredDir)).isSource();
-            if (canExtract && tryExtractFromSide(world, pos, preferredDir)) {
+            if (tryExtractFromSide(world, pos, preferredDir)) {
                 onExtractDirectionChanged(preferredDir);
                 return;
             }
-            // If the preferred direction cannot extract right now, fall through to
-            // the normal scan below instead of permanently stalling extraction.
+            onExtractDirectionChanged(preferredDir);
+            return;
         }
 
+        // No preferred direction: scan all connected sides.
         for (Direction dir : Direction.values()) {
             boolean canExtract = hasOutputPath(world, pos, dir)
                     || world.getFluidState(pos.relative(dir)).isSource();

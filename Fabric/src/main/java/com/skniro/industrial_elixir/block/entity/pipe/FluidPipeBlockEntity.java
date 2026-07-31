@@ -66,21 +66,14 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
                 continue;
             }
 
-            if (isBlocked(packet.direction)) {
-                continue;
-            }
-
             packet.progress += 0.1;
             if (packet.progress + ARRIVAL_EPSILON < 1.0) continue;
             packet.progress = 1.0;
 
-            BlockPos target = pos.relative(packet.direction);
-
-            boolean moved = tryMoveToNext(world, target, packet);
-            if (moved) {
+            if (tryRoutePacket(world, pos, packet)) {
                 changed = true;
 
-                // 只有 Packet 完全转移后才能删除
+                // 只有 Packet 完全转移/插入后才能删除
                 if (packet.amount <= 0 || packet.variant.isBlank()) {
                     it.remove();
                 } else {
@@ -91,26 +84,47 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
                 continue;
             }
 
-            boolean inserted = tryInsert(world, target, packet);
-
-            if (inserted) {
-                changed = true;
-
-                if (packet.amount <= 0 || packet.variant.isBlank()) {
-                    it.remove();
-                } else {
-                    // 只插入了部分液体
-                    packet.progress = 1.0;
-                }
-
-                continue;
-            }
             packet.progress = 1.0;
         }
 
         if (changed) {
             syncToClient();
         }
+    }
+
+    /**
+     * 尝试将流体包路由到其他管道或机器。
+     * 优先沿当前方向移动，失败时尝试其余已连接的、非封堵的方向（避免回流）。
+     */
+    private boolean tryRoutePacket(Level world, BlockPos pos, FluidPacket packet) {
+        Direction backDir = packet.lastDirection != null ? packet.lastDirection.getOpposite() : null;
+
+        // 先尝试按当前方向移动/插入
+        if (!isBlocked(packet.direction)) {
+            BlockPos target = pos.relative(packet.direction);
+            if (tryMoveToNext(world, target, packet.direction, packet)
+                    || tryInsert(world, target, packet.direction, packet)) {
+                return true;
+            }
+        }
+
+        // 再尝试其他已连接的、非封堵的方向（排除回流方向）
+        BlockState state = getBlockState();
+        for (Direction dir : Direction.values()) {
+            if (dir == packet.direction) continue;
+            if (backDir != null && dir == backDir) continue;
+            if (isBlocked(dir)) continue;
+            BooleanProperty property = PipeBlock.PROPERTY_MAP.get(dir);
+            if (property == null || !state.getValue(property)) continue;
+
+            BlockPos target = pos.relative(dir);
+            if (tryMoveToNext(world, target, dir, packet)
+                    || tryInsert(world, target, dir, packet)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected void extractFluids(Level world, BlockPos pos) {
@@ -209,7 +223,8 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         return false;
     }
 
-    private boolean tryMoveToNext(Level world, BlockPos pos, FluidPacket packet) {
+    private boolean tryMoveToNext(Level world, BlockPos pos, Direction moveDir, FluidPacket packet) {
+        if (isBlocked(moveDir)) return false;
         BlockEntity be = world.getBlockEntity(pos);
         if (!(be instanceof FluidPipeBlockEntity pipe)) return false;
         if (be instanceof WoodFluidPipeBlockEntity) return false;
@@ -218,48 +233,49 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         if (available <= 0) return false;
         long moveAmount = Math.min(packet.amount, available);
         if (moveAmount <= 0) return false;
-        Direction newDir = getNextDirection(world, pos, packet);
+        Direction newDir = getNextDirection(world, pos, moveDir);
+        // 目标管道没有向前的出口，避免进入后立即被送回（来回弹跳）
+        if (newDir == moveDir.getOpposite()) return false;
         FluidPacket moved = new FluidPacket(packet.variant, moveAmount, newDir);
-        moved.lastDirection = packet.direction;
+        moved.lastDirection = moveDir;
         pipe.fluids.add(moved);
         packet.amount -= moveAmount;
         if (packet.amount <= 0) {
             packet.amount = 0;
-            packet.variant =
-                    FluidVariant.blank();
+            packet.variant = FluidVariant.blank();
         }
         pipe.syncToClient();
         return true;
     }
 
-    private Direction getNextDirection(Level world, BlockPos pos, FluidPacket packet) {
+    private Direction getNextDirection(Level world, BlockPos pos, Direction moveDir) {
         BlockEntity be = world.getBlockEntity(pos);
         if (!(be instanceof FluidPipeBlockEntity pipe)) {
-            return packet.lastDirection.getOpposite();
+            return moveDir.getOpposite();
         }
         List<Direction> possible = new ArrayList<>();
         BlockState state = world.getBlockState(pos);
+        Direction backDir = moveDir.getOpposite();
         for (Direction dir : Direction.values()) {
             if (pipe.isBlocked(dir)) continue;
-            if (dir == packet.lastDirection.getOpposite()) continue;
+            if (dir == backDir) continue;
             BooleanProperty property = PipeBlock.PROPERTY_MAP.get(dir);
             if (property != null && state.getValue(property)) possible.add(dir);
-
         }
-        if (possible.isEmpty()) return packet.lastDirection.getOpposite();
+        if (possible.isEmpty()) return backDir;
         return possible.get(world.getRandom().nextInt(possible.size()));
     }
 
-    private boolean tryInsert(Level world, BlockPos pos, FluidPacket packet) {
-        if (isBlocked(packet.direction)) return false;
-        Storage<FluidVariant> storage = FluidStorage.SIDED.find(world, pos, packet.direction.getOpposite());
+    private boolean tryInsert(Level world, BlockPos pos, Direction insertDir, FluidPacket packet) {
+        if (isBlocked(insertDir)) return false;
+        Storage<FluidVariant> storage = FluidStorage.SIDED.find(world, pos, insertDir.getOpposite());
         if (storage == null) return false;
 
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof WoodFluidPipeBlockEntity) {
             BlockState state = world.getBlockState(pos);
-            Direction insertDir = packet.direction.getOpposite();
-            BooleanProperty pullProp = WoodPipeBlock.PULL_PROPERTY_MAP.get(insertDir);
+            Direction pullSide = insertDir.getOpposite();
+            BooleanProperty pullProp = WoodPipeBlock.PULL_PROPERTY_MAP.get(pullSide);
             if (pullProp != null && state.getValue(pullProp)) return false;
         }
         long before = packet.amount;
