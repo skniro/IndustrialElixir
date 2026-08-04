@@ -175,7 +175,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
     }
 
     private void renderHud(GuiGraphicsExtractor context, DeltaTracker tickCounter) {
-        WindowsWatermarkRenderer.render(context);
+        //WindowsWatermarkRenderer.render(context);
     }
 
     @Environment(EnvType.CLIENT)

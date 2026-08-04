@@ -11,6 +11,7 @@ version="${project.neoforge_mod_version}"
 displayName="${project.mod_name}"
 authors="${project.mod_authors}"
 description='''${project.mod_description}'''
+logoFile="icon.png"
 
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
