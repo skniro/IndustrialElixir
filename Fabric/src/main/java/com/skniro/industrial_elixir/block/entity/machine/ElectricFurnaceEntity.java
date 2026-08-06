@@ -24,6 +24,8 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
 
     public ElectricFurnaceEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.Electric_Furnace_BLOCK_ENTITY ,pos, state);
+        this.DEFAULT_MAX_PROGRESS = 200;
+        this.maxProgress = 200;
     }
 
     // 60/20 = 3 EU/t

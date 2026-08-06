@@ -30,11 +30,11 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 
 public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
-    public int progress = 0;
-    public int maxProgress = 72;
 
     public OreWashingBlockEntity(BlockPos pos, BlockState blockState) {
         super(AlchemyBlockEntityType.Ore_Washing_BLOCK_ENTITY.get(), pos, blockState);
+        this.DEFAULT_MAX_PROGRESS = 500;
+        this.maxProgress = 500;
         this.inventory = NonNullList.withSize(12, ItemStack.EMPTY);
     }
 

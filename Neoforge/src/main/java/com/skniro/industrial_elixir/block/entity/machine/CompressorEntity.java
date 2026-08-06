@@ -17,6 +17,8 @@ public class CompressorEntity extends AbstractMachineEntity {
 
     public CompressorEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.Compressor_BLOCK_ENTITY.get(),pos, state);
+        this.DEFAULT_MAX_PROGRESS = 400;
+        this.maxProgress = 400;
     }
 
     // 40/20 = 2 EU/t

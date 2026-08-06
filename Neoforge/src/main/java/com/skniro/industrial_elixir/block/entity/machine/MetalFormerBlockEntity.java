@@ -22,6 +22,8 @@ public class MetalFormerBlockEntity extends AbstractMachineEntity {
 
     public MetalFormerBlockEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.MetalFormer_BLOCK_ENTITY.get(),pos, state);
+        this.DEFAULT_MAX_PROGRESS = 200;
+        this.maxProgress = 200;
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
@@ -46,6 +48,15 @@ public class MetalFormerBlockEntity extends AbstractMachineEntity {
             public int getCount() {
                 return 3;
             }
+        };
+    }
+
+    @Override
+    public long getCraftEnergyCost() {
+        return switch (recipe_state) {
+            case ROLLING -> 160;    // 8 EU/t
+            case CUTTING -> 80;     // 4 EU/t
+            case EXTRUDING -> 320;  // 16 EU/t
         };
     }
 

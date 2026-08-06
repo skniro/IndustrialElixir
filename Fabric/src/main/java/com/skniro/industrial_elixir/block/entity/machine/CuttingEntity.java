@@ -17,6 +17,14 @@ public class CuttingEntity extends AbstractMachineEntity {
 
     public CuttingEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.Cutting_BLOCK_ENTITY ,pos, state);
+        this.DEFAULT_MAX_PROGRESS = 450;
+        this.maxProgress = 450;
+    }
+
+    // 80/20 = 4 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 80;
     }
 
     @Override

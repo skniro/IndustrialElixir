@@ -19,6 +19,8 @@ public class Alchemyblockentity extends AbstractMachineEntity {
 
     public Alchemyblockentity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), pos, state);
+        this.DEFAULT_MAX_PROGRESS = 200;
+        this.maxProgress = 200;
     }
 
     // 40/20 = 2 EU/t

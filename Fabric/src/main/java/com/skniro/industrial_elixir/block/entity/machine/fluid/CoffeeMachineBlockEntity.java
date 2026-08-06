@@ -35,6 +35,8 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
 
     public CoffeeMachineBlockEntity(BlockPos pos, BlockState blockState) {
         super(AlchemyBlockEntityType.COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE, pos, blockState);
+        this.DEFAULT_MAX_PROGRESS = 200;
+        this.maxProgress = 200;
     }
 
     // 40/20 = 2 EU/t

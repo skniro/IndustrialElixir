@@ -17,6 +17,8 @@ public class MaceratorEntity extends AbstractMachineEntity {
 
     public MaceratorEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.Macerator_BLOCK_ENTITY ,pos, state);
+        this.DEFAULT_MAX_PROGRESS = 400;
+        this.maxProgress = 400;
     }
 
     // 40/20 = 2 EU/t

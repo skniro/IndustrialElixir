@@ -47,7 +47,7 @@ import java.util.Optional;
 public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity implements MachineRecipeProvider  {
     public int progress = 0;
     public int maxProgress = 72;
-    private final int DEFAULT_MAX_PROGRESS = 72;
+    protected int DEFAULT_MAX_PROGRESS = 72;
     protected final ContainerData propertyDelegate;
 
     public AbstractMachineEntity(BlockEntityType entityType, BlockPos pos, BlockState state) {
@@ -186,7 +186,7 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     protected void loadAdditional(ValueInput nbt) {
         ContainerHelper.loadAllItems(nbt, inventory);
         progress = nbt.getIntOr("abstract_machine.progress", 0);
-        maxProgress = nbt.getIntOr("abstract_machine.max_progress", 72);
+        maxProgress = nbt.getIntOr("abstract_machine.max_progress", DEFAULT_MAX_PROGRESS);
         energyContainer.amount = nbt.getLongOr("abstract_machine.energy", 300);
         super.loadAdditional(nbt);
     }

@@ -31,11 +31,11 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 
 public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
-    public int progress = 0;
-    public int maxProgress = 72;
 
     public BrewReactorBlockEntity(BlockPos pos, BlockState blockState) {
         super(AlchemyBlockEntityType.Brew_Reactor_BLOCK_ENTITY, pos, blockState);
+        this.DEFAULT_MAX_PROGRESS = 100;
+        this.maxProgress = 100;
     }
 
     // 40/20 = 2 EU/t

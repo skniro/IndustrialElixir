@@ -26,6 +26,8 @@ public class RecyclerEntity extends AbstractMachineEntity {
 
     public RecyclerEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.Recycler_BLOCK_ENTITY ,pos, state);
+        this.DEFAULT_MAX_PROGRESS = 45;
+        this.maxProgress = 45;
     }
 
     @Override
