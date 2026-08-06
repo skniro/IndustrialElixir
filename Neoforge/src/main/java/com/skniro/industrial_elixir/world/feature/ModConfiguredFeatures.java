@@ -44,12 +44,12 @@ public class ModConfiguredFeatures {
                 List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.SACRED_Ore.get().defaultBlockState()));
 
 
-        register(context, Deepslate_Lead_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateleadOres, 8));
-        register(context, Deepslate_Tin_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateTinOres, 10));
-        register(context, Deepslate_SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateSACREDOres, 6));
-        register(context, Lead_Ore_KEY, Feature.ORE, new OreConfiguration(leadOres, 8));
-        register(context, Tin_Ore_KEY, Feature.ORE, new OreConfiguration(TinOres, 10));
-        register(context, SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(SACREDOres, 6));
+        register(context, Deepslate_Lead_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateleadOres, 6));
+        register(context, Deepslate_Tin_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateTinOres, 6));
+        register(context, Deepslate_SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateSACREDOres, 4));
+        register(context, Lead_Ore_KEY, Feature.ORE, new OreConfiguration(leadOres, 6));
+        register(context, Tin_Ore_KEY, Feature.ORE, new OreConfiguration(TinOres, 6));
+        register(context, SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(SACREDOres, 4));
 
     }
 

@@ -31,7 +31,7 @@ public class ModPlacedFeatures {
         var configuredFeatureRegistryEntryLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
         register(context, Deepslate_Lead_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.Deepslate_Lead_Ore_KEY),
-                modifiersWithCount(10, // Veins per Chunk
+                modifiersWithCount(9, // Veins per Chunk
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
 
         register(context,Deepslate_Tin_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.Deepslate_Tin_Ore_KEY),
@@ -39,11 +39,11 @@ public class ModPlacedFeatures {
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
 
         register(context, Deepslate_SACRED_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.Deepslate_SACRED_Ore_KEY),
-                modifiersWithCount(8, // Veins per Chunk
+                modifiersWithCount(7, // Veins per Chunk
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
 
         register(context, Lead_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.Lead_Ore_KEY),
-                modifiersWithCount(8, // Veins per Chunk
+                modifiersWithCount(7, // Veins per Chunk
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(63))));
 
         register(context,Tin_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.Tin_Ore_KEY),
@@ -51,7 +51,7 @@ public class ModPlacedFeatures {
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(40))));
 
         register(context, SACRED_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.SACRED_Ore_KEY),
-                modifiersWithCount(6, // Veins per Chunk
+                modifiersWithCount(5, // Veins per Chunk
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(64))));
 
     }
