@@ -271,7 +271,9 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     }
 
     protected boolean hasEnoughEnergyToCraft() {
-        return this.energyContainer.amount >= (long) (getCraftEnergyCost()/ 20) * maxProgress;
+        long baseUse = getCraftEnergyCost() / 20;
+        long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
+        return this.energyContainer.amount >= effectiveUse;
     }
 
     protected Optional<RecipeHolder<AbstractMachineCraftingRecipe>> getCurrentRecipe() {

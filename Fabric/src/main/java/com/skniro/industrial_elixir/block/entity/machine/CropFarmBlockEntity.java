@@ -82,7 +82,9 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
 
     @Override
     protected boolean hasEnoughEnergyToCraft() {
-        return this.energyContainer.amount >= getCraftEnergyCost() / 20;
+        long baseUse = getCraftEnergyCost() / 20;
+        long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
+        return this.energyContainer.amount >= effectiveUse;
     }
 
     @Override
