@@ -74,7 +74,7 @@ public class RecyclerScreenHandler extends AbstractContainerMenu {
         int maxProgress = this.propertyDelegate.get(1);  // Max Progress
         int progressArrowSize = 21; // This is the width in pixels of your arrow
 
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / (maxProgress - 10) : 0;
     }
 
     @Override

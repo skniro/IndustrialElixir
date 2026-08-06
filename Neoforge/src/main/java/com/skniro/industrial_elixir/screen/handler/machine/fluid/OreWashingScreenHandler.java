@@ -68,7 +68,7 @@ public class OreWashingScreenHandler extends AbstractContainerMenu {
         int progress = this.propertyDelegate.get(0);
         int maxProgress = this.propertyDelegate.get(1);
         int progressArrowSize = 11;
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / (maxProgress - 10) : 0;
     }
 
     public int getScaledEnergyHeight() {
