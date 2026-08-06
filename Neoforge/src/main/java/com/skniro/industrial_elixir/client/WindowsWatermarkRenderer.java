@@ -51,7 +51,7 @@ public class WindowsWatermarkRenderer {
         @SubscribeEvent
         public static void onRenderGui(RenderGuiEvent.Post event) {
             GuiGraphicsExtractor guiGraphics = event.getGuiGraphics();
-            render(guiGraphics);
+            //render(guiGraphics);
         }
     }
 }

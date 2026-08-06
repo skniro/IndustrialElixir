@@ -17,11 +17,10 @@ import java.time.LocalDate;
 public class IndustrialElixir implements ModInitializer {
     public static final String MOD_ID = "industrial_elixir";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    private static boolean DISABLED = false;
 
     @Override
     public void onInitialize() {
-        checkExpiration();
+        //checkExpiration();
         
         ModContent.registerCommand();
         ModContent.registerFluids();
@@ -49,7 +48,6 @@ public class IndustrialElixir implements ModInitializer {
         LocalDate expireDate = LocalDate.of(2099, 8, 1);
 
         if (isDev && LocalDate.now().isAfter(expireDate)) {
-            DISABLED = true;
 
             LOGGER.error("====================================");
             LOGGER.error(" This mod version has expired!");
