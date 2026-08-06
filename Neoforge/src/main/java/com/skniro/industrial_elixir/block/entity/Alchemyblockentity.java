@@ -21,6 +21,12 @@ public class Alchemyblockentity extends AbstractMachineEntity {
         super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), pos, state);
     }
 
+    // 40/20 = 2 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 40;
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable(FurnitureStrings.CaneConverter);

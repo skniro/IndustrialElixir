@@ -19,6 +19,12 @@ public class ExtractorEntity extends AbstractMachineEntity {
         super(AlchemyBlockEntityType.Extractor_BLOCK_ENTITY ,pos, state);
     }
 
+    // 40/20 = 2 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 40;
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable(FurnitureStrings.Extractor);

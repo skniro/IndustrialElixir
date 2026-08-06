@@ -31,6 +31,12 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
         this.inventory = NonNullList.withSize(12, ItemStack.EMPTY);
     }
 
+    // 200/20 = 10 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 200;
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable(FurnitureStrings.CropFarm);

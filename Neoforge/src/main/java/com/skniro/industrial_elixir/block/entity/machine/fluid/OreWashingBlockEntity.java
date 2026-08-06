@@ -38,6 +38,12 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
         this.inventory = NonNullList.withSize(12, ItemStack.EMPTY);
     }
 
+    // 320/20 = 16 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 320;
+    }
+
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);

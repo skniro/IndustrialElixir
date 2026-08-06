@@ -38,6 +38,12 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
         super(AlchemyBlockEntityType.Brew_Reactor_BLOCK_ENTITY, pos, blockState);
     }
 
+    // 40/20 = 2 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 40;
+    }
+
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);

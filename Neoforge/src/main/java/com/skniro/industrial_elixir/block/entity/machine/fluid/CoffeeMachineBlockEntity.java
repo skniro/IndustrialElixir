@@ -35,6 +35,12 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
         super(AlchemyBlockEntityType.COFFEE_MACHINE_BLOCK_ENTITY_BLOCK_ENTITY_TYPE.get(), pos, blockState);
     }
 
+    // 40/20 = 2 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 40;
+    }
+
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);

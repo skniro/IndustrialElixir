@@ -26,6 +26,12 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         super(AlchemyBlockEntityType.Electric_Furnace_BLOCK_ENTITY ,pos, state);
     }
 
+    // 60/20 = 3 EU/t
+    @Override
+    public long getCraftEnergyCost() {
+        return 60;
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable(FurnitureStrings.ElectricFurnace);
