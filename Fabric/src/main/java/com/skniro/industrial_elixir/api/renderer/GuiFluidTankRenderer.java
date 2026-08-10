@@ -2,6 +2,7 @@ package com.skniro.industrial_elixir.api.renderer;
 
 import com.google.common.base.Preconditions;
 import com.skniro.industrial_elixir.IndustrialElixir;
+import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -78,7 +79,11 @@ public class GuiFluidTankRenderer {
 
     private int getColorTint(SingleVariantStorage<FluidVariant> fluidStorage) {
         return fluidStorage.variant.getFluid() == Fluids.WATER ? CommonColors.BLUE :
-                fluidStorage.variant.getFluid() == Fluids.LAVA ? CommonColors.RED : CommonColors.WHITE;
+                fluidStorage.variant.getFluid() == Fluids.LAVA ? CommonColors.RED :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Hot_Spring ? CommonColors.LIGHTER_GRAY :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_UU ? CommonColors.DARK_PURPLE :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_AIR ? CommonColors.LIGHT_GRAY :
+                CommonColors.WHITE;
     }
 
     public List<Component> getTooltip(SingleVariantStorage<FluidVariant> fluidStorage) {

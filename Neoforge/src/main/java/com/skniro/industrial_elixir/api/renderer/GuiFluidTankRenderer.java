@@ -3,6 +3,7 @@ package com.skniro.industrial_elixir.api.renderer;
 import com.google.common.base.Preconditions;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
+import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -78,7 +79,11 @@ public class GuiFluidTankRenderer {
 
     private int getColorTint(SingleFluidStorage fluidStorage) {
         return fluidStorage.variant.getFluid() == Fluids.WATER ? CommonColors.BLUE :
-                fluidStorage.variant.getFluid() == Fluids.LAVA ? CommonColors.RED : CommonColors.WHITE;
+                fluidStorage.variant.getFluid() == Fluids.LAVA ? CommonColors.RED :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Hot_Spring.get() ? CommonColors.LIGHTER_GRAY :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_UU.get() ? CommonColors.DARK_PURPLE :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_AIR.get() ? CommonColors.LIGHT_GRAY :
+                CommonColors.WHITE;
     }
 
     public List<Component> getTooltip(SingleFluidStorage fluidStorage) {
