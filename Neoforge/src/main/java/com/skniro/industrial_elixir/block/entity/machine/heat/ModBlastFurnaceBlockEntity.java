@@ -40,6 +40,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
@@ -342,10 +343,10 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().create())) return false;
         if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().create())) return false;
 
-        var currentFluid = this.fluidContainer.getResource(0).getFluid();
-        var currentId = BuiltInRegistries.FLUID.getKey(currentFluid);
-        return currentId != null
-                && washingRecipe.requiredFluid().equals(currentId)
+        Fluid currentFluid = this.fluidContainer.getResource(0).getFluid();
+        Optional<Fluid> requiredFluid = BuiltInRegistries.FLUID.getOptional(washingRecipe.requiredFluid());
+        return requiredFluid.isPresent()
+                && requiredFluid.get().isSame(currentFluid)
                 && this.fluidContainer.getAmount() >= washingRecipe.requiredFluidAmount();
     }
 

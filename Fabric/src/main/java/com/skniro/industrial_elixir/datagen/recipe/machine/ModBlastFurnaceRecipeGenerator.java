@@ -29,7 +29,7 @@ public class ModBlastFurnaceRecipeGenerator extends FabricRecipeProvider {
             }
 
             private void blastFurnace(ItemLike input, ItemLike primaryOutput, Item secondaryOutput, String name) {
-                var builder = createBlastFurnace(primaryOutput).fluid(IndustrialElixirFluids.FLOWING_Fluid_AIR, 1000)
+                var builder = createBlastFurnace(primaryOutput).fluid(IndustrialElixirFluids.STILL_Fluid_AIR, 1000)
                         .input(input).unlockedBy("has_base_item", has(input));
 
                 if (secondaryOutput != null) {
