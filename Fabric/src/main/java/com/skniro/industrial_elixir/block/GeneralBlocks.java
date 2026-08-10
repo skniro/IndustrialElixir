@@ -69,7 +69,7 @@ public class GeneralBlocks {
             (settings)-> new TintedParticleLeavesBlock(0.1f, settings), (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN)));
 
     public static final Block Rubber_Rubber_LOG =registerBlock("rubber_rubber_log",
-            (settings)-> new LogCropBlock(settings, GrowableOresItems.Sticky_Resin), BlockBehaviour.Properties.of().noOcclusion().mapColor(MapColor.NETHER));
+            (settings)-> new LogCropBlock(settings, GrowableOresItems.Sticky_Resin), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(MapColor.COLOR_BROWN));
 
     public static final Block Rubber_LOG = registerBlock("rubber_log",RotatedPillarBlock::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(MapColor.COLOR_BROWN)));
     public static final Block STRIPPED_Rubber_LOG = registerBlock("stripped_rubber_log",
