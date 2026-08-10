@@ -14,7 +14,6 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.ModBlastFurnaceCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.heat.ModBlastFurnaceScreenHandler;
-import com.skniro.industrial_elixir.api.fluid.FullItemFluidStorage;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
@@ -209,19 +208,20 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
             return;
         }
 
+        FluidResource fluid = itemStorage.getResource(0);
+
         ItemStack craftRemainder = inputStack.getItem() instanceof FluidCellItem
                 ? new ItemStack(GrowableOresItems.EMPTY_CELL.get())
                 : (inputStack.getItem().getCraftingRemainder() != null
                    ? inputStack.getItem().getCraftingRemainder().create()
                    : new ItemStack(Items.BUCKET));
 
-        if (!(itemStorage instanceof FullItemFluidStorage fluidStorage) || !canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
+        if (!canAcceptFluid(fluid, 1000) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
             return;
         }
 
-
         try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(fluidStorage.getResource(), 1000, transaction);
+            long inserted = this.fluidContainer.insert(fluid, 1000, transaction);
             if (inserted != 1000) {
                 return;
             }
@@ -236,9 +236,9 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         }
     }
 
-    private boolean canAcceptFluid(FullItemFluidStorage fluidStorage) {
-        return (fluidContainer.getResource(0) == fluidStorage.getResource() || fluidContainer.isResourceBlank())
-                && fluidContainer.getAmount() + 1000 <= fluidContainer.getCapacity();
+    private boolean canAcceptFluid(FluidResource fluid, int amount) {
+        return (fluidContainer.isResourceBlank() || fluidContainer.getResource(0).equals(fluid))
+                && fluidContainer.getAmount() + amount <= fluidContainer.getCapacity();
     }
 
     private boolean canStoreCraftRemainder(ItemStack inputStack, ItemStack craftRemainder) {

@@ -20,22 +20,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
-    private final NonNullList<ItemStack> inventory = NonNullList.withSize(21, ItemStack.EMPTY);
     public SimpleSidedHeatContainer heatContainer;
     private static final int COIL_SLOT_START = 11;
     private static final int COIL_SLOT_END = 20;
@@ -43,7 +37,8 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     private static final long HEAT_PER_COIL = 10;
 
     public ElectricHeaterBlockEntity(BlockPos pos, BlockState state) {
-        super(AlchemyBlockEntityType.ELECTRIC_HEATER_BLOCK_ENTITY.get(), pos, state);;
+        super(AlchemyBlockEntityType.ELECTRIC_HEATER_BLOCK_ENTITY.get(), pos, state);
+        this.inventory = NonNullList.withSize(21, ItemStack.EMPTY);
         heatContainer = new SimpleSidedHeatContainer() {
 
             @Override
@@ -133,25 +128,8 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
         return coilCount * HEAT_PER_COIL;
     }
 
-    @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        ContainerHelper.saveAllItems(output, inventory);
-    }
-
-    @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        ContainerHelper.loadAllItems(input, inventory);
-    }
-
     public HeatStorage getHeatStorage() {
         return heatContainer.getSideStorage(null);
-    }
-
-    @Override
-    public NonNullList<ItemStack> getItems() {
-        return this.inventory;
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -27,8 +26,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Optional;
 
 public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity implements MachineRecipeProvider  {
@@ -36,13 +33,9 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     public int maxProgress = 72;
     protected int DEFAULT_MAX_PROGRESS = 72;
     protected final ContainerData propertyDelegate;
-    private final Map<Direction, ResourceHandler<ItemResource>> itemHandlers = new EnumMap<>(Direction.class);
 
     public AbstractMachineEntity(BlockEntityType entityType, BlockPos pos, BlockState state) {
         super(entityType, pos, state);
-        for(Direction direction : Direction.values()) {
-            itemHandlers.put(direction, new WorldlyContainerWrapper(this, direction));
-        }
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {
