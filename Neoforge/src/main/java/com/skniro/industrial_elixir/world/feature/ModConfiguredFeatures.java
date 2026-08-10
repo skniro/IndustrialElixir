@@ -2,6 +2,7 @@ package com.skniro.industrial_elixir.world.feature;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
+import com.skniro.industrial_elixir.block.init.CoffeeBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
@@ -24,6 +27,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> Lead_Ore_KEY = registerKey("lead_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> Tin_Ore_KEY = registerKey("tin_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SACRED_Ore_KEY = registerKey("sacred_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_COFFEE = registerKey("patch_coffee");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         RuleTest stoneReplaceables = new BlockMatchTest(Blocks.STONE);
@@ -51,6 +55,7 @@ public class ModConfiguredFeatures {
         register(context, Tin_Ore_KEY, Feature.ORE, new OreConfiguration(TinOres, 6));
         register(context, SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(SACREDOres, 4));
 
+        register(context, PATCH_COFFEE, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(GeneralBlocks.Coffee_Block.get().defaultBlockState().setValue(CoffeeBlock.AGE, 3))));
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {

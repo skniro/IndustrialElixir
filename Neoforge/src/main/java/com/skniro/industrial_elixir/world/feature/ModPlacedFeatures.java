@@ -4,6 +4,7 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -26,9 +27,12 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> Lead_Ore_PLACED_KEY = registerKey("lead_ore_placed");
     public static final ResourceKey<PlacedFeature> Tin_Ore_PLACED_KEY = registerKey("tin_ore_placed");
     public static final ResourceKey<PlacedFeature> SACRED_Ore_PLACED_KEY = registerKey("sacred_ore_placed");
+    public static final ResourceKey<PlacedFeature> PATCH_COFFEE_COMMON = registerKey("patch_coffee_common");
+    public static final ResourceKey<PlacedFeature> PATCH_COFFEE_RARE = registerKey("patch_coffee_rare");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.lookup(Registries.CONFIGURED_FEATURE);
+        Holder<ConfiguredFeature<?, ?>> registryEntry2 = configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.PATCH_COFFEE);
 
         register(context, Deepslate_Lead_Ore_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.Deepslate_Lead_Ore_KEY),
                 modifiersWithCount(9, // Veins per Chunk
@@ -54,6 +58,8 @@ public class ModPlacedFeatures {
                 modifiersWithCount(5, // Veins per Chunk
                         HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(64))));
 
+        register(context, PATCH_COFFEE_COMMON, registryEntry2, RarityFilter.onAverageOnceEvery(64), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
+        register(context, PATCH_COFFEE_RARE, registryEntry2, RarityFilter.onAverageOnceEvery(384), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
     }
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {

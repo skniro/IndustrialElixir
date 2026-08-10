@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:taiga",
+    "minecraft:old_growth_pine_taiga"
+  ],
+  "features": "industrial_elixir:patch_coffee_common",
+  "step": "vegetal_decoration"
+}
