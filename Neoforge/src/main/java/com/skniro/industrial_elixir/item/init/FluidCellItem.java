@@ -69,7 +69,7 @@ public class FluidCellItem extends Item {
         if (fluid == Fluids.EMPTY) {
             return super.getName(stack);
         }
-        return Component.literal(FluidResource.of(fluid).toString()).append(Component.translatable(FurnitureStrings.Fluid_Cell));
+        return FluidResource.of(fluid).getHoverName().copy().append(Component.translatable(FurnitureStrings.Fluid_Cell));
     }
 
     @Override

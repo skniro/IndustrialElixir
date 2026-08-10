@@ -476,5 +476,9 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(MapleFoodComponents.Coffee_Beans, "Coffee Bean");
 
         translationBuilder.add(GeneralBlocks.COBBLESTONE_STAIRS, "Cobblestone stairs(Hot spring)");
+
+        translationBuilder.add("fluid_type.industrial_elixir.spring_water_fluid","Hot Spring");
+        translationBuilder.add("fluid_type.industrial_elixir.uu_water_fluid","UU Fluid");
+        translationBuilder.add("fluid_type.industrial_elixir.air_water_fluid","Air Fluid");
     }
 }

@@ -458,7 +458,7 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
 
         translationBuilder.add(IndustrialElixirFluidItems.Hot_Spring_BUCKET,"温泉桶");
         translationBuilder.add(IndustrialElixirFluidBlocks.Hot_Spring_BLOCK,"温泉");
-        translationBuilder.add("fluid.industrial_elixir.hot_spring","Hot Spring");
+        translationBuilder.add("fluid.industrial_elixir.hot_spring","温泉");
 
         translationBuilder.add(GeneralBlocks.COFFEE_BLACK, "美式咖啡");
         translationBuilder.add(GeneralBlocks.CAPPUCCINO, "卡布奇诺");
@@ -474,5 +474,9 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(MapleFoodComponents.Coffee_Beans, "咖啡豆");
 
         translationBuilder.add(GeneralBlocks.COBBLESTONE_STAIRS, "圆石楼梯（温泉版）");
+
+        translationBuilder.add("fluid_type.industrial_elixir.spring_water_fluid","温泉");
+        translationBuilder.add("fluid_type.industrial_elixir.uu_water_fluid","UU流体");
+        translationBuilder.add("fluid_type.industrial_elixir.air_water_fluid","空气流体");
     }
 }
