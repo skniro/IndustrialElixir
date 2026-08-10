@@ -1,7 +1,6 @@
 package com.skniro.industrial_elixir.block.entity.cable;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import com.skniro.industrial_elixir.ModContent;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,10 +30,12 @@ class CableTickManager {
                 if (!cableList.isEmpty()) {
                     long networkCapacity = 0L;
                     long networkAmount = 0L;
+                    long minTransferRate = Long.MAX_VALUE;
 
                     for(CableBlockEntity cable : cableList) {
                         networkAmount += cable.energyContainer.amount;
                         networkCapacity += cable.energyContainer.getCapacity();
+                        minTransferRate = Math.min(minTransferRate, cable.getCableType().transferRate);
                         cable.appendTargets(targetStorages);
                         cable.ioBlocked = true;
                     }
@@ -43,8 +44,8 @@ class CableTickManager {
                         networkAmount = networkCapacity;
                     }
 
-                    networkAmount += dispatchTransfer(startingCable.getCableType(), EnergyStorage::extract, networkCapacity - networkAmount);
-                    networkAmount -= dispatchTransfer(startingCable.getCableType(), EnergyStorage::insert, networkAmount);
+                    networkAmount += dispatchTransfer(minTransferRate, EnergyStorage::extract, networkCapacity - networkAmount);
+                    networkAmount -= dispatchTransfer(minTransferRate, EnergyStorage::insert, networkAmount);
                     int cableCount = cableList.size();
 
                     for(CableBlockEntity cable : cableList) {
@@ -98,7 +99,7 @@ class CableTickManager {
                     BlockEntity var7 = current.getAdjacentBlockEntity(direction);
                     if (var7 instanceof CableBlockEntity) {
                         CableBlockEntity adjCable = (CableBlockEntity)var7;
-                        if (current.getCableType().transferRate == adjCable.getCableType().transferRate && shouldTickCable(adjCable)) {
+                        if (shouldTickCable(adjCable)) {
                             bfsQueue.add(adjCable);
                             adjCable.lastTick = tickCounter;
                             cableList.add(adjCable);
@@ -110,7 +111,7 @@ class CableTickManager {
         }
     }
 
-    private static long dispatchTransfer(ModContent.Cables cableType, TransferOperation operation, long maxAmount) {
+    private static long dispatchTransfer(long transferRate, TransferOperation operation, long maxAmount) {
         List<SortableStorage> sortedTargets = new ArrayList();
 
         for(OfferedEnergyStorage storage : targetStorages) {
@@ -127,7 +128,7 @@ class CableTickManager {
                 SortableStorage target = (SortableStorage)sortedTargets.get(i);
                 int remainingTargets = sortedTargets.size() - i;
                 long remainingAmount = maxAmount - transferredAmount;
-                long targetMaxAmount = Math.min(remainingAmount / (long)remainingTargets, (long)cableType.transferRate);
+                long targetMaxAmount = Math.min(remainingAmount / (long)remainingTargets, transferRate);
                 long localTransferred = operation.transfer(target.storage.storage(), targetMaxAmount, transaction);
                 if (localTransferred > 0L) {
                     transferredAmount += localTransferred;

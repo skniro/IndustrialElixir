@@ -144,10 +144,7 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
                     BlockApiCache<EnergyStorage, Direction> adjCache = this.getAdjacentCache(direction);
                     BlockEntity var11 = adjCache.getBlockEntity();
                     if (var11 instanceof CableBlockEntity) {
-                        CableBlockEntity adjCable = (CableBlockEntity)var11;
-                        if (adjCable.getCableType().transferRate == this.getCableType().transferRate) {
-                            foundSomething = true;
-                        }
+                        foundSomething = true;
                     } else if (adjCache.find(direction.getOpposite()) != null) {
                         foundSomething = true;
                         this.targets.add(new CableTarget(direction, adjCache));
