@@ -208,7 +208,9 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
         // drop inventory and explode, similar to NuclearReactor
         Containers.dropContents(world, pos, this);
         world.removeBlock(pos, false);
-        world.explode(null, pos.getX() + 5.5, pos.getY() + 10.5, pos.getZ() + 5.5, 100.0f, true, Level.ExplosionInteraction.BLOCK);
+        world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 100.0f, true, Level.ExplosionInteraction.BLOCK);
+        world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 100.0f, true, Level.ExplosionInteraction.BLOCK);
+        world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 100.0f, true, Level.ExplosionInteraction.BLOCK);
     }
 
     public void pushEnergyToNeighbours() {
