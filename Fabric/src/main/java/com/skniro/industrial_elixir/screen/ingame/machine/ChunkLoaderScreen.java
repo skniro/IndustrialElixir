@@ -68,7 +68,7 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
         if (MouseUtil.isMouseOver(mouseX, mouseY, x + ENERGY_BAR_X, y + ENERGY_BAR_Y, ENERGY_BAR_W, ENERGY_BAR_H)) {
             graphics.setTooltipForNextFrame(Screens.getFont(this),
                     List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()
-                            + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EU")),
+                            + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " E")),
                     Optional.empty(), mouseX - x, mouseY - y);
         }
 

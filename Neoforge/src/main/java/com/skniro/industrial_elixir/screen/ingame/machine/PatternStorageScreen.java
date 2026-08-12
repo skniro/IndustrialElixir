@@ -77,7 +77,7 @@ public class PatternStorageScreen extends AbstractContainerScreen<PatternStorage
     private void renderEnergyTooltip(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if (MouseUtil.isMouseOver(pMouseX, pMouseY, x + 130, y + 44, 13, 16)) {
             context.setTooltipForNextFrame(this.getFont(), getEnergyTooltip(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 

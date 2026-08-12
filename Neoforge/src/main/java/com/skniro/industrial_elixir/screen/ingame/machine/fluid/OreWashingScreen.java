@@ -47,7 +47,7 @@ public class OreWashingScreen extends AbstractContainerScreen<OreWashingScreenHa
         int y = (height - imageHeight) / 2;
 
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 14)) {
-            graphics.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm - x, ym - y);
+            graphics.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm, ym);
         }
         if (MouseUtil.isMouseOver(xm, ym, x + 8, y + 5, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
             graphics.setComponentTooltipForNextFrame(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), xm, ym);

@@ -32,7 +32,7 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 15, 33, 13, 16)) {
             context.setTooltipForNextFrame(this.getFont(), getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 

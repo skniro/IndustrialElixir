@@ -35,10 +35,10 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
     }
 
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
-        if (MouseUtil.isMouseOver(pMouseX, pMouseY, 15, 32, 13, 13)) {
+        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 15, 32, 13, 13)) {
             context.setTooltipForNextFrame(Screens.getFont(this),
-                    List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EU")),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " E")),
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 
@@ -65,7 +65,7 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
 
         if (menu.isCrafting()) {
             int progress = menu.getScaledProgress();
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 71, y + 34, 190, 0, progress, 15, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 73, y + 34, 190, 0, progress, 15, 256, 256);
         }
 
         renderEnergyArea(context, x, y);
@@ -74,5 +74,9 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
         if (heatWidth > 0) {
             context.fill(x + 62, y + 72, x + 62 + heatWidth, y + 77, 0xFFFF6A00);
         }*/
+    }
+
+    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
+        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
     }
 }

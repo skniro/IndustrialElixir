@@ -36,7 +36,7 @@ public class ElectricFurnaceBlockScreen extends AbstractContainerScreen<Electric
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 52, 32, 13, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 

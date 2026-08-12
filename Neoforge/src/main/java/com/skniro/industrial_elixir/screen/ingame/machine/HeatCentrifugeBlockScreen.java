@@ -50,7 +50,7 @@ public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentr
         int y = (height - imageHeight) / 2;
         renderHeatAreaTooltips(context);
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 16)) {
-            context.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm - x, ym - y);
+            context.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm, ym);
         }
     }
 

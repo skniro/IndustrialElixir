@@ -40,7 +40,7 @@ public class PatternStorageCrystalItem extends Item {
             textConsumer.accept(Component.translatable("tooltip.industrial_elixir.pattern_storage.energy_cost")
                     .append(": ")
                     .append(NumberFormat.getNumberInstance(Locale.US).format(energyCost))
-                    .append(" EU")
+                    .append(" E")
                     .withStyle(ChatFormatting.RED));
 
             textConsumer.accept(Component.translatable("tooltip.industrial_elixir.pattern_storage.uu_cost")

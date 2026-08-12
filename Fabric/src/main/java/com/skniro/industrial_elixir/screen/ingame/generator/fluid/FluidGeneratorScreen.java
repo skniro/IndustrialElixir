@@ -44,7 +44,7 @@ public class FluidGeneratorScreen extends AbstractContainerScreen<FluidGenerator
     private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 76, 34, 31, 16)) {
             context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), pMouseX, pMouseY);
         }
     }
 

@@ -44,7 +44,7 @@ public class CropFarmBlockScreen extends AbstractContainerScreen<CropFarmScreenH
         int y = (height - imageHeight) / 2;
 
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 14)) {
-            graphics.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm - x, ym - y);
+            graphics.setTooltipForNextFrame(this.getFont(), getTooltips(), Optional.empty(), xm, ym);
         }
     }
 
