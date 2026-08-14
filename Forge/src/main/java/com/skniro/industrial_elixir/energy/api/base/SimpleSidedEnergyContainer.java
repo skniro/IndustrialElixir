@@ -2,8 +2,6 @@ package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import net.minecraft.core.Direction;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE

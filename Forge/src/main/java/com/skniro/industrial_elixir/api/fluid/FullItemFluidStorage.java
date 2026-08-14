@@ -2,11 +2,7 @@ package com.skniro.industrial_elixir.api.fluid;
 
 import java.util.function.Function;
 
-import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+
 
 public final class FullItemFluidStorage extends SingleFluidStorage {
 	private final ItemAccess context;

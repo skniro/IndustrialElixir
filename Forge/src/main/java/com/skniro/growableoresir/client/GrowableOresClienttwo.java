@@ -4,12 +4,13 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.client.ModItemBlockRenderTypes;
 import com.skniro.growableoresir.block.*;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
+
+@Mod.EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
 public class GrowableOresClienttwo {
 
     @SubscribeEvent

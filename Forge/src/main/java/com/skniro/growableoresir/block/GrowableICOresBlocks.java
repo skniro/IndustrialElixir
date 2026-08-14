@@ -19,11 +19,13 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class GrowableICOresBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(FRegistries.BLOCK, IndustrialElixir.MOD_ID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, IndustrialElixir.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IndustrialElixir.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IndustrialElixir.MOD_ID);
 
     //Industrial Elixir
     public static final Supplier<Block> IER_steel_Cane =registerBlock("ier_steel_ore_cane", GrowableOreCaneBlock::new ,BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
@@ -56,7 +58,7 @@ public class GrowableICOresBlocks {
                 new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, Helper.id(name)))));
     }
 
-    public static void registerModBlocks(IEventBus eventBus){
+    public static void registerModBlocks(BusGroup eventBus){
         Logger.getLogger("register mod blocks" + IndustrialElixir.MOD_ID);
         ITEMS.register(eventBus);
         BLOCKS.register(eventBus);

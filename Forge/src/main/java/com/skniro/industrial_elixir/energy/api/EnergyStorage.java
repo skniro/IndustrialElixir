@@ -3,15 +3,11 @@ package com.skniro.industrial_elixir.energy.api;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.energy.impl.EmptyEnergyStorage;
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.ItemCapability;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
-import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+
 import org.jetbrains.annotations.Nullable;
 
 
