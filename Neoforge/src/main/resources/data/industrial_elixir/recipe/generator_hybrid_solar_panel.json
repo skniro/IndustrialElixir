@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "industrial_elixir:generator_advanced_solar_panel",
     "D": "industrial_elixir:iridium_plate",

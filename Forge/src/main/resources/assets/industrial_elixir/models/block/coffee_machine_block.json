@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/coffee_machine_block_top",
+    "east": "industrial_elixir:block/coffee_machine_block_side",
+    "north": "industrial_elixir:block/coffee_machine_block_front",
+    "particle": "industrial_elixir:block/coffee_machine_block_side",
+    "south": "industrial_elixir:block/coffee_machine_block_side",
+    "up": "industrial_elixir:block/coffee_machine_block_top",
+    "west": "industrial_elixir:block/coffee_machine_block_side"
+  }
+}

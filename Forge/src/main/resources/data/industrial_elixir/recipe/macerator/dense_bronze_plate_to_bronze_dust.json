@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:dense_bronze_plate",
+  "result": {
+    "count": 9,
+    "id": "industrial_elixir:bronze_dust"
+  }
+}

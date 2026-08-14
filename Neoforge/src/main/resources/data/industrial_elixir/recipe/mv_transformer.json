@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "F": "industrial_elixir:insulated_copper_cable",
     "G": "industrial_elixir:machine"

@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:lapis_block",
+  "result": {
+    "count": 9,
+    "id": "industrial_elixir:lapis_dust"
+  }
+}

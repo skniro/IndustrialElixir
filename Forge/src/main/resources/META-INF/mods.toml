@@ -1,33 +1,33 @@
 modLoader="javafml"
-loaderVersion="${loader_version_range}"
+loaderVersion="${loader_version_range}" #mandatory
 license="${mod_license}"
+
+[[mixins]]
+config="industrial_elixir.mixins.json"
 
 [[mods]]
 modId="industrial_elixir"
-version="${forge_mod_version}"
-displayName="${mod_name}"
-authors="${mod_authors}"
-description='''${mod_description}'''
-credits = "Rafan,gilnet,All translators"
+version="${project.neoforge_mod_version}"
+displayName="${project.mod_name}"
+authors="${project.mod_authors}"
+description='''${project.mod_description}'''
+logoFile="icon.png"
 
+# The [[accessTransformers]] block allows you to declare where your AT file is.
+# If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
+#[[accessTransformers]]
+#file="META-INF/accesstransformer.cfg"
 
 [[dependencies.industrial_elixir]]
 modId="forge"
-mandatory=true
+type="required"
 versionRange="${forge_version_range}"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.industrial_elixir]]
 modId="minecraft"
-mandatory=true
+type="required"
 versionRange="${minecraft_version_range}"
-ordering="NONE"
-side="BOTH"
-
-[[dependencies.industrial_elixir]]
-modId="growable_ores"
-mandatory=true
-versionRange="*"
 ordering="NONE"
 side="BOTH"

@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:molecular_transformer",
+  "energy": 500000,
+  "ingredient": "minecraft:red_wool",
+  "result": {
+    "id": "minecraft:redstone_block"
+  }
+}

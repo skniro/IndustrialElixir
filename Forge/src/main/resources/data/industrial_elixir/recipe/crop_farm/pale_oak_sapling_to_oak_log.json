@@ -1,0 +1,16 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:pale_oak_sapling",
+  "process_time": 1600,
+  "result": {
+    "id": "minecraft:pale_oak_sapling"
+  },
+  "result2": {
+    "count": 5,
+    "id": "minecraft:pale_oak_log"
+  },
+  "result3": {
+    "id": "minecraft:resin_clump"
+  }
+}

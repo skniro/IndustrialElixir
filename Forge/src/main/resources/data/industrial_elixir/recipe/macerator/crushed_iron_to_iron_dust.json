@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:crushed_iron",
+  "result": {
+    "id": "industrial_elixir:iron_dust"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:ier_tin_ore_cane_to_ier_tin_ore_cane"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tin_ore_cane": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:ier_tin_ore_cane"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tin_ore_cane"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:ier_tin_ore_cane_to_ier_tin_ore_cane"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 9,
+  "ingredient": "industrial_elixir:small_lead_dust",
+  "result": {
+    "id": "industrial_elixir:lead_dust"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purified_tin": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:purified_tin"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "industrial_elixir:tin_ingot_from_smelting_purified_tin"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_purified_tin"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "industrial_elixir:tin_ingot_from_smelting_purified_tin"
+    ]
+  }
+}

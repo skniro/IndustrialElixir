@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:purified_lead",
+  "result": {
+    "id": "industrial_elixir:lead_dust"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:gold_ingot",
+  "result": {
+    "id": "industrial_elixir:gold_dust"
+  }
+}

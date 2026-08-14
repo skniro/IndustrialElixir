@@ -346,7 +346,7 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
 
     @Override
     public Vec3 position() {
-        return this.getBlockPos().getCenter();
+        return Vec3.atCenterOf(this.getBlockPos());
     }
 
     @Override

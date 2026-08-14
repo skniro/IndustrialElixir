@@ -1,4 +1,4 @@
-// 26.1.2	-999999999-01-01T00:00:00	Skniro's Industrial Elixir/industrial_elixir
+// 26.2	-999999999-01-01T00:00:00	Skniro's Industrial Elixir/industrial_elixir
 929c251116b4ac6cbd6f412163298400fb482cb9 data/industrial_elixir/damage_type/electric_shock.json
 091bc0d4ab31f922b710a2c5f1c2640d7fe2af6d data/industrial_elixir/damage_type/fusion.json
 167e4cf47ec0602a150a839237227a4f690d9522 data/industrial_elixir/worldgen/configured_feature/deepslate_lead_ore.json
@@ -6,7 +6,7 @@
 84e77c7c46d9fac4666d9ac0b9cf1aa5110f0009 data/industrial_elixir/worldgen/configured_feature/deepslate_tin_ore.json
 6131fa989bbbabb759d0a74efcfd91e457d44d7b data/industrial_elixir/worldgen/configured_feature/lead_ore.json
 f6518a8afb2c4037ed388fd0f8ccbed31601bc3c data/industrial_elixir/worldgen/configured_feature/patch_coffee.json
-d421bc5c2105e84b91810e41bd284c8c78ecf68c data/industrial_elixir/worldgen/configured_feature/rubber_tree.json
+7bbb1074534042e28ffb6cebdd8c07915dd85c48 data/industrial_elixir/worldgen/configured_feature/rubber_tree.json
 e97f4fdd1af344229e0ef0b878ba71e6aaebfedd data/industrial_elixir/worldgen/configured_feature/sacred_ore.json
 34d0916476869425ef775e70bdf6747964e36bdb data/industrial_elixir/worldgen/configured_feature/tin_ore.json
 f7ca604331db6fb215b0803a0a4bb2e0337e781b data/industrial_elixir/worldgen/placed_feature/deepslate_lead_ore_placed.json

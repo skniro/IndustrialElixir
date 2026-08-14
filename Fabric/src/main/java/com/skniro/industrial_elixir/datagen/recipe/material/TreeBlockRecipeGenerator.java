@@ -11,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,7 +32,7 @@ public class TreeBlockRecipeGenerator extends FabricRecipeProvider {
                 this.woodenBoat(GrowableOresItems.RUBBER_BOAT, GeneralBlocks.Rubber_PLANKS);
                 this.shelf(GeneralBlocks.Rubber_SHELF, GeneralBlocks.STRIPPED_Rubber_LOG);
                 this.chestBoat(GrowableOresItems.RUBBER_CHEST_BOAT, GrowableOresItems.RUBBER_BOAT);
-                this.hangingSign(MapleSignBlocks.Rubber_HANGING_SIGN, GeneralBlocks.STRIPPED_Rubber_LOG);
+                this.hangingSignBuilder(MapleSignBlocks.Rubber_HANGING_SIGN, Ingredient.of(GeneralBlocks.STRIPPED_Rubber_LOG));
                 generateRecipes(GrowableOresBlockFamilies.RUBBER_PLANKS, FeatureFlags.VANILLA_SET);
 
                 shapeless(RecipeCategory.MISC, GeneralBlocks.Bronze_Block)

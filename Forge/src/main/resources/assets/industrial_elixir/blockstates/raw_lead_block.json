@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "industrial_elixir:block/raw_lead_block"
+    }
+  }
+}

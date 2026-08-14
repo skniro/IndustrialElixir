@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:molecular_transformer",
+  "energy": 9000000,
+  "ingredient": "minecraft:iron_ingot",
+  "result": {
+    "id": "industrial_elixir:iridium_ore"
+  }
+}

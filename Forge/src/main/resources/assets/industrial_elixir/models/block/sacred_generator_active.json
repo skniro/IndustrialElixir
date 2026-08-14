@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/sacred_generator_bottom",
+    "east": "industrial_elixir:block/sacred_generator_side",
+    "north": "industrial_elixir:block/sacred_generator_front_active",
+    "particle": "industrial_elixir:block/sacred_generator_side",
+    "south": "industrial_elixir:block/sacred_generator_side",
+    "up": "industrial_elixir:block/sacred_generator_top_active",
+    "west": "industrial_elixir:block/sacred_generator_side"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "industrial_elixir:brew_reactor",
+  "count": 1,
+  "fluid": "minecraft:water",
+  "fluid_amount": 1000,
+  "ingredient": "minecraft:rabbit_foot",
+  "ingredient2": "minecraft:glass_bottle",
+  "result": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "industrial_elixir:super_slowness"
+      }
+    },
+    "id": "minecraft:potion"
+  }
+}

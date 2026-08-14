@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "industrial_elixir:tin_ingot",
     "industrial_elixir:tin_ingot",

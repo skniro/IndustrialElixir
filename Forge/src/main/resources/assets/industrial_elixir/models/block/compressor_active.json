@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/compressor_top",
+    "east": "industrial_elixir:block/compressor_side",
+    "north": "industrial_elixir:block/compressor_front_active",
+    "particle": "industrial_elixir:block/compressor_side",
+    "south": "industrial_elixir:block/compressor_side",
+    "up": "industrial_elixir:block/compressor_top",
+    "west": "industrial_elixir:block/compressor_side"
+  }
+}

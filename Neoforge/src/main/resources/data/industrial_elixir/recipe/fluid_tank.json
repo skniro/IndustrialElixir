@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "E": "industrial_elixir:empty_cell",
     "I": "industrial_elixir:iron_plate"

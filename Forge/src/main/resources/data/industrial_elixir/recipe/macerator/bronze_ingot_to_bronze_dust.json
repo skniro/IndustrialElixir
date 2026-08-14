@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:bronze_ingot",
+  "result": {
+    "id": "industrial_elixir:bronze_dust"
+  }
+}

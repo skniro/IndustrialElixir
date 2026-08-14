@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:wheat_seeds",
+  "process_time": 600,
+  "result": {
+    "count": 3,
+    "id": "minecraft:wheat"
+  },
+  "result2": {
+    "id": "minecraft:wheat_seeds"
+  }
+}

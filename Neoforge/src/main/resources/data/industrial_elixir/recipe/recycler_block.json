@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "C": "minecraft:glowstone_dust",
     "D": "#minecraft:dirt",

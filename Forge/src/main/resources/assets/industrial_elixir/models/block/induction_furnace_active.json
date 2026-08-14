@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/induction_furnace_bottom",
+    "east": "industrial_elixir:block/induction_furnace_side_active",
+    "north": "industrial_elixir:block/induction_furnace_front_active",
+    "particle": "industrial_elixir:block/induction_furnace_side",
+    "south": "industrial_elixir:block/induction_furnace_back",
+    "up": "industrial_elixir:block/induction_furnace_top",
+    "west": "industrial_elixir:block/induction_furnace_side_active"
+  }
+}

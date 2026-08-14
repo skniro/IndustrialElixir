@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:nether_quartz_cane",
-    "result": {
-        "id": "minecraft:quartz",
-        "count": 4
-    }
-}

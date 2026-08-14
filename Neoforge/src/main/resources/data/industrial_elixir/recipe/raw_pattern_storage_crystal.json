@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "E": "industrial_elixir:obsidian_dust",
     "I": "industrial_elixir:silicon_dioxide_dust"

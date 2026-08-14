@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "industrial_elixir:iron_plate",
     "C": "industrial_elixir:coolant_cell_10k",

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "F": "industrial_elixir:machine",
     "G": "industrial_elixir:energy_crystal",

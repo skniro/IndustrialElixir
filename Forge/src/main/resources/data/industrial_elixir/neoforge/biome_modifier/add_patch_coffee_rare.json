@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "minecraft:old_growth_pine_taiga"
+  ],
+  "features": "industrial_elixir:patch_coffee_rare",
+  "step": "vegetal_decoration"
+}

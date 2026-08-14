@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "C": "minecraft:furnace",
     "G": "industrial_elixir:iron_plate"

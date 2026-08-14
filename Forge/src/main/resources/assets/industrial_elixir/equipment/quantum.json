@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "horse_body": [
+      {
+        "texture": "industrial_elixir:quantum"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "industrial_elixir:quantum"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "industrial_elixir:quantum"
+      }
+    ]
+  }
+}

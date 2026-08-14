@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "I": "industrial_elixir:iron_plate",
     "T": "minecraft:iron_ingot"

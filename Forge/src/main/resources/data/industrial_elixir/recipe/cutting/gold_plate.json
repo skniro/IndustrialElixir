@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:cutting",
+  "count": 1,
+  "ingredient": "minecraft:gold_block",
+  "result": {
+    "count": 9,
+    "id": "industrial_elixir:gold_plate"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:gold_plate",
+  "result": {
+    "id": "industrial_elixir:gold_dust"
+  }
+}

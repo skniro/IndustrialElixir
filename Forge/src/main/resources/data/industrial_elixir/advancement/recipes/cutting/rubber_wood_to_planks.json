@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rubber_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:rubber_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:rubber_wood_to_planks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rubber_wood"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:rubber_wood_to_planks"
+    ]
+  }
+}

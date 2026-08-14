@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "b": "industrial_elixir:plaster",
-    "i": "minecraft:green_dye"
+    "i": "minecraft:red_dye"
   },
   "pattern": [
     "bbb",

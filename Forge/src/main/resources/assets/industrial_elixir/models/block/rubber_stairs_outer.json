@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "industrial_elixir:block/rubber_planks",
+    "side": "industrial_elixir:block/rubber_planks",
+    "top": "industrial_elixir:block/rubber_planks"
+  }
+}

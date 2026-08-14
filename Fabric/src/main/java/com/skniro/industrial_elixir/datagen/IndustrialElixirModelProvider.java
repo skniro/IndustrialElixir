@@ -58,8 +58,6 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createTrivialCube(GeneralBlocks.Rubber_LEAVES);
         blockStateModelGenerator.createShelf(GeneralBlocks.Rubber_SHELF, GeneralBlocks.STRIPPED_Rubber_WOOD);
 
-        blockStateModelGenerator.createHangingSign(GeneralBlocks.STRIPPED_Rubber_LOG, MapleSignBlocks.Rubber_HANGING_SIGN, MapleSignBlocks.Rubber_WALL_HANGING_SIGN);
-
         //PLASTER
         blockStateModelGenerator.family(GeneralBlocks.GREEN_PLASTER);
         blockStateModelGenerator.family(GeneralBlocks.PLASTER);

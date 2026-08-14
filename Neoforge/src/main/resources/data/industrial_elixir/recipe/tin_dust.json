@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "industrial_elixir:small_tin_dust",
     "industrial_elixir:small_tin_dust",

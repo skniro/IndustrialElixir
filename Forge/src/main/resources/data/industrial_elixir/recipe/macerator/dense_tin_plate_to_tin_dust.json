@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "industrial_elixir:dense_tin_plate",
+  "result": {
+    "count": 9,
+    "id": "industrial_elixir:tin_dust"
+  }
+}

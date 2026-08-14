@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/macerator_bottom",
+    "east": "industrial_elixir:block/macerator_side",
+    "north": "industrial_elixir:block/macerator_front",
+    "particle": "industrial_elixir:block/macerator_side",
+    "south": "industrial_elixir:block/macerator_side",
+    "up": "industrial_elixir:block/macerator_top",
+    "west": "industrial_elixir:block/macerator_side"
+  }
+}

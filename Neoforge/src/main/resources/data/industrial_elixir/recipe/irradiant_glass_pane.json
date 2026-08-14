@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "D": "industrial_elixir:irradiant_sacred",
     "G": "minecraft:glass",

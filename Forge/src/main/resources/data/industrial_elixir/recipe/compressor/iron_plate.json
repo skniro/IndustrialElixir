@@ -1,0 +1,8 @@
+{
+  "type": "industrial_elixir:compressor",
+  "count": 1,
+  "ingredient": "industrial_elixir:iron_dust",
+  "result": {
+    "id": "industrial_elixir:iron_plate"
+  }
+}

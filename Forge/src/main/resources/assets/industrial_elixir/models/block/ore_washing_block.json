@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_elixir:block/ore_washing_block_bottom",
+    "east": "industrial_elixir:block/ore_washing_block_side",
+    "north": "industrial_elixir:block/ore_washing_block_front",
+    "particle": "industrial_elixir:block/ore_washing_block_side",
+    "south": "industrial_elixir:block/ore_washing_block_back",
+    "up": "industrial_elixir:block/ore_washing_block_top",
+    "west": "industrial_elixir:block/ore_washing_block_side"
+  }
+}

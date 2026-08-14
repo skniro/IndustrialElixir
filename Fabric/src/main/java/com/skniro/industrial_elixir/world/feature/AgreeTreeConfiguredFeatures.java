@@ -3,12 +3,14 @@ package com.skniro.industrial_elixir.world.feature;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.world.gen.trunk.RubberTrunkPlacer;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -26,13 +28,16 @@ public class AgreeTreeConfiguredFeatures {
     }
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> featureRegisterable) {
+        HolderGetter<Biome> biomes = featureRegisterable.lookup(Registries.BIOME);
+        BlockStateProvider belowTrunkProvider = TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes);
         register(featureRegisterable, Rubber_TREE, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(GeneralBlocks.Rubber_LOG),
                         new RubberTrunkPlacer(4, 2, 0, GeneralBlocks.Rubber_Rubber_LOG.defaultBlockState(), 0.1F),
                         BlockStateProvider.simple(GeneralBlocks.Rubber_LEAVES),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-                        new TwoLayersFeatureSize(1, 0, 1)).build());
+                        new TwoLayersFeatureSize(1, 0, 1),
+                        belowTrunkProvider).build());
     }
 
 

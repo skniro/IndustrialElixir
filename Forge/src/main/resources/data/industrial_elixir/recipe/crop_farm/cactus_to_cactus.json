@@ -1,0 +1,9 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:cactus",
+  "process_time": 2400,
+  "result": {
+    "id": "minecraft:cactus"
+  }
+}

@@ -25,7 +25,7 @@ public class CuttingRecipeGenerator extends FabricRecipeProvider {
                 createCutting(Items.OBSIDIAN, GrowableOresItems.OBSIDIAN_PLATE,4).save(output);
                 createCutting(Items.GOLD_BLOCK, GrowableOresItems.GOLD_PLATE,9).save(output);
                 createCutting(Items.LAPIS_BLOCK, GrowableOresItems.LAPIS_PLATE,9).save(output);
-                createCutting(Items.COPPER_BLOCK, GrowableOresItems.COPPER_PLATE,9).save(output);
+                createCutting(Items.COPPER_BLOCK.weathering().unaffected(), GrowableOresItems.COPPER_PLATE,9).save(output);
                 createCutting(GeneralBlocks.Bronze_Block, GrowableOresItems.BRONZE_PLATE,9).save(output);
                 createCutting(GeneralBlocks.Lead_Block, GrowableOresItems.LEAD_PLATE,9).save(output);
                 createCutting(GeneralBlocks.Tin_Block, GrowableOresItems.TIN_PLATE,9).save(output);

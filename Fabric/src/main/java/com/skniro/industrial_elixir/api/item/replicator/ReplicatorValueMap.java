@@ -160,7 +160,7 @@ public class ReplicatorValueMap {
         register(Items.NETHER_GOLD_ORE, 5, 0);
 
         register(Items.COPPER_INGOT, 10, 0);
-        register(Items.COPPER_BLOCK, 90, 0);
+        register(Items.COPPER_BLOCK.weathering().unaffected(), 90, 0);
         register(Items.RAW_COPPER, 5, 0);
         register(Items.RAW_COPPER_BLOCK, 45, 0);
         register(Items.DEEPSLATE_COPPER_ORE, 10, 0);

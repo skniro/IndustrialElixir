@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "b": "industrial_elixir:plaster",
+    "i": "minecraft:purple_dye"
+  },
+  "pattern": [
+    "bbb",
+    "bib",
+    "bbb"
+  ],
+  "result": {
+    "count": 8,
+    "id": "industrial_elixir:purple_plaster"
+  }
+}

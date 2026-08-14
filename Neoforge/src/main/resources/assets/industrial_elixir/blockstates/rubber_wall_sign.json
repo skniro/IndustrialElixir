@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "industrial_elixir:block/rubber_sign"
+    "facing=east": {
+      "model": "industrial_elixir:block/rubber_wall_sign",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "industrial_elixir:block/rubber_wall_sign",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "industrial_elixir:block/rubber_wall_sign"
+    },
+    "facing=west": {
+      "model": "industrial_elixir:block/rubber_wall_sign",
+      "y": 90
     }
   }
 }

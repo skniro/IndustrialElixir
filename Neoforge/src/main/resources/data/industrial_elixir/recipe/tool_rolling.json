@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "I": "minecraft:stick",
     "T": "minecraft:iron_ingot"

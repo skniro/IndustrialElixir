@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "industrial_elixir:gold_cable",
     "industrial_elixir:rubber"

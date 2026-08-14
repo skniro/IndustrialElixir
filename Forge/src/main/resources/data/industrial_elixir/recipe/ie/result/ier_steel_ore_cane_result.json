@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": "industrial_elixir:ier_steel_ore_cane"
+    },
+    "result": {
+        "id": "industrial_elixir:steel_ingot",
+        "count": 1
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "forge:conditions": [],
+    "type": "industrial_elixir:cane_converter",
+    "ingredient": "industrial_elixir:ier_sacred_ore_cane",
+    "result": {
+        "id": "industrial_elixir:sacred_ingot",
+        "count": 1
+    }
+}

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "industrial_elixir:advanced_circuit",
     "C": "industrial_elixir:copper_plate",

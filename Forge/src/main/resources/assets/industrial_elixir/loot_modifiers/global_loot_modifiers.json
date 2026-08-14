@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "entries": [
+    "industrial_elixir:chests/abandoned_mineshaft",
+    "industrial_elixir:chests/ancient_city",
+    "industrial_elixir:chests/bastion_bridge",
+    "industrial_elixir:chests/bastion_hoglin_stable",
+    "industrial_elixir:chests/bastion_other",
+    "industrial_elixir:chests/bastion_treasure",
+    "industrial_elixir:chests/buried_treasure",
+    "industrial_elixir:chests/desert_pyramid",
+    "industrial_elixir:chests/end_city_treasure",
+    "industrial_elixir:chests/igloo_chest",
+    "industrial_elixir:chests/jungle_temple",
+    "industrial_elixir:chests/jungle_temple_dispenser",
+    "industrial_elixir:chests/nether_bridge",
+    "industrial_elixir:chests/pillager_outpost",
+    "industrial_elixir:chests/ruined_portal",
+    "industrial_elixir:chests/shipwreck_map",
+    "industrial_elixir:chests/shipwreck_supply",
+    "industrial_elixir:chests/shipwreck_treasure",
+    "industrial_elixir:chests/simple_dungeon",
+    "industrial_elixir:chests/stronghold_corridor",
+    "industrial_elixir:chests/stronghold_crossing",
+    "industrial_elixir:chests/underwater_ruin_big",
+    "industrial_elixir:chests/underwater_ruin_small",
+    "industrial_elixir:chests/woodland_mansion"
+  ]
+}

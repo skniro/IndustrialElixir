@@ -1,7 +1,7 @@
 package com.skniro.industrial_elixir.api.data.recipe;
 
 import com.skniro.industrial_elixir.recipe.machine.MolecularTransformerCraftingRecipe;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
 import net.minecraft.world.item.ItemStackTemplate;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_center",
+  "textures": {
+    "all": "industrial_elixir:block/rubber_shelf",
+    "particle": "industrial_elixir:block/stripped_rubber_wood"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_industrial_diamond": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:industrial_diamond"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:diamond"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_industrial_diamond"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:diamond"
+    ]
+  }
+}

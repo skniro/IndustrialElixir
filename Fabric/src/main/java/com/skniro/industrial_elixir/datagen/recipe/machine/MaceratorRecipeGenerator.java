@@ -30,8 +30,8 @@ public class MaceratorRecipeGenerator extends FabricRecipeProvider {
             @Override
             public void buildRecipes() {
 
-                createMacerator(Items.STRING, 2).input(Items.WHITE_WOOL)
-                        .unlockedBy("has_base_item", has(Items.WHITE_WOOL)).save(output);
+                createMacerator(Items.STRING, 2).input(Items.WOOL.white())
+                        .unlockedBy("has_base_item", has(Items.WOOL.white())).save(output);
                 createMacerator(GrowableOresItems.COAL_DUST).input(Items.COAL)
                         .unlockedBy("has_base_item", has(Items.COAL)).save(output);
                 createMacerator(GrowableOresItems.COAL_DUST,9).input(Items.COAL_BLOCK)

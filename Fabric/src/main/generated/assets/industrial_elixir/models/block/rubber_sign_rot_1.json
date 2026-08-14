@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_sign_rot_1",
+  "textures": {
+    "all": "industrial_elixir:block/rubber_sign",
+    "particle": "industrial_elixir:block/rubber_planks"
+  }
+}

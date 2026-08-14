@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:leather_cane",
-    "result": {
-        "id": "minecraft:leather",
-        "count": 2
-    }
-}

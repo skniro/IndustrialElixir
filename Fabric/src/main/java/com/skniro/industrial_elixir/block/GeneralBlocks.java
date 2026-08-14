@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class GeneralBlocks {
     public static final Block Lead_Ore = registerBlock("lead_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
@@ -112,35 +113,35 @@ public class GeneralBlocks {
 
     //PLASTER
     public static final Block GREEN_PLASTER =registerBlock("green_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.green())));
     public static final Block PLASTER =registerBlock("plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.white())));
     public static final Block ORANGE_PLASTER =registerBlock("orange_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.orange())));
     public static final Block MAGENTA_PLASTER =registerBlock("magenta_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.magenta())));
     public static final Block LIGHT_BLUE_PLASTER =registerBlock("light_blue_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_BLUE_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.lightBlue())));
     public static final Block YELLOW_PLASTER =registerBlock("yellow_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.yellow())));
     public static final Block LIME_PLASTER =registerBlock("lime_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.lime())));
     public static final Block PINK_PLASTER =registerBlock("pink_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.pink())));
     public static final Block GRAY_PLASTER =registerBlock("gray_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.GRAY_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.gray())));
     public static final Block LIGHT_GRAY_PLASTER =registerBlock("light_gray_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_GRAY_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.lightGray())));
     public static final Block CYAN_PLASTER =registerBlock("cyan_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CYAN_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.cyan())));
     public static final Block PURPLE_PLASTER =registerBlock("purple_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.purple())));
     public static final Block BLUE_PLASTER =registerBlock("blue_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.blue())));
     public static final Block BROWN_PLASTER =registerBlock("brown_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.brown())));
     public static final Block RED_PLASTER =registerBlock("red_plaster",
-            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CONCRETE)));
+            Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.red())));
 
     //Coffee
     public static final Block Coffee_Block = registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));

@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:copper_ingot",
+  "result": {
+    "id": "industrial_elixir:copper_dust"
+  }
+}

@@ -80,11 +80,11 @@ public class FluidPipeRenderer implements BlockEntityRenderer<FluidPipeBlockEnti
 
     private static ItemStack getFluidDisplayStack(Fluid fluid) {
         if (fluid.isSame(Fluids.WATER) || fluid.isSame(Fluids.FLOWING_WATER)) {
-            return new ItemStack(Items.LIGHT_BLUE_STAINED_GLASS);
+            return new ItemStack(Items.STAINED_GLASS.lightBlue());
         }
         if (fluid.isSame(Fluids.LAVA) || fluid.isSame(Fluids.FLOWING_LAVA)) {
-            return new ItemStack(Items.ORANGE_STAINED_GLASS);
+            return new ItemStack(Items.STAINED_GLASS.orange());
         }
-        return new ItemStack(Items.CYAN_STAINED_GLASS);
+        return new ItemStack(Items.STAINED_GLASS.cyan());
     }
 }

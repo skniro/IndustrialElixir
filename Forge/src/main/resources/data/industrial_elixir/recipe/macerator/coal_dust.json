@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:coal",
+  "result": {
+    "id": "industrial_elixir:coal_dust"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_silver_ore_cane": {
+      "conditions": {
+        "items": [
+          {
+            "items": "industrial_elixir:ier_silver_ore_cane"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:ier_silver_ore_cane_to_ier_silver_ore_cane"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_silver_ore_cane"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:ier_silver_ore_cane_to_ier_silver_ore_cane"
+    ]
+  }
+}

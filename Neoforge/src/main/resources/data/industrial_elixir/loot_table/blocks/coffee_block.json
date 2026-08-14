@@ -7,7 +7,6 @@
   ],
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "block": "industrial_elixir:coffee_block",
@@ -25,7 +24,6 @@
       ],
       "functions": [
         {
-          "add": false,
           "count": {
             "type": "minecraft:uniform",
             "max": 3.0,
@@ -37,7 +35,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "block": "industrial_elixir:coffee_block",
@@ -55,7 +52,6 @@
       ],
       "functions": [
         {
-          "add": false,
           "count": {
             "type": "minecraft:uniform",
             "max": 2.0,

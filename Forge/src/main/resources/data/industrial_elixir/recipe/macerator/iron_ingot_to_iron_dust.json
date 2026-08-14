@@ -1,0 +1,7 @@
+{
+  "type": "industrial_elixir:macerator",
+  "ingredient": "minecraft:iron_ingot",
+  "result": {
+    "id": "industrial_elixir:iron_dust"
+  }
+}

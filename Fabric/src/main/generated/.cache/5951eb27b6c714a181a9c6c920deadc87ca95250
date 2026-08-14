@@ -1,4 +1,4 @@
-// 26.1.2	-999999999-01-01T00:00:00	Skniro's Industrial Elixir/Armor
+// 26.2	-999999999-01-01T00:00:00	Skniro's Industrial Elixir/Armor
 a62dfe358268a58fcf47c752725ac61387a97eb8 data/industrial_elixir/advancement/recipes/combat/bronze_boots.json
 316ac399ff1b97d7dbe087e83494c11feca5c5fc data/industrial_elixir/advancement/recipes/combat/bronze_chestplate.json
 27140e291b02ecec37aeb0b8239fea791982158c data/industrial_elixir/advancement/recipes/combat/bronze_helmet.json
@@ -19,7 +19,7 @@ d8c0e74066907c05a6510cbe7ae10c0944ce6c20 data/industrial_elixir/recipe/bronze_ax
 fd564c8b5767725fce532367ac0f096238530556 data/industrial_elixir/recipe/bronze_chestplate.json
 cabdfaf3f7cfac1edccec71faa068b58a40c3229 data/industrial_elixir/recipe/bronze_helmet.json
 6c65a64bf1ba0b74e474771370e21d71850c8877 data/industrial_elixir/recipe/bronze_hoe.json
-9f9890b1f2b94b720a890df4c5bba6afa56f60bb data/industrial_elixir/recipe/bronze_ingot_from_smelting.json
+cbacf3285d2d0107d5650a37c417aa5f233d9e43 data/industrial_elixir/recipe/bronze_ingot_from_smelting.json
 c465f24eb633c3a5ed97304b28bef1c4a87b7603 data/industrial_elixir/recipe/bronze_leggings.json
 33ade9394d188e592f9b8362ac2711b1189c58eb data/industrial_elixir/recipe/bronze_pickaxe.json
 6bf44d1b1e22577a913d6981bd12581101c13521 data/industrial_elixir/recipe/bronze_shovel.json

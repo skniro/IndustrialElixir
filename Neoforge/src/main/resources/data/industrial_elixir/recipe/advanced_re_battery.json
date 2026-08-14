@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "B": "industrial_elixir:sulfur_dust",
     "C": "industrial_elixir:lead_dust",

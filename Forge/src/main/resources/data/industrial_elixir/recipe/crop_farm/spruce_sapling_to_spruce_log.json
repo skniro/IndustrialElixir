@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:spruce_sapling",
+  "process_time": 1600,
+  "result": {
+    "id": "minecraft:spruce_sapling"
+  },
+  "result2": {
+    "count": 6,
+    "id": "minecraft:spruce_log"
+  }
+}

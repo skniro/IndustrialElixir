@@ -1,0 +1,13 @@
+{
+  "type": "industrial_elixir:crop_farm",
+  "count": 1,
+  "ingredient": "minecraft:jungle_sapling",
+  "process_time": 1000,
+  "result": {
+    "id": "minecraft:jungle_sapling"
+  },
+  "result2": {
+    "count": 6,
+    "id": "minecraft:jungle_log"
+  }
+}

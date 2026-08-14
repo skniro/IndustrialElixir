@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:nether_star_cane",
-    "result": {
-        "id": "minecraft:nether_star",
-        "count": 1
-    }
-}

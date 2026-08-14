@@ -323,128 +323,128 @@ public class MaterialRecipeGenerator extends FabricRecipeProvider {
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.GREEN_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.GREEN_DYE)
+                        .define('i', Items.DYE.green())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.GREEN_DYE),
-                                has(Items.GREEN_DYE))
+                        .unlockedBy(getHasName(Items.DYE.green()),
+                                has(Items.DYE.green()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.ORANGE_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.ORANGE_DYE)
+                        .define('i', Items.DYE.orange())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.ORANGE_DYE),
-                                has(Items.ORANGE_DYE))
+                        .unlockedBy(getHasName(Items.DYE.orange()),
+                                has(Items.DYE.orange()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.MAGENTA_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.MAGENTA_DYE)
+                        .define('i', Items.DYE.magenta())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.MAGENTA_DYE),
-                                has(Items.MAGENTA_DYE))
+                        .unlockedBy(getHasName(Items.DYE.magenta()),
+                                has(Items.DYE.magenta()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.LIGHT_BLUE_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.LIGHT_BLUE_DYE)
+                        .define('i', Items.DYE.lightBlue())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.LIGHT_BLUE_DYE),
-                                has(Items.LIGHT_BLUE_DYE))
+                        .unlockedBy(getHasName(Items.DYE.lightBlue()),
+                                has(Items.DYE.lightBlue()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.YELLOW_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.YELLOW_DYE)
+                        .define('i', Items.DYE.yellow())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.YELLOW_DYE),
-                                has(Items.YELLOW_DYE))
+                        .unlockedBy(getHasName(Items.DYE.yellow()),
+                                has(Items.DYE.yellow()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.LIME_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.LIME_DYE)
+                        .define('i', Items.DYE.lime())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.LIME_DYE),
-                                has(Items.LIME_DYE))
+                        .unlockedBy(getHasName(Items.DYE.lime()),
+                                has(Items.DYE.lime()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.PINK_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.PINK_DYE)
+                        .define('i', Items.DYE.pink())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.PINK_DYE),
-                                has(Items.PINK_DYE))
+                        .unlockedBy(getHasName(Items.DYE.pink()),
+                                has(Items.DYE.pink()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.GRAY_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.GRAY_DYE)
+                        .define('i', Items.DYE.gray())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.GRAY_DYE),
-                                has(Items.GRAY_DYE))
+                        .unlockedBy(getHasName(Items.DYE.gray()),
+                                has(Items.DYE.gray()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.LIGHT_GRAY_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.LIGHT_GRAY_DYE)
+                        .define('i', Items.DYE.lightGray())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.LIGHT_GRAY_DYE),
-                                has(Items.LIGHT_GRAY_DYE))
+                        .unlockedBy(getHasName(Items.DYE.lightGray()),
+                                has(Items.DYE.lightGray()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.CYAN_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.CYAN_DYE)
+                        .define('i', Items.DYE.cyan())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.CYAN_DYE),
-                                has(Items.CYAN_DYE))
+                        .unlockedBy(getHasName(Items.DYE.cyan()),
+                                has(Items.DYE.cyan()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.PURPLE_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.PURPLE_DYE)
+                        .define('i', Items.DYE.purple())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.PURPLE_DYE),
-                                has(Items.PURPLE_DYE))
+                        .unlockedBy(getHasName(Items.DYE.purple()),
+                                has(Items.DYE.purple()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.BLUE_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.BLUE_DYE)
+                        .define('i', Items.DYE.blue())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.BLUE_DYE),
-                                has(Items.BLUE_DYE))
+                        .unlockedBy(getHasName(Items.DYE.blue()),
+                                has(Items.DYE.blue()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.BROWN_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.BROWN_DYE)
+                        .define('i', Items.DYE.brown())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.BROWN_DYE),
-                                has(Items.BROWN_DYE))
+                        .unlockedBy(getHasName(Items.DYE.brown()),
+                                has(Items.DYE.brown()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.RED_PLASTER,8).pattern("bbb").pattern("bib").pattern("bbb")
                         .define('b', GeneralBlocks.PLASTER)
-                        .define('i', Items.GREEN_DYE)
+                        .define('i', Items.DYE.red())
                         .unlockedBy(getHasName(GeneralBlocks.PLASTER),
                                 has(GeneralBlocks.PLASTER))
-                        .unlockedBy(getHasName(Items.RED_DYE),
-                                has(Items.RED_DYE))
+                        .unlockedBy(getHasName(Items.DYE.red()),
+                                has(Items.DYE.red()))
                         .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS ,GeneralBlocks.COBBLESTONE_STAIRS,6)
@@ -452,9 +452,9 @@ public class MaterialRecipeGenerator extends FabricRecipeProvider {
                         .pattern("bi ")
                         .pattern("bbb")
                         .define('b', Blocks.COBBLESTONE)
-                        .define('i', Items.BLUE_DYE)
-                        .unlockedBy(getHasName(Items.BLUE_DYE),
-                                has(Items.BLUE_DYE))
+                        .define('i', Items.DYE.blue())
+                        .unlockedBy(getHasName(Items.DYE.blue()),
+                                has(Items.DYE.blue()))
                         .save(output);
 
             }

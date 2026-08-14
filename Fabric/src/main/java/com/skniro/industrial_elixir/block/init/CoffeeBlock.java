@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -74,7 +75,7 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
     }
 
     public void onEntityCollision(BlockState state, Level world, BlockPos pos, Entity entity) {
-        if (entity instanceof LivingEntity && entity.getType() != EntityType.FOX && entity.getType() != EntityType.BEE) {
+        if (entity instanceof LivingEntity && entity.getType() != EntityTypes.FOX && entity.getType() != EntityTypes.BEE) {
             entity.makeStuckInBlock(state, new Vec3(0.800000011920929, 0.75, 0.800000011920929));
             if (!world.isClientSide() && (Integer)state.getValue(AGE) > 0 && (entity.xOld != entity.getX() || entity.zOld != entity.getZ())) {
                 double d = Math.abs(entity.getX() - entity.xOld);

@@ -41,7 +41,7 @@ public class CompressorRecipeGenerator extends FabricRecipeProvider {
                 createCompressor(GrowableOresItems.TIN_DUST).input(GrowableOresItems.SMALL_TIN_DUST, 9)
                         .unlockedBy("has_base_item", has(GrowableOresItems.SMALL_TIN_DUST)).save(output);
 
-                createCompressor(Items.COPPER_BLOCK).input(Items.COPPER_INGOT, 9)
+                createCompressor(Items.COPPER_BLOCK.weathering().unaffected()).input(Items.COPPER_INGOT, 9)
                         .unlockedBy("has_base_item", has(Items.COPPER_INGOT)).save(output);
                 createCompressor(GrowableOresItems.COPPER_PLATE).input(GrowableOresItems.COPPER_DUST, 1)
                         .unlockedBy("has_base_item", has(GrowableOresItems.COPPER_DUST)).save(output);

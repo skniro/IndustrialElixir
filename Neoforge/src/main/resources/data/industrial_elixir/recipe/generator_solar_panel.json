@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "C": "industrial_elixir:circuit",
     "E": "industrial_elixir:coal_dust",

@@ -1,8 +1,0 @@
-{
-    "type": "industrial_elixir:cane_converter",
-    "ingredient": "growable_ores:ender_pearl_cane",
-    "result": {
-        "id": "minecraft:ender_pearl",
-        "count": 1
-    }
-}

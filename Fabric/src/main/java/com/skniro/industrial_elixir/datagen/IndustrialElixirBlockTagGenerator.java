@@ -5,12 +5,14 @@ import com.skniro.industrial_elixir.block.GeneralBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 
+import static net.minecraft.tags.BlockItemTags.LOGS_THAT_BURN;
 import static net.minecraft.tags.BlockTags.*;
 
 public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockTagsProvider {
@@ -19,239 +21,239 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
    }
    @Override
    protected void addTags(HolderLookup.Provider arg) {
-      valueLookupBuilder(MINEABLE_WITH_PICKAXE)
-              .add(GeneralBlocks.Deepslate_Lead_Ore)
-              .add(GeneralBlocks.Deepslate_Tin_Ore)
-              .add(GeneralBlocks.Deepslate_SACRED_Ore)
-              .add(GeneralBlocks.Lead_Ore)
-              .add(GeneralBlocks.Tin_Ore)
-              .add(GeneralBlocks.SACRED_Ore)
-              .add(GrowableOresBlocks.GrowableOres_Block)
-              .add(GrowableOresBlocks.Macerator_Block,
-                      GrowableOresBlocks.Compressor_Block,
-                      GrowableOresBlocks.MetalFormerBlock,
+      builder(MINEABLE_WITH_PICKAXE)
+              .add(GeneralBlocks.Deepslate_Lead_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Deepslate_Tin_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Deepslate_SACRED_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Lead_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Tin_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.SACRED_Ore.builtInRegistryHolder().key())
+              .add(GrowableOresBlocks.GrowableOres_Block.builtInRegistryHolder().key())
+              .add(GrowableOresBlocks.Macerator_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Compressor_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MetalFormerBlock.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.COPPER_CABLE,
-                      GrowableOresBlocks.TIN_CABLE,
-                      GrowableOresBlocks.GOLD_CABLE,
-                      GrowableOresBlocks.HV_CABLE,
-                      GrowableOresBlocks.GLASSFIBER_CABLE,
+                      GrowableOresBlocks.COPPER_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.TIN_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GOLD_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.HV_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GLASSFIBER_CABLE.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.INSULATED_TIN_CABLE,
-                      GrowableOresBlocks.INSULATED_COPPER_CABLE,
-                      GrowableOresBlocks.INSULATED_GOLD_CABLE,
-                      GrowableOresBlocks.INSULATED_HV_CABLE,
+                      GrowableOresBlocks.INSULATED_TIN_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INSULATED_COPPER_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INSULATED_GOLD_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INSULATED_HV_CABLE.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.COAL_GENERATOR,
-                      GrowableOresBlocks.GENERATOR_Wind_Mill,
+                      GrowableOresBlocks.COAL_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_Wind_Mill.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.EnergyBox,
-                      GrowableOresBlocks.ChargePad,
-                      GrowableOresBlocks.CESU,
-                      GrowableOresBlocks.MFE,
-                      GrowableOresBlocks.MFSU,
+                      GrowableOresBlocks.EnergyBox.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.ChargePad.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.CESU.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFSU.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.CESU_CHARGE_PAD,
-                      GrowableOresBlocks.MFE_CHARGE_PAD,
-                      GrowableOresBlocks.MFSU_CHARGE_PAD,
+                      GrowableOresBlocks.CESU_CHARGE_PAD.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFE_CHARGE_PAD.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFSU_CHARGE_PAD.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.MolecularTransformerBlock,
+                      GrowableOresBlocks.MolecularTransformerBlock.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.GENERATOR_SolarPanel,
-                      GrowableOresBlocks.GENERATOR_ADVANCED_SOLAR_PANEL,
-                      GrowableOresBlocks.GENERATOR_HYBRID_SOLAR_PANEL,
-                      GrowableOresBlocks.GENERATOR_ULTIMATE_SOLAR_PANEL,
-                      GrowableOresBlocks.GENERATOR_QUANTUM_SOLAR_PANEL,
+                      GrowableOresBlocks.GENERATOR_SolarPanel.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_ADVANCED_SOLAR_PANEL.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_HYBRID_SOLAR_PANEL.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_ULTIMATE_SOLAR_PANEL.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_QUANTUM_SOLAR_PANEL.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.Extractor_Block,
+                      GrowableOresBlocks.Extractor_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.EV_TRANSFORMER,
-                      GrowableOresBlocks.HV_TRANSFORMER,
-                      GrowableOresBlocks.MV_TRANSFORMER,
-                      GrowableOresBlocks.LV_TRANSFORMER,
+                      GrowableOresBlocks.EV_TRANSFORMER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.HV_TRANSFORMER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MV_TRANSFORMER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.LV_TRANSFORMER.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.Iron_Furnace_Block,
-                      GeneralBlocks.Raw_Lead_Block,
-                      GeneralBlocks.Raw_Tin_Block,
-                      GeneralBlocks.Raw_SACRED_Block,
+                      GrowableOresBlocks.Iron_Furnace_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Raw_Lead_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Raw_Tin_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Raw_SACRED_Block.builtInRegistryHolder().key(),
 
-                      GeneralBlocks.Lead_Block,
-                      GeneralBlocks.Tin_Block,
-                      GeneralBlocks.SACRED_Block,
-                      GeneralBlocks.Silver_Block,
-                      GeneralBlocks.Bronze_Block,
-                      GeneralBlocks.Steel_Block,
+                      GeneralBlocks.Lead_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Tin_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.SACRED_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Silver_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Bronze_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Steel_Block.builtInRegistryHolder().key(),
 
-                      GeneralBlocks.Advanced_Machine,
-                      GeneralBlocks.Machine,
-                      GrowableOresBlocks.ElectricFurnace_Block,
-                      GrowableOresBlocks.RECYCLER_Block,
-                      GrowableOresBlocks.CUTTING_Block,
+                      GeneralBlocks.Advanced_Machine.builtInRegistryHolder().key(),
+                      GeneralBlocks.Machine.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.ElectricFurnace_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.RECYCLER_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.CUTTING_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.MATTER_GENERATOR,
-                      GrowableOresBlocks.FLUID_GENERATOR,
-                      GrowableOresBlocks.NUCLEAR_REACTOR,
-                      GrowableOresBlocks.SACRED_GENERATOR,
-                      GrowableOresBlocks.INDUCTION_FURNACE,
-                      GrowableOresBlocks.HEAT_CENTRIFUGE,
-                      GrowableOresBlocks.PATTERN_STORAGE,
+                      GrowableOresBlocks.MATTER_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.FLUID_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.NUCLEAR_REACTOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.SACRED_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INDUCTION_FURNACE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.HEAT_CENTRIFUGE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.PATTERN_STORAGE.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.Pipe_Wooden_Iten_Block,
-                      GrowableOresBlocks.Pipe_Stone_Item_Block,
-                      GrowableOresBlocks.Pipe_Wooden_Fluid_Block,
-                      GrowableOresBlocks.Pipe_Stone_Fluid_Block,
+                      GrowableOresBlocks.Pipe_Wooden_Iten_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Pipe_Stone_Item_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Pipe_Wooden_Fluid_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Pipe_Stone_Fluid_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.FLUID_TANK_BLOCK,
-                      GrowableOresBlocks.Brew_Reactor_BLOCK,
-                      GrowableOresBlocks.Ore_Washing_Block,
-                      GrowableOresBlocks.Replicator,
+                      GrowableOresBlocks.FLUID_TANK_BLOCK.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Brew_Reactor_BLOCK.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Ore_Washing_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Replicator.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.CHUNK_LOADER,
-                      GrowableOresBlocks.Electric_Heater_Block,
-                      GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR,
-                      GrowableOresBlocks.BLAST_FURNACE_BLOCK,
-                      GrowableOresBlocks.VENDOR_MACHINE_Block,
-                      GrowableOresBlocks.CROP_FARM_Block,
-                      GrowableOresBlocks.COFFEE_MACHINE_Block)
+                      GrowableOresBlocks.CHUNK_LOADER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Electric_Heater_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.BLAST_FURNACE_BLOCK.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.VENDOR_MACHINE_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.CROP_FARM_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.COFFEE_MACHINE_Block.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(NEEDS_IRON_TOOL)
-              .add(GeneralBlocks.Deepslate_Lead_Ore)
-              .add(GeneralBlocks.Deepslate_SACRED_Ore)
-              .add(GeneralBlocks.Lead_Ore)
-              .add(GeneralBlocks.SACRED_Ore)
-              .add(GrowableOresBlocks.Macerator_Block,
-                      GrowableOresBlocks.Compressor_Block,
-                      GrowableOresBlocks.MetalFormerBlock,
+      builder(NEEDS_IRON_TOOL)
+              .add(GeneralBlocks.Deepslate_Lead_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Deepslate_SACRED_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Lead_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.SACRED_Ore.builtInRegistryHolder().key())
+              .add(GrowableOresBlocks.Macerator_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Compressor_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MetalFormerBlock.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.GOLD_CABLE,
-                      GrowableOresBlocks.HV_CABLE,
-                      GrowableOresBlocks.GLASSFIBER_CABLE,
+                      GrowableOresBlocks.GOLD_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.HV_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GLASSFIBER_CABLE.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.INSULATED_TIN_CABLE,
-                      GrowableOresBlocks.INSULATED_COPPER_CABLE,
-                      GrowableOresBlocks.INSULATED_GOLD_CABLE,
-                      GrowableOresBlocks.INSULATED_HV_CABLE,
+                      GrowableOresBlocks.INSULATED_TIN_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INSULATED_COPPER_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INSULATED_GOLD_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INSULATED_HV_CABLE.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.COAL_GENERATOR,
-                      GrowableOresBlocks.GENERATOR_Wind_Mill,
+                      GrowableOresBlocks.COAL_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_Wind_Mill.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.CESU,
-                      GrowableOresBlocks.MFE,
-                      GrowableOresBlocks.MFSU,
+                      GrowableOresBlocks.CESU.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFSU.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.CESU_CHARGE_PAD,
-                      GrowableOresBlocks.MFE_CHARGE_PAD,
-                      GrowableOresBlocks.MFSU_CHARGE_PAD,
+                      GrowableOresBlocks.CESU_CHARGE_PAD.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFE_CHARGE_PAD.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MFSU_CHARGE_PAD.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.MolecularTransformerBlock,
+                      GrowableOresBlocks.MolecularTransformerBlock.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.GENERATOR_SolarPanel,
-                      GrowableOresBlocks.GENERATOR_ADVANCED_SOLAR_PANEL,
-                      GrowableOresBlocks.GENERATOR_HYBRID_SOLAR_PANEL,
-                      GrowableOresBlocks.GENERATOR_ULTIMATE_SOLAR_PANEL,
-                      GrowableOresBlocks.GENERATOR_QUANTUM_SOLAR_PANEL,
+                      GrowableOresBlocks.GENERATOR_SolarPanel.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_ADVANCED_SOLAR_PANEL.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_HYBRID_SOLAR_PANEL.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_ULTIMATE_SOLAR_PANEL.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.GENERATOR_QUANTUM_SOLAR_PANEL.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.Extractor_Block,
+                      GrowableOresBlocks.Extractor_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.HV_TRANSFORMER,
-                      GrowableOresBlocks.MV_TRANSFORMER,
-                      GrowableOresBlocks.LV_TRANSFORMER,
+                      GrowableOresBlocks.HV_TRANSFORMER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.MV_TRANSFORMER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.LV_TRANSFORMER.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.Iron_Furnace_Block,
-                      GeneralBlocks.Raw_Lead_Block,
-                      GeneralBlocks.Raw_SACRED_Block,
+                      GrowableOresBlocks.Iron_Furnace_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Raw_Lead_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Raw_SACRED_Block.builtInRegistryHolder().key(),
 
-                      GeneralBlocks.Lead_Block,
-                      GeneralBlocks.SACRED_Block,
-                      GeneralBlocks.Silver_Block,
-                      GeneralBlocks.Bronze_Block,
-                      GeneralBlocks.Steel_Block,
+                      GeneralBlocks.Lead_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.SACRED_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Silver_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Bronze_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Steel_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.ElectricFurnace_Block,
-                      GrowableOresBlocks.RECYCLER_Block,
-                      GrowableOresBlocks.CUTTING_Block,
+                      GrowableOresBlocks.ElectricFurnace_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.RECYCLER_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.CUTTING_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.MATTER_GENERATOR,
-                      GrowableOresBlocks.FLUID_GENERATOR,
-                      GrowableOresBlocks.NUCLEAR_REACTOR,
-                      GrowableOresBlocks.SACRED_GENERATOR,
-                      GrowableOresBlocks.INDUCTION_FURNACE,
-                      GrowableOresBlocks.HEAT_CENTRIFUGE,
-                      GrowableOresBlocks.PATTERN_STORAGE,
+                      GrowableOresBlocks.MATTER_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.FLUID_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.NUCLEAR_REACTOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.SACRED_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.INDUCTION_FURNACE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.HEAT_CENTRIFUGE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.PATTERN_STORAGE.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.Pipe_Wooden_Iten_Block,
-                      GrowableOresBlocks.Pipe_Stone_Item_Block,
-                      GrowableOresBlocks.Pipe_Wooden_Fluid_Block,
-                      GrowableOresBlocks.Pipe_Stone_Fluid_Block,
+                      GrowableOresBlocks.Pipe_Wooden_Iten_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Pipe_Stone_Item_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Pipe_Wooden_Fluid_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Pipe_Stone_Fluid_Block.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.FLUID_TANK_BLOCK,
-                      GrowableOresBlocks.Brew_Reactor_BLOCK,
-                      GrowableOresBlocks.Ore_Washing_Block,
-                      GrowableOresBlocks.Replicator,
+                      GrowableOresBlocks.FLUID_TANK_BLOCK.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Brew_Reactor_BLOCK.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Ore_Washing_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Replicator.builtInRegistryHolder().key(),
 
-                      GrowableOresBlocks.CHUNK_LOADER,
-                      GrowableOresBlocks.Electric_Heater_Block,
-                      GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR,
-                      GrowableOresBlocks.BLAST_FURNACE_BLOCK,
-                      GrowableOresBlocks.VENDOR_MACHINE_Block,
-                      GrowableOresBlocks.CROP_FARM_Block,
-                      GrowableOresBlocks.COFFEE_MACHINE_Block)
+                      GrowableOresBlocks.CHUNK_LOADER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.Electric_Heater_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.BLAST_FURNACE_BLOCK.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.VENDOR_MACHINE_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.CROP_FARM_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.COFFEE_MACHINE_Block.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(NEEDS_STONE_TOOL)
-              .add(GeneralBlocks.Deepslate_Tin_Ore)
-              .add(GeneralBlocks.Tin_Ore)
-              .add(GeneralBlocks.Advanced_Machine,
-                      GeneralBlocks.Machine,
-                      GeneralBlocks.Tin_Block,
-                      GeneralBlocks.Raw_Tin_Block,
-                      GrowableOresBlocks.TIN_CABLE,
-                      GrowableOresBlocks.COPPER_CABLE,
-                      GrowableOresBlocks.EV_TRANSFORMER,
-                      GrowableOresBlocks.EnergyBox,
-                      GrowableOresBlocks.ChargePad)
+      builder(NEEDS_STONE_TOOL)
+              .add(GeneralBlocks.Deepslate_Tin_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Tin_Ore.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Advanced_Machine.builtInRegistryHolder().key(),
+                      GeneralBlocks.Machine.builtInRegistryHolder().key(),
+                      GeneralBlocks.Tin_Block.builtInRegistryHolder().key(),
+                      GeneralBlocks.Raw_Tin_Block.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.TIN_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.COPPER_CABLE.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.EV_TRANSFORMER.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.EnergyBox.builtInRegistryHolder().key(),
+                      GrowableOresBlocks.ChargePad.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(BlockTags.LEAVES)
-              .add(GeneralBlocks.Rubber_LEAVES)
+      builder(BlockTags.LEAVES)
+              .add(GeneralBlocks.Rubber_LEAVES.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(BlockTags.SAPLINGS)
-              .add(GeneralBlocks.Rubber_SAPLING)
+      builder(BlockItemTags.SAPLINGS.block())
+              .add(GeneralBlocks.Rubber_SAPLING.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(LOGS_THAT_BURN)
-              .add(GeneralBlocks.Rubber_LOG)
-              .add(GeneralBlocks.Rubber_Rubber_LOG)
-              .add(GeneralBlocks.Rubber_WOOD)
-              .add(GeneralBlocks.STRIPPED_Rubber_LOG)
-              .add(GeneralBlocks.STRIPPED_Rubber_WOOD)
+      builder(LOGS_THAT_BURN.block())
+              .add(GeneralBlocks.Rubber_LOG.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Rubber_Rubber_LOG.builtInRegistryHolder().key())
+              .add(GeneralBlocks.Rubber_WOOD.builtInRegistryHolder().key())
+              .add(GeneralBlocks.STRIPPED_Rubber_LOG.builtInRegistryHolder().key())
+              .add(GeneralBlocks.STRIPPED_Rubber_WOOD.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(WOODEN_BUTTONS)
-              .add(GeneralBlocks.Rubber_BUTTON)
+      builder(WOODEN_BUTTONS)
+              .add(GeneralBlocks.Rubber_BUTTON.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(WOODEN_DOORS)
-              .add(GeneralBlocks.Rubber_DOOR)
+      builder(WOODEN_DOORS)
+              .add(GeneralBlocks.Rubber_DOOR.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(WOODEN_TRAPDOORS)
-              .add(GeneralBlocks.Rubber_TRAPDOOR)
+      builder(WOODEN_TRAPDOORS)
+              .add(GeneralBlocks.Rubber_TRAPDOOR.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(WOODEN_PRESSURE_PLATES)
-              .add(GeneralBlocks.Rubber_PRESSURE_PLATE)
+      builder(WOODEN_PRESSURE_PLATES)
+              .add(GeneralBlocks.Rubber_PRESSURE_PLATE.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(WOODEN_SLABS)
-              .add(GeneralBlocks.Rubber_SLAB)
+      builder(WOODEN_SLABS)
+              .add(GeneralBlocks.Rubber_SLAB.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(WOODEN_STAIRS)
-              .add(GeneralBlocks.Rubber_STAIRS)
+      builder(WOODEN_STAIRS)
+              .add(GeneralBlocks.Rubber_STAIRS.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(PLANKS)
-              .add(GeneralBlocks.Rubber_PLANKS)
+      builder(PLANKS)
+              .add(GeneralBlocks.Rubber_PLANKS.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(FENCES)
-              .add(GeneralBlocks.Rubber_FENCE)
+      builder(FENCES)
+              .add(GeneralBlocks.Rubber_FENCE.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(DOORS)
-              .add(GeneralBlocks.Reinforced_DOOR)
+      builder(DOORS)
+              .add(GeneralBlocks.Reinforced_DOOR.builtInRegistryHolder().key())
               .setReplace(false);
-      valueLookupBuilder(STAIRS)
-              .add(GeneralBlocks.COBBLESTONE_STAIRS)
+      builder(STAIRS)
+              .add(GeneralBlocks.COBBLESTONE_STAIRS.builtInRegistryHolder().key())
               .setReplace(false);
 
    }
