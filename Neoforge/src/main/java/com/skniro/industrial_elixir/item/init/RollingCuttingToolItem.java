@@ -16,12 +16,12 @@ public class RollingCuttingToolItem extends Item {
     @Override
     public ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
         var copy = new ItemStack(instance.typeHolder());
-        copy.setDamageValue(copy.getDamageValue() + 1);
+        int damage = copy.getDamageValue() + 1;
 
         if (copy.getDamageValue() >= copy.getMaxDamage()) {
             return ItemStack.EMPTY.getCraftingRemainder();
         }
-
-        return copy.getCraftingRemainder();
+        copy.setDamageValue(damage);
+        return ItemStackTemplate.fromNonEmptyStack(copy);
     }
 }
