@@ -13,17 +13,16 @@ import com.skniro.industrial_elixir.item.MapleArmorItems;
 import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import com.skniro.industrial_elixir.item.init.equipment.MapleEquipmentAssetKeys;
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
-import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.minecraft.client.data.models.BlockModelGenerators;
-import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.model.ModelTemplates;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.data.models.BlockModelGenerators;
+import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.world.level.block.Blocks;
 
-import static net.minecraft.client.data.models.ItemModelGenerators.*;
 
 public class IndustrialElixirModelProvider extends FabricModelProvider {
-    public IndustrialElixirModelProvider(FabricPackOutput dataGenerator){
+    public IndustrialElixirModelProvider(FabricDataOutput dataGenerator){
         super(dataGenerator);
     }
 

@@ -1,16 +1,16 @@
 package com.skniro.industrial_elixir.api.data.model;
 
-import static net.minecraft.client.data.models.model.TextureMapping.getBlockTexture;
+import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
 
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
 public class ModTextureMap {
 
     public static TextureMapping allSides(Block block) {
-        Material id = getBlockTexture(block);
+        ResourceLocation id = getBlockTexture(block);
         TextureMapping map = new TextureMapping();
         map.put(TextureSlot.NORTH, id);
         map.put(TextureSlot.SOUTH, id);

@@ -1,7 +1,6 @@
 package com.skniro.industrial_elixir.client;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import com.skniro.industrial_elixir.api.data.model.BatteryLevelProperty;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
@@ -135,11 +134,6 @@ public class IndustrialElixirOresClient {
         event.register(AlchemyScreenHandlerType.CoffeeMachine.get(), CoffeeMachineScreen::new);
         event.register(AlchemyScreenHandlerType.CropFarm.get(), CropFarmBlockScreen::new);
         event.register(AlchemyScreenHandlerType.VendorMachine.get(), VendorMachineScreen::new);
-    }
-
-    @SubscribeEvent
-    public static void registerSelectItemModel(RegisterSelectItemModelPropertyEvent event) {
-        event.register(BatteryLevelProperty.ID, BatteryLevelProperty.TYPE);
     }
 
     @SubscribeEvent

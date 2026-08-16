@@ -1,14 +1,14 @@
 package com.skniro.industrial_elixir.datagen;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import java.util.concurrent.CompletableFuture;
 
 public class ModDynamicGenerator extends FabricDynamicRegistryProvider {
-    public ModDynamicGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModDynamicGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
     @Override

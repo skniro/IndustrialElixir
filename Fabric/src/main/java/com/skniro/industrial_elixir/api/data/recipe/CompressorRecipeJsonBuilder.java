@@ -1,8 +1,9 @@
 package com.skniro.industrial_elixir.api.data.recipe;
 
 import com.skniro.industrial_elixir.recipe.machine.CompressorCraftingRecipe;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -24,20 +25,20 @@ import net.minecraft.world.level.ItemLike;
 public class CompressorRecipeJsonBuilder implements RecipeBuilder {
     private final HolderGetter<Item> itemLookup;
     private Ingredient ingredient;
-    private final ItemStackTemplate result;
+    private final ItemStack result;
     private int requiredCount;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     @Nullable
     private String group;
 
-    private CompressorRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStackTemplate result) {
+    private CompressorRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStack result) {
         this.itemLookup = itemLookup;
         this.result = result;
     }
 
     public static CompressorRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output, int count) {
-        return new CompressorRecipeJsonBuilder(itemLookup, new ItemStackTemplate(output.asItem(), count));
+        return new CompressorRecipeJsonBuilder(itemLookup, new ItemStack(output.asItem(), count));
     }
 
     public static CompressorRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output) {
@@ -76,12 +77,12 @@ public class CompressorRecipeJsonBuilder implements RecipeBuilder {
     }
 
     @Override
-    public ResourceKey<Recipe<?>> defaultId() {
-        return RecipeBuilder.getDefaultRecipeId(this.result);
+    public Item getResult() {
+        return this.result.getItem();
     }
 
     @Override
-    public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
+    public void save(RecipeOutput exporter, ResourceLocation recipeKey) {
         ResourceKey<Recipe<?>> finalKey = modifyRecipeKey(recipeKey, exporter);
         CompressorCraftingRecipe recipe = new CompressorCraftingRecipe(ingredient, requiredCount, result);
         if (criteria.isEmpty()) {
@@ -93,11 +94,11 @@ public class CompressorRecipeJsonBuilder implements RecipeBuilder {
 
         this.criteria.forEach(advancementBuilder::addCriterion);
 
-        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.identifier().withPrefix("recipes/")));
+        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.location().withPrefix("recipes/")));
 
     }
 
-    private ResourceKey<Recipe<?>> modifyRecipeKey(ResourceKey<Recipe<?>> recipeKey, RecipeOutput exporter) {
-        return ResourceKey.create(recipeKey.registryKey(), exporter.getRecipeIdentifier(recipeKey.identifier().withPrefix("compressor/")));
+    private ResourceLocation modifyRecipeKey(ResourceLocation recipeKey, RecipeOutput exporter) {
+        return ResourceKey.create(recipeKey, exporter.getRecipeIdentifier(recipeKey.location().withPrefix("compressor/")));
     }
 }

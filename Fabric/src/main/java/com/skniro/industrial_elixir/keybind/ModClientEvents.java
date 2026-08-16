@@ -18,7 +18,7 @@ public class ModClientEvents {
     private static float lastStrafe = 0f;
 
     public static void onEndTick(Minecraft client) {
-        ClientTickEvents.END_CLIENT_TICK.register(_ -> {
+        ClientTickEvents.END_CLIENT_TICK.register((minecraft) -> {
             while (ModKeyMappings.Mode_Switch_Keybind.consumeClick()) {
                 while (ModKeyMappings.ALT_Keybind.consumeClick()) {
                     ClientPlayNetworking.send(new ToggleNightVisionC2SPayload());

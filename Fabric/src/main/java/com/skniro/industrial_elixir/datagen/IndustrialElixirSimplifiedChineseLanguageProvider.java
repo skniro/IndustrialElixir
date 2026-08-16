@@ -8,14 +8,13 @@ import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.*;
 import com.skniro.growableoresir.block.GrowableICOresBlocks;
-import com.skniro.industrial_elixir.keybind.ModKeyMappings;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLanguageProvider {
-    public IndustrialElixirSimplifiedChineseLanguageProvider(FabricPackOutput dataGenerator, CompletableFuture<HolderLookup.Provider> registryLookup){
+    public IndustrialElixirSimplifiedChineseLanguageProvider(FabricDataOutput dataGenerator, CompletableFuture<HolderLookup.Provider> registryLookup){
         super(dataGenerator,"zh_cn", registryLookup);
     }
 

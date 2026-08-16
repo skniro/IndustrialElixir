@@ -4,75 +4,74 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
-import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidBlocks;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluidItems;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ModCreativeTab {
-    public static final ResourceKey<CreativeModeTab> General = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "general"));
-    public static final ResourceKey<CreativeModeTab> Generators_And_Wiring = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "generators_and_wiring"));
-    public static final ResourceKey<CreativeModeTab> Reactor = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "reactor"));
-    public static final ResourceKey<CreativeModeTab> Machine = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "machine"));
-    public static final ResourceKey<CreativeModeTab> Tool_And_Utilities = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "tool_and_utilities"));
-    public static final ResourceKey<CreativeModeTab> Combat = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "combat"));
-    public static final ResourceKey<CreativeModeTab> Materials = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "materials"));
-    public static final ResourceKey<CreativeModeTab> AGRICULTURE = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "agriculture"));
+    public static final ResourceKey<CreativeModeTab> General = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "general"));
+    public static final ResourceKey<CreativeModeTab> Generators_And_Wiring = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "generators_and_wiring"));
+    public static final ResourceKey<CreativeModeTab> Reactor = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "reactor"));
+    public static final ResourceKey<CreativeModeTab> Machine = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "machine"));
+    public static final ResourceKey<CreativeModeTab> Tool_And_Utilities = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "tool_and_utilities"));
+    public static final ResourceKey<CreativeModeTab> Combat = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "combat"));
+    public static final ResourceKey<CreativeModeTab> Materials = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "materials"));
+    public static final ResourceKey<CreativeModeTab> AGRICULTURE = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "agriculture"));
 
     public static void CreativeTab() {
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, General, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, General, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GeneralBlocks.Machine.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.general"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Generators_And_Wiring, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Generators_And_Wiring, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GrowableOresBlocks.COAL_GENERATOR.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.generators_and_wiring"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Reactor, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Reactor, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GrowableOresBlocks.SACRED_GENERATOR.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.reactor"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Machine, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Machine, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GrowableOresBlocks.Macerator_Block.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.machine"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Tool_And_Utilities, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Tool_And_Utilities, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GrowableOresItems.ENERGY_STORAGE.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.tool_and_utilities"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Combat, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Combat, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(MapleArmorItems.Quantum_HELMET.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.combat"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Materials, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Materials, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GrowableOresItems.Rubber.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.materials"))
                 .build()); // build() no longer registers by itself
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AGRICULTURE, FabricCreativeModeTab.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AGRICULTURE, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(MapleFoodComponents.Coffee_Black.asItem()))
                 .title(Component.translatable("itemGroup.industrial_elixir.agriculture"))
                 .build()); // build() no longer registers by itself
     }
 
     public static void CreativeTabItem() {
-        CreativeModeTabEvents.modifyOutputEvent(General).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(General).register(content -> {
             content.accept(GeneralBlocks.Lead_Ore);
             content.accept(GeneralBlocks.Tin_Ore);
             content.accept(GeneralBlocks.SACRED_Ore);
@@ -138,7 +137,7 @@ public class ModCreativeTab {
             content.accept(GeneralBlocks.RED_PLASTER);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Generators_And_Wiring).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(Generators_And_Wiring).register(content -> {
             content.accept(GrowableOresBlocks.COPPER_CABLE);
             content.accept(GrowableOresBlocks.TIN_CABLE);
             content.accept(GrowableOresBlocks.GOLD_CABLE);
@@ -175,7 +174,7 @@ public class ModCreativeTab {
             content.accept(GrowableOresBlocks.SOLID_FUEL_HEATER_GENERATOR);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Reactor).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(Reactor).register(content -> {
             content.accept(GrowableOresItems.SACRED_ESSENCE);
             content.accept(GrowableOresItems.SACRED_SHARD);
             content.accept(GrowableOresItems.SACRED_CORE);
@@ -193,7 +192,7 @@ public class ModCreativeTab {
 
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Machine).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(Machine).register(content -> {
             content.accept(GrowableOresBlocks.Macerator_Block);
             content.accept(GrowableOresBlocks.Compressor_Block);
             content.accept(GrowableOresBlocks.MetalFormerBlock);
@@ -219,7 +218,7 @@ public class ModCreativeTab {
             content.accept(GrowableOresBlocks.VENDOR_MACHINE_Block);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Tool_And_Utilities).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(Tool_And_Utilities).register(content -> {
             content.accept(IndustrialElixirFluidItems.Fluid_UU_BUCKET);
             content.accept(IndustrialElixirFluidItems.Fluid_AIR_BUCKET);
             content.accept(IndustrialElixirFluidItems.Hot_Spring_BUCKET);
@@ -248,7 +247,7 @@ public class ModCreativeTab {
             content.accept(IndustrialElixirFluidItems.Hot_Spring_CELL);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Combat).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(Combat).register(content -> {
             content.accept(MapleArmorItems.Quantum_HELMET);
             addFullEnergyItem(content, MapleArmorItems.Quantum_HELMET);
             content.accept(MapleArmorItems.Quantum_CHESTPLATE);
@@ -273,7 +272,7 @@ public class ModCreativeTab {
             content.accept(MapleArmorItems.Electric_Jetpack);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(Materials).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(Materials).register(content -> {
             content.accept(GrowableOresItems.Raw_Lead);
             content.accept(GrowableOresItems.Raw_Tin);
             content.accept(GrowableOresItems.Raw_SACRED);
@@ -400,7 +399,7 @@ public class ModCreativeTab {
             content.accept(AdvancedItems.MT_Core);
         });
 
-        CreativeModeTabEvents.modifyOutputEvent(AGRICULTURE).register(content -> {
+        ItemGroupEvents.modifyEntriesEvent(AGRICULTURE).register(content -> {
             content.accept(GrowableOresBlocks.COFFEE_MACHINE_Block);
             content.accept(GrowableOresBlocks.CROP_FARM_Block);
             content.accept(MapleFoodComponents.Coffee_Beans);
@@ -412,7 +411,7 @@ public class ModCreativeTab {
         });
     }
 
-    public static void addFullEnergyItem(FabricCreativeModeTabOutput content, Item item) {
+    public static void addFullEnergyItem(FabricItemGroupEntries content, Item item) {
         ItemStack stack = new ItemStack(item);
         stack.setDamageValue(0);
         if (stack.getItem() instanceof SimpleEnergyItem battery) {

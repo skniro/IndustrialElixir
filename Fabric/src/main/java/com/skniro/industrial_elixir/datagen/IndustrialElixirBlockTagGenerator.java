@@ -2,24 +2,22 @@ package com.skniro.industrial_elixir.datagen;
 
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.tags.BlockTags.*;
 
-public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockTagsProvider {
-   public IndustrialElixirBlockTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
+public class IndustrialElixirBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
+   public IndustrialElixirBlockTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(output, completableFuture);
    }
    @Override
    protected void addTags(HolderLookup.Provider arg) {
-      valueLookupBuilder(MINEABLE_WITH_PICKAXE)
+      getOrCreateTagBuilder(MINEABLE_WITH_PICKAXE)
               .add(GeneralBlocks.Deepslate_Lead_Ore)
               .add(GeneralBlocks.Deepslate_Tin_Ore)
               .add(GeneralBlocks.Deepslate_SACRED_Ore)
@@ -114,7 +112,7 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
                       GrowableOresBlocks.CROP_FARM_Block,
                       GrowableOresBlocks.COFFEE_MACHINE_Block)
               .setReplace(false);
-      valueLookupBuilder(NEEDS_IRON_TOOL)
+      getOrCreateTagBuilder(NEEDS_IRON_TOOL)
               .add(GeneralBlocks.Deepslate_Lead_Ore)
               .add(GeneralBlocks.Deepslate_SACRED_Ore)
               .add(GeneralBlocks.Lead_Ore)
@@ -197,7 +195,7 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
                       GrowableOresBlocks.CROP_FARM_Block,
                       GrowableOresBlocks.COFFEE_MACHINE_Block)
               .setReplace(false);
-      valueLookupBuilder(NEEDS_STONE_TOOL)
+      getOrCreateTagBuilder(NEEDS_STONE_TOOL)
               .add(GeneralBlocks.Deepslate_Tin_Ore)
               .add(GeneralBlocks.Tin_Ore)
               .add(GeneralBlocks.Advanced_Machine,
@@ -210,47 +208,47 @@ public class IndustrialElixirBlockTagGenerator extends FabricTagsProvider.BlockT
                       GrowableOresBlocks.EnergyBox,
                       GrowableOresBlocks.ChargePad)
               .setReplace(false);
-      valueLookupBuilder(BlockTags.LEAVES)
+      getOrCreateTagBuilder(BlockTags.LEAVES)
               .add(GeneralBlocks.Rubber_LEAVES)
               .setReplace(false);
-      valueLookupBuilder(BlockTags.SAPLINGS)
+      getOrCreateTagBuilder(BlockTags.SAPLINGS)
               .add(GeneralBlocks.Rubber_SAPLING)
               .setReplace(false);
-      valueLookupBuilder(LOGS_THAT_BURN)
+      getOrCreateTagBuilder(LOGS_THAT_BURN)
               .add(GeneralBlocks.Rubber_LOG)
               .add(GeneralBlocks.Rubber_Rubber_LOG)
               .add(GeneralBlocks.Rubber_WOOD)
               .add(GeneralBlocks.STRIPPED_Rubber_LOG)
               .add(GeneralBlocks.STRIPPED_Rubber_WOOD)
               .setReplace(false);
-      valueLookupBuilder(WOODEN_BUTTONS)
+      getOrCreateTagBuilder(WOODEN_BUTTONS)
               .add(GeneralBlocks.Rubber_BUTTON)
               .setReplace(false);
-      valueLookupBuilder(WOODEN_DOORS)
+      getOrCreateTagBuilder(WOODEN_DOORS)
               .add(GeneralBlocks.Rubber_DOOR)
               .setReplace(false);
-      valueLookupBuilder(WOODEN_TRAPDOORS)
+      getOrCreateTagBuilder(WOODEN_TRAPDOORS)
               .add(GeneralBlocks.Rubber_TRAPDOOR)
               .setReplace(false);
-      valueLookupBuilder(WOODEN_PRESSURE_PLATES)
+      getOrCreateTagBuilder(WOODEN_PRESSURE_PLATES)
               .add(GeneralBlocks.Rubber_PRESSURE_PLATE)
               .setReplace(false);
-      valueLookupBuilder(WOODEN_SLABS)
+      getOrCreateTagBuilder(WOODEN_SLABS)
               .add(GeneralBlocks.Rubber_SLAB)
               .setReplace(false);
-      valueLookupBuilder(WOODEN_STAIRS)
+      getOrCreateTagBuilder(WOODEN_STAIRS)
               .add(GeneralBlocks.Rubber_STAIRS)
               .setReplace(false);
-      valueLookupBuilder(PLANKS)
+      getOrCreateTagBuilder(PLANKS)
               .add(GeneralBlocks.Rubber_PLANKS)
               .setReplace(false);
-      valueLookupBuilder(FENCES)
+      getOrCreateTagBuilder(FENCES)
               .add(GeneralBlocks.Rubber_FENCE)
               .setReplace(false);
-      valueLookupBuilder(DOORS)
+      getOrCreateTagBuilder(DOORS)
               .add(GeneralBlocks.Reinforced_DOOR)
               .setReplace(false);
-      valueLookupBuilder(STAIRS)
+      getOrCreateTagBuilder(STAIRS)
               .add(GeneralBlocks.COBBLESTONE_STAIRS)
               .setReplace(false);
 
