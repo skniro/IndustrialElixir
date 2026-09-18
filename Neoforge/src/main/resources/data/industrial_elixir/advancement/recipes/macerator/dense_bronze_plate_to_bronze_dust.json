@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dense_bronze_plate_to_bronze_dust"
+        "recipes": "industrial_elixir:macerator/dense_bronze_plate_to_bronze_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

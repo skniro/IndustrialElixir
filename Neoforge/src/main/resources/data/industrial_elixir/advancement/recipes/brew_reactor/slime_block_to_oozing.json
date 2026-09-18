@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:slime_block_to_oozing"
+        "recipes": "industrial_elixir:brew_reactor/slime_block_to_oozing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

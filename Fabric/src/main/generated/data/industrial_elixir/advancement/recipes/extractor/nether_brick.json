@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:nether_brick"
+        "recipes": "industrial_elixir:extractor/nether_brick"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

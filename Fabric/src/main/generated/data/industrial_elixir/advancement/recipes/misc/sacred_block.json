@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:sacred_block"
+        "recipes": "industrial_elixir:sacred_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

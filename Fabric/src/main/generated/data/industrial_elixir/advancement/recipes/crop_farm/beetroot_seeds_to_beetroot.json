@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:beetroot_seeds_to_beetroot"
+        "recipes": "industrial_elixir:crop_farm/beetroot_seeds_to_beetroot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

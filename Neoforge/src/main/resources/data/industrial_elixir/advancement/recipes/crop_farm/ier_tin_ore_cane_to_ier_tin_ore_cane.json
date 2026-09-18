@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:ier_tin_ore_cane_to_ier_tin_ore_cane"
+        "recipes": "industrial_elixir:crop_farm/ier_tin_ore_cane_to_ier_tin_ore_cane"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:sugar_to_super_swiftness"
+        "recipes": "industrial_elixir:brew_reactor/sugar_to_super_swiftness"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:lead_block"
+        "recipes": "industrial_elixir:compressor/lead_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

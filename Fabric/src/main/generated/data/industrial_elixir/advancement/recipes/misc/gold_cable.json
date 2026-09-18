@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:gold_cable"
+        "recipes": "industrial_elixir:gold_cable"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:torchflower_seeds_to_torchflower"
+        "recipes": "industrial_elixir:crop_farm/torchflower_seeds_to_torchflower"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

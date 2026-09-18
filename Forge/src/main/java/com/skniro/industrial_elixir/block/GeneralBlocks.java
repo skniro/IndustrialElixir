@@ -90,7 +90,7 @@ public class GeneralBlocks {
     public static final Supplier<Block> Rubber_PLANKS = registerBlock("rubber_planks",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.COLOR_BROWN)));
     public static final Supplier<Block> Rubber_BUTTON = registerBlock("rubber_button",
-            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY));
+            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.POPPED));
     public static final Supplier<Block> Rubber_STAIRS = registerBlock("rubber_stairs",
             (settings)-> new ModStairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Supplier<Block> Rubber_SLAB = registerBlock("rubber_slab",
@@ -105,7 +105,7 @@ public class GeneralBlocks {
             (settings)-> new TrapDoorBlock(MapleBlockSetType.Rubber, settings),BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(3.0F).noOcclusion());
     public static final Supplier<Block> Rubber_PRESSURE_PLATE = registerBlockDeferred("rubber_pressure_plate",
             (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN)
-                    .noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
+                    .noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.POPPED));
 
     public static final Supplier<Block> Rubber_SHELF = registerBlock("rubber_shelf",
             ShelfBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.SHELF).ignitedByLava().strength(2.0F, 3.0F));

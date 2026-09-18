@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:warped_wood_to_planks"
+        "recipes": "industrial_elixir:cutting/warped_wood_to_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -7,11 +7,14 @@ import com.skniro.industrial_elixir.block.MapleSignBlocks;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import java.util.concurrent.CompletableFuture;
 
@@ -22,8 +25,8 @@ public class TreeBlockRecipeGenerator extends FabricRecipeProvider {
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new ModRecipeGenerator(recipes, advancements) {
             @Override
             public void buildRecipes() {
                 this.offerPlanksRecipe(GeneralBlocks.Rubber_PLANKS, GeneralBlocks.Rubber_LOG, 4);

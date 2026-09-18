@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_sacred_to_sacred_ingot"
+        "recipes": "industrial_elixir:compressor/crushed_sacred_to_sacred_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

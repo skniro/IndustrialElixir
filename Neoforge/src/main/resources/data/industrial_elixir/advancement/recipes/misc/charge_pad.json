@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:charge_pad"
+        "recipes": "industrial_elixir:charge_pad"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

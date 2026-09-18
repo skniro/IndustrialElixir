@@ -6,10 +6,13 @@ import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.alchemy.IndustrialElixirPotions;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,8 +24,8 @@ public class BrewReactorRecipeGenerator extends CraftingDataHelper {
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new ModRecipeGenerator(recipes, advancements) {
             @Override
             public void buildRecipes() {
                 createBrewReactor(potionTemplate(wrapperLookup, IndustrialElixirPotions.SUPER_LEAPING)).fluid(Fluids.WATER, 1000).input(Items.RABBIT_FOOT, 1).input2(Items.GLASS_BOTTLE).unlockedBy("has_base_item", has(Items.RABBIT_FOOT)).save(output, "rabbit_foot_to_super_leaping");

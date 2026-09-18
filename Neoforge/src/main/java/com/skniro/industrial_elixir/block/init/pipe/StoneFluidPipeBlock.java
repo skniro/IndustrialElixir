@@ -26,9 +26,4 @@ public class StoneFluidPipeBlock extends PipeBlock implements SimpleWaterloggedB
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
         return (world1, pos, state1, blockEntity) -> ((StoneFluidPipeBlockEntity) blockEntity).tick(world1, pos, state1);
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("PipeBlock does not support getCodec!");
-    }
 }

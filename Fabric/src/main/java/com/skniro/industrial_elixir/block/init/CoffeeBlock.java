@@ -21,6 +21,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,11 +46,6 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
     public CoffeeBlock(Properties settings) {
         super(settings);
         this.registerDefaultState((BlockState)((BlockState)this.stateDefinition.any()).setValue(AGE, 0));
-    }
-
-    @Override
-    protected MapCodec<? extends VegetationBlock> codec() {
-        throw new IllegalStateException("Block does not support getCodec!");
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
@@ -120,15 +116,17 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         return false;
     }
 
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    @Override
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         return true;
     }
 
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+    @Override
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         int i = Math.min(3, (Integer)state.getValue(AGE) + 1);
         world.setBlock(pos, (BlockState)state.setValue(AGE, i), 2);
     }

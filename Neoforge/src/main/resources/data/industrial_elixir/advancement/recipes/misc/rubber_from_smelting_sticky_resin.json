@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:rubber_from_smelting_sticky_resin"
+        "recipes": "industrial_elixir:rubber_from_smelting_sticky_resin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:heat_conductor"
+        "recipes": "industrial_elixir:heat_conductor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

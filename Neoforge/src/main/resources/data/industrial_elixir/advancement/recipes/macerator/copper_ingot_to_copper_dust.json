@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:copper_ingot_to_copper_dust"
+        "recipes": "industrial_elixir:macerator/copper_ingot_to_copper_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

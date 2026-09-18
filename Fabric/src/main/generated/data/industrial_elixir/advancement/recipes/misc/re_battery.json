@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:re_battery"
+        "recipes": "industrial_elixir:re_battery"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -19,13 +19,6 @@ public class RecyclerBlock extends AbstractMachineblock {
         super(settings, EnergyTier.TIER1);
     }
 
-    public static final MapCodec<RecyclerBlock> CODEC = simpleCodec(RecyclerBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

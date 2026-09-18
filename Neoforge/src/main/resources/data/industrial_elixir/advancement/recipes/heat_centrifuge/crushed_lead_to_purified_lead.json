@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_lead_to_purified_lead"
+        "recipes": "industrial_elixir:heat_centrifuge/crushed_lead_to_purified_lead"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

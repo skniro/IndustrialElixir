@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:snow_block"
+        "recipes": "industrial_elixir:compressor/snow_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

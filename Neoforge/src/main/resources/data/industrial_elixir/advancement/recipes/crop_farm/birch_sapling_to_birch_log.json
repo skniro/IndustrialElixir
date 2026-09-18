@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:birch_sapling_to_birch_log"
+        "recipes": "industrial_elixir:crop_farm/birch_sapling_to_birch_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

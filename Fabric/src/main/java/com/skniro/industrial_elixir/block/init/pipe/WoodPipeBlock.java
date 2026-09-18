@@ -100,9 +100,4 @@ public class WoodPipeBlock extends PipeBlock implements SimpleWaterloggedBlock {
         super.createBlockStateDefinition(builder);
         builder.add(PULL_EAST, PULL_WEST, PULL_NORTH, PULL_SOUTH, PULL_UP, PULL_DOWN);
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("PipeBlock does not support getCodec!");
-    }
 }

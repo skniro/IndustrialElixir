@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:crushed_iron"
+        "recipes": "industrial_elixir:macerator/crushed_iron"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

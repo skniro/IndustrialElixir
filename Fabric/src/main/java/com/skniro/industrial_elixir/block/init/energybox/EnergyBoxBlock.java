@@ -25,19 +25,6 @@ public class EnergyBoxBlock extends AbstractMachineblock {
         super(settings, energyTier, capacity);
     }
 
-/*    public static final MapCodec<EnergyBoxBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                    createSettingsCodec(),
-                    Codec.INT.fieldOf("capacity").forGetter(block -> block.capacity),
-                    EnergyTier.CODEC.fieldOf("energy_tier").forGetter(block -> block.energyTier)
-            ).apply(instance, EnergyBoxBlock::new)
-    );*/
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("Block does not support getCodec!");
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

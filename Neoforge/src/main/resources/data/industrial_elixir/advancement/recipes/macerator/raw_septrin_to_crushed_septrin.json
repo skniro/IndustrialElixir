@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_septrin_to_crushed_septrin"
+        "recipes": "industrial_elixir:macerator/raw_septrin_to_crushed_septrin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

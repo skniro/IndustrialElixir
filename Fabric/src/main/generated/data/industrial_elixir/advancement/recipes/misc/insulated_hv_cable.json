@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:insulated_hv_cable"
+        "recipes": "industrial_elixir:insulated_hv_cable"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

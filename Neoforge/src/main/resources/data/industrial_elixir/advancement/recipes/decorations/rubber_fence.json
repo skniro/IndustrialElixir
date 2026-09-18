@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:rubber_fence"
+        "recipes": "industrial_elixir:rubber_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

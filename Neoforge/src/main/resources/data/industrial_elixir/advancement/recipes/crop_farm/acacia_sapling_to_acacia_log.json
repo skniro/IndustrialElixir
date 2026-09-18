@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:acacia_sapling_to_acacia_log"
+        "recipes": "industrial_elixir:crop_farm/acacia_sapling_to_acacia_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

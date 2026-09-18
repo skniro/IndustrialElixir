@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:birch_stripped_log_to_planks"
+        "recipes": "industrial_elixir:cutting/birch_stripped_log_to_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

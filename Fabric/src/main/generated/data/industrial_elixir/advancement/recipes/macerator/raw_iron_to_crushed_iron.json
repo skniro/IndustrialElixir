@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_iron_to_crushed_iron"
+        "recipes": "industrial_elixir:macerator/raw_iron_to_crushed_iron"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

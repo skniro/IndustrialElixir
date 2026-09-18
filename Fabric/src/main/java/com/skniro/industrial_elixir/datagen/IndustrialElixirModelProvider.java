@@ -20,6 +20,8 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.Map;
+
 import static net.minecraft.client.data.models.ItemModelGenerators.*;
 
 public class IndustrialElixirModelProvider extends FabricModelProvider {
@@ -268,10 +270,10 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(GrowableOresItems.STEEL_CASING, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.TIN_CASING, ModelTemplates.FLAT_ITEM);
 
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_HELMET, MapleEquipmentAssetKeys.QUANTUM, TRIM_PREFIX_HELMET, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_CHESTPLATE, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_CHESTPLATE, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_LEGGINGS, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_LEGGINGS, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_BOOTS, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_BOOTS, false);
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_HELMET, TRIM_PREFIX_HELMET, false, Map.of());
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_CHESTPLATE,TRIM_PREFIX_CHESTPLATE, false, Map.of());
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_LEGGINGS,TRIM_PREFIX_LEGGINGS, false, Map.of());
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_BOOTS,TRIM_PREFIX_BOOTS, false, Map.of());
 
         itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_SACRED_INGOT, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_GLASS_PANE, ModelTemplates.FLAT_ITEM);
@@ -311,10 +313,10 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(MapleArmorItems.CUTTING, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.ROLLING, ModelTemplates.FLAT_ITEM);
 
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_BOOTS, MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_HELMET, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_CHESTPLATE,MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_CHESTPLATE, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_HELMET, MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_LEGGINGS, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_LEGGINGS, MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_BOOTS,false);
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_BOOTS, TRIM_PREFIX_HELMET, false, Map.of());
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_CHESTPLATE, TRIM_PREFIX_CHESTPLATE, false, Map.of());
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_HELMET, TRIM_PREFIX_LEGGINGS, false, Map.of());
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_LEGGINGS, TRIM_PREFIX_BOOTS,false, Map.of());
 
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -322,7 +324,7 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_HOE, ModelTemplates.FLAT_HANDHELD_ITEM);
 
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Electric_Jetpack, MapleEquipmentAssetKeys.ELECTRIC_JETPACK, TRIM_PREFIX_CHESTPLATE, false);
+        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Electric_Jetpack, TRIM_PREFIX_CHESTPLATE, false, Map.of());
 
         itemModelGenerator.generateFlatItem(GrowableOresItems.EMPTY_CELL, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.WATER_CELL, ModelTemplates.FLAT_ITEM);

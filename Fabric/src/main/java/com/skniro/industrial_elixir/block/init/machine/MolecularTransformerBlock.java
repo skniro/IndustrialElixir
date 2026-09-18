@@ -18,12 +18,6 @@ public class MolecularTransformerBlock extends AbstractMachineblock {
     public MolecularTransformerBlock(Properties settings) {
         super(settings, EnergyTier.TIER5);
     }
-    public static final MapCodec<MolecularTransformerBlock> CODEC = simpleCodec(MolecularTransformerBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Nullable
     @Override

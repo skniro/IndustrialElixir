@@ -21,12 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class IronFurnaceBlock extends AbstractFurnaceBlock {
-    public static final MapCodec<IronFurnaceBlock> CODEC = simpleCodec(IronFurnaceBlock::new);
-
-    public MapCodec<IronFurnaceBlock> codec() {
-        return CODEC;
-    }
-
     public IronFurnaceBlock(Properties settings) {
         super(settings);
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:rubber_sapling_to_rubber"
+        "recipes": "industrial_elixir:crop_farm/rubber_sapling_to_rubber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

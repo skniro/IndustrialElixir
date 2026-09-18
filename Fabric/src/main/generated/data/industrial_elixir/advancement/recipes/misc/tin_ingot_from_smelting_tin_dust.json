@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:tin_ingot_from_smelting_tin_dust"
+        "recipes": "industrial_elixir:tin_ingot_from_smelting_tin_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

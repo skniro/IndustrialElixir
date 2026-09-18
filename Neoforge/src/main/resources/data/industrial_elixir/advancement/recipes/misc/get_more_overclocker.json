@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:get_more_overclocker"
+        "recipes": "industrial_elixir:get_more_overclocker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

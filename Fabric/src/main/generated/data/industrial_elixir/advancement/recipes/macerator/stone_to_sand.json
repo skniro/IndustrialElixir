@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:stone_to_sand"
+        "recipes": "industrial_elixir:macerator/stone_to_sand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

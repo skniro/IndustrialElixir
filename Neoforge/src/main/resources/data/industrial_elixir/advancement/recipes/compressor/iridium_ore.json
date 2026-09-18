@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:iridium_ore"
+        "recipes": "industrial_elixir:compressor/iridium_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

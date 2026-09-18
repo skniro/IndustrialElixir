@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:hv_cable"
+        "recipes": "industrial_elixir:metalformer_extruding/hv_cable"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

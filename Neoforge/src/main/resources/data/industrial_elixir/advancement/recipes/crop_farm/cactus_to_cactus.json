@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cactus_to_cactus"
+        "recipes": "industrial_elixir:crop_farm/cactus_to_cactus"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

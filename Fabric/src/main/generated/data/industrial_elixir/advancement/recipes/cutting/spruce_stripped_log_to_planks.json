@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:spruce_stripped_log_to_planks"
+        "recipes": "industrial_elixir:cutting/spruce_stripped_log_to_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

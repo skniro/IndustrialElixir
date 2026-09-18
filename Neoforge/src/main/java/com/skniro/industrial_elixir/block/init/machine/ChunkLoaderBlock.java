@@ -14,15 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class ChunkLoaderBlock extends AbstractMachineblock {
-    public static final MapCodec<ChunkLoaderBlock> CODEC = simpleCodec(ChunkLoaderBlock::new);
 
     public ChunkLoaderBlock(Properties settings) {
         super(settings, EnergyTier.TIER2);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Nullable

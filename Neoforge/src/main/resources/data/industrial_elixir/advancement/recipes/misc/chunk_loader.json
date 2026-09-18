@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:chunk_loader"
+        "recipes": "industrial_elixir:chunk_loader"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

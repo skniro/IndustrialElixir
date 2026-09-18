@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:mfsu"
+        "recipes": "industrial_elixir:mfsu"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

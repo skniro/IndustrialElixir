@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_copper_to_crushed_copper"
+        "recipes": "industrial_elixir:macerator/raw_copper_to_crushed_copper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

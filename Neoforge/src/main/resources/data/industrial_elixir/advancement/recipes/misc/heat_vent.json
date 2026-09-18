@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:heat_vent"
+        "recipes": "industrial_elixir:heat_vent"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

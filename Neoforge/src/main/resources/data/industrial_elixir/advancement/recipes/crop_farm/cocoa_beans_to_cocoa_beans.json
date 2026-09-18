@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cocoa_beans_to_cocoa_beans"
+        "recipes": "industrial_elixir:crop_farm/cocoa_beans_to_cocoa_beans"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

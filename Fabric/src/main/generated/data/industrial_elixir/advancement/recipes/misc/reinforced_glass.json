@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:reinforced_glass"
+        "recipes": "industrial_elixir:reinforced_glass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,16 +1,12 @@
 package com.skniro.industrial_elixir.keybind;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.skniro.industrial_elixir.networking.packet.BoostJumpC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.JetpackInputC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.ToggleHoverC2SPayload;
 import com.skniro.industrial_elixir.networking.packet.ToggleNightVisionC2SPayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 public class ModClientEvents {
     private static boolean lastJumpHeld = false;

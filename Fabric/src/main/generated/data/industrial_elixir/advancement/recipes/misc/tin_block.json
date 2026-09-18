@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:tin_block"
+        "recipes": "industrial_elixir:tin_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

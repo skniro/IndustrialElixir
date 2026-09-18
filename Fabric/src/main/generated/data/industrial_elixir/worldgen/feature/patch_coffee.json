@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "id": "industrial_elixir:coffee_block",
+    "properties": {
+      "age": "3"
+    }
+  }
+}

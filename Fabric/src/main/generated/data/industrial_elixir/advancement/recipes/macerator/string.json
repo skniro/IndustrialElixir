@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:string"
+        "recipes": "industrial_elixir:macerator/string"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

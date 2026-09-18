@@ -11,9 +11,11 @@ version="${project.neoforge_mod_version}"
 displayName="${project.mod_name}"
 authors="${project.mod_authors}"
 description='''${project.mod_description}'''
-bannerFile="icon.png"
+updateJSONURL="https://raw.githubusercontent.com/skniro/maven3/main/com/skniro/IndustrialElixir/update/neoforge.json"
+displayURL="https://www.skniro.org"
+issueTrackerURL="https://github.com/skniro/IndustrialElixir/issues"
 iconFile="icon.png"
-
+bannerFile="icon.png"
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
 #[[accessTransformers]]

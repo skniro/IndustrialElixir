@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:carbon_plate"
+        "recipes": "industrial_elixir:compressor/carbon_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

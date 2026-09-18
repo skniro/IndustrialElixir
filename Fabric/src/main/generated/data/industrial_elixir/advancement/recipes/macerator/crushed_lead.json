@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:crushed_lead"
+        "recipes": "industrial_elixir:macerator/crushed_lead"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

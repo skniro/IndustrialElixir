@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:carbon_mesh"
+        "recipes": "industrial_elixir:carbon_mesh"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

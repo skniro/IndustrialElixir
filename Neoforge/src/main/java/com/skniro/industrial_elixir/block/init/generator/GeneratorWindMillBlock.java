@@ -19,12 +19,6 @@ public class GeneratorWindMillBlock extends AbstractMachineblock {
     public GeneratorWindMillBlock(Properties settings) {
         super(settings, EnergyTier.TIER1, 100);
     }
-    public static final MapCodec<GeneratorWindMillBlock> CODEC = simpleCodec(GeneratorWindMillBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Nullable
     @Override

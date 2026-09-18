@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:coolant_cell_10k"
+        "recipes": "industrial_elixir:coolant_cell_10k"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

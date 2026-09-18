@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:copper_plate"
+        "recipes": "industrial_elixir:metalformer_rolling/copper_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:solid_fuel_heater_generator"
+        "recipes": "industrial_elixir:solid_fuel_heater_generator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:pale_oak_sapling_to_oak_log"
+        "recipes": "industrial_elixir:crop_farm/pale_oak_sapling_to_oak_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

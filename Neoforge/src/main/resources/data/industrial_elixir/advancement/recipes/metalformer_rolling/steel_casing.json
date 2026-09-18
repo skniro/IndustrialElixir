@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:steel_casing"
+        "recipes": "industrial_elixir:metalformer_rolling/steel_casing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

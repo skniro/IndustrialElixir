@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:raw_pattern_storage_crystal"
+        "recipes": "industrial_elixir:raw_pattern_storage_crystal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

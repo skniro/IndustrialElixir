@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cherry_sapling_to_cherry_log"
+        "recipes": "industrial_elixir:crop_farm/cherry_sapling_to_cherry_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -7,6 +7,15 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.screen.handler.generator.CoalGeneratorScreenHandler;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.component.CookingFuel;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,6 +39,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 
 public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
@@ -118,12 +129,23 @@ public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
             }
         }
 
-        if (this.level != null) {
-            return this.level.fuelValues().burnDuration(stack) / 2;
+        if (this.level instanceof ServerLevel level) {
+            if(level != null) {
+                return getBurnDuration(level, stack) / 2;
+            }
         }
 
         return 0;
     }
+
+    protected int getBurnDuration(final ServerLevel level, final ItemStack fuelItem) {
+        return ResolvableInt.getFromItem(fuelItem, DataComponents.COOKING_FUEL, CookingFuel::burnTime, this.getLootContext(level), 0);
+    }
+
+    protected LootContext getLootContext(final ServerLevel level) {
+        return (new LootContext.Builder((new LootParams.Builder(level)).withParameter(LootContextParams.BLOCK_STATE, this.getBlockState()).withParameter(LootContextParams.BLOCK_ENTITY, this).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).withParameter(LootContextParams.CONTAINER, this).create(LootContextParamSets.CONTAINER_PROCESS))).create(Optional.empty());
+    }
+
 
     public void tick(Level world, BlockPos pos, BlockState state) {
         if (world != null && !world.isClientSide()) {

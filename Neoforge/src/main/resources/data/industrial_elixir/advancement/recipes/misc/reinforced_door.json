@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:reinforced_door"
+        "recipes": "industrial_elixir:reinforced_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

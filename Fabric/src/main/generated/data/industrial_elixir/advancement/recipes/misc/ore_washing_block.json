@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:ore_washing_block"
+        "recipes": "industrial_elixir:ore_washing_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

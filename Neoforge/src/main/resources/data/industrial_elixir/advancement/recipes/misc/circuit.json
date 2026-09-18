@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:circuit"
+        "recipes": "industrial_elixir:circuit"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

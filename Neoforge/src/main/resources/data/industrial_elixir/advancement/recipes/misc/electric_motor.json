@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:electric_motor"
+        "recipes": "industrial_elixir:electric_motor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

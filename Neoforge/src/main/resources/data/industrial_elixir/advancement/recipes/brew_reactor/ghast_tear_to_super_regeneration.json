@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:ghast_tear_to_super_regeneration"
+        "recipes": "industrial_elixir:brew_reactor/ghast_tear_to_super_regeneration"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

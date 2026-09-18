@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:purified_copper_to_purified_copper"
+        "recipes": "industrial_elixir:heat_centrifuge/purified_copper_to_purified_copper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

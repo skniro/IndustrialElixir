@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:warped_fungus_to_warped_stem"
+        "recipes": "industrial_elixir:crop_farm/warped_fungus_to_warped_stem"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

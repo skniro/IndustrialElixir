@@ -15,7 +15,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class CupBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<CupBlock> CODEC = simpleCodec(CupBlock::new);
     private static final VoxelShape NORTH_SHAPE;
     private static final VoxelShape SOUTH_SHAPE;
     private static final VoxelShape EAST_SHAPE;
@@ -23,11 +22,6 @@ public class CupBlock extends HorizontalDirectionalBlock {
 
     public CupBlock(BlockBehaviour.Properties settings) {
         super(settings);
-    }
-
-    @Override
-    protected MapCodec<? extends CupBlock> codec() {
-        return CODEC;
     }
 
     @Override

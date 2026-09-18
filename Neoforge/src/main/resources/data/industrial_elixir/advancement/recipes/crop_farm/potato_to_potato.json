@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:potato_to_potato"
+        "recipes": "industrial_elixir:crop_farm/potato_to_potato"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:copper_ingot_from_smelting_purified_copper"
+        "recipes": "industrial_elixir:copper_ingot_from_smelting_purified_copper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

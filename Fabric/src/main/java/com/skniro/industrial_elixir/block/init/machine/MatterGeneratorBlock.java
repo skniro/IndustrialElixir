@@ -23,13 +23,6 @@ public class MatterGeneratorBlock extends AbstractMachineblock {
         super(settings, EnergyTier.TIER3);
     }
 
-    public static final MapCodec<MatterGeneratorBlock> CODEC = simpleCodec(MatterGeneratorBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

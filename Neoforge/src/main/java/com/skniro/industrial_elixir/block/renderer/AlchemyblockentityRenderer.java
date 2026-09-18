@@ -38,10 +38,10 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
         }
         matrices.scale(0.35f, 0.35f, 0.35f);
         switch (direction) {
-            case NORTH -> matrices.mulPose(Axis.YP.rotationDegrees(0));
-            case SOUTH -> matrices.mulPose(Axis.YP.rotationDegrees(180));
-            case WEST -> matrices.mulPose(Axis.YP.rotationDegrees(90));
-            case EAST -> matrices.mulPose(Axis.YP.rotationDegrees(270));
+            case NORTH -> matrices.rotate(Axis.YP.rotationDegrees(0));
+            case SOUTH -> matrices.rotate(Axis.YP.rotationDegrees(180));
+            case WEST -> matrices.rotate(Axis.YP.rotationDegrees(90));
+            case EAST -> matrices.rotate(Axis.YP.rotationDegrees(270));
         }
         state.item.submit(matrices, queue, state.lightCoords, OverlayTexture.NO_OVERLAY,0);
 /*        itemRenderer.renderItem(stack, ItemDisplayContext.GUI, getLightLevel(entity.getWorld(),

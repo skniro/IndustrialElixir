@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:melon_seeds_to_melon_slice"
+        "recipes": "industrial_elixir:crop_farm/melon_seeds_to_melon_slice"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -26,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class FluidTankBlock extends BaseEntityBlock {
-    public static final MapCodec<FluidTankBlock> CODEC = simpleCodec(FluidTankBlock::new);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
     public FluidTankBlock(Properties settings) {
@@ -48,11 +47,6 @@ public class FluidTankBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

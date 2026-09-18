@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:iridium_ingot"
+        "recipes": "industrial_elixir:metalformer_extruding/iridium_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

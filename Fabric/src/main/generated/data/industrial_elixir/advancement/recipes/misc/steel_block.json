@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:steel_block"
+        "recipes": "industrial_elixir:steel_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

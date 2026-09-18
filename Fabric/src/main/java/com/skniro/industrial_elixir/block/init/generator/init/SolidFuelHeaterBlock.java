@@ -20,10 +20,6 @@ public class SolidFuelHeaterBlock extends AbstractMachineblock {
         super(settings, EnergyTier.TIER1, capacity);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("Block does not support getCodec!");
-    }
 
     @Nullable
     @Override

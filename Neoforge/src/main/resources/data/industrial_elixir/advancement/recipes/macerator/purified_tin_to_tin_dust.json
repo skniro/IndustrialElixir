@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:purified_tin_to_tin_dust"
+        "recipes": "industrial_elixir:macerator/purified_tin_to_tin_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

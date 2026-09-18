@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:scrap_box"
+        "recipes": "industrial_elixir:scrap_box"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

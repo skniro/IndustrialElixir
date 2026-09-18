@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:pipe_wooden_fluid"
+        "recipes": "industrial_elixir:pipe_wooden_fluid"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

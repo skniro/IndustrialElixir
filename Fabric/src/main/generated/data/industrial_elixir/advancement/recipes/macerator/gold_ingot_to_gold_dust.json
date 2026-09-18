@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:gold_ingot_to_gold_dust"
+        "recipes": "industrial_elixir:macerator/gold_ingot_to_gold_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:copper_cable"
+        "recipes": "industrial_elixir:metalformer_cutting/copper_cable"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

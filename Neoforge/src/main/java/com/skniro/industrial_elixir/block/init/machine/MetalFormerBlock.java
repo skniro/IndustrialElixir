@@ -18,12 +18,6 @@ public class MetalFormerBlock extends AbstractMachineblock {
     public MetalFormerBlock(Properties settings) {
         super(settings, EnergyTier.TIER1);
     }
-    public static final MapCodec<MetalFormerBlock> CODEC = simpleCodec(MetalFormerBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Nullable
     @Override

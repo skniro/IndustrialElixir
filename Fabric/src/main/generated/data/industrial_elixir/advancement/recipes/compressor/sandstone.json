@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:sandstone"
+        "recipes": "industrial_elixir:compressor/sandstone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

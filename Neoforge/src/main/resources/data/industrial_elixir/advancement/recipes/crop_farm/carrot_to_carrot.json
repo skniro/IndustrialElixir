@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:carrot_to_carrot"
+        "recipes": "industrial_elixir:crop_farm/carrot_to_carrot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

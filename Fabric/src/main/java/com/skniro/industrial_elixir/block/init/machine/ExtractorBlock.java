@@ -18,12 +18,6 @@ public class ExtractorBlock extends AbstractMachineblock {
     public ExtractorBlock(Properties settings) {
         super(settings, EnergyTier.TIER1);
     }
-    public static final MapCodec<ExtractorBlock> CODEC = simpleCodec(ExtractorBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Nullable
     @Override

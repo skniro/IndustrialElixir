@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:bamboo_to_bamboo"
+        "recipes": "industrial_elixir:crop_farm/bamboo_to_bamboo"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

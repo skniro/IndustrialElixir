@@ -6,6 +6,8 @@ import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.fluid.ReplicatorBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -19,16 +21,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class ReplicatorBlock extends AbstractMachineblock {
-    public static final MapCodec<ReplicatorBlock> CODEC = simpleCodec(ReplicatorBlock::new);
 
     public ReplicatorBlock(Properties properties) {
         super(properties, EnergyTier.TIER4);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Nullable
     @Override
@@ -37,7 +34,7 @@ public class ReplicatorBlock extends AbstractMachineblock {
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
+    public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state,
                               @Nullable BlockEntity blockEntity, ItemStack destroyedWith) {
         if (level.getBlockEntity(pos) instanceof ReplicatorBlockEntity be) {
             be.drops();

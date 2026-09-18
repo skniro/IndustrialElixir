@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:lithium_dust"
+        "recipes": "industrial_elixir:compressor/lithium_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

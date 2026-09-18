@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:compressor"
+        "recipes": "industrial_elixir:compressor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

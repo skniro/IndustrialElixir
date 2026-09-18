@@ -4,9 +4,12 @@ import com.skniro.industrial_elixir.api.data.recipe.CraftingDataHelper;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.concurrent.CompletableFuture;
@@ -17,8 +20,8 @@ public class CoffeeMachineRecipeGenerator extends CraftingDataHelper {
     }
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new ModRecipeGenerator(recipes, advancements) {
             @Override
             public void buildRecipes() {
                 createCoffeeMachine(MapleFoodComponents.Coffee_Black)

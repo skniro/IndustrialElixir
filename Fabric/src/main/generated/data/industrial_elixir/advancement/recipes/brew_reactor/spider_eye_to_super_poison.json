@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:spider_eye_to_super_poison"
+        "recipes": "industrial_elixir:brew_reactor/spider_eye_to_super_poison"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,9 +3,7 @@ package com.skniro.industrial_elixir.block;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.entity.MapleSignTypes;
 import com.skniro.industrial_elixir.block.init.*;
-import com.skniro.industrial_elixir.block.init.machine.fluid.CoffeeMachineBlock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import com.skniro.industrial_elixir.world.Tree.RubberSaplingGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,7 +27,6 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -38,7 +35,6 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class GeneralBlocks {
     public static final Block Lead_Ore = registerBlock("lead_ore", (settings)-> new DropExperienceBlock(UniformInt.of(2, 4), settings),BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
@@ -98,7 +94,7 @@ public class GeneralBlocks {
             (settings)-> new TrapDoorBlock(MapleBlockSetType.Rubber, settings),BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(3.0F).noOcclusion());
     public static final Block Rubber_PRESSURE_PLATE = registerBlock("rubber_pressure_plate",
             (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), BlockBehaviour.Properties.of().mapColor(
-                    Rubber_PLANKS.defaultMapColor()).noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
+                    Rubber_PLANKS.defaultMapColor()).noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.POPPED));
 
     public static final Block Rubber_SHELF = registerBlock("rubber_shelf",
             ShelfBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.SHELF).ignitedByLava().strength(2.0F, 3.0F));
@@ -109,7 +105,7 @@ public class GeneralBlocks {
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 800.0F)));
 
     public static final Block Reinforced_DOOR = registerBlock("reinforced_door",
-            (settings)-> new DoorBlock(BlockSetType.IRON, settings), BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 1000.0F).noOcclusion().pushReaction(PushReaction.IGNORE));
+            (settings)-> new DoorBlock(BlockSetType.IRON, settings), BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 1000.0F).noOcclusion().pushReaction(PushReaction.IGNORE_ENTITY));
 
     //PLASTER
     public static final Block GREEN_PLASTER =registerBlock("green_plaster",

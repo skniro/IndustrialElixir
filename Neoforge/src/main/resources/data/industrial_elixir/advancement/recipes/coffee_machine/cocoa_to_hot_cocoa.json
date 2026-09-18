@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cocoa_to_hot_cocoa"
+        "recipes": "industrial_elixir:coffee_machine/cocoa_to_hot_cocoa"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

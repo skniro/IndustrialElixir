@@ -6,6 +6,8 @@ import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.machine.fluid.CoffeeMachineBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,15 +23,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class CoffeeMachineBlock extends AbstractMachineblock {
-    public static final MapCodec<CoffeeMachineBlock> CODEC = simpleCodec(CoffeeMachineBlock::new);
 
     public CoffeeMachineBlock(Properties settings) {
         super(settings, EnergyTier.TIER1);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -38,7 +34,7 @@ public class CoffeeMachineBlock extends AbstractMachineblock {
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, net.minecraft.world.item.ItemStack destroyedWith) {
+    public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, net.minecraft.world.item.ItemStack destroyedWith) {
         if (level.getBlockEntity(pos) instanceof CoffeeMachineBlockEntity machine) {
             machine.drops();
         }

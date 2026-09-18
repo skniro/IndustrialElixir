@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:sacred_essence"
+        "recipes": "industrial_elixir:brew_reactor/sacred_essence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

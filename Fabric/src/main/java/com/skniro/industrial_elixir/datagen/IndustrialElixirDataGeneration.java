@@ -28,9 +28,9 @@ public class IndustrialElixirDataGeneration implements DataGeneratorEntrypoint {
     @Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
         registryBuilder.add(Registries.DAMAGE_TYPE, ModDamageTypeProvider::damageTypes);
-        registryBuilder.add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
+        registryBuilder.add(Registries.FEATURE, ModConfiguredFeatures::bootstrap);
         registryBuilder.add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
-        registryBuilder.add(Registries.CONFIGURED_FEATURE, AgreeTreeConfiguredFeatures::bootstrap);
+        registryBuilder.add(Registries.FEATURE, AgreeTreeConfiguredFeatures::bootstrap);
         registryBuilder.add(Registries.PLACED_FEATURE, AgreeTreePlacedFeatures::bootstrap);
     }
 }

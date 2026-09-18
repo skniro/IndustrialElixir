@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:bronze_axe"
+        "recipes": "industrial_elixir:bronze_axe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

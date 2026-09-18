@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:blaze_rod"
+        "recipes": "industrial_elixir:compressor/blaze_rod"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

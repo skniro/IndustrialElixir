@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:gravel"
+        "recipes": "industrial_elixir:molecular_transformer/gravel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

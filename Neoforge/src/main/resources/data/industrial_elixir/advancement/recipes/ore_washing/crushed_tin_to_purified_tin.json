@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_tin_to_purified_tin"
+        "recipes": "industrial_elixir:ore_washing/crushed_tin_to_purified_tin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

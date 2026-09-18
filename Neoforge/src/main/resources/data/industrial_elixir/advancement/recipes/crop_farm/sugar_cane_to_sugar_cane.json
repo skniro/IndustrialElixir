@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:sugar_cane_to_sugar_cane"
+        "recipes": "industrial_elixir:crop_farm/sugar_cane_to_sugar_cane"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

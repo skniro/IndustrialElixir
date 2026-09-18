@@ -14,7 +14,7 @@ public class ModDynamicGenerator extends FabricDynamicRegistryProvider {
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         // HERE GOES FUTURE WORLD GEN!
-        entries.addAll(registries.lookupOrThrow(Registries.CONFIGURED_FEATURE));
+        entries.addAll(registries.lookupOrThrow(Registries.FEATURE));
         entries.addAll(registries.lookupOrThrow(Registries.PLACED_FEATURE));
         entries.addAll(registries.lookupOrThrow(Registries.DAMAGE_TYPE));
     }

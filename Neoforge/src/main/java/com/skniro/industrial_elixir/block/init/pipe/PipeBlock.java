@@ -169,11 +169,6 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
         builder.add(EAST, WEST, NORTH, SOUTH, UP, DOWN, WATERLOGGED, COVERED);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("PipeBlock does not support getCodec!");
-    }
-
     // =========================
     // 静态
     // =========================

@@ -19,13 +19,6 @@ public class ElectricFurnaceBlock extends AbstractMachineblock {
         super(settings, EnergyTier.TIER1);
     }
 
-    public static final MapCodec<ElectricFurnaceBlock> CODEC = simpleCodec(ElectricFurnaceBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class VendorMachineBlock extends BaseEntityBlock {
-    public static final MapCodec<VendorMachineBlock> CODEC = simpleCodec(VendorMachineBlock::new);
 
     public VendorMachineBlock(Properties settings) {
         super(settings);
@@ -61,10 +60,6 @@ public class VendorMachineBlock extends BaseEntityBlock {
         builder.add(new Property[]{FACING, LIT});
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Override
     public RenderShape getRenderShape(BlockState state) {

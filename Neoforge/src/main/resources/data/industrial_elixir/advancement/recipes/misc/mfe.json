@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:mfe"
+        "recipes": "industrial_elixir:mfe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

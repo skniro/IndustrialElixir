@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:lapis_plate"
+        "recipes": "industrial_elixir:compressor/lapis_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

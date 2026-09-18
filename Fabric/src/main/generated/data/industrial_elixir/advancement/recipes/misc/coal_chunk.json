@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:coal_chunk"
+        "recipes": "industrial_elixir:coal_chunk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

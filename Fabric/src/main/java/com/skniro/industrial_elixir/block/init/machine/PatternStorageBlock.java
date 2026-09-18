@@ -14,15 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class PatternStorageBlock extends AbstractMachineblock {
-    public static final MapCodec<PatternStorageBlock> CODEC = simpleCodec(PatternStorageBlock::new);
 
     public PatternStorageBlock(Properties settings) {
         super(settings, EnergyTier.TIER2);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Nullable

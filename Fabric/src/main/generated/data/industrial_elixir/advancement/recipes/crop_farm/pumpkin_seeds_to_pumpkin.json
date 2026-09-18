@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:pumpkin_seeds_to_pumpkin"
+        "recipes": "industrial_elixir:crop_farm/pumpkin_seeds_to_pumpkin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

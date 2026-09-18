@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:electric_jetpack"
+        "recipes": "industrial_elixir:electric_jetpack"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

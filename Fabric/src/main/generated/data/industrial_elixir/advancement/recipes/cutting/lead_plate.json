@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:lead_plate"
+        "recipes": "industrial_elixir:cutting/lead_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

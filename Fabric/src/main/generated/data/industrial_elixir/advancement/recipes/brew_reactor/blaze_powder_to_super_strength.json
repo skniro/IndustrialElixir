@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:blaze_powder_to_super_strength"
+        "recipes": "industrial_elixir:brew_reactor/blaze_powder_to_super_strength"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

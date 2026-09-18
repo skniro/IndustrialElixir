@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:quantum_boots"
+        "recipes": "industrial_elixir:quantum_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

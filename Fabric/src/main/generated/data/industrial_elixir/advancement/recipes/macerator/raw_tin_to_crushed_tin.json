@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_tin_to_crushed_tin"
+        "recipes": "industrial_elixir:macerator/raw_tin_to_crushed_tin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

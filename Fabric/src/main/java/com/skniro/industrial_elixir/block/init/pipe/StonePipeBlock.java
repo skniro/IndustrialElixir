@@ -28,9 +28,4 @@ public class StonePipeBlock extends PipeBlock implements SimpleWaterloggedBlock 
         return (world1, pos, state1, blockEntity) ->
                 ((StonePipeBlockEntity) blockEntity).tick(world1, pos, state1);
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("PipeBlock does not support getCodec!");
-    }
 }

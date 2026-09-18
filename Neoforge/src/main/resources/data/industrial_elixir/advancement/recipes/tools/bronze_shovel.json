@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:bronze_shovel"
+        "recipes": "industrial_elixir:bronze_shovel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

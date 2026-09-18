@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:nether_star"
+        "recipes": "industrial_elixir:molecular_transformer/nether_star"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

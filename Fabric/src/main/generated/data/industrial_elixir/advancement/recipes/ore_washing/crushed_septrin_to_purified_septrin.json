@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_septrin_to_purified_septrin"
+        "recipes": "industrial_elixir:ore_washing/crushed_septrin_to_purified_septrin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

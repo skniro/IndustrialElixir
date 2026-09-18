@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:diamond"
+        "recipes": "industrial_elixir:molecular_transformer/diamond"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

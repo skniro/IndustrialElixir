@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:heat_centrifuge"
+        "recipes": "industrial_elixir:heat_centrifuge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:pattern_storage"
+        "recipes": "industrial_elixir:pattern_storage"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

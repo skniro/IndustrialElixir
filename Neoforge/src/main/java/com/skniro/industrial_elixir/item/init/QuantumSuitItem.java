@@ -459,7 +459,7 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
 
         if (storage.tryUseEnergy(boots, BOOST_JUMP_COST)) {
             player.setDeltaMovement(player.getDeltaMovement().x(), BOOST_JUMP_VELOCITY, player.getDeltaMovement().z());
-            player.hurtMarked = true;
+            player.syncVelocity = true;
         }
     }
 

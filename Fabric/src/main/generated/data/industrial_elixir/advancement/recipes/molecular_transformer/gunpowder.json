@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:gunpowder"
+        "recipes": "industrial_elixir:molecular_transformer/gunpowder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

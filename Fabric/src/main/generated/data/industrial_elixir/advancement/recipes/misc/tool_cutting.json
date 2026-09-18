@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:tool_cutting"
+        "recipes": "industrial_elixir:tool_cutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:generator_wind_mill"
+        "recipes": "industrial_elixir:generator_wind_mill"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

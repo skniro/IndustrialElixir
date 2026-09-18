@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:stone_to_infested"
+        "recipes": "industrial_elixir:brew_reactor/stone_to_infested"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

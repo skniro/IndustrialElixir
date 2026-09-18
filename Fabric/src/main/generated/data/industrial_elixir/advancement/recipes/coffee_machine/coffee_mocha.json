@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:coffee_mocha"
+        "recipes": "industrial_elixir:coffee_machine/coffee_mocha"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

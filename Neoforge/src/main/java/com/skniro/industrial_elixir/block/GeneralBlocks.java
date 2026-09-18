@@ -4,15 +4,11 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.block.entity.MapleSignTypes;
 import com.skniro.industrial_elixir.block.init.*;
-import com.skniro.industrial_elixir.block.init.machine.fluid.CoffeeMachineBlock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import com.skniro.industrial_elixir.world.Tree.RubberSaplingGenerator;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -30,7 +26,6 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -90,7 +85,7 @@ public class GeneralBlocks {
     public static final Supplier<Block> Rubber_PLANKS = registerBlock("rubber_planks",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.COLOR_BROWN)));
     public static final Supplier<Block> Rubber_BUTTON = registerBlock("rubber_button",
-            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY));
+            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.POPPED));
     public static final Supplier<Block> Rubber_STAIRS = registerBlock("rubber_stairs",
             (settings)-> new ModStairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Supplier<Block> Rubber_SLAB = registerBlock("rubber_slab",
@@ -105,7 +100,7 @@ public class GeneralBlocks {
             (settings)-> new TrapDoorBlock(MapleBlockSetType.Rubber, settings),BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(3.0F).noOcclusion());
     public static final Supplier<Block> Rubber_PRESSURE_PLATE = registerBlockDeferred("rubber_pressure_plate",
             (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN)
-                    .noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
+                    .noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.POPPED));
 
     public static final Supplier<Block> Rubber_SHELF = registerBlock("rubber_shelf",
             ShelfBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.SHELF).ignitedByLava().strength(2.0F, 3.0F));
@@ -116,7 +111,7 @@ public class GeneralBlocks {
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 800.0F)));
 
     public static final Supplier<Block> Reinforced_DOOR = registerBlock("reinforced_door",
-            (settings)-> new DoorBlock(BlockSetType.IRON, settings), BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 1000.0F).noOcclusion().pushReaction(PushReaction.IGNORE));
+            (settings)-> new DoorBlock(BlockSetType.IRON, settings), BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY).strength(80.0F, 1000.0F).noOcclusion().pushReaction(PushReaction.IGNORE_ENTITY));
 
     //PLASTER
     public static final Supplier<Block> GREEN_PLASTER =registerBlock("green_plaster",

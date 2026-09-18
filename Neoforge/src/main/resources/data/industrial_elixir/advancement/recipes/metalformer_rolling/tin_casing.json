@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:tin_casing"
+        "recipes": "industrial_elixir:metalformer_rolling/tin_casing"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

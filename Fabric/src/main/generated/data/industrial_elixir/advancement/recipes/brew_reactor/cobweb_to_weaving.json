@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cobweb_to_weaving"
+        "recipes": "industrial_elixir:brew_reactor/cobweb_to_weaving"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:obsidian_to_obsidian_dust"
+        "recipes": "industrial_elixir:macerator/obsidian_to_obsidian_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

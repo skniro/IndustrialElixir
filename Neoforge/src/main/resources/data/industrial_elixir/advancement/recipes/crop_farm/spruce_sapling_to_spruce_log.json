@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:spruce_sapling_to_spruce_log"
+        "recipes": "industrial_elixir:crop_farm/spruce_sapling_to_spruce_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

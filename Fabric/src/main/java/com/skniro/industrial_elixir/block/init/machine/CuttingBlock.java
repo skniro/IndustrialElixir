@@ -19,13 +19,6 @@ public class CuttingBlock extends AbstractMachineblock {
         super(settings, EnergyTier.TIER1);
     }
 
-    public static final MapCodec<CuttingBlock> CODEC = simpleCodec(CuttingBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

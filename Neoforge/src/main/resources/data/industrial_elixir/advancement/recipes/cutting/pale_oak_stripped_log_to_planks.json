@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:pale_oak_stripped_log_to_planks"
+        "recipes": "industrial_elixir:cutting/pale_oak_stripped_log_to_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:purified_gold_to_purified_gold"
+        "recipes": "industrial_elixir:heat_centrifuge/purified_gold_to_purified_gold"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

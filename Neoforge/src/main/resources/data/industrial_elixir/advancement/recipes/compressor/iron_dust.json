@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:iron_dust"
+        "recipes": "industrial_elixir:compressor/iron_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

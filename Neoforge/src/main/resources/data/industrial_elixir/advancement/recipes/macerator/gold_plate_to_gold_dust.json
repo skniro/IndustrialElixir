@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:gold_plate_to_gold_dust"
+        "recipes": "industrial_elixir:macerator/gold_plate_to_gold_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

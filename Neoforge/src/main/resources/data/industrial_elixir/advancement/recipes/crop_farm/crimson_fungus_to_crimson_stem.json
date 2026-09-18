@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crimson_fungus_to_crimson_stem"
+        "recipes": "industrial_elixir:crop_farm/crimson_fungus_to_crimson_stem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

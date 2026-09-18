@@ -18,12 +18,6 @@ public class MaceratorBlock extends AbstractMachineblock {
     public MaceratorBlock(Properties settings) {
         super(settings, EnergyTier.TIER1);
     }
-    public static final MapCodec<MaceratorBlock> CODEC = simpleCodec(MaceratorBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     @Nullable
     @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:jungle_sapling_to_jungle_log"
+        "recipes": "industrial_elixir:crop_farm/jungle_sapling_to_jungle_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

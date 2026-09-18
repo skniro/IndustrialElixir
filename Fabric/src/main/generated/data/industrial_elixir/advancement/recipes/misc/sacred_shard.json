@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:sacred_shard"
+        "recipes": "industrial_elixir:sacred_shard"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

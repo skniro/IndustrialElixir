@@ -8,17 +8,15 @@ import com.skniro.industrial_elixir.item.init.ElectricJetpackItem;
 import com.skniro.industrial_elixir.item.init.RollingCuttingToolItem;
 import com.skniro.industrial_elixir.item.init.equipment.MapleArmorMaterials;
 import com.skniro.industrial_elixir.item.init.tool.MapleToolMaterials;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.HangingSignItem;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.equipment.ArmorType;
 import java.util.function.Function;
 
@@ -30,13 +28,13 @@ public class MapleArmorItems {
     public static final Item BRONZE_BOOTS = registerItem("bronze_boots", Item::new,(new Item.Properties()).humanoidArmor(MapleArmorMaterials.BRONZE, ArmorType.BOOTS));
 
     public static final Item BRONZE_SWORD = registerItem("bronze_sword", Item::new,(new Item.Properties()).sword(MapleToolMaterials.BRONZE, 3.0F, -2.4F));
-    public static final Item BRONZE_SHOVEL = registerItem("bronze_shovel", (settings) -> new ShovelItem(MapleToolMaterials.BRONZE, 1.5F, -3.0F, settings), new Item.Properties());
+    public static final Item BRONZE_SHOVEL = registerItem("bronze_shovel", (settings) -> new Item(settings.shovel(MapleToolMaterials.BRONZE, 1.5F, -3.0F)), new Item.Properties());
     public static final Item BRONZE_PICKAXE = registerItem("bronze_pickaxe", (settings) ->new Item(settings.pickaxe(MapleToolMaterials.BRONZE, 1.0F, -2.8F)), new Item.Properties());
-    public static final Item BRONZE_AXE = registerItem("bronze_axe", (settings) -> new AxeItem(MapleToolMaterials.BRONZE, 6.0F, -3.1F, settings), new Item.Properties());
-    public static final Item BRONZE_HOE = registerItem("bronze_hoe", (settings) -> new HoeItem(MapleToolMaterials.BRONZE, -2.0F, -1.0F, settings), new Item.Properties());
+    public static final Item BRONZE_AXE = registerItem("bronze_axe", (settings) -> new Item(settings.axe(MapleToolMaterials.BRONZE, 6.0F, -3.1F)), new Item.Properties());
+    public static final Item BRONZE_HOE = registerItem("bronze_hoe", (settings) -> new Item(settings.hoe(MapleToolMaterials.BRONZE, -2.0F, -1.0F)), new Item.Properties());
 
     public static final Item Rubber_SIGN = registerItem("rubber_sign",
-            (settings)-> new SignItem(MapleSignBlocks.Rubber_SIGN, MapleSignBlocks.Rubber_WALL_SIGN, settings), new Item.Properties().stacksTo(16));
+            (settings)-> new StandingAndWallBlockItem(MapleSignBlocks.Rubber_SIGN, MapleSignBlocks.Rubber_WALL_SIGN, Direction.DOWN, settings), new Item.Properties().stacksTo(16));
 
     public static final Item Rubber_HANGING_SIGN = registerItem("rubber_hanging_sign", (settings)-> new HangingSignItem(
             MapleSignBlocks.Rubber_HANGING_SIGN, MapleSignBlocks.Rubber_WALL_HANGING_SIGN, settings), new Item.Properties().stacksTo(16));

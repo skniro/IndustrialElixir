@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:blaze_powder"
+        "recipes": "industrial_elixir:macerator/blaze_powder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

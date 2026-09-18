@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_septrin_to_purified_septrin"
+        "recipes": "industrial_elixir:heat_centrifuge/crushed_septrin_to_purified_septrin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

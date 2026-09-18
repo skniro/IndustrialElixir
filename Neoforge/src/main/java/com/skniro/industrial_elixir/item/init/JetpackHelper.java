@@ -168,14 +168,14 @@ public final class JetpackHelper {
         }
 
         player.setDeltaMovement(dx, dy, dz);
-        player.hurtMarked = true;
+        player.syncVelocity = true;
     }
 
     private static void applySlowFall(Player player, double maxFallSpeed) {
         var m = player.getDeltaMovement();
         if (m.y() < maxFallSpeed) {
             player.setDeltaMovement(m.x(), maxFallSpeed, m.z());
-            player.hurtMarked = true;
+            player.syncVelocity = true;
         }
     }
 

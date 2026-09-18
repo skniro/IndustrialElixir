@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:turtle_helmet_to_super_turtle_master"
+        "recipes": "industrial_elixir:brew_reactor/turtle_helmet_to_super_turtle_master"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

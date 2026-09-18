@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:sticky_resin_to_rubber"
+        "recipes": "industrial_elixir:extractor/sticky_resin_to_rubber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

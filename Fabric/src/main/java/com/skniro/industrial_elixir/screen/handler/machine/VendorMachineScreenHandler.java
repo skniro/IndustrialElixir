@@ -7,6 +7,7 @@ import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.ClientSideMerchant;
@@ -162,16 +163,16 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
             if (!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected()) {
                 ItemStack itemStack = this.tradeContainer.removeItemNoUpdate(0);
                 if (!itemStack.isEmpty()) {
-                    player.drop(itemStack, false);
+                    player.drop(itemStack, false, Prediction.PREDICTED);
                 }
 
                 itemStack = this.tradeContainer.removeItemNoUpdate(1);
                 if (!itemStack.isEmpty()) {
-                    player.drop(itemStack, false);
+                    player.drop(itemStack, false, Prediction.PREDICTED);
                 }
             } else if (player instanceof ServerPlayer) {
-                player.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(0));
-                player.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(1));
+                player.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(0), Prediction.SERVER_ONLY);
+                player.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(1), Prediction.SERVER_ONLY);
             }
 
         }

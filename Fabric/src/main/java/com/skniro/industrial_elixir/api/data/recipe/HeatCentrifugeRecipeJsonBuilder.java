@@ -8,6 +8,7 @@ import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
@@ -119,7 +120,7 @@ public class HeatCentrifugeRecipeJsonBuilder implements RecipeBuilder {
         }
 
         Advancement.Builder advancementBuilder = exporter.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey))
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(exporter.lookup(Registries.RECIPE).getOrThrow(modifyRecipeKey(recipeKey,exporter))))
                 .rewards(AdvancementRewards.Builder.recipe(recipeKey))
                 .requirements(AdvancementRequirements.Strategy.OR);
 

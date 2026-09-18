@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:reinforced_iridium_amethyst_plate"
+        "recipes": "industrial_elixir:reinforced_iridium_amethyst_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

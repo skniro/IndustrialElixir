@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:metalformer"
+        "recipes": "industrial_elixir:metalformer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

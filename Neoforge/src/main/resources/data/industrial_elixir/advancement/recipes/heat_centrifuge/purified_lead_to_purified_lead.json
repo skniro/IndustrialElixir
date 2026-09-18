@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:purified_lead_to_purified_lead"
+        "recipes": "industrial_elixir:heat_centrifuge/purified_lead_to_purified_lead"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

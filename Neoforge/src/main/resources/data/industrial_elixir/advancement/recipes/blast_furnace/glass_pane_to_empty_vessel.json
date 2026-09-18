@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:glass_pane_to_empty_vessel"
+        "recipes": "industrial_elixir:blast_furnace/glass_pane_to_empty_vessel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

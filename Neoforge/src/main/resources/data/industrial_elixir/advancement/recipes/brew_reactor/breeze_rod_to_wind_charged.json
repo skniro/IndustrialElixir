@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:breeze_rod_to_wind_charged"
+        "recipes": "industrial_elixir:brew_reactor/breeze_rod_to_wind_charged"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

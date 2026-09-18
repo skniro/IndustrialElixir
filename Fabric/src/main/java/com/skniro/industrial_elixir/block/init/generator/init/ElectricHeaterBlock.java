@@ -15,14 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ElectricHeaterBlock extends AbstractMachineblock {
-    public static final MapCodec<ElectricHeaterBlock> CODEC = simpleCodec(ElectricHeaterBlock::new);
     public ElectricHeaterBlock(Properties settings) {
         super(settings, EnergyTier.TIER4,3000);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:crushed_sacred"
+        "recipes": "industrial_elixir:macerator/crushed_sacred"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

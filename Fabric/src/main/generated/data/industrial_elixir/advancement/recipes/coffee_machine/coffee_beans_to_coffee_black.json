@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:coffee_beans_to_coffee_black"
+        "recipes": "industrial_elixir:coffee_machine/coffee_beans_to_coffee_black"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

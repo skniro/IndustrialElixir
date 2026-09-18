@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:irradiant_sacred"
+        "recipes": "industrial_elixir:irradiant_sacred"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:induction_furnace"
+        "recipes": "industrial_elixir:induction_furnace"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

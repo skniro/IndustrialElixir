@@ -8,8 +8,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public class ModLootTableModifiers {
     private static final Identifier IGLOO_STRUCTURE_CHEST_ID
@@ -61,20 +60,20 @@ public class ModLootTableModifiers {
     private static final Identifier Shipwreck_Treasure_CHEST_ID
             = Identifier.fromNamespaceAndPath("minecraft", "chests/shipwreck_treasure");
 
-    private static LootPool.Builder bronzeArmorPool(float chance, float minCount, float maxCount) {
+    private static LootPool.Builder bronzeArmorPool(float chance, int minCount, int maxCount) {
         return LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1))
+                .setRolls(ContextIntProviders.exactly(1))
                 .when(LootItemRandomChanceCondition.randomChance(chance))
                 .add(LootItem.lootTableItem(MapleArmorItems.BRONZE_HELMET))
                 .add(LootItem.lootTableItem(MapleArmorItems.BRONZE_CHESTPLATE))
                 .add(LootItem.lootTableItem(MapleArmorItems.BRONZE_LEGGINGS))
                 .add(LootItem.lootTableItem(MapleArmorItems.BRONZE_BOOTS))
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minCount, maxCount)).build());
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(minCount, maxCount)).build());
     }
 
-    private static LootPool.Builder powderPool(float chance, float minCount, float maxCount) {
+    private static LootPool.Builder powderPool(float chance, int minCount, int maxCount) {
         return LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1))
+                .setRolls(ContextIntProviders.exactly(1))
                 .when(LootItemRandomChanceCondition.randomChance(chance))
                 .add(LootItem.lootTableItem(GrowableOresItems.BRONZE_DUST))
                 .add(LootItem.lootTableItem(GrowableOresItems.CLAY_DUST))
@@ -93,179 +92,179 @@ public class ModLootTableModifiers {
                 .add(LootItem.lootTableItem(GrowableOresItems.STONE_DUST))
                 .add(LootItem.lootTableItem(GrowableOresItems.SULFUR_DUST))
                 .add(LootItem.lootTableItem(GrowableOresItems.TIN_DUST))
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minCount, maxCount)).build());
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(minCount, maxCount)).build());
     }
 
-    private static LootPool.Builder iridiumOrePool(float chance, float minCount, float maxCount) {
+    private static LootPool.Builder iridiumOrePool(float chance, int minCount, int maxCount) {
         return LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1))
+                .setRolls(ContextIntProviders.exactly(1))
                 .when(LootItemRandomChanceCondition.randomChance(chance))
                 .add(LootItem.lootTableItem(GrowableOresItems.IRIDIUM_ORE))
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minCount, maxCount)).build());
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(minCount, maxCount)).build());
     }
 
-    private static LootPool.Builder iridiumShardPool(float chance, float minCount, float maxCount) {
+    private static LootPool.Builder iridiumShardPool(float chance, int minCount, int maxCount) {
         return LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1))
+                .setRolls(ContextIntProviders.exactly(1))
                 .when(LootItemRandomChanceCondition.randomChance(chance))
                 .add(LootItem.lootTableItem(GrowableOresItems.IRIDIUM_SHARD))
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(minCount, maxCount)).build());
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(minCount, maxCount)).build());
     }
 
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((id, tableBuilder, source, registries) -> {
             // ========== Tier 3: High-value chests ==========
             if(Ancient_City_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.35f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.55f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.10f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.05f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.35f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.55f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.10f, 1, 2).build());
+                tableBuilder.pool(iridiumShardPool(0.05f, 1, 1).build());
             }
             if(Bastion_Treasure_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.35f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.55f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.10f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.05f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.35f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.55f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.10f, 1, 2).build());
+                tableBuilder.pool(iridiumShardPool(0.05f, 1, 1).build());
             }
             if(End_City_Treasure_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.35f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.55f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.10f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.05f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.35f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.55f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.10f, 1, 2).build());
+                tableBuilder.pool(iridiumShardPool(0.05f, 1, 1).build());
             }
 
             // ========== Tier 2.5: Upper-mid chests ==========
             if(Bastion_Bridge_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.20f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.35f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.06f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.03f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.20f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.35f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.06f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.03f, 1, 1).build());
             }
             if(Bastion_Other_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.20f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.35f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.06f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.03f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.20f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.35f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.06f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.03f, 1, 1).build());
             }
             if(Woodland_Mansion_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.25f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.35f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.06f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.03f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.25f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.35f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.06f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.03f, 1, 1).build());
             }
             if(Nether_Bridge_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.20f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.35f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.06f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.03f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.20f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.35f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.06f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.03f, 1, 1).build());
             }
 
             // ========== Tier 2: Mid chests ==========
             if(Bastion_Hoglin_Stable_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.30f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.05f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.18f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.30f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.05f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Stronghold_Corridor_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.30f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.05f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.18f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.30f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.05f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Stronghold_Crossing_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.30f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.05f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.18f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.30f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.05f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
 
             // ========== Tier 1.5: Lower-mid chests ==========
             if(Desert_Pyramid_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.12f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.25f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.04f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.12f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.25f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.04f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Jungle_Temple_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.12f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.25f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.04f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.12f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.25f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.04f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Jungle_Temple_Dispenser_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.12f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.25f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.04f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.12f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.25f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.04f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Pillager_Outpost_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.12f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.25f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.04f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.12f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.25f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.04f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Ruined_Portal_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.12f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.25f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.04f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.12f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.25f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.04f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
             if(Simple_Dungeon_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.12f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.25f, 1.0f, 2.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.04f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.02f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.12f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.25f, 1, 2).build());
+                tableBuilder.pool(iridiumOrePool(0.04f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.02f, 1, 1).build());
             }
 
             // ========== Tier 1: Low-tier chests ==========
             if(IGLOO_STRUCTURE_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Mineshaft_STRUCTURE_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Buried_Treasure_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Underwater_Ruin_Small_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Underwater_Ruin_Big_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Shipwreck_Map_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Shipwreck_Supply_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
             if(Shipwreck_Treasure_CHEST_ID.equals(id)) {
-                tableBuilder.pool(bronzeArmorPool(0.08f, 1.0f, 1.0f).build());
-                tableBuilder.pool(powderPool(0.18f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumOrePool(0.03f, 1.0f, 1.0f).build());
-                tableBuilder.pool(iridiumShardPool(0.01f, 1.0f, 1.0f).build());
+                tableBuilder.pool(bronzeArmorPool(0.08f, 1, 1).build());
+                tableBuilder.pool(powderPool(0.18f, 1, 1).build());
+                tableBuilder.pool(iridiumOrePool(0.03f, 1, 1).build());
+                tableBuilder.pool(iridiumShardPool(0.01f, 1, 1).build());
             }
         });
     }

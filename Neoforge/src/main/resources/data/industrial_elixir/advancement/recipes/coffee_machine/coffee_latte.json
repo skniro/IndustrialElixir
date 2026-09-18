@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:coffee_latte"
+        "recipes": "industrial_elixir:coffee_machine/coffee_latte"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

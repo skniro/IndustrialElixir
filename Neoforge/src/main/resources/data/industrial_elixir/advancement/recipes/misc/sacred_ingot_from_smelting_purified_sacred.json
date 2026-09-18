@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:sacred_ingot_from_smelting_purified_sacred"
+        "recipes": "industrial_elixir:sacred_ingot_from_smelting_purified_sacred"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

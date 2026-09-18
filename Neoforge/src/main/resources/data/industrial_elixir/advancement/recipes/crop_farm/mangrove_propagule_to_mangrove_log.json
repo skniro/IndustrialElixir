@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:mangrove_propagule_to_mangrove_log"
+        "recipes": "industrial_elixir:crop_farm/mangrove_propagule_to_mangrove_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

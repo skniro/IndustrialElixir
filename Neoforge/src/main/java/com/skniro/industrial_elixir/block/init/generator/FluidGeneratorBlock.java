@@ -19,13 +19,6 @@ public class FluidGeneratorBlock extends AbstractMachineblock {
         super(settings, EnergyTier.TIER1);
     }
 
-    public static final MapCodec<FluidGeneratorBlock> CODEC = simpleCodec(FluidGeneratorBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

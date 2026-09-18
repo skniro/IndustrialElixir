@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:wheat_seeds_to_wheat"
+        "recipes": "industrial_elixir:crop_farm/wheat_seeds_to_wheat"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

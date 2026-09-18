@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crimson_wood_to_planks"
+        "recipes": "industrial_elixir:cutting/crimson_wood_to_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

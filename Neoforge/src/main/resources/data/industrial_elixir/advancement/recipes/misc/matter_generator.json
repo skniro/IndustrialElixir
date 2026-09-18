@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:matter_generator"
+        "recipes": "industrial_elixir:matter_generator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

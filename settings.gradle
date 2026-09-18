@@ -20,6 +20,6 @@ pluginManagement {
 }
 
 
-rootProject.name = 'IndustrialElixir-26.2'
+rootProject.name = 'IndustrialElixir-26.3'
 include("Fabric", "Neoforge")
 //include("Fabric")

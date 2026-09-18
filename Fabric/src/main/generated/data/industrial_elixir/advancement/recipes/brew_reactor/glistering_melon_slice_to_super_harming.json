@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:glistering_melon_slice_to_super_harming"
+        "recipes": "industrial_elixir:brew_reactor/glistering_melon_slice_to_super_harming"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

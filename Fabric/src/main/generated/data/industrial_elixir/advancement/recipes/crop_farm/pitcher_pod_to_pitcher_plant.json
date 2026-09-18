@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:pitcher_pod_to_pitcher_plant"
+        "recipes": "industrial_elixir:crop_farm/pitcher_pod_to_pitcher_plant"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

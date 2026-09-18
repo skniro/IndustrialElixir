@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dense_tin_plate_to_tin_dust"
+        "recipes": "industrial_elixir:macerator/dense_tin_plate_to_tin_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

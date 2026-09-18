@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:enriched_luminite"
+        "recipes": "industrial_elixir:enriched_luminite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

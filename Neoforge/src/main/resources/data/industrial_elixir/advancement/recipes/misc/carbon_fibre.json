@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:carbon_fibre"
+        "recipes": "industrial_elixir:carbon_fibre"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

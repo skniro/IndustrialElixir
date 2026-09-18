@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:coil"
+        "recipes": "industrial_elixir:coil"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

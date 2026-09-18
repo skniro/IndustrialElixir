@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:quantum_helmet"
+        "recipes": "industrial_elixir:quantum_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

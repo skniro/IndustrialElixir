@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:tin_plate"
+        "recipes": "industrial_elixir:tin_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:brick"
+        "recipes": "industrial_elixir:extractor/brick"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

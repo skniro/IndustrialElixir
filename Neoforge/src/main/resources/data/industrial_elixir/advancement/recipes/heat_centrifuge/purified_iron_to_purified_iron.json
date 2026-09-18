@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:purified_iron_to_purified_iron"
+        "recipes": "industrial_elixir:heat_centrifuge/purified_iron_to_purified_iron"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

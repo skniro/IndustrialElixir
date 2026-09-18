@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_gold_to_gold_dust"
+        "recipes": "industrial_elixir:macerator/crushed_gold_to_gold_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:ier_sacred_ore_cane_to_ier_sacred_ore_cane"
+        "recipes": "industrial_elixir:crop_farm/ier_sacred_ore_cane_to_ier_sacred_ore_cane"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

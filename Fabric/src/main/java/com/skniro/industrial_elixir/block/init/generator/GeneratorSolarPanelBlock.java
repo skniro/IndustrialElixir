@@ -24,11 +24,6 @@ public class GeneratorSolarPanelBlock extends AbstractMachineblock {
         this.NightPower = NightPower;
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new IllegalStateException("Block does not support getCodec!");
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:tin_ingot"
+        "recipes": "industrial_elixir:tin_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:iron_ingot_to_stell_ingot"
+        "recipes": "industrial_elixir:blast_furnace/iron_ingot_to_stell_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

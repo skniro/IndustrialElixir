@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:electric_heater"
+        "recipes": "industrial_elixir:electric_heater"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

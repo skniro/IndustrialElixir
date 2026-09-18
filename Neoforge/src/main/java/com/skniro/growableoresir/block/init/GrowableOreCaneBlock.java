@@ -1,6 +1,5 @@
 package com.skniro.growableoresir.block.init;
 
-import com.mojang.serialization.MapCodec;
 import com.skniro.growableoresir.registry.tag.GrowableBlockTags;
 import com.skniro.growableoresir.registry.tag.GrowableFluidTags;
 import net.minecraft.core.BlockPos;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -29,14 +29,9 @@ import java.util.Iterator;
 
 
 public class GrowableOreCaneBlock extends Block implements BonemealableBlock {
-    public static final MapCodec<GrowableOreCaneBlock> CODEC = simpleCodec(GrowableOreCaneBlock::new);
     public static final IntegerProperty AGE;
     protected static final float field_31258 = 6.0F;
     protected static final VoxelShape SHAPE;
-
-    public MapCodec<GrowableOreCaneBlock> codec() {
-        return CODEC;
-    }
 
     public GrowableOreCaneBlock(Properties settings) {
         super(settings);
@@ -114,17 +109,17 @@ public class GrowableOreCaneBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         return this.getAge(state) < 15;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource randomSource, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource randomSource, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         for (int y = pos.getY(); y <= level.getHeight(); y++) {
             BlockPos uppos = new BlockPos(pos.getX(), y, pos.getZ());
             Block block = level.getBlockState(uppos).getBlock();

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:clay_dust"
+        "recipes": "industrial_elixir:macerator/clay_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

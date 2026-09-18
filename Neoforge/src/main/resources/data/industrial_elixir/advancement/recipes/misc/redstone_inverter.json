@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:redstone_inverter"
+        "recipes": "industrial_elixir:redstone_inverter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

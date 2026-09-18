@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:chorus_flower_to_chorus_fruit"
+        "recipes": "industrial_elixir:crop_farm/chorus_flower_to_chorus_fruit"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

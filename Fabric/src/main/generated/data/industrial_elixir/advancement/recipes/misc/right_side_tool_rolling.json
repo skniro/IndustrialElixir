@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:right_side_tool_rolling"
+        "recipes": "industrial_elixir:right_side_tool_rolling"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:fluid_generator"
+        "recipes": "industrial_elixir:fluid_generator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

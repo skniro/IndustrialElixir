@@ -5,65 +5,61 @@ import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.init.CoffeeBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.BlockReplacement;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
+import net.minecraft.world.level.levelgen.feature.SimpleBlockFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+
 import java.util.List;
 
 public class ModConfiguredFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> Deepslate_Lead_Ore_KEY = registerKey("deepslate_lead_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> Deepslate_Tin_Ore_KEY = registerKey("deepslate_tin_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> Deepslate_SACRED_Ore_KEY = registerKey("deepslate_sacred_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> Lead_Ore_KEY = registerKey("lead_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> Tin_Ore_KEY = registerKey("tin_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SACRED_Ore_KEY = registerKey("sacred_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_COFFEE = registerKey("patch_coffee");
+    public static final ResourceKey<Feature> Deepslate_Lead_Ore_KEY = registerKey("deepslate_lead_ore");
+    public static final ResourceKey<Feature> Deepslate_Tin_Ore_KEY = registerKey("deepslate_tin_ore");
+    public static final ResourceKey<Feature> Deepslate_SACRED_Ore_KEY = registerKey("deepslate_sacred_ore");
+    public static final ResourceKey<Feature> Lead_Ore_KEY = registerKey("lead_ore");
+    public static final ResourceKey<Feature> Tin_Ore_KEY = registerKey("tin_ore");
+    public static final ResourceKey<Feature> SACRED_Ore_KEY = registerKey("sacred_ore");
+    public static final ResourceKey<Feature> PATCH_COFFEE = registerKey("patch_coffee");;
 
-    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<Feature> context) {
         RuleTest stoneReplaceables = new BlockMatchTest(Blocks.STONE);
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         RuleTest endStoneReplaceables = new BlockMatchTest(Blocks.END_STONE);
 
-        List<OreConfiguration.TargetBlockState> deepslateleadOres =
-                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_Lead_Ore.get().defaultBlockState()));
-        List<OreConfiguration.TargetBlockState> deepslateTinOres =
-                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_Tin_Ore.get().defaultBlockState()));
-        List<OreConfiguration.TargetBlockState> deepslateSACREDOres =
-                List.of(OreConfiguration.target(deepslateReplaceables, GeneralBlocks.Deepslate_SACRED_Ore.get().defaultBlockState()));
-        List<OreConfiguration.TargetBlockState> leadOres =
-                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.Lead_Ore.get().defaultBlockState()));
-        List<OreConfiguration.TargetBlockState> TinOres =
-                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.Tin_Ore.get().defaultBlockState()));
-        List<OreConfiguration.TargetBlockState> SACREDOres =
-                List.of(OreConfiguration.target(stoneReplaceables, GeneralBlocks.SACRED_Ore.get().defaultBlockState()));
+        List<BlockReplacement> deepslateleadOres =
+                List.of(BlockReplacement.replace(deepslateReplaceables, GeneralBlocks.Deepslate_Lead_Ore.get().defaultBlockState()));
+        List<BlockReplacement> deepslateTinOres =
+                List.of(BlockReplacement.replace(deepslateReplaceables, GeneralBlocks.Deepslate_Tin_Ore.get().defaultBlockState()));
+        List<BlockReplacement> deepslateSACREDOres =
+                List.of(BlockReplacement.replace(deepslateReplaceables, GeneralBlocks.Deepslate_SACRED_Ore.get().defaultBlockState()));
+        List<BlockReplacement> leadOres =
+                List.of(BlockReplacement.replace(stoneReplaceables, GeneralBlocks.Lead_Ore.get().defaultBlockState()));
+        List<BlockReplacement> TinOres =
+                List.of(BlockReplacement.replace(stoneReplaceables, GeneralBlocks.Tin_Ore.get().defaultBlockState()));
+        List<BlockReplacement> SACREDOres =
+                List.of(BlockReplacement.replace(stoneReplaceables, GeneralBlocks.SACRED_Ore.get().defaultBlockState()));
 
 
-        register(context, Deepslate_Lead_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateleadOres, 6));
-        register(context, Deepslate_Tin_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateTinOres, 6));
-        register(context, Deepslate_SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(deepslateSACREDOres, 4));
-        register(context, Lead_Ore_KEY, Feature.ORE, new OreConfiguration(leadOres, 6));
-        register(context, Tin_Ore_KEY, Feature.ORE, new OreConfiguration(TinOres, 6));
-        register(context, SACRED_Ore_KEY, Feature.ORE, new OreConfiguration(SACREDOres, 4));
+        context.register(Deepslate_Lead_Ore_KEY, new OreFeature(deepslateleadOres, 6));
+        context.register(Deepslate_Tin_Ore_KEY, new OreFeature(deepslateTinOres, 6));
+        context.register(Deepslate_SACRED_Ore_KEY, new OreFeature(deepslateSACREDOres, 4));
+        context.register(Lead_Ore_KEY, new OreFeature(leadOres, 6));
+        context.register(Tin_Ore_KEY, new OreFeature(TinOres, 6));
+        context.register(SACRED_Ore_KEY, new OreFeature(SACREDOres, 4));
 
-        register(context, PATCH_COFFEE, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(GeneralBlocks.Coffee_Block.get().defaultBlockState().setValue(CoffeeBlock.AGE, 3))));
+        context.register(PATCH_COFFEE, new SimpleBlockFeature(BlockStateProvider.of(GeneralBlocks.Coffee_Block.get().defaultBlockState().setValue(CoffeeBlock.AGE, 3))));
     }
 
-    public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
-    }
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context,
-                                                                                   ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
-        context.register(key, new ConfiguredFeature<>(feature, configuration));
+    public static ResourceKey<Feature> registerKey(String name) {
+        return ResourceKey.create(Registries.FEATURE, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
     }
 }
 

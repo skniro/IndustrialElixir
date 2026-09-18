@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:purified_copper_to_copper_dust"
+        "recipes": "industrial_elixir:macerator/purified_copper_to_copper_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

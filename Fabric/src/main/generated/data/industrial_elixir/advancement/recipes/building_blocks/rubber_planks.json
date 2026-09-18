@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:rubber_planks"
+        "recipes": "industrial_elixir:rubber_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

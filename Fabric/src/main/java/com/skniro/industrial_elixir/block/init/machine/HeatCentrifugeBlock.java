@@ -14,15 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class HeatCentrifugeBlock extends AbstractMachineblock {
-	public static final MapCodec<HeatCentrifugeBlock> CODEC = simpleCodec(HeatCentrifugeBlock::new);
 
 	public HeatCentrifugeBlock(Properties settings) {
 		super(settings, EnergyTier.TIER2);
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Nullable

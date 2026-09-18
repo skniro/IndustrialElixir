@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:silver_ingot"
+        "recipes": "industrial_elixir:silver_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

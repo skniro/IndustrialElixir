@@ -43,14 +43,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class ShulkerBoxBlock extends BaseEntityBlock {
-    public static final MapCodec<ShulkerBoxBlock> CODEC = simpleCodec(ShulkerBoxBlock::new);
     public static final Map<Direction, VoxelShape> SHAPES_BY_DIRECTION = Shapes.rotateAll(Block.boxZ((double)16.0F, (double)0.0F, (double)1.0F));
     public static final EnumProperty<Direction> FACING;
     public static final Identifier CONTENTS_DYNAMIC_DROP_ID;
-
-    public MapCodec<ShulkerBoxBlock> codec() {
-        return CODEC;
-    }
 
     public ShulkerBoxBlock(Properties settings) {
         super(settings);

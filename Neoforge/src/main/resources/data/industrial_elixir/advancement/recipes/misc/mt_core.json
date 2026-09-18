@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:mt_core"
+        "recipes": "industrial_elixir:mt_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

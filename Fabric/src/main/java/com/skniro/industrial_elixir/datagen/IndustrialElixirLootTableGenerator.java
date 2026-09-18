@@ -21,8 +21,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -188,11 +188,11 @@ public class IndustrialElixirLootTableGenerator extends FabricBlockLootSubProvid
         add(GeneralBlocks.Coffee_Block,
                 (block) -> this.applyExplosionDecay(block, LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GeneralBlocks.Coffee_Block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CoffeeBlock.AGE, 3)))
-                                .add(LootItem.lootTableItem(MapleFoodComponents.Coffee_Beans)).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))).withPool(LootPool.lootPool()
-                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GeneralBlocks.Coffee_Block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CoffeeBlock.AGE, 2)))
+                                .when(MatchBlock.blockMatches(this.blocks, GeneralBlocks.Coffee_Block, StatePropertiesPredicate.Builder.properties().hasProperty(CoffeeBlock.AGE, 3)))
+                                .add(LootItem.lootTableItem(MapleFoodComponents.Coffee_Beans)).apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 3)))).withPool(LootPool.lootPool()
+                        .when(MatchBlock.blockMatches(this.blocks, GeneralBlocks.Coffee_Block, StatePropertiesPredicate.Builder.properties().hasProperty(CoffeeBlock.AGE, 2)))
                         .add(LootItem.lootTableItem(MapleFoodComponents.Coffee_Beans))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))));
+                        .apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2))))));
 
         dropSelf(GeneralBlocks.COFFEE_BLACK);
         dropSelf(GeneralBlocks.CAPPUCCINO);

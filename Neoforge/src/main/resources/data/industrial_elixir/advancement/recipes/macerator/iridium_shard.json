@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:iridium_shard"
+        "recipes": "industrial_elixir:macerator/iridium_shard"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

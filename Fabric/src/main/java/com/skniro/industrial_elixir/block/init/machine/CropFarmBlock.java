@@ -14,15 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class CropFarmBlock extends AbstractMachineblock {
-    public static final MapCodec<CropFarmBlock> CODEC = simpleCodec(CropFarmBlock::new);
 
     public CropFarmBlock(Properties settings) {
         super(settings, EnergyTier.TIER3);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Nullable

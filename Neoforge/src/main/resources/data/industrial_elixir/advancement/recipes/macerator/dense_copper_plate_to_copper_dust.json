@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dense_copper_plate_to_copper_dust"
+        "recipes": "industrial_elixir:macerator/dense_copper_plate_to_copper_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:purple_plaster"
+        "recipes": "industrial_elixir:purple_plaster"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

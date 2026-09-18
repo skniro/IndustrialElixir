@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:copper_casing"
+        "recipes": "industrial_elixir:copper_casing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

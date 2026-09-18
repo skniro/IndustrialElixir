@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:rubber_shelf"
+        "recipes": "industrial_elixir:rubber_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

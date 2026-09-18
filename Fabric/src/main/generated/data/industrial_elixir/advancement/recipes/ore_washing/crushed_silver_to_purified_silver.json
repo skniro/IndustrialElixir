@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crushed_silver_to_purified_silver"
+        "recipes": "industrial_elixir:ore_washing/crushed_silver_to_purified_silver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

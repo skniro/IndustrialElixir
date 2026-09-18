@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:cyan_plaster"
+        "recipes": "industrial_elixir:cyan_plaster"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:molecular_transformer_block"
+        "recipes": "industrial_elixir:molecular_transformer_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

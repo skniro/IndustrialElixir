@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "industrial_elixir:luminite_part"
+        "recipes": "industrial_elixir:molecular_transformer/luminite_part"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

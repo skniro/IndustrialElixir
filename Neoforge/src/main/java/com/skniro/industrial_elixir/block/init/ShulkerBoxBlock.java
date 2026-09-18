@@ -1,10 +1,5 @@
 package com.skniro.industrial_elixir.block.init;
 
-import com.mojang.serialization.MapCodec;
-
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -21,11 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity.AnimationStatus;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,15 +33,13 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
+
 public class ShulkerBoxBlock extends BaseEntityBlock {
-    public static final MapCodec<ShulkerBoxBlock> CODEC = simpleCodec(ShulkerBoxBlock::new);
     public static final Map<Direction, VoxelShape> SHAPES_BY_DIRECTION = Shapes.rotateAll(Block.boxZ((double)16.0F, (double)0.0F, (double)1.0F));
     public static final EnumProperty<Direction> FACING;
     public static final Identifier CONTENTS_DYNAMIC_DROP_ID;
-
-    public MapCodec<ShulkerBoxBlock> codec() {
-        return CODEC;
-    }
 
     public ShulkerBoxBlock(Properties settings) {
         super(settings);
