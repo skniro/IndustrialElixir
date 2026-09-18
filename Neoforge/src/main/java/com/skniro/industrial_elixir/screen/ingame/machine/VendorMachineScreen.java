@@ -11,7 +11,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundSelectTradePacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.npc.villager.VillagerData;
@@ -47,9 +46,7 @@ public class VendorMachineScreen extends AbstractContainerScreen<VendorMachineSc
     private void postButtonClick() {
         (this.menu).setSelectionHint(this.shopItem);
         (this.menu).tryMoveItems(this.shopItem);
-        this.minecraft.getConnection().send(
-                new ServerboundSelectTradePacket(this.shopItem)
-        );
+        this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, this.shopItem);
     }
 
     protected void init() {

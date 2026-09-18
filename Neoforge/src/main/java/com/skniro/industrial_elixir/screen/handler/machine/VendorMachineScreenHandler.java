@@ -72,6 +72,23 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
         this.tradeContainer.setSelectionHint(hint);
     }
 
+    /**
+     * Handles the trade button click sent from the screen.
+     * The vanilla {@code ServerboundSelectTradePacket} is only processed when the open menu is a
+     * {@link net.minecraft.world.inventory.MerchantMenu}, so this custom menu must use the generic
+     * container button channel instead; otherwise the selection never reaches the server and
+     * {@link MerchantContainer#updateSellItem()} keeps falling back to the first matching offer.
+     */
+    @Override
+    public boolean clickMenuButton(final Player player, final int id) {
+        if (id >= 0 && id < this.getOffers().size()) {
+            this.setSelectionHint(id);
+            this.tryMoveItems(id);
+            return true;
+        }
+        return false;
+    }
+
     public boolean stillValid(final Player player) {
         return this.trader.stillValid(player);
     }
@@ -164,12 +181,12 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
             if (!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected()) {
                 ItemStack itemStack = this.tradeContainer.removeItemNoUpdate(0);
                 if (!itemStack.isEmpty()) {
-                    player.drop(itemStack, false, Prediction.PREDICTED);
+                    player.drop(itemStack, false, Prediction.SERVER_ONLY);
                 }
 
                 itemStack = this.tradeContainer.removeItemNoUpdate(1);
                 if (!itemStack.isEmpty()) {
-                    player.drop(itemStack, false, Prediction.PREDICTED);
+                    player.drop(itemStack, false, Prediction.SERVER_ONLY);
                 }
             } else if (player instanceof ServerPlayer) {
                 player.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(0), Prediction.SERVER_ONLY);
