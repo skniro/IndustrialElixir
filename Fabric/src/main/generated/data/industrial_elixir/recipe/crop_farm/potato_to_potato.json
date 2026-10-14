@@ -1,7 +1,9 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:potato",
+  "ingredient": {
+    "item": "minecraft:potato"
+  },
   "process_time": 600,
   "result": {
     "count": 3,

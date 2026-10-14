@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "P": "industrial_elixir:enriched_luminite_alloy",
-    "U": "industrial_elixir:sacred_shard"
+    "P": {
+      "item": "industrial_elixir:enriched_luminite_alloy"
+    },
+    "U": {
+      "item": "industrial_elixir:sacred_shard"
+    }
   },
   "pattern": [
     "UPU",
@@ -11,6 +15,7 @@
     "UPU"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:sacred_core"
   }
 }

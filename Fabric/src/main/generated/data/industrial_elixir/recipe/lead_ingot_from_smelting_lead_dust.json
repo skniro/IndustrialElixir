@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "lead_ingot",
-  "ingredient": "industrial_elixir:lead_dust",
+  "ingredient": {
+    "item": "industrial_elixir:lead_dust"
+  },
   "result": {
     "id": "industrial_elixir:lead_ingot"
   }

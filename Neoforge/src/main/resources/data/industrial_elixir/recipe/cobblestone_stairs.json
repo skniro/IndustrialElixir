@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "b": "minecraft:cobblestone",
-    "i": "minecraft:blue_dye"
+    "b": {
+      "item": "minecraft:cobblestone"
+    },
+    "i": {
+      "item": "minecraft:blue_dye"
+    }
   },
   "pattern": [
     "b  ",

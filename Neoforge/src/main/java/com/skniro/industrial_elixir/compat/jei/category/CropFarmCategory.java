@@ -14,18 +14,18 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class CropFarmCategory implements IRecipeCategory<RecipeHolder<CropFarmCraftingRecipe>> {
-    public static final IRecipeHolderType<CropFarmCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.CROP_FARM.type.get());
+    public static final RecipeType<RecipeHolder<CropFarmCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.CROP_FARM.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -33,7 +33,7 @@ public class CropFarmCategory implements IRecipeCategory<RecipeHolder<CropFarmCr
     private final IDrawableAnimated arrow;
 
     public CropFarmCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/crop_farm.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/crop_farm.png");
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(GrowableOresBlocks.CROP_FARM_Block.get()));
         energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
@@ -42,7 +42,7 @@ public class CropFarmCategory implements IRecipeCategory<RecipeHolder<CropFarmCr
     }
 
     @Override
-    public IRecipeHolderType<CropFarmCraftingRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<CropFarmCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -69,20 +69,20 @@ public class CropFarmCategory implements IRecipeCategory<RecipeHolder<CropFarmCr
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CropFarmCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 33)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 16)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
 
         recipe.value().output2().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34).addItemStack(output));
 
         recipe.value().output3().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 52).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 52).addItemStack(output));
     }
 
     @Override
-    public void draw(RecipeHolder<CropFarmCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<CropFarmCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 70, 34);
@@ -93,7 +93,7 @@ public class CropFarmCategory implements IRecipeCategory<RecipeHolder<CropFarmCr
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 33 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

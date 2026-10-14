@@ -3,22 +3,27 @@ package com.skniro.industrial_elixir.datagen.recipe.machine;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
 
 public class ExtractorRecipeGenerator extends FabricRecipeProvider {
-    public ExtractorRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ExtractorRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 createExtractor(Items.CLAY_BALL, 4).input(Items.CLAY)

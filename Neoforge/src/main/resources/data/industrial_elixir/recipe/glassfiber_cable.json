@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": "industrial_elixir:energium_dust",
-    "G": "minecraft:glass",
-    "S": "industrial_elixir:silver_dust"
+    "E": {
+      "item": "industrial_elixir:energium_dust"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "S": {
+      "item": "industrial_elixir:silver_dust"
+    }
   },
   "pattern": [
     "GGG",

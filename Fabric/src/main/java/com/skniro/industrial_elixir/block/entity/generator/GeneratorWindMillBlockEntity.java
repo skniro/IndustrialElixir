@@ -29,8 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -84,19 +83,19 @@ public class GeneratorWindMillBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putLong(("generator_wind_mill.energy"), energyContainer.amount);
         nbt.putInt(("generator_wind_mill.windstrength"), windStrength);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        energyContainer.amount = nbt.getLongOr("generator_wind_mill.energy", 0);
-        windStrength = nbt.getIntOr("generator_wind_mill.windstrength", 10);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        energyContainer.amount = (nbt.contains("generator_wind_mill.energy") ? nbt.getLong("generator_wind_mill.energy") : 0);
+        windStrength = (nbt.contains("generator_wind_mill.windstrength") ? nbt.getInt("generator_wind_mill.windstrength") : 10);
+        super.loadAdditional(nbt, registries);
     }
 
     @Override

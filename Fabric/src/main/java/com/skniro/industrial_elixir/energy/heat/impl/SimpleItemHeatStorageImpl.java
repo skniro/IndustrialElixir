@@ -109,7 +109,7 @@ public class SimpleItemHeatStorageImpl implements HeatStorage {
 
 	@Override
 	public long getAmount() {
-		return ctx.getAmount() * SimpleHeatItem.getStoredHeatUnchecked(ctx.getItemVariant().getComponents());
+		return ctx.getAmount() * SimpleHeatItem.getStoredHeatUnchecked(ctx.getItemVariant().getComponentMap());
 	}
 
 	@Override

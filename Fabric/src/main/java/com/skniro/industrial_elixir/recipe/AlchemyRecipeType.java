@@ -6,7 +6,7 @@ import com.skniro.industrial_elixir.recipe.machine.CoffeeMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -49,7 +49,7 @@ public interface AlchemyRecipeType<T extends Recipe<?>> {
 
 
     public static <R extends Recipe<?>> RecipeRegistration<R> register(String idName, RecipeSerializer<R> serializer) {
-        Identifier id = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, idName);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, idName);
 
         RecipeType<R> type = Registry.register(BuiltInRegistries.RECIPE_TYPE, id, new RecipeType<R>() {
             @Override

@@ -30,8 +30,7 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -599,7 +598,6 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, M
         return false;
     }
 
-    @Override
     public boolean stillValid(Player player) {
         if (this.level == null || this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
@@ -616,16 +614,16 @@ public class VendorMachineBlockEntity extends BlockEntity implements Merchant, M
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        output.store("vendor_machine.offers", MerchantOffers.CODEC, this.offers);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
+        output.put("vendor_machine.offers", MerchantOffers.CODEC.encodeStart(NbtOps.INSTANCE, this.offers).getOrThrow());
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
         this.offers.clear();
-        input.read("vendor_machine.offers", MerchantOffers.CODEC).ifPresent(this.offers::addAll);
+        MerchantOffers.CODEC.parse(NbtOps.INSTANCE, input.get("vendor_machine.offers")).result().ifPresent(this.offers::addAll);
         if (this.offers.isEmpty()) {
             initOffers();
         }

@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -108,8 +107,8 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
                 if (!stack.isEmpty() && stack.getItem() instanceof TieredEnergyItem energyItem) {
                     int itemTier = energyItem.getEnergyTier().ordinal();
                     if (itemTier >= this.energyTier.ordinal()) {
-                        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
-                        long moved = EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE, null);
+                        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM);
+                        long moved = EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE);
                         if (moved > 0) {
                             charged = true;
                         }
@@ -124,8 +123,8 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
     }
 
     private void chargeItem(ItemStack stack) {
-        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
-        EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE, null);
+        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM);
+        EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE);
     }
 
     public long getFreeSpace() {

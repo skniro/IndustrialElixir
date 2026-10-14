@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:extractor",
-  "ingredient": "industrial_elixir:rubber_rubber_log",
+  "ingredient": {
+    "item": "industrial_elixir:rubber_rubber_log"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:rubber"
   }
 }

@@ -3,71 +3,52 @@ package com.skniro.industrial_elixir.block.renderer.pipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity;
 import com.skniro.industrial_elixir.block.entity.pipe.PipeBlockEntity.PipeItem;
-import com.skniro.industrial_elixir.block.renderer.state.PipeBlockEntityRenderState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.LightCoordsUtil;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
-public class WoodenPipeRenderer implements BlockEntityRenderer<PipeBlockEntity, PipeBlockEntityRenderState> {
+public class WoodenPipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 
     public WoodenPipeRenderer(BlockEntityRendererProvider.Context context) {
 
     }
-    @Override
-    public PipeBlockEntityRenderState createRenderState() {
-        return new PipeBlockEntityRenderState();
-    }
 
     @Override
-    public void submit(PipeBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
-        for (PipeBlockEntityRenderState.PipeItemRender item : state.items) {
-            matrices.pushPose();
-            matrices.translate(0.5 + item.offset.x, 0.5 + item.offset.y, 0.5 + item.offset.z);
-            matrices.scale(0.35f, 0.35f, 0.35f);
-            item.item.submit(matrices, queue, item.lightmapCoordinates, OverlayTexture.NO_OVERLAY, 0);
-            matrices.popPose();
-        }
-    }
+    public void render(PipeBlockEntity entity, float partialTick, PoseStack matrices, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+        Level level = entity.getLevel();
+        int light = getLightLevel(level, entity.getBlockPos());
 
-    @Override
-    public void extractRenderState(PipeBlockEntity entity, PipeBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        BlockEntityRenderer.super.extractRenderState(entity, state, tickProgress, cameraPos, crumblingOverlay);
-        ItemModelResolver itemModelResolver = Minecraft.getInstance().getItemModelResolver();
-
-        state.items.clear();
         for (PipeItem item : entity.getItems()) {
             if (item.variant.isBlank() || item.amount <= 0) {
                 continue;
             }
 
-            PipeBlockEntityRenderState.PipeItemRender renderItem = new PipeBlockEntityRenderState.PipeItemRender();
-            renderItem.offset = new Vec3(
-                    item.direction.getStepX() * item.progress,
-                    item.direction.getStepY() * item.progress,
-                    item.direction.getStepZ() * item.progress
-            );
-            itemModelResolver.updateForTopItem(renderItem.item, item.variant.toStack(), ItemDisplayContext.GROUND, entity.getLevel(), (ItemOwner) entity, 1);
-            renderItem.lightmapCoordinates = getLightLevel(entity.level(), entity.getBlockPos());
-            state.items.add(renderItem);
+            matrices.pushPose();
+            matrices.translate(0.5 + item.direction.getStepX() * item.progress,
+                    0.5 + item.direction.getStepY() * item.progress,
+                    0.5 + item.direction.getStepZ() * item.progress);
+            matrices.scale(0.35f, 0.35f, 0.35f);
+            itemRenderer.renderStatic(item.variant.toStack(), ItemDisplayContext.GROUND, light,
+                    OverlayTexture.NO_OVERLAY, matrices, buffer, level, 0);
+            matrices.popPose();
         }
     }
 
     private int getLightLevel(Level world, BlockPos pos) {
+        if (world == null) {
+            return LightTexture.FULL_BRIGHT;
+        }
         int bLight = world.getBrightness(LightLayer.BLOCK, pos);
         int sLight = world.getBrightness(LightLayer.SKY, pos);
-        return LightCoordsUtil.pack(bLight, Math.max(sLight, 15));
+        return LightTexture.pack(bLight, Math.max(sLight, 15));
     }
 }

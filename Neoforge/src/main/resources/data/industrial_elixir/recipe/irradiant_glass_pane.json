@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": "industrial_elixir:irradiant_sacred",
-    "G": "minecraft:glass",
-    "R": "minecraft:glowstone_dust"
+    "D": {
+      "item": "industrial_elixir:irradiant_sacred"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "R": {
+      "item": "minecraft:glowstone_dust"
+    }
   },
   "pattern": [
     "GGG",
@@ -12,6 +18,7 @@
     "GGG"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:irradiant_glass_pane"
   }
 }

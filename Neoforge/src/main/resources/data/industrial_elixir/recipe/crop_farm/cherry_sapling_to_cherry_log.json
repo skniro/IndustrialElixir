@@ -1,9 +1,12 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:cherry_sapling",
+  "ingredient": {
+    "item": "minecraft:cherry_sapling"
+  },
   "process_time": 1000,
   "result": {
+    "count": 1,
     "id": "minecraft:cherry_sapling"
   },
   "result2": {

@@ -14,15 +14,14 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class HeatCentrifugeCategory implements DisplayCategory<HeatCentrifugeDisplay> {
-    public static final Identifier TEXTURE = Helper.id("textures/gui/container/machine/heatcentrifuge.png");
+    public static final ResourceLocation TEXTURE = Helper.id("textures/gui/container/machine/heatcentrifuge.png");
 
     @Override
     public CategoryIdentifier<? extends HeatCentrifugeDisplay> getCategoryIdentifier() {
@@ -72,13 +71,13 @@ public class HeatCentrifugeCategory implements DisplayCategory<HeatCentrifugeDis
             int arrowWidth = 26;
             int currentTick = (int) (ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
 
             int count = display.getCount();
             if (count > 1) {
                 Font font = Minecraft.getInstance().font;
                 String text = String.valueOf(count);
-                context.text(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 34 + 16 - 8 - 1, 0xFFFFFFFF, true);
+                context.drawString(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 34 + 16 - 8 - 1, 0xFFFFFFFF, true);
             }
         }));
 

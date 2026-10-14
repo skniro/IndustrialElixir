@@ -3,7 +3,7 @@ package com.skniro.industrial_elixir.util;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.MapleArmorItems;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -12,54 +12,54 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class ModLootTableModifiers {
-    private static final Identifier IGLOO_STRUCTURE_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/igloo_chest");
-    private static final Identifier Mineshaft_STRUCTURE_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/abandoned_mineshaft");
-    private static final Identifier Ancient_City_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/ancient_city");
-    private static final Identifier Bastion_Bridge_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/bastion_bridge");
-    private static final Identifier Bastion_Hoglin_Stable_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/bastion_hoglin_stable");
-    private static final Identifier Bastion_Other_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/bastion_other");
-    private static final Identifier Bastion_Treasure_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/bastion_treasure");
-    private static final Identifier Buried_Treasure_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/buried_treasure");
-    private static final Identifier End_City_Treasure_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/end_city_treasure");
-    private static final Identifier Desert_Pyramid_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/desert_pyramid");
-    private static final Identifier Jungle_Temple_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/jungle_temple");
-    private static final Identifier Jungle_Temple_Dispenser_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/jungle_temple_dispenser");
-    private static final Identifier Underwater_Ruin_Small_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/underwater_ruin_small");
-    private static final Identifier Underwater_Ruin_Big_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/underwater_ruin_big");
-    private static final Identifier Stronghold_Corridor_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/stronghold_corridor");
-    private static final Identifier Stronghold_Crossing_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/stronghold_crossing");
-    private static final Identifier Pillager_Outpost_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/pillager_outpost");
-    private static final Identifier Ruined_Portal_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/ruined_portal");
-    private static final Identifier Woodland_Mansion_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/woodland_mansion");
-    private static final Identifier Simple_Dungeon_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/simple_dungeon");
-    private static final Identifier Nether_Bridge_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/nether_bridge");
-    private static final Identifier Shipwreck_Map_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/shipwreck_map");
-    private static final Identifier Shipwreck_Supply_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/shipwreck_supply");
-    private static final Identifier Shipwreck_Treasure_CHEST_ID
-            = Identifier.fromNamespaceAndPath("minecraft", "chests/shipwreck_treasure");
+    private static final ResourceLocation IGLOO_STRUCTURE_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/igloo_chest");
+    private static final ResourceLocation Mineshaft_STRUCTURE_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/abandoned_mineshaft");
+    private static final ResourceLocation Ancient_City_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/ancient_city");
+    private static final ResourceLocation Bastion_Bridge_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_bridge");
+    private static final ResourceLocation Bastion_Hoglin_Stable_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_hoglin_stable");
+    private static final ResourceLocation Bastion_Other_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_other");
+    private static final ResourceLocation Bastion_Treasure_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_treasure");
+    private static final ResourceLocation Buried_Treasure_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/buried_treasure");
+    private static final ResourceLocation End_City_Treasure_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/end_city_treasure");
+    private static final ResourceLocation Desert_Pyramid_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/desert_pyramid");
+    private static final ResourceLocation Jungle_Temple_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/jungle_temple");
+    private static final ResourceLocation Jungle_Temple_Dispenser_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/jungle_temple_dispenser");
+    private static final ResourceLocation Underwater_Ruin_Small_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/underwater_ruin_small");
+    private static final ResourceLocation Underwater_Ruin_Big_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/underwater_ruin_big");
+    private static final ResourceLocation Stronghold_Corridor_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/stronghold_corridor");
+    private static final ResourceLocation Stronghold_Crossing_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/stronghold_crossing");
+    private static final ResourceLocation Pillager_Outpost_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/pillager_outpost");
+    private static final ResourceLocation Ruined_Portal_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/ruined_portal");
+    private static final ResourceLocation Woodland_Mansion_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/woodland_mansion");
+    private static final ResourceLocation Simple_Dungeon_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/simple_dungeon");
+    private static final ResourceLocation Nether_Bridge_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/nether_bridge");
+    private static final ResourceLocation Shipwreck_Map_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/shipwreck_map");
+    private static final ResourceLocation Shipwreck_Supply_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/shipwreck_supply");
+    private static final ResourceLocation Shipwreck_Treasure_CHEST_ID
+            = ResourceLocation.fromNamespaceAndPath("minecraft", "chests/shipwreck_treasure");
 
     private static LootPool.Builder bronzeArmorPool(float chance, float minCount, float maxCount) {
         return LootPool.lootPool()

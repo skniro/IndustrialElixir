@@ -15,8 +15,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 public class ChunkLoaderEntity extends AbstractMachineEntity {
@@ -98,7 +99,7 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
                 int row = i / 5;
                 int col = i % 5;
                 ChunkPos chunkPos = new ChunkPos(chunkX + (col - 2), chunkZ + (row - 2));
-                serverLevel.setChunkForced(chunkPos.x(), chunkPos.z(), false);
+                serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
             }
         }
     }
@@ -113,7 +114,7 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
             int row = i / 5;
             int col = i % 5;
             ChunkPos chunkPos = new ChunkPos(chunkX + (col - 2), chunkZ + (row - 2));
-            serverLevel.setChunkForced(chunkPos.x(), chunkPos.z(), false);
+            serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
         }
     }
 
@@ -126,21 +127,21 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
                 int row = i / 5;
                 int col = i % 5;
                 ChunkPos chunkPos = new ChunkPos(chunkX + (col - 2), chunkZ + (row - 2));
-                serverLevel.setChunkForced(chunkPos.x(), chunkPos.z(), false);
+                serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
             }
         }
         super.setRemoved();
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putInt("chunkLoader.selectedChunks", selectedChunks);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        super.loadAdditional(nbt);
-        selectedChunks = nbt.getIntOr("chunkLoader.selectedChunks", 0);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
+        selectedChunks = (nbt.contains("chunkLoader.selectedChunks") ? nbt.getInt("chunkLoader.selectedChunks") : 0);
     }
 }

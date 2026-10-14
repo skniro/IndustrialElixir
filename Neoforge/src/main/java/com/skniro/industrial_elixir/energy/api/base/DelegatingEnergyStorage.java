@@ -1,8 +1,6 @@
 package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -45,11 +43,11 @@ public class DelegatingEnergyStorage implements EnergyStorage {
 	}
 
 	@Override
-	public long insert(long maxAmount, TransactionContext transaction) {
+	public long insert(long maxAmount, boolean simulate) {
 		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		if (validPredicate.getAsBoolean()) {
-			return backingStorage.get().insert(maxAmount, transaction);
+			return backingStorage.get().insert(maxAmount, simulate);
 		} else {
 			return 0;
 		}
@@ -61,11 +59,11 @@ public class DelegatingEnergyStorage implements EnergyStorage {
 	}
 
 	@Override
-	public long extract(long maxAmount, TransactionContext transaction) {
+	public long extract(long maxAmount, boolean simulate) {
 		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		if (validPredicate.getAsBoolean()) {
-			return backingStorage.get().extract(maxAmount, transaction);
+			return backingStorage.get().extract(maxAmount, simulate);
 		} else {
 			return 0;
 		}

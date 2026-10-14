@@ -7,8 +7,7 @@ import com.skniro.industrial_elixir.util.ModBooleanPropertys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -83,16 +82,16 @@ public class ModStairBlock extends StairBlock implements SimpleHotsSpringLoggedB
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbour, BlockPos neighbourPos, BlockState neighbourState, RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction directionToNeighbour, BlockState neighbourState, LevelAccessor level, BlockPos pos, BlockPos neighbourPos) {
         if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-            ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
         if (state.getValue(ModBooleanPropertys.HOT_SPRING_LOGGED)) {
-            ticks.scheduleTick(pos, IndustrialElixirFluids.STILL_Hot_Spring, IndustrialElixirFluids.STILL_Hot_Spring.getTickDelay(level));
+            level.scheduleTick(pos, IndustrialElixirFluids.STILL_Hot_Spring, IndustrialElixirFluids.STILL_Hot_Spring.getTickDelay(level));
         }
 
-        return directionToNeighbour.getAxis().isHorizontal() ? state.setValue(SHAPE, getStairsShape(state, level, pos)) : super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
+        return directionToNeighbour.getAxis().isHorizontal() ? state.setValue(SHAPE, getStairsShape(state, level, pos)) : super.updateShape(state, directionToNeighbour, neighbourState, level, pos, neighbourPos);
     }
 
     @Override
@@ -104,12 +103,7 @@ public class ModStairBlock extends StairBlock implements SimpleHotsSpringLoggedB
     }
 
     @Override
-    public BlockState getAppearance(BlockState state, BlockAndLightGetter blockAndLightGetter, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
-        return super.getAppearance(state, blockAndLightGetter, pos, side, sourceState, sourcePos);
-    }
-
-    @Override
-    public boolean canPlaceLiquid(@Nullable LivingEntity user, BlockGetter level, BlockPos pos, BlockState state, Fluid type) {
+    public boolean canPlaceLiquid(@Nullable Player user, BlockGetter level, BlockPos pos, BlockState state, Fluid type) {
         if (type == Fluids.WATER || type == IndustrialElixirFluids.STILL_Hot_Spring) {
             return !state.getValue(BlockStateProperties.WATERLOGGED) && !state.getValue(ModBooleanPropertys.HOT_SPRING_LOGGED);
         }
@@ -144,7 +138,7 @@ public class ModStairBlock extends StairBlock implements SimpleHotsSpringLoggedB
     }
 
     @Override
-    public ItemStack pickupBlock(@Nullable LivingEntity user, LevelAccessor level, BlockPos pos, BlockState state) {
+    public ItemStack pickupBlock(@Nullable Player user, LevelAccessor level, BlockPos pos, BlockState state) {
         if (state.getValue(ModBooleanPropertys.HOT_SPRING_LOGGED)) {
             level.setBlock(pos, state.setValue(ModBooleanPropertys.HOT_SPRING_LOGGED, false), 3);
             if (!state.canSurvive(level, pos)) {

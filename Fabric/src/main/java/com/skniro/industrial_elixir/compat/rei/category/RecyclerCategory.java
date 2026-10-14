@@ -12,15 +12,14 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class RecyclerCategory implements DisplayCategory<RecyclerDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/recycler.png");
 
     private static final int ENERGY_X = 52;
@@ -70,7 +69,7 @@ public class RecyclerCategory implements DisplayCategory<RecyclerDisplay> {
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 72, startPoint.y + 34, 190, 0, progress, 16, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 72, startPoint.y + 34, 190, 0, progress, 16, 256, 256);
         }));
 
         return widgets;

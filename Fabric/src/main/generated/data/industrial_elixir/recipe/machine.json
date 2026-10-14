@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": "industrial_elixir:iron_plate"
+    "I": {
+      "item": "industrial_elixir:iron_plate"
+    }
   },
   "pattern": [
     "III",
@@ -10,6 +12,7 @@
     "III"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:machine"
   }
 }

@@ -1,9 +1,14 @@
 {
   "type": "industrial_elixir:brew_reactor",
   "count": 1,
-  "ingredient": "industrial_elixir:impure_sacred_stone",
-  "ingredient2": "industrial_elixir:empty_vessel",
+  "ingredient": {
+    "item": "industrial_elixir:impure_sacred_stone"
+  },
+  "ingredient2": {
+    "item": "industrial_elixir:empty_vessel"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:sacred_essence"
   }
 }

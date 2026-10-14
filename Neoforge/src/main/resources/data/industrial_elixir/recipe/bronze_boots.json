@@ -2,13 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "industrial_elixir:bronze_ingot"
+    "#": {
+      "item": "industrial_elixir:bronze_ingot"
+    }
   },
   "pattern": [
     "# #",
     "# #"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:bronze_boots"
   }
 }

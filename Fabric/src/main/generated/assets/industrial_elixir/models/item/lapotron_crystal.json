@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "industrial_elixir:item/lapotron_crystal_0",
+      "predicate": {
+        "damage": 1.0
+      }
+    },
+    {
+      "model": "industrial_elixir:item/lapotron_crystal_1",
+      "predicate": {
+        "damage": 0.75
+      }
+    },
+    {
+      "model": "industrial_elixir:item/lapotron_crystal_2",
+      "predicate": {
+        "damage": 0.5
+      }
+    },
+    {
+      "model": "industrial_elixir:item/lapotron_crystal_3",
+      "predicate": {
+        "damage": 0.25
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "industrial_elixir:item/lapotron_crystal_4"
+  }
+}

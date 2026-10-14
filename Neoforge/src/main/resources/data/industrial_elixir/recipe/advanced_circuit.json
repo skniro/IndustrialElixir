@@ -2,10 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "minecraft:glowstone_dust",
-    "I": "industrial_elixir:circuit",
-    "L": "minecraft:lapis_lazuli",
-    "T": "minecraft:redstone"
+    "B": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "I": {
+      "item": "industrial_elixir:circuit"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "T": {
+      "item": "minecraft:redstone"
+    }
   },
   "pattern": [
     "TBT",
@@ -13,6 +21,7 @@
     "TBT"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:advanced_circuit"
   }
 }

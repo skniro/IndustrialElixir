@@ -24,9 +24,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -45,15 +46,15 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
+        SingleVariantStorage.writeNbt(fluidContainer, FluidVariant.CODEC, output, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        SingleVariantStorage.readNbt(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input, registries);
     }
 
     public void drops() {
@@ -73,7 +74,7 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
     @Override
     protected void craftItem() {
         java.util.Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
-        net.minecraft.world.item.ItemStack output = recipe.get().value().output().create();
+        net.minecraft.world.item.ItemStack output = recipe.get().value().output().copy();
         // consume primary input according to recipe
         this.removeItem(INPUT_SLOT, recipe.get().value().requiredCount());
         // consume one from the secondary input slot
@@ -150,14 +151,14 @@ public class BrewReactorBlockEntity extends AbstractFluidMachineEntity {
 
         var recipeHolder = opt.get();
         var recipe = recipeHolder.value();
-        net.minecraft.world.item.ItemStack output = recipe.output().create();
+        net.minecraft.world.item.ItemStack output = recipe.output().copy();
 
         if (!canInsertAmountIntoOutputSlot(output.getCount()) || !canInsertItemIntoOutputSlot(output)) return false;
         if (!hasEnoughEnergyToCraft()) return false;
 
         // If recipe is a BrewReactorCraftingRecipe and specifies a fluid, check fluid type and amount
         if (recipe instanceof BrewReactorCraftingRecipe brew) {
-            java.util.Optional<net.minecraft.resources.Identifier> fluidOpt = brew.requiredFluid();
+            java.util.Optional<net.minecraft.resources.ResourceLocation> fluidOpt = brew.requiredFluid();
             java.util.Optional<Integer> amtOpt = brew.requiredFluidAmount();
             if (fluidOpt != null && fluidOpt.isPresent()) {
                 try {

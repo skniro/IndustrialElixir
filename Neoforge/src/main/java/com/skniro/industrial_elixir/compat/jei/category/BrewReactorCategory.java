@@ -15,13 +15,13 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -29,13 +29,13 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.Optional;
 
 public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewReactorCraftingRecipe>> {
-    public static final IRecipeHolderType<BrewReactorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.BREW_REACTOR.type.get());
+    public static final RecipeType<RecipeHolder<BrewReactorCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.BREW_REACTOR.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -45,7 +45,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
     private final SingleFluidStorage emptyFluid;
 
     public BrewReactorCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/brewreactor.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/brewreactor.png");
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(GrowableOresBlocks.Brew_Reactor_BLOCK.get()));
         energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
@@ -54,18 +54,17 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
         this.fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);
         this.emptyFluid = new SingleFluidStorage() {
             @Override
-            protected int getCapacity(FluidResource variant) {
+            protected int getCapacity(FluidStack variant) {
                 return 1000;
             }
             {
-                this.variant = FluidResource.EMPTY;
-                this.amount = 0;
+                setFluid(FluidStack.EMPTY);
             }
         };
     }
 
     @Override
-    public IRecipeHolderType<BrewReactorCraftingRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<BrewReactorCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -92,25 +91,25 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<BrewReactorCraftingRecipe> recipe, IFocusGroup iFocusGroup) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 13)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         if (recipe.value().ingredient2() != null) {
             builder.addSlot(RecipeIngredientRole.INPUT, 52, 49)
-                    .add(recipe.value().ingredient2());
+                    .addIngredients(recipe.value().ingredient2());
         } else {
-            builder.addSlot(RecipeIngredientRole.INPUT, 52, 49).add(ItemStack.EMPTY);
+            builder.addSlot(RecipeIngredientRole.INPUT, 52, 49).addItemStack(ItemStack.EMPTY);
         }
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
 
         try {
-            Optional<Identifier> fid = recipe.value().requiredFluid();
-            if (fid.isPresent()) {Identifier bucketId = Identifier.fromNamespaceAndPath(fid.get().getNamespace(), fid.get().getPath() + "_cell");
+            Optional<ResourceLocation> fid = recipe.value().requiredFluid();
+            if (fid.isPresent()) {ResourceLocation bucketId = ResourceLocation.fromNamespaceAndPath(fid.get().getNamespace(), fid.get().getPath() + "_cell");
                 Item bucket = BuiltInRegistries.ITEM.getOptional(bucketId).orElse(null);
 
                 if (bucket != null && bucket != Items.AIR) {
-                    builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).add(new ItemStack(bucket));
+                    builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).addItemStack(new ItemStack(bucket));
                 }
             }
         } catch (Throwable ignored) {
@@ -119,7 +118,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
 
     private SingleFluidStorage getRecipeFluidStorage(RecipeHolder<BrewReactorCraftingRecipe> recipe) {
         try {
-            Optional<Identifier> fid = recipe.value().requiredFluid();
+            Optional<ResourceLocation> fid = recipe.value().requiredFluid();
 
             Optional<Integer> famt = recipe.value().requiredFluidAmount();
 
@@ -127,13 +126,12 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
                 int amount = famt.orElse(1000);
                 return new SingleFluidStorage() {
                     @Override
-                    protected int getCapacity(FluidResource variant) {
+                    protected int getCapacity(FluidStack variant) {
                         return 1000;
                     }
 
                     {
-                        this.variant = FluidResource.of(fluid);
-                        this.amount = amount;
+                        setFluid(new FluidStack(fluid, amount));
                     }
                 };
             }
@@ -144,7 +142,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
     }
 
     @Override
-    public void draw(RecipeHolder<BrewReactorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<BrewReactorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 79, 32);
@@ -159,7 +157,7 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
 
         if (mouseX >= fx && mouseX <= fx + fw && mouseY >= fy && mouseY <= fy + fh) {
 
-            guiGraphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
+            guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
         }
 
         int count = recipe.value().requiredCount();
@@ -168,18 +166,8 @@ public class BrewReactorCategory implements IRecipeCategory<RecipeHolder<BrewRea
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 13 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
 

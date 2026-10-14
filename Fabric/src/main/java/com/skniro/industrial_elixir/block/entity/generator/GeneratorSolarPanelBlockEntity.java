@@ -27,8 +27,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -76,21 +75,21 @@ public class GeneratorSolarPanelBlockEntity extends NewBaseGeneratorBlockEntity 
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putLong(("generator_solar_panel.energy"), energyContainer.amount);
         nbt.putInt("generator_solar_panel.day_power", this.DayPower);
         nbt.putInt("generator_solar_panel.night_power", this.NightPower);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        energyContainer.amount = nbt.getLongOr("generator_solar_panel.energy", 0);
-        this.DayPower = nbt.getIntOr("generator_solar_panel.day_power", this.DayPower);
-        this.NightPower = nbt.getIntOr("generator_solar_panel.night_power", this.NightPower);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        energyContainer.amount = (nbt.contains("generator_solar_panel.energy") ? nbt.getLong("generator_solar_panel.energy") : 0);
+        this.DayPower = (nbt.contains("generator_solar_panel.day_power") ? nbt.getInt("generator_solar_panel.day_power") : this.DayPower);
+        this.NightPower = (nbt.contains("generator_solar_panel.night_power") ? nbt.getInt("generator_solar_panel.night_power") : this.NightPower);
+        super.loadAdditional(nbt, registries);
     }
 
     @Override
@@ -155,7 +154,7 @@ public class GeneratorSolarPanelBlockEntity extends NewBaseGeneratorBlockEntity 
 
     private int calculatePower(Level world, BlockPos pos) {
         double power = 0;
-        if (world.isBrightOutside() && !world.isRaining() && !world.isThundering()) {
+        if (world.isDay() && !world.isRaining() && !world.isThundering()) {
             power = this.DayPower;
         } else {
             power = this.NightPower;

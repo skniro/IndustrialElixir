@@ -10,7 +10,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
 public class ModClientEvents {
@@ -25,21 +25,21 @@ public class ModClientEvents {
 
         while (ModKeyMappings.Mode_Switch_Keybind.consumeClick()) {
             while (ModKeyMappings.ALT_Keybind.consumeClick()) {
-                ClientPacketDistributor.sendToServer(new ToggleNightVisionC2SPayload());
+                PacketDistributor.sendToServer(new ToggleNightVisionC2SPayload());
             }
         }
 
         // Boost Jump: hold Boost key + press Space
         if (ModKeyMappings.Boost_Keybind.isDown()
                 && client.options.keyJump.consumeClick()) {
-            ClientPacketDistributor.sendToServer(new BoostJumpC2SPayload());
+            PacketDistributor.sendToServer(new BoostJumpC2SPayload());
         }
 
         // Toggle Hover: Mode Switch key + Space (while wearing chestplate)
         if (ModKeyMappings.Mode_Switch_Keybind.isDown()
                 && client.options.keyJump.consumeClick()
                 && client.player != null) {
-            ClientPacketDistributor.sendToServer(new ToggleHoverC2SPayload());
+            PacketDistributor.sendToServer(new ToggleHoverC2SPayload());
         }
 
         // Jetpack input: send key state changes to server
@@ -52,7 +52,7 @@ public class ModClientEvents {
                 lastJumpHeld = jumpHeld;
                 lastForwardHeld = forwardHeld;
                 lastStrafe = strafe;
-                ClientPacketDistributor.sendToServer(new JetpackInputC2SPayload(jumpHeld, forwardHeld, strafe));
+                PacketDistributor.sendToServer(new JetpackInputC2SPayload(jumpHeld, forwardHeld, strafe));
             }
         }
     }

@@ -1,7 +1,9 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:sugar_cane",
+  "ingredient": {
+    "item": "minecraft:sugar_cane"
+  },
   "process_time": 2400,
   "result": {
     "count": 2,

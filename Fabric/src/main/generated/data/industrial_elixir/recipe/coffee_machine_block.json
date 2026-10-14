@@ -2,11 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:iron_casing",
-    "C": "industrial_elixir:coffee_beans",
-    "I": "industrial_elixir:iron_plate",
-    "L": "industrial_elixir:re_battery",
-    "M": "industrial_elixir:machine"
+    "A": {
+      "item": "industrial_elixir:iron_casing"
+    },
+    "C": {
+      "item": "industrial_elixir:coffee_beans"
+    },
+    "I": {
+      "item": "industrial_elixir:iron_plate"
+    },
+    "L": {
+      "item": "industrial_elixir:re_battery"
+    },
+    "M": {
+      "item": "industrial_elixir:machine"
+    }
   },
   "pattern": [
     "ACA",
@@ -14,6 +24,7 @@
     "ALA"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:coffee_machine_block"
   }
 }

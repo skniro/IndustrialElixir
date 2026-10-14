@@ -40,7 +40,7 @@ public class NetworkUtilsImpl {
                 MetalFormerStateC2SPayload.TYPE,
                 (payload, context) -> {
                     ServerPlayer player = context.player();
-                    ServerLevel world = player.level();
+                    ServerLevel world = player.serverLevel();
                     context.server().execute(() -> {
                         BlockEntity be = world.getBlockEntity(payload.pos());
                         if (be instanceof MetalFormerBlockEntity machine) {

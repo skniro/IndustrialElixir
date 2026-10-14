@@ -4,17 +4,17 @@ import com.skniro.industrial_elixir.block.init.pipe.PipeBlock;
 import com.skniro.industrial_elixir.block.init.pipe.WoodFluidPipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtractDirectionController {
+public class PipeBlockEntity extends BlockEntity implements PipeExtractDirectionController {
 
     private final List<PipeItem> items = new ArrayList<>();
     private final EnumSet<Direction> blocked = EnumSet.noneOf(Direction.class);
@@ -83,20 +83,20 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        preferredExtractDirection = readDirection(nbt.getIntOr("pipe.preferred_extract_side", -1));
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        preferredExtractDirection = readDirection((nbt.contains("pipe.preferred_extract_side") ? nbt.getInt("pipe.preferred_extract_side") : -1));
         blocked.clear();
         for (Direction dir : Direction.values()) {
-            if (nbt.getIntOr("pipe.blocked_" + dir.name(), 0) == 1) {
+            if ((nbt.contains("pipe.blocked_" + dir.name()) ? nbt.getInt("pipe.blocked_" + dir.name()) : 0) == 1) {
                 blocked.add(dir);
             }
         }
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, registries);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putInt("pipe.preferred_extract_side",
                 preferredExtractDirection == null ? -1 : preferredExtractDirection.get3DDataValue());
         for (Direction dir : Direction.values()) {
@@ -279,7 +279,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
                 continue;
             }
             BlockPos target = pos.relative(dir);
-            if (world.getCapability(Capabilities.Fluid.BLOCK, target, dir.getOpposite()) != null) {
+            if (world.getCapability(Capabilities.FluidHandler.BLOCK, target, dir.getOpposite()) != null) {
                 return dir;
             }
             if (world.getFluidState(target).isSource()) {
@@ -306,23 +306,20 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
         return Direction.from3DDataValue(value);
     }
 
-    @Override
     public Level level() {
         return this.level;
     }
 
-    @Override
     public Vec3 position() {
         return this.getBlockPos().getCenter();
     }
 
-    @Override
     public float getVisualRotationYInDegrees() {
         return 0;
     }
 
     public class PipeItem {
-        public ItemResource variant;
+        public ItemStack variant;
         public long amount;
 
         public Direction direction;
@@ -330,7 +327,7 @@ public class PipeBlockEntity extends BlockEntity implements ItemOwner, PipeExtra
 
         public double progress;
 
-        public PipeItem(ItemResource variant, long amount, Direction dir) {
+        public PipeItem(ItemStack variant, long amount, Direction dir) {
             this.variant = variant;
             this.amount = amount;
             this.direction = dir;

@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "industrial_elixir:purified_copper",
+  "ingredient": {
+    "item": "industrial_elixir:purified_copper"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:copper_dust"
   }
 }

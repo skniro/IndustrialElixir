@@ -59,7 +59,7 @@ public class CompressorRecipeJsonBuilder implements RecipeBuilder {
     }
 
     public CompressorRecipeJsonBuilder input(TagKey<Item> tag, int amount) {
-        this.ingredient = Ingredient.of(itemLookup.getOrThrow(tag));
+        this.ingredient = Ingredient.of(tag);
         this.requiredCount = amount;
         return this;
     }
@@ -83,7 +83,7 @@ public class CompressorRecipeJsonBuilder implements RecipeBuilder {
 
     @Override
     public void save(RecipeOutput exporter, ResourceLocation recipeKey) {
-        ResourceKey<Recipe<?>> finalKey = modifyRecipeKey(recipeKey, exporter);
+        ResourceLocation finalKey = modifyRecipeKey(recipeKey, exporter);
         CompressorCraftingRecipe recipe = new CompressorCraftingRecipe(ingredient, requiredCount, result);
         if (criteria.isEmpty()) {
             exporter.accept(finalKey, recipe, null);
@@ -94,11 +94,11 @@ public class CompressorRecipeJsonBuilder implements RecipeBuilder {
 
         this.criteria.forEach(advancementBuilder::addCriterion);
 
-        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.location().withPrefix("recipes/")));
+        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.withPrefix("recipes/")));
 
     }
 
     private ResourceLocation modifyRecipeKey(ResourceLocation recipeKey, RecipeOutput exporter) {
-        return ResourceKey.create(recipeKey, exporter.getRecipeIdentifier(recipeKey.location().withPrefix("compressor/")));
+        return exporter.getRecipeIdentifier(recipeKey.withPrefix("compressor/"));
     }
 }

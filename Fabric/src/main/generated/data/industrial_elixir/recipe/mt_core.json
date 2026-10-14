@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "P": "industrial_elixir:copper_plate",
-    "R": "industrial_elixir:irradiant_glass_pane"
+    "P": {
+      "item": "industrial_elixir:copper_plate"
+    },
+    "R": {
+      "item": "industrial_elixir:irradiant_glass_pane"
+    }
   },
   "pattern": [
     "RPR",
@@ -11,6 +15,7 @@
     "RPR"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:mt_core"
   }
 }

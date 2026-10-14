@@ -8,7 +8,7 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleHeatStorage;
 import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContainer;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -29,14 +28,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class AbstractHeatMachineEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineRecipeProvider {
+public abstract class AbstractHeatMachineEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory, MachineRecipeProvider {
     public NonNullList<ItemStack> inventory = NonNullList.withSize(10, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -202,21 +200,21 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putInt("abstract_machine.progress", progress);
         nbt.putInt("abstract_machine.max_progress", maxProgress);
         nbt.putLong("abstract_machine.heat", heatContainer.amount);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        progress = nbt.getIntOr("abstract_machine.progress", 0);
-        maxProgress = nbt.getIntOr("abstract_machine.max_progress", maxProgress);
-        heatContainer.amount = nbt.getLongOr("abstract_machine.heat", 300);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        progress = (nbt.contains("abstract_machine.progress") ? nbt.getInt("abstract_machine.progress") : 0);
+        maxProgress = (nbt.contains("abstract_machine.max_progress") ? nbt.getInt("abstract_machine.max_progress") : maxProgress);
+        heatContainer.amount = (nbt.contains("abstract_machine.heat") ? nbt.getLong("abstract_machine.heat") : 300);
+        super.loadAdditional(nbt, registries);
     }
 
     public void updateHeatInput() {
@@ -262,7 +260,7 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
 
     protected void craftItem() {
         Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         this.removeItem(INPUT_SLOT, recipe.get().value().requiredCount());
         if (this.getItem(OUTPUT_SLOT).isEmpty()) {
             this.setItem(OUTPUT_SLOT, output.copy());
@@ -303,7 +301,7 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
             return false;
         }
 
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughheatToCraft();
     }
 
@@ -339,17 +337,14 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements E
         return saveCustomOnly(registryLookup);
     }
 
-    @Override
     public Level level() {
         return this.level;
     }
 
-    @Override
     public Vec3 position() {
         return this.getBlockPos().getCenter();
     }
 
-    @Override
     public float getVisualRotationYInDegrees() {
         return this.getBlockState().getValue(AbstractMachineblock.FACING).getOpposite().getStepY();
     }

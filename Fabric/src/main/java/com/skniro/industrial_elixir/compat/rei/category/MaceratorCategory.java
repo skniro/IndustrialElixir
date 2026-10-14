@@ -13,15 +13,14 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class MaceratorCategory implements DisplayCategory<BasicDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/macerator.png");
 
 
@@ -72,7 +71,7 @@ public class MaceratorCategory implements DisplayCategory<BasicDisplay> {
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 74, startPoint.y + 35, 190, 0, progress, 12, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 74, startPoint.y + 35, 190, 0, progress, 12, 256, 256);
         }));
 
         return widgets;

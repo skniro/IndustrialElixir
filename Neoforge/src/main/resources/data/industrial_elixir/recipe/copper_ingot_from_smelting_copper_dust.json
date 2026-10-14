@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "copper_ingot",
-  "ingredient": "industrial_elixir:copper_dust",
+  "ingredient": {
+    "item": "industrial_elixir:copper_dust"
+  },
   "result": {
     "id": "minecraft:copper_ingot"
   }

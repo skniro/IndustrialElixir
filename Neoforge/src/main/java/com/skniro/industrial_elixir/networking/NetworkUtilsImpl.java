@@ -19,7 +19,7 @@ public class NetworkUtilsImpl {
     public static void handleMetalFormerState(MetalFormerStateC2SPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             ServerPlayer player = (ServerPlayer) context.player();
-            ServerLevel world = player.level();
+            ServerLevel world = player.serverLevel();
 
             BlockEntity be = world.getBlockEntity(payload.pos());
             if (be instanceof MetalFormerBlockEntity machine) {

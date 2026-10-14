@@ -3,14 +3,19 @@
   "count": 1,
   "fluid": "minecraft:water",
   "fluid_amount": 1000,
-  "ingredient": "minecraft:stone",
-  "ingredient2": "minecraft:glass_bottle",
+  "ingredient": {
+    "item": "minecraft:stone"
+  },
+  "ingredient2": {
+    "item": "minecraft:glass_bottle"
+  },
   "result": {
     "components": {
       "minecraft:potion_contents": {
         "potion": "minecraft:infested"
       }
     },
+    "count": 1,
     "id": "minecraft:potion"
   }
 }

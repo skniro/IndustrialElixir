@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "industrial_elixir:bronze_ingot",
-    "|": "minecraft:stick"
+    "#": {
+      "item": "industrial_elixir:bronze_ingot"
+    },
+    "|": {
+      "item": "minecraft:stick"
+    }
   },
   "pattern": [
     "##",
@@ -11,6 +15,7 @@
     " |"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:bronze_axe"
   }
 }

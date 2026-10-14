@@ -13,15 +13,14 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ExtractorCategory implements DisplayCategory<ExtractorDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/extractor.png");
 
     private static final int ENERGY_X = 52;
@@ -71,7 +70,7 @@ public class ExtractorCategory implements DisplayCategory<ExtractorDisplay> {
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 75, startPoint.y + 35, 190, 0, progress, 14, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 75, startPoint.y + 35, 190, 0, progress, 14, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

@@ -3,10 +3,11 @@ package com.skniro.industrial_elixir.datagen.recipe.machine;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
@@ -19,14 +20,18 @@ import net.minecraft.world.level.ItemLike;
 import java.util.concurrent.CompletableFuture;
 
 public class MaceratorRecipeGenerator extends FabricRecipeProvider {
-    public MaceratorRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public MaceratorRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
 
@@ -183,23 +188,23 @@ public class MaceratorRecipeGenerator extends FabricRecipeProvider {
 
 
             public void offerCampfireCooking(ItemLike inputs, ItemLike output, float experience, int cookingTime) {
-                this.simpleCookingRecipe("campfire_cooking", CampfireCookingRecipe::new, cookingTime, inputs, output, experience);
+                this.simpleCookingRecipe("campfire_cooking", RecipeSerializer.CAMPFIRE_COOKING_RECIPE, CampfireCookingRecipe::new, cookingTime, inputs, output, experience);
             }
 
             public void offerSmoking(ItemLike inputs, ItemLike output, float experience, int cookingTime) {
-                this.simpleCookingRecipe("smoking", SmokingRecipe::new, cookingTime, inputs, output, experience);
+                this.simpleCookingRecipe("smoking", RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new, cookingTime, inputs, output, experience);
             }
 
             public void offerSmoking(TagKey<Item> inputs, ItemLike output, float experience, int cookingTime) {
-                this.simpleCookingRecipeTag("smoking", SmokingRecipe::new, cookingTime, inputs, output, experience);
+                this.simpleCookingRecipeTag("smoking", RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new, cookingTime, inputs, output, experience);
             }
 
             public void offerCampfireCooking(TagKey<Item> inputs, ItemLike output, float experience, int cookingTime) {
-                this.simpleCookingRecipeTag("campfire_cooking", CampfireCookingRecipe::new, cookingTime, inputs, output, experience);
+                this.simpleCookingRecipeTag("campfire_cooking", RecipeSerializer.CAMPFIRE_COOKING_RECIPE, CampfireCookingRecipe::new, cookingTime, inputs, output, experience);
             }
 
-            public <T extends AbstractCookingRecipe> void simpleCookingRecipeTag(final String source, final AbstractCookingRecipe.Factory<T> factory, final int cookingTime, final TagKey<Item> baseTag, final ItemLike result, final float experience) {
-                SimpleCookingRecipeBuilder.generic(this.tag(baseTag), RecipeCategory.FOOD, CookingBookCategory.FOOD, result, experience, cookingTime, factory).unlockedBy("has_" + baseTag.location().getPath(), this.has(baseTag)).save(this.output, getItemName(result) + "_from_" + baseTag.location().getPath() + "_" + source);
+            public <T extends AbstractCookingRecipe> void simpleCookingRecipeTag(final String source, final RecipeSerializer<T> serializer, final AbstractCookingRecipe.Factory<T> factory, final int cookingTime, final TagKey<Item> baseTag, final ItemLike result, final float experience) {
+                SimpleCookingRecipeBuilder.generic(this.tag(baseTag), RecipeCategory.FOOD, result, experience, cookingTime, serializer, factory).unlockedBy("has_" + baseTag.location().getPath(), this.has(baseTag)).save(this.output, getItemName(result) + "_from_" + baseTag.location().getPath() + "_" + source);
             }
 
         };

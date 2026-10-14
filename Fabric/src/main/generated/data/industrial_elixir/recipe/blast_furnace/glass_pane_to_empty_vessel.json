@@ -3,8 +3,11 @@
   "count": 1,
   "fluid": "industrial_elixir:fluid_air",
   "fluid_amount": 1000,
-  "ingredient": "minecraft:glass_pane",
+  "ingredient": {
+    "item": "minecraft:glass_pane"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:empty_vessel"
   }
 }

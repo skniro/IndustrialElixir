@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "P": "industrial_elixir:luminite_alloy",
-    "U": "industrial_elixir:sacred_essence"
+    "P": {
+      "item": "industrial_elixir:luminite_alloy"
+    },
+    "U": {
+      "item": "industrial_elixir:sacred_essence"
+    }
   },
   "pattern": [
     " U ",
@@ -11,6 +15,7 @@
     " U "
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:sacred_shard"
   }
 }

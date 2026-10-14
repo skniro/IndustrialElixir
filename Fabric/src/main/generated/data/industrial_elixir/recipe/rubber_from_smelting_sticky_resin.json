@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "sticky_resin",
-  "ingredient": "industrial_elixir:sticky_resin",
+  "ingredient": {
+    "item": "industrial_elixir:sticky_resin"
+  },
   "result": {
     "id": "industrial_elixir:rubber"
   }

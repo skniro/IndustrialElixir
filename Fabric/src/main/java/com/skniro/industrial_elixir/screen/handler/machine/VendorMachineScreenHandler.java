@@ -57,6 +57,21 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
         this.addStandardInventorySlots(inventory, 108, 84);
     }
 
+    /**
+     * 1.21.1 replacement for {@code AbstractContainerMenu#addStandardInventorySlots}
+     * (which only exists from 1.21.2 onwards).
+     */
+    private void addStandardInventorySlots(final Container container, final int x, final int y) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                this.addSlot(new Slot(container, col + (row + 1) * 9, x + col * 18, y + row * 18));
+            }
+        }
+        for (int col = 0; col < 9; col++) {
+            this.addSlot(new Slot(container, col, x + col * 18, y + 58));
+        }
+    }
+
     public void setShowProgressBar(final boolean show) {
         this.showProgressBar = show;
     }
@@ -71,7 +86,13 @@ public class VendorMachineScreenHandler extends AbstractContainerMenu {
     }
 
     public boolean stillValid(final Player player) {
-        return this.trader.stillValid(player);
+        if (this.blockEntity.getLevel() == null) {
+            return false;
+        }
+        return AbstractContainerMenu.stillValid(
+                net.minecraft.world.inventory.ContainerLevelAccess.create(this.blockEntity.getLevel(), this.blockEntity.getBlockPos()),
+                player,
+                this.blockEntity.getBlockState().getBlock());
     }
 
     public int getTraderXp() {

@@ -2,7 +2,6 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
@@ -20,12 +19,12 @@ public class InfiniteHeatStorage implements HeatStorage {
 	}
 
 	@Override
-	public long insert(long maxAmount, TransactionContext transaction) {
+	public long insert(long maxAmount, boolean simulate) {
 		return 0;
 	}
 
 	@Override
-	public long extract(long maxAmount, TransactionContext transaction) {
+	public long extract(long maxAmount, boolean simulate) {
 		return maxAmount;
 	}
 

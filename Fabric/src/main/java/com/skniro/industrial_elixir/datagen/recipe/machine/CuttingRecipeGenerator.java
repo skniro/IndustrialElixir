@@ -3,22 +3,27 @@ package com.skniro.industrial_elixir.datagen.recipe.machine;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
 
 public class CuttingRecipeGenerator extends FabricRecipeProvider {
-    public CuttingRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public CuttingRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 createCutting(Items.IRON_BLOCK, GrowableOresItems.IRON_PLATE,9).save(output);
@@ -42,7 +47,6 @@ public class CuttingRecipeGenerator extends FabricRecipeProvider {
                 addWoodSet(output, Items.BAMBOO_BLOCK, Items.STRIPPED_BAMBOO_BLOCK, Items.BAMBOO_BLOCK, Items.STRIPPED_BAMBOO_BLOCK, Items.BAMBOO_PLANKS, "bamboo");
                 addWoodSet(output, Items.CRIMSON_STEM, Items.STRIPPED_CRIMSON_STEM, Items.CRIMSON_HYPHAE, Items.STRIPPED_CRIMSON_HYPHAE, Items.CRIMSON_PLANKS, "crimson");
                 addWoodSet(output, Items.WARPED_STEM, Items.STRIPPED_WARPED_STEM, Items.WARPED_HYPHAE, Items.STRIPPED_WARPED_HYPHAE, Items.WARPED_PLANKS, "warped");
-                addWoodSet(output, Items.PALE_OAK_LOG, Items.STRIPPED_PALE_OAK_LOG, Items.PALE_OAK_WOOD, Items.STRIPPED_PALE_OAK_WOOD, Items.PALE_OAK_PLANKS, "pale_oak");
                 addWoodSet(output, GeneralBlocks.Rubber_LOG, GeneralBlocks.STRIPPED_Rubber_LOG, GeneralBlocks.Rubber_WOOD, GeneralBlocks.STRIPPED_Rubber_WOOD, GeneralBlocks.Rubber_PLANKS, "rubber");
                 createCutting(GeneralBlocks.Rubber_Rubber_LOG, GeneralBlocks.Rubber_PLANKS,6).save(output, "rubber_rubber_log_to_planks");
             }

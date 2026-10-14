@@ -15,7 +15,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -35,9 +35,9 @@ public class GrowableOresItems {
     public static final Supplier<Item> Rubber = registerItem("rubber", Item::new, new Item.Properties());
 
 
-    public static final Supplier<Item> RUBBER_BOAT = registerItem("rubber_boat", (settings) -> new BoatItem(MapleEntityType.RUBBER_BOAT.get(), settings), new Item.Properties().stacksTo(1));
+    public static final Supplier<Item> RUBBER_BOAT = registerItem("rubber_boat", (settings) -> new ModBoatItem(MapleEntityType.RUBBER_BOAT.get(), settings), new Item.Properties().stacksTo(1));
 
-    public static final Supplier<Item> RUBBER_CHEST_BOAT = registerItem("rubber_chest_boat", (settings) -> new BoatItem(MapleEntityType.RUBBER_CHEST_BOAT.get(), settings), new Item.Properties().stacksTo(1));
+    public static final Supplier<Item> RUBBER_CHEST_BOAT = registerItem("rubber_chest_boat", (settings) -> new ModBoatItem(MapleEntityType.RUBBER_CHEST_BOAT.get(), settings), new Item.Properties().stacksTo(1));
 
     public static final Supplier<Item> OVERCLOCKER = registerItem("overclocker", (settings) -> new ItemUpgradeModule(settings, ItemUpgradeModule.UpgradeType.OVERCLOCKER), new Item.Properties());
     public static final Supplier<Item> ENERGY_STORAGE = registerItem("energy_storage", (settings) -> new ItemUpgradeModule(settings, ItemUpgradeModule.UpgradeType.ENERGY_STORAGE), new Item.Properties());
@@ -178,14 +178,11 @@ public class GrowableOresItems {
     public static final Supplier<Item> HEAT_SIMPLE = registerItem("heat_simple",(properties)-> new HeatItem(properties, 100, 100,100), new Item.Properties());
 
     public static <B extends Item> Supplier<Item> register(String name, Function<Item.Properties, ? extends B> func, Item.Properties props) {
-        return ITEMS.register(name, () -> {
-            return (Item)func.apply(props.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        });
+        return ITEMS.register(name, () -> (Item) func.apply(props));
     }
 
     private static <T extends Item> Supplier<Item> registerItem(String name, Function<Item.Properties, ? extends T> item, Item.Properties properties) {
-        Supplier<Item> toReturn = register(name, item, properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        return toReturn;
+        return register(name, item, properties);
     }
 
     public static void shield_item(IEventBus eventBus){

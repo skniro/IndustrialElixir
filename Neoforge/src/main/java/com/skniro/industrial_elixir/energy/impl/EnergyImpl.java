@@ -38,7 +38,7 @@ public class EnergyImpl {
 		List<Item> items = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof SimpleEnergyItem).toList();
 		event.registerItem(EnergyStorage.ITEM, (stack, ctx) -> {
 					if (stack.getItem() instanceof SimpleEnergyItem energyItem) {
-						return SimpleEnergyItem.createStorage(ctx, energyItem.getEnergyCapacity(stack), energyItem.getEnergyMaxInput(stack), energyItem.getEnergyMaxOutput(stack));
+						return SimpleEnergyItem.createStorage(stack, energyItem.getEnergyCapacity(stack), energyItem.getEnergyMaxInput(stack), energyItem.getEnergyMaxOutput(stack));
 					} else {
 						return null;
 					}

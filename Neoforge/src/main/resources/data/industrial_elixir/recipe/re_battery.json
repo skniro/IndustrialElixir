@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "minecraft:redstone",
-    "I": "industrial_elixir:iron_casing",
-    "T": "industrial_elixir:insulated_tin_cable"
+    "B": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "industrial_elixir:iron_casing"
+    },
+    "T": {
+      "item": "industrial_elixir:insulated_tin_cable"
+    }
   },
   "pattern": [
     " T ",
@@ -12,6 +18,7 @@
     "IBI"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:re_battery"
   }
 }

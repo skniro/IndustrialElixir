@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": "industrial_elixir:circuit",
-    "G": "minecraft:lapis_lazuli",
-    "S": "industrial_elixir:insulated_copper_cable"
+    "E": {
+      "item": "industrial_elixir:circuit"
+    },
+    "G": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "S": {
+      "item": "industrial_elixir:insulated_copper_cable"
+    }
   },
   "pattern": [
     "   ",
@@ -12,6 +18,7 @@
     "SES"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:overclocker"
   }
 }

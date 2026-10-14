@@ -15,22 +15,21 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCraftingRecipe>> {
 
-    public static final IRecipeHolderType<RecyclerCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.RECYCLER.type);
+    public static final RecipeType<RecipeHolder<RecyclerCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.RECYCLER.type);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -38,7 +37,7 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
     private final IDrawableAnimated arrow;
 
     public RecyclerCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id( "textures/gui/container/machine/recycler.png");
+        ResourceLocation texture = Helper.id( "textures/gui/container/machine/recycler.png");
 
         background = helper.createDrawable(texture, 0, 0, 175, 82);
 
@@ -50,7 +49,7 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
     }
 
     @Override
-    public IRecipeType<RecipeHolder<RecyclerCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<RecyclerCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -82,11 +81,11 @@ public class RecyclerCategory implements IRecipeCategory<RecipeHolder<RecyclerCr
                         .map(ItemStack::new)
                         .toList());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 34)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
     }
 
     @Override
-    public void draw(RecipeHolder<RecyclerCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<RecyclerCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
 
         energyBar.draw(guiGraphics, 52, 31);

@@ -1,14 +1,19 @@
 {
   "type": "industrial_elixir:heat_centrifuge",
   "count": 1,
-  "ingredient": "industrial_elixir:crushed_lead",
+  "ingredient": {
+    "item": "industrial_elixir:crushed_lead"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:lead_dust"
   },
   "result2": {
+    "count": 1,
     "id": "industrial_elixir:small_copper_dust"
   },
   "result3": {
+    "count": 1,
     "id": "industrial_elixir:stone_dust"
   }
 }

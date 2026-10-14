@@ -8,9 +8,9 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -21,7 +21,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class BasePowerBlockBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory, ItemOwner, MachineEnergyProvider {
+public abstract class BasePowerBlockBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory, MachineEnergyProvider {
     public NonNullList<ItemStack> inventory = NonNullList.withSize(13, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -143,7 +142,7 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements E
                 if (chargeEnergy > 0L) {
                     if (!this.getOptionalInventory().isEmpty()) {
                         Container inventory = this.getOptionalInventory().get();
-                        EnergyStorageUtil.move(ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
+                        EnergyStorageUtil.move(ContainerItemContext.ofSingleSlot(InventoryStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
                     }
                 }
             }
@@ -207,17 +206,14 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements E
         return inventory;
     }
 
-    @Override
     public Level level() {
         return this.level;
     }
 
-    @Override
     public Vec3 position() {
         return this.getBlockPos().getCenter();
     }
 
-    @Override
     public float getVisualRotationYInDegrees() {
         return this.getBlockState().getValue(AbstractMachineblock.FACING).getOpposite().getStepY();
     }

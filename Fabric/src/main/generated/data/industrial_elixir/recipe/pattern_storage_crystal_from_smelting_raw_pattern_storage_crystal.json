@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "pattern_storage_crystal",
-  "ingredient": "industrial_elixir:raw_pattern_storage_crystal",
+  "ingredient": {
+    "item": "industrial_elixir:raw_pattern_storage_crystal"
+  },
   "result": {
     "id": "industrial_elixir:pattern_storage_crystal"
   }

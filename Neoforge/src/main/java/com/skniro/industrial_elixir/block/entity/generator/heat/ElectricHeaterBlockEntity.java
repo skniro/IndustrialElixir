@@ -10,7 +10,6 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContaine
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.generator.heat.ElectricHeaterScreenHandler;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -27,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     public SimpleSidedHeatContainer heatContainer;
@@ -91,13 +90,13 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
         if (coilCount > 0) {
             long required = coilCount * EU_PER_COIL;
             if (energyContainer.getSideStorage(null).getAmount() >= required) {
-                try (Transaction tx = Transaction.openRoot()) {
-                    if (energyContainer.getSideStorage(null).extract(required, tx) == required) {
-                        long heat = coilCount * HEAT_PER_COIL;
-                        if (heatContainer.getSideStorage(null).insert(heat, tx) == heat) {
-                            tx.commit();
-                        }
-                    }
+                long heat = coilCount * HEAT_PER_COIL;
+                // Probe both sides first: the energy may only be consumed if the
+                // produced heat really fits into the heat container.
+                if (energyContainer.getSideStorage(null).extract(required, true) == required
+                        && heatContainer.getSideStorage(null).insert(heat, true) == heat) {
+                    energyContainer.getSideStorage(null).extract(required, false);
+                    heatContainer.getSideStorage(null).insert(heat, false);
                 }
             }
         }
@@ -108,7 +107,7 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
         Direction direction = getBlockState().getValue(AbstractMachineblock.FACING);
         HeatStorage target = HeatStorage.SIDED.getCapability(level, worldPosition.relative(direction),null,null,direction.getOpposite());
         if (target == null) return;
-        HeatStorageUtil.move(this.heatContainer.getSideStorage(direction), target, heatContainer.getSideStorage(null).getAmount(), null);
+        HeatStorageUtil.move(this.heatContainer.getSideStorage(direction), target, heatContainer.getSideStorage(null).getAmount());
     }
 
     public long getHeatProduction() {

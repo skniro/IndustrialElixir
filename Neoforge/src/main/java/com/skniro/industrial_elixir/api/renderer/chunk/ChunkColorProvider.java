@@ -65,7 +65,7 @@ public final class ChunkColorProvider {
          * NORMAL:
          * - 不额外变暗
          */
-        return 0xFF000000 | mapColor.calculateARGBColor(MapColor.Brightness.NORMAL);
+        return 0xFF000000 | mapColor.calculateRGBColor(MapColor.Brightness.NORMAL);
     }
 
 

@@ -2,15 +2,15 @@ package com.skniro.industrial_elixir.block.init;
 
 import com.mojang.serialization.MapCodec;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Shulker;
@@ -46,9 +46,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class ShulkerBoxBlock extends BaseEntityBlock {
     public static final MapCodec<ShulkerBoxBlock> CODEC = simpleCodec(ShulkerBoxBlock::new);
-    public static final Map<Direction, VoxelShape> SHAPES_BY_DIRECTION = Shapes.rotateAll(Block.boxZ((double)16.0F, (double)0.0F, (double)1.0F));
+    // 26.1 builds this with Shapes.rotateAll(Block.boxZ(...)); 1.21.1 has neither helper, so the six
+    // rotated copies of the 1/16 thick slab are listed explicitly (the same values vanilla uses).
+    public static final Map<Direction, VoxelShape> SHAPES_BY_DIRECTION = createShapesByDirection();
     public static final EnumProperty<Direction> FACING;
-    public static final Identifier CONTENTS_DYNAMIC_DROP_ID;
+    public static final ResourceLocation CONTENTS_DYNAMIC_DROP_ID;
+
+    private static Map<Direction, VoxelShape> createShapesByDirection() {
+        Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
+        shapes.put(Direction.NORTH, Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 1.0));
+        shapes.put(Direction.SOUTH, Block.box(0.0, 0.0, 15.0, 16.0, 16.0, 16.0));
+        shapes.put(Direction.WEST, Block.box(0.0, 0.0, 0.0, 1.0, 16.0, 16.0));
+        shapes.put(Direction.EAST, Block.box(15.0, 0.0, 0.0, 16.0, 16.0, 16.0));
+        shapes.put(Direction.DOWN, Block.box(0.0, 0.0, 0.0, 16.0, 1.0, 16.0));
+        shapes.put(Direction.UP, Block.box(0.0, 15.0, 0.0, 16.0, 16.0, 16.0));
+        return shapes;
+    }
 
     public MapCodec<ShulkerBoxBlock> codec() {
         return CODEC;
@@ -68,13 +81,13 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
     }
 
     protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
-        if (world instanceof ServerLevel serverWorld) {
+        if (world instanceof ServerLevel) {
             BlockEntity var8 = world.getBlockEntity(pos);
             if (var8 instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
                 if (canOpen(state, world, pos, shulkerBoxBlockEntity)) {
                     player.openMenu(shulkerBoxBlockEntity);
                     player.awardStat(Stats.OPEN_SHULKER_BOX);
-                    PiglinAi.angerNearbyPiglins(serverWorld, player, true);
+                    PiglinAi.angerNearbyPiglins(player, true);
                 }
             }
         }
@@ -86,7 +99,7 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
         if (entity.getAnimationStatus() != AnimationStatus.CLOSED) {
             return true;
         } else {
-            AABB box = Shulker.getProgressDeltaAabb(1.0F, (Direction)state.getValue(FACING), 0.0F, 0.5F, pos.getBottomCenter()).deflate(1.0E-6);
+            AABB box = Shulker.getProgressDeltaAabb(1.0F, (Direction)state.getValue(FACING), 0.0F, 0.5F).move(pos).deflate(1.0E-6);
             return world.noCollision(box);
         }
     }
@@ -102,7 +115,7 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
     public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
-            if (!world.isClientSide() && player.preventsBlockDrops() && !shulkerBoxBlockEntity.isEmpty()) {
+            if (!world.isClientSide() && player.isCreative() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = state.getBlock().asItem().getDefaultInstance();
                 itemStack.applyComponents(blockEntity.collectComponents());
                 ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + (double)0.5F, (double)pos.getY() + (double)0.5F, (double)pos.getZ() + (double)0.5F, itemStack);
@@ -130,8 +143,14 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
         return super.getDrops(state, builder);
     }
 
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        Containers.updateNeighboursAfterDestroy(state, world, pos);
+    protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            super.onRemove(state, world, pos, newState, moved);
+            if (blockEntity instanceof ShulkerBoxBlockEntity) {
+                world.updateNeighbourForOutputSignal(pos, state.getBlock());
+            }
+        }
     }
 
     protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter world, BlockPos pos) {
@@ -154,7 +173,7 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
         }
     }
 
-    protected boolean propagatesSkylightDown(BlockState state) {
+    protected boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
         return false;
     }
 
@@ -162,7 +181,7 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
         return true;
     }
 
-    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(world.getBlockEntity(pos));
     }
 
@@ -176,6 +195,6 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
 
     static {
         FACING = DirectionalBlock.FACING;
-        CONTENTS_DYNAMIC_DROP_ID = Identifier.withDefaultNamespace("contents");
+        CONTENTS_DYNAMIC_DROP_ID = ResourceLocation.withDefaultNamespace("contents");
     }
 }

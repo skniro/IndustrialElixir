@@ -5,9 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,62 +17,53 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class ModItemBlockRenderTypes {
-    private static final Map<Block, ChunkSectionLayer> TYPE_BY_BLOCK = new HashMap<>();
-    private static final Map<Fluid, ChunkSectionLayer> LAYER_BY_FLUID = new HashMap<>();
+    private static final Map<Block, RenderType> TYPE_BY_BLOCK = new HashMap<>();
+    private static final Map<Fluid, RenderType> LAYER_BY_FLUID = new HashMap<>();
 
     private static boolean cutoutLeaves;
 
-    public static ChunkSectionLayer getChunkRenderType(BlockState state) {
+    public static RenderType getChunkRenderType(BlockState state) {
         Block block = state.getBlock();
         if (block instanceof LeavesBlock) {
-            return cutoutLeaves ? ChunkSectionLayer.CUTOUT : ChunkSectionLayer.SOLID;
+            return cutoutLeaves ? RenderType.cutout() : RenderType.solid();
         } else {
-            ChunkSectionLayer layer = (ChunkSectionLayer)TYPE_BY_BLOCK.get(block);
-            return layer != null ? layer : ChunkSectionLayer.SOLID;
+            RenderType layer = TYPE_BY_BLOCK.get(block);
+            return layer != null ? layer : RenderType.solid();
         }
     }
 
     public static RenderType getMovingBlockRenderType(BlockState state) {
         Block block = state.getBlock();
         if (block instanceof LeavesBlock) {
-            return cutoutLeaves ? RenderTypes.cutoutMovingBlock() : RenderTypes.solidMovingBlock();
+            return cutoutLeaves ? RenderType.cutoutMipped() : RenderType.solid();
         } else {
-            ChunkSectionLayer layer = (ChunkSectionLayer)TYPE_BY_BLOCK.get(block);
+            RenderType layer = TYPE_BY_BLOCK.get(block);
             if (layer != null) {
-                RenderType var10000;
-                switch (layer) {
-                    case SOLID -> var10000 = RenderTypes.solidMovingBlock();
-                    case CUTOUT -> var10000 = RenderTypes.cutoutMovingBlock();
-                    case TRANSLUCENT -> var10000 = RenderTypes.translucentMovingBlock();
-                    default -> throw new MatchException((String)null, (Throwable)null);
-                }
-
-                return var10000;
-            } else {
-                return RenderTypes.solidMovingBlock();
+                return layer == RenderType.translucent() ? RenderType.translucentMovingBlock() : layer;
             }
+            return RenderType.solid();
         }
     }
     public static RenderType getRenderType(BlockState state) {
-        ChunkSectionLayer renderType = getChunkRenderType(state);
-        return renderType == ChunkSectionLayer.TRANSLUCENT ? Sheets.translucentBlockItemSheet() : Sheets.cutoutBlockSheet();
+        RenderType renderType = getChunkRenderType(state);
+        return renderType == RenderType.translucent() ? Sheets.translucentItemSheet() : Sheets.cutoutBlockSheet();
     }
 
-    public static ChunkSectionLayer getRenderLayer(FluidState state) {
-        ChunkSectionLayer layer = (ChunkSectionLayer)LAYER_BY_FLUID.get(state.getType());
-        return layer != null ? layer : ChunkSectionLayer.SOLID;
+    public static RenderType getRenderLayer(FluidState state) {
+        RenderType layer = LAYER_BY_FLUID.get(state.getType());
+        return layer != null ? layer : RenderType.solid();
     }
 
     public static void setCutoutLeaves(final boolean cutoutLeaves) {
         ModItemBlockRenderTypes.cutoutLeaves = cutoutLeaves;
     }
 
-    public static synchronized void setRenderLayer(Block block, ChunkSectionLayer layer) {
+    public static synchronized void setRenderLayer(Block block, RenderType layer) {
         checkClientLoading();
         TYPE_BY_BLOCK.put(block, layer);
     }
 
-    public static synchronized void setRenderLayer(Fluid fluid, ChunkSectionLayer layer) {
+    public static synchronized void setRenderLayer(Fluid fluid, RenderType layer) {
         checkClientLoading();
         LAYER_BY_FLUID.put(fluid, layer);
     }

@@ -1,9 +1,12 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:birch_sapling",
+  "ingredient": {
+    "item": "minecraft:birch_sapling"
+  },
   "process_time": 1600,
   "result": {
+    "count": 1,
     "id": "minecraft:birch_sapling"
   },
   "result2": {

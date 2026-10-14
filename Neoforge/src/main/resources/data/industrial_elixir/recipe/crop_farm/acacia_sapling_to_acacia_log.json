@@ -1,9 +1,12 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:acacia_sapling",
+  "ingredient": {
+    "item": "minecraft:acacia_sapling"
+  },
   "process_time": 1000,
   "result": {
+    "count": 1,
     "id": "minecraft:acacia_sapling"
   },
   "result2": {

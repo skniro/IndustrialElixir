@@ -14,16 +14,15 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CropFarmCategory implements DisplayCategory<CropFarmDisplay> {
-    public static final Identifier TEXTURE = Helper.id("textures/gui/container/machine/crop_farm.png");
+    public static final ResourceLocation TEXTURE = Helper.id("textures/gui/container/machine/crop_farm.png");
 
     @Override
     public CategoryIdentifier<? extends CropFarmDisplay> getCategoryIdentifier() {
@@ -70,13 +69,13 @@ public class CropFarmCategory implements DisplayCategory<CropFarmDisplay> {
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
             long tick = System.currentTimeMillis() / 50;
             int progress = (int) ((tick % 72) * 24 / 72);
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
 
             int count = display.getCount();
             if (count > 1) {
                 Font font = Minecraft.getInstance().font;
                 String text = String.valueOf(count);
-                context.text(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 33 + 16 - 8 - 1, 0xFFFFFFFF, true);
+                context.drawString(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 33 + 16 - 8 - 1, 0xFFFFFFFF, true);
             }
         }));
 

@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.List;
 import java.util.Optional;
@@ -25,27 +25,13 @@ public class MolecularTransformerDisplay extends BasicDisplay {
     public static final CategoryIdentifier<MolecularTransformerDisplay> MolecularTransformer =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "molecular_transformer");
 
-    public static final DisplaySerializer<MolecularTransformerDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(MolecularTransformerDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(MolecularTransformerDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(MolecularTransformerDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(MolecularTransformerDisplay::getCount),
-                    Codec.LONG.fieldOf("energy").forGetter(MolecularTransformerDisplay::getEnergy)
-            ).apply(instance, MolecularTransformerDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    MolecularTransformerDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    MolecularTransformerDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    MolecularTransformerDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    MolecularTransformerDisplay::getCount,
-                    ByteBufCodecs.LONG,
-                    MolecularTransformerDisplay::getEnergy,
-                    MolecularTransformerDisplay::new
-            )
+    public static final DisplaySerializer<MolecularTransformerDisplay> SERIALIZER = BasicDisplay.Serializer.<MolecularTransformerDisplay>of(
+            (inputs, outputs, location, tag) -> new MolecularTransformerDisplay(inputs, outputs, location,
+                    tag.getInt("count"), tag.getLong("energy")),
+            (display, tag) -> {
+                tag.putInt("count", display.getCount());
+                tag.putLong("energy", display.getEnergy());
+            }
     );
 
     public MolecularTransformerDisplay(MolecularTransformerCraftingRecipe recipe) {
@@ -55,7 +41,7 @@ public class MolecularTransformerDisplay extends BasicDisplay {
         this.energy = recipe.getEnergyRequired();
     }
 
-    public MolecularTransformerDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count, long energy) {
+    public MolecularTransformerDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count, long energy) {
         super(inputs, outputs, location);
         this.count = count;
         this.energy = energy;
@@ -63,7 +49,7 @@ public class MolecularTransformerDisplay extends BasicDisplay {
 
     public MolecularTransformerDisplay(RecipeHolder<MolecularTransformerCraftingRecipe> recipe){
         super(List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
         this.count = recipe.value().requiredCount();
         this.energy = recipe.value().getEnergyRequired();
     }
@@ -71,11 +57,6 @@ public class MolecularTransformerDisplay extends BasicDisplay {
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return MolecularTransformer;
-    }
-
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
     }
 
     public int getCount() {

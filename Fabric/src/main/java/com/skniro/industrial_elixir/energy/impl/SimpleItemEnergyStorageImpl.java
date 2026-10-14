@@ -108,7 +108,7 @@ public class SimpleItemEnergyStorageImpl implements EnergyStorage {
 
 	@Override
 	public long getAmount() {
-		return ctx.getAmount() * SimpleEnergyItem.getStoredEnergyUnchecked(ctx.getItemVariant().getComponents());
+		return ctx.getAmount() * SimpleEnergyItem.getStoredEnergyUnchecked(ctx.getItemVariant().getComponentMap());
 	}
 
 	@Override

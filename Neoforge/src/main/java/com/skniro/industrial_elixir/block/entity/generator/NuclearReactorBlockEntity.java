@@ -12,7 +12,6 @@ import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.handler.generator.NuclearReactorScreenHandler;
 import net.minecraft.world.MenuProvider;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -34,8 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvider, ImplementedInventory {
@@ -114,9 +112,9 @@ public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        ContainerHelper.saveAllItems(output, inventory);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
+        ContainerHelper.saveAllItems(output, inventory, registries);
         output.putInt("nuclear_reactor.heat", heat);
         output.putInt("nuclear_reactor.max_heat", maxHeat);
         output.putInt("nuclear_reactor.generation", generation);
@@ -125,14 +123,14 @@ public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        ContainerHelper.loadAllItems(input, inventory);
-        heat = input.getIntOr("nuclear_reactor.heat", 0);
-        maxHeat = input.getIntOr("nuclear_reactor.max_heat", BASE_MAX_HEAT);
-        generation = input.getIntOr("nuclear_reactor.generation", 0);
-        energyContainer.amount = input.getLongOr("nuclear_reactor.energy", 0);
-        active = input.getBooleanOr("nuclear_reactor.active", false);
-        super.loadAdditional(input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(input, inventory, registries);
+        heat = (input.contains("nuclear_reactor.heat") ? input.getInt("nuclear_reactor.heat") : 0);
+        maxHeat = (input.contains("nuclear_reactor.max_heat") ? input.getInt("nuclear_reactor.max_heat") : BASE_MAX_HEAT);
+        generation = (input.contains("nuclear_reactor.generation") ? input.getInt("nuclear_reactor.generation") : 0);
+        energyContainer.amount = (input.contains("nuclear_reactor.energy") ? input.getLong("nuclear_reactor.energy") : 0);
+        active = (input.contains("nuclear_reactor.active") ? input.getBoolean("nuclear_reactor.active") : false);
+        super.loadAdditional(input, registries);
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
@@ -175,10 +173,7 @@ public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private void insertGeneratedEnergy(int amount) {
-        try (Transaction transaction = Transaction.openRoot()) {
-            energyContainer.getSideStorage(null).insert(amount, transaction);
-            transaction.commit();
-        }
+        energyContainer.getSideStorage(null).insert(amount, false);
     }
 
     private void pushEnergyToNeighbours() {
@@ -190,7 +185,7 @@ public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvid
             if (target == null) {
                 continue;
             }
-            EnergyStorageUtil.move(energyContainer.getSideStorage(direction), target, ENERGY_TRANSFER_AMOUNT, null);
+            EnergyStorageUtil.move(energyContainer.getSideStorage(direction), target, ENERGY_TRANSFER_AMOUNT);
         }
     }
 

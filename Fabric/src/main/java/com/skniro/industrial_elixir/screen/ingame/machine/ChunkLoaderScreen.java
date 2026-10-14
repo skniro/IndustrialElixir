@@ -7,13 +7,11 @@ import com.skniro.industrial_elixir.util.MouseUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.ChunkPos;
 
@@ -22,8 +20,8 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreenHandler> {
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/chunk_loader.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/chunk_loader.png");
     private final ChunkMapRenderer chunkMapRenderer = new ChunkMapRenderer();
     private static final int GRID_X = 48;
     private static final int GRID_Y = 16;
@@ -50,11 +48,11 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.text(font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
+        graphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
 
         // Status: Work / Not Work
         int loadedCount = Integer.bitCount(menu.blockEntity.getSelectedChunks()) + 1;
@@ -62,11 +60,11 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
         boolean canWork = energy >= loadedCount;
         int statusColor = canWork ? 0xFF00CC00 : 0xFFCC0000;
         Component statusText = Component.literal(canWork ? "Work" : "Not Work");
-        graphics.text(font, statusText, 128, 64, statusColor, true);
+        graphics.drawString(font, statusText, 128, 64, statusColor, true);
 
         // Energy tooltip
         if (MouseUtil.isMouseOver(mouseX, mouseY, x + ENERGY_BAR_X, y + ENERGY_BAR_Y, ENERGY_BAR_W, ENERGY_BAR_H)) {
-            graphics.setTooltipForNextFrame(Screens.getFont(this),
+            graphics.renderTooltip(Screens.getTextRenderer(this),
                     List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()
                             + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " E")),
                     Optional.empty(), mouseX - x, mouseY - y);
@@ -86,7 +84,7 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
                 boolean loaded = (mask & (1 << i)) != 0 || i == 12;
                 String status = loaded ? "\u00a7aForce Loaded" : "\u00a77Not Loaded";
                 if (i == 12) status = "\u00a7aAlways Loaded";
-                graphics.setTooltipForNextFrame(Screens.getFont(this),
+                graphics.renderTooltip(Screens.getTextRenderer(this),
                         List.of(Component.literal("Chunk (" + chunkOffX + ", " + chunkOffZ + ") " + status)),
                         Optional.empty(), mouseX - x, mouseY - y);
                 break;
@@ -95,17 +93,17 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
         // Background texture
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        graphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
         // Energy bar
         int energyHeight = menu.getScaledEnergyHeight();
         if (energyHeight > 0) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
+            graphics.blit(TEXTURE,
                     x + ENERGY_BAR_X, y + ENERGY_BAR_Y + (ENERGY_BAR_H - energyHeight),
                     176, ENERGY_BAR_H - energyHeight, ENERGY_BAR_W, energyHeight, 256, 256);
         }
@@ -127,7 +125,7 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
         );
     }
 
-    private void renderChunkGrid(GuiGraphicsExtractor graphics, int guiX, int guiY, int mouseX, int mouseY) {
+    private void renderChunkGrid(GuiGraphics graphics, int guiX, int guiY, int mouseX, int mouseY) {
         int mask = menu.blockEntity.getSelectedChunks();
 
         for (int i = 0; i < 25; i++) {
@@ -158,13 +156,10 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (event.button() != 0) {
-            return super.mouseClicked(event, doubleClick);
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button != 0) {
+            return super.mouseClicked(mouseX, mouseY, button);
         }
-
-        double mouseX = event.x();
-        double mouseY = event.y();
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
@@ -186,6 +181,6 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
             }
         }
 
-        return super.mouseClicked(event, doubleClick);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 }

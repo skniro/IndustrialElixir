@@ -3,11 +3,8 @@ package com.skniro.industrial_elixir;
 import com.skniro.industrial_elixir.api.item.replicator.ReplicatorValueMap;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.entity.cable.CableElectrocutionEvent;
-import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
-import com.skniro.industrial_elixir.compat.rei.IndustrialModREIUtils;
 import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
 import com.skniro.industrial_elixir.item.init.QuantumSuitItem;
-import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.util.ModFuel;
 
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
@@ -21,7 +18,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
@@ -55,26 +51,10 @@ public class IndustrialElixir {
 
         });
 
-        if (IndustrialElixirJEIUtils.isJEIAvailable() || IndustrialModREIUtils.isREIAvailable()) {
-            NeoForge.EVENT_BUS.addListener(false, OnDatapackSyncEvent.class, e -> e.sendRecipes(
-                    AlchemyRecipeType.MACERATOR.type.get(),
-                    AlchemyRecipeType.COMPRESSOR.type.get(),
-                    AlchemyRecipeType.METALFORMER_ROLLING.type.get(),
-                    AlchemyRecipeType.METALFORMER_CUTTING.type.get(),
-                    AlchemyRecipeType.METALFORMER_EXTRUDING.type.get(),
-                    AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get(),
-                    AlchemyRecipeType.EXTRACTOR.type.get(),
-                    AlchemyRecipeType.CANE_CONVERTER.type.get(),
-                    AlchemyRecipeType.RECYCLER.type.get(),
-                    AlchemyRecipeType.CUTTING.type.get(),
-                    AlchemyRecipeType.BREW_REACTOR.type.get(),
-                    AlchemyRecipeType.ORE_WASHING.type.get(),
-                    AlchemyRecipeType.HEAT_CENTRIFUGE.type.get(),
-                    AlchemyRecipeType.MOD_BLAST_FURNACE.type.get(),
-                    AlchemyRecipeType.COFFEE_MACHINE.type.get(),
-                    AlchemyRecipeType.CROP_FARM.type.get()
-            ));
-        }
+        // 26.1's OnDatapackSyncEvent#sendRecipes(RecipeType...) has no 1.21.1 counterpart.
+        // In 1.21.1 vanilla already broadcasts the whole recipe manager to every client on
+        // datapack sync (PlayerList#reloadResources) and on login, so JEI/REI see our custom
+        // recipe types without an extra packet.
 
         NeoForge.EVENT_BUS.register(this);
     }

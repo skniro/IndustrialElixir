@@ -71,11 +71,11 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
         // Set maxProgress from the recipe
         this.maxProgress = cropRecipe.processTime();
 
-        ItemStack output = cropRecipe.output().create();
+        ItemStack output = cropRecipe.output().copy();
         if (!canInsertIntoSlot(OUTPUT_SLOT, output)) return false;
 
-        if (cropRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, cropRecipe.output2().get().create())) return false;
-        if (cropRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, cropRecipe.output3().get().create())) return false;
+        if (cropRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, cropRecipe.output2().get().copy())) return false;
+        if (cropRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, cropRecipe.output3().get().copy())) return false;
 
         return true;
     }
@@ -125,9 +125,9 @@ public class CropFarmBlockEntity extends AbstractMachineEntity {
 
         setChanged();
 
-        insertOutput(OUTPUT_SLOT, cropRecipe.output().create());
-        cropRecipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
-        cropRecipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.create()));
+        insertOutput(OUTPUT_SLOT, cropRecipe.output().copy());
+        cropRecipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.copy()));
+        cropRecipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.copy()));
     }
 
     private void insertOutput(int slot, ItemStack output) {

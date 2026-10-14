@@ -3,7 +3,6 @@ package com.skniro.industrial_elixir.item.init;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
@@ -20,12 +19,11 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -81,14 +79,14 @@ public class FluidCellItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> textConsumer, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> textConsumer, TooltipFlag flag) {
         if (fluid == Fluids.EMPTY) {
-            textConsumer.accept(Component.literal("Capacity: 1000 mB").withStyle(ChatFormatting.GRAY));
+            textConsumer.add(Component.literal("Capacity: 1000 mB").withStyle(ChatFormatting.GRAY));
         }
 
         if (fluid != Fluids.EMPTY) {
-            textConsumer.accept(FluidVariantAttributes.getName(FluidVariant.of(fluid)).copy().withStyle(ChatFormatting.GRAY));
-            textConsumer.accept(Component.literal("Stored: 1000 / 1000 mB").withStyle(ChatFormatting.GRAY));
+            textConsumer.add(FluidVariantAttributes.getName(FluidVariant.of(fluid)).copy().withStyle(ChatFormatting.GRAY));
+            textConsumer.add(Component.literal("Stored: 1000 / 1000 mB").withStyle(ChatFormatting.GRAY));
         }
     }
 }

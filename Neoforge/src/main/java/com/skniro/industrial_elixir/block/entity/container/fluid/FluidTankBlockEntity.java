@@ -33,12 +33,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -54,7 +52,7 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
     public SingleFluidStorage fluidContainer = new SingleFluidStorage() {
 
         @Override
-        protected int getCapacity(FluidResource variant) {
+        protected int getCapacity(FluidStack variant) {
             return TANK_CAPACITY_MB;
         }
 
@@ -123,7 +121,7 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
         return Math.min(1.0f, (float) fluidContainer.amount / (float) fluidContainer.getCapacity());
     }
 
-    public FluidResource getFluidVariant() {
+    public FluidStack getFluidVariant() {
         return fluidContainer.variant;
     }
 
@@ -137,16 +135,13 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
         // Fill tank from filled bucket
         if (stack.is(Items.WATER_BUCKET) || stack.is(Items.LAVA_BUCKET)) {
             Fluid fluid = stack.is(Items.WATER_BUCKET) ? Fluids.WATER : Fluids.LAVA;
-            FluidResource toInsert = FluidResource.of(fluid);
-            if (!fluidContainer.variant.isEmpty() && !fluidContainer.variant.equals(toInsert)) {
+            FluidStack toInsert = new FluidStack(fluid, BUCKET_VOLUME_MB);
+            if (!fluidContainer.variant.isEmpty() && !fluidContainer.variant.isFluidEqual(toInsert)) {
                 return InteractionResult.PASS;
             }
-            long inserted;
-            try (Transaction tx = Transaction.openRoot()) {
-                inserted = fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, tx);
-                if (inserted == BUCKET_VOLUME_MB) {
-                    tx.commit();
-                }
+            int inserted = fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, true);
+            if (inserted == BUCKET_VOLUME_MB) {
+                fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, false);
             }
             if (inserted == BUCKET_VOLUME_MB) {
                 if (!player.isCreative()) {
@@ -163,12 +158,9 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
             if (filled.isEmpty()) {
                 return InteractionResult.PASS;
             }
-            long extracted;
-            try (Transaction tx = Transaction.openRoot()) {
-                extracted = fluidContainer.extract(fluidContainer.variant, BUCKET_VOLUME_MB, tx);
-                if (extracted == BUCKET_VOLUME_MB) {
-                    tx.commit();
-                }
+            int extracted = fluidContainer.extract(fluidContainer.variant, BUCKET_VOLUME_MB, true);
+            if (extracted == BUCKET_VOLUME_MB) {
+                fluidContainer.extract(fluidContainer.variant, BUCKET_VOLUME_MB, false);
             }
             if (extracted == BUCKET_VOLUME_MB) {
                 if (!player.isCreative()) {
@@ -192,8 +184,8 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
 
         // Use the standard Neoforge fluid item capability to detect the fluid inside
         // any container (cells, buckets, tanks, etc.) instead of a hard-coded map.
-        var handler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
-        return handler != null && !handler.getResource(0).isEmpty();
+        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        return handler != null && !handler.getFluidInTank(0).isEmpty();
     }
 
     public void fillUpFluidTank() {
@@ -202,12 +194,12 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
     }
 
     private boolean fillFromKnownContainer(ItemStack inputStack) {
-        FluidResource toInsert = null;
+        FluidStack toInsert = null;
         Item remainderItem = null;
         for (var entry : FluidOutputMap.FLUID_CONTAINERS.entrySet()) {
             for (ContainerInfo info : entry.getValue()) {
                 if (inputStack.is(info.fullItem())) {
-                    toInsert = FluidResource.of(entry.getKey());
+                    toInsert = new FluidStack(entry.getKey(), BUCKET_VOLUME_MB);
                     remainderItem = info.emptyItem();
                     break;
                 }
@@ -221,26 +213,22 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
             return false;
         }
 
-        try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, transaction);
-            if (inserted != BUCKET_VOLUME_MB) {
-                return false;
-            }
-
-            if (inputStack.getItem() instanceof FluidCellItem) {
-                inputStack.shrink(1);
-                storeCraftRemainder(remainder);
-            } else {
-                inventory.set(FLUID_ITEM_SLOT, remainder);
-            }
-
-            transaction.commit();
-            return true;
+        if (this.fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, true) != BUCKET_VOLUME_MB) {
+            return false;
         }
+        this.fluidContainer.insert(toInsert, BUCKET_VOLUME_MB, false);
+
+        if (inputStack.getItem() instanceof FluidCellItem) {
+            inputStack.shrink(1);
+            storeCraftRemainder(remainder);
+        } else {
+            inventory.set(FLUID_ITEM_SLOT, remainder);
+        }
+        return true;
     }
 
-    private boolean canAcceptFluid(FluidResource fluid) {
-        return (fluidContainer.getResource(0).equals(fluid) || fluidContainer.isResourceBlank())
+    private boolean canAcceptFluid(FluidStack fluid) {
+        return (fluidContainer.getResource(0).isFluidEqual(fluid) || fluidContainer.isResourceBlank())
                 && fluidContainer.getAmount() + BUCKET_VOLUME_MB <= fluidContainer.getCapacity();
     }
 
@@ -288,23 +276,20 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
             return;
         }
 
-        try (Transaction transaction = Transaction.openRoot()) {
+        int extracted = fluidContainer.extract(
+                new FluidStack(fluid, BUCKET_VOLUME_MB),
+                BUCKET_VOLUME_MB,
+                true
+        );
 
-            long extracted = fluidContainer.extract(
-                    FluidResource.of(fluid),
-                    BUCKET_VOLUME_MB,
-                    transaction
-            );
-
-            if (extracted != BUCKET_VOLUME_MB) {
-                return;
-            }
-
-            emptyContainerStack.shrink(1);
-            storeFilledContainer(fullContainer);
-
-            transaction.commit();
+        if (extracted != BUCKET_VOLUME_MB) {
+            return;
         }
+
+        fluidContainer.extract(new FluidStack(fluid, BUCKET_VOLUME_MB), BUCKET_VOLUME_MB, false);
+
+        emptyContainerStack.shrink(1);
+        storeFilledContainer(fullContainer);
     }
 
     private boolean canStoreFilledContainer(ItemStack stack) {
@@ -327,14 +312,14 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
 
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         SingleFluidStorage.writeValue(fluidContainer, nbt);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         SingleFluidStorage.readValue(fluidContainer, nbt);
     }
 

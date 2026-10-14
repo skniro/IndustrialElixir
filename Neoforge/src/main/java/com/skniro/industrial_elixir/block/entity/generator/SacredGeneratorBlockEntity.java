@@ -9,8 +9,6 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
 import com.skniro.industrial_elixir.screen.handler.generator.SacredGeneratorScreenHandler;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -33,8 +31,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.Containers;
 // ...existing code...
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -112,9 +109,9 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putLong("sacred_generator.energy", energyContainer.amount);
         nbt.putLong("sacred_generator.heat", heatContainer.amount);
         nbt.putLong("sacred_generator.max_heat", heatContainer.getSideStorage(null).getCapacity());
@@ -124,14 +121,14 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        energyContainer.amount = nbt.getLongOr("sacred_generator.energy", 0);
-        heatContainer.amount = nbt.getLongOr("sacred_generator.heat", 0);
-        generation = nbt.getIntOr("sacred_generator.generation", 0);
-        active = nbt.getBooleanOr("sacred_generator.active", false);
-        durabilityTickCounter = nbt.getIntOr("sacred_generator.durability_tick_counter", 0);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        energyContainer.amount = (nbt.contains("sacred_generator.energy") ? nbt.getLong("sacred_generator.energy") : 0);
+        heatContainer.amount = (nbt.contains("sacred_generator.heat") ? nbt.getLong("sacred_generator.heat") : 0);
+        generation = (nbt.contains("sacred_generator.generation") ? nbt.getInt("sacred_generator.generation") : 0);
+        active = (nbt.contains("sacred_generator.active") ? nbt.getBoolean("sacred_generator.active") : false);
+        durabilityTickCounter = (nbt.contains("sacred_generator.durability_tick_counter") ? nbt.getInt("sacred_generator.durability_tick_counter") : 0);
+        super.loadAdditional(nbt, registries);
     }
 
     @Override
@@ -171,10 +168,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
             int pulses = component.getRodCount();
             generation += pulses * ENERGY_PER_PULSE;
             long heatGenerated = pulses * 4L;
-            try (Transaction tx = Transaction.openRoot()) {
-                heatContainer.getSideStorage(null).insert(heatGenerated, tx);
-                tx.commit();
-            }
+            heatContainer.getSideStorage(null).insert(heatGenerated, false);
             // fuel rod is NOT consumed or damaged
         }
 
@@ -218,7 +212,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
         for (Direction direction : Direction.values()) {
             EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(direction), null,null, direction.getOpposite());
             if (target == null) continue;
-            EnergyStorageUtil.move(this.energyContainer.getSideStorage(direction), target, ENERGY_TRANSFER_AMOUNT, null);
+            EnergyStorageUtil.move(this.energyContainer.getSideStorage(direction), target, ENERGY_TRANSFER_AMOUNT);
         }
     }
 
@@ -228,16 +222,10 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     private void fillUpOnEnergy() {
-        try (Transaction transaction = Transaction.openRoot()) {
-            this.energyContainer.getSideStorage(null).insert(((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier().getMaxInput(), transaction);
-            transaction.commit();
-        }
+        this.energyContainer.getSideStorage(null).insert(((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier().getMaxInput(), false);
     }
     private void insertGeneratedEnergy(int amount) {
-        try (Transaction transaction = Transaction.openRoot()) {
-            energyContainer.getSideStorage(null).insert(amount, transaction);
-            transaction.commit();
-        }
+        energyContainer.getSideStorage(null).insert(amount, false);
     }
 
     private void coolOuterRing() {
@@ -268,10 +256,7 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
 
             if (cooling > 0 && heatContainer.getSideStorage(null).getAmount() > 0) {
                 int actualCooling = (int) Math.min(heatContainer.getSideStorage(null).getAmount(), cooling);
-                try (Transaction tx = Transaction.openRoot()) {
-                    heatContainer.getSideStorage(null).extract(actualCooling, tx);
-                    tx.commit();
-                }
+                heatContainer.getSideStorage(null).extract(actualCooling, false);
                 // Apply 1 durability damage only once every 40 ticks
                 if (shouldApplyDamage) {
                     switch (component.getComponentType()) {
@@ -295,8 +280,8 @@ public class SacredGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
                 if (!this.getOptionalInventory().isEmpty()) {
                     Container inventory = this.getOptionalInventory().get();
                     ItemStack stack = inventory.getItem(slot);
-                    EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
-                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE, null);
+                    EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM);
+                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE);
                 }
             }
         }

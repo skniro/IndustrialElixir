@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 1,
-  "ingredient": "minecraft:snow_block",
+  "ingredient": {
+    "item": "minecraft:snow_block"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:ice"
   }
 }

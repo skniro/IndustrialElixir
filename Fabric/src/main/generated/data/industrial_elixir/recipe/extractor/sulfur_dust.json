@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:extractor",
-  "ingredient": "minecraft:gunpowder",
+  "ingredient": {
+    "item": "minecraft:gunpowder"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:sulfur_dust"
   }
 }

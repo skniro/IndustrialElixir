@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:molecular_transformer",
   "energy": 500000,
-  "ingredient": "industrial_elixir:silver_ingot",
+  "ingredient": {
+    "item": "industrial_elixir:silver_ingot"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:gold_ingot"
   }
 }

@@ -4,16 +4,17 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.screen.handler.container.fluid.FluidTankScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.Optional;
+
 public class FluidTankScreen extends AbstractContainerScreen<FluidTankScreenHandler> {
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID,"textures/gui/container/container/fluidtank.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID,"textures/gui/container/container/fluidtank.png");
     private GuiFluidTankRenderer fluidRenderer;
 
     public FluidTankScreen(FluidTankScreenHandler menu, Inventory inventory, Component title) {
@@ -31,16 +32,16 @@ public class FluidTankScreen extends AbstractContainerScreen<FluidTankScreenHand
         fluidRenderer = new GuiFluidTankRenderer(menu.blockEntity.fluidContainer.getCapacity(), true, 16, 50);
     }
 
-    private void renderFluidTooltipArea(GuiGraphicsExtractor guiGraphics, int pMouseX, int pMouseY, int x, int y,
+    private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y,
                                         int offsetX, int offsetY, GuiFluidTankRenderer renderer) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) {
-            guiGraphics.setComponentTooltipForNextFrame(this.font, renderer.getTooltip(menu.blockEntity.fluidContainer), pMouseX, pMouseY);
+            guiGraphics.renderTooltip(this.font, renderer.getTooltip(menu.blockEntity.fluidContainer), Optional.empty(), pMouseX, pMouseY);
         }
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
-        super.extractLabels(graphics, xm, ym);
+    protected void renderLabels(GuiGraphics graphics, int xm, int ym) {
+        super.renderLabels(graphics, xm, ym);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
@@ -48,12 +49,11 @@ public class FluidTankScreen extends AbstractContainerScreen<FluidTankScreenHand
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
+    protected void renderBg(GuiGraphics graphics, float a, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0,
+        graphics.blit(TEXTURE, x, y, 0, 0,
                 imageWidth, imageHeight, 256, 256);
 
         fluidRenderer.render(graphics, x + 79, y + 14, menu.blockEntity.fluidContainer);

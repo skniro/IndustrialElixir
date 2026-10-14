@@ -3,15 +3,12 @@ package com.skniro.industrial_elixir.energy.api;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.energy.impl.EmptyEnergyStorage;
 import com.skniro.industrial_elixir.energy.impl.EnergyImpl;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.ItemCapability;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.Identifier;
-import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.ItemCapability;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -24,7 +21,8 @@ import java.util.Objects;
  * <p><ul>
  *     <li>{@link #supportsInsertion} and {@link #supportsExtraction} can be used to tell if insertion and extraction
  *     functionality are possibly supported by this storage.</li>
- *     <li>{@link #insert} and {@link #extract} can be used to insert or extract resources from this storage.</li>
+ *     <li>{@link #insert} and {@link #extract} can be used to insert or extract resources from this storage.
+ *     Both take a {@code simulate} flag, which replaces the transactions of the original TechReborn API.</li>
  *     <li>{@link #getAmount} and {@link #getCapacity} can be used to query the current amount and capacity of this storage.
  *     There is no guarantee that the current amount of energy can be extracted,
  *     nor that something can be inserted if capacity > amount.
@@ -32,10 +30,11 @@ import java.util.Objects;
  *     </li>
  * </ul>
  *
- * @see Transaction
+ * <p>This also implements NeoForge's {@link IEnergyStorage} so the storages of this mod can be consumed by
+ * (and can consume) any other energy implementation of the 1.21.1 ecosystem.
  */
 @SuppressWarnings({"unused"})
-public interface EnergyStorage extends EnergyHandler {
+public interface EnergyStorage extends IEnergyStorage {
 	/**
 	 * Sided block access to energy storages.
 	 * The {@code Direction} parameter may be null, meaning that the full storage (ignoring side restrictions) should be queried.
@@ -54,22 +53,22 @@ public interface EnergyStorage extends EnergyHandler {
 	 * On the client thread (i.e. with a client world), contents of queried EnergyStorages are unreliable and should not be modified.
 	 */
 	BlockCapability<EnergyStorage, @Nullable Direction> SIDED =
-			BlockCapability.createSided(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_energy"), EnergyStorage.class);
+			BlockCapability.createSided(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_energy"), EnergyStorage.class);
 
 	/**
 	 * Item access to energy storages.
 	 *
 	 * <p>{@link com.skniro.industrial_elixir.energy.impl.SimpleItemEnergyStorageImpl} is provided as an implementation example.
 	 * Instances of it can be optained through {@link com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem#createStorage}.
-	 * Custom implementations should treat the context as a wrapper around a single slot,
-	 * and always check the current item variant and amount before any operation, like {@code SimpleItemEnergyStorageImpl} does it.
+	 * Custom implementations should always check the current item of the queried stack before any operation,
+	 * like {@code SimpleItemEnergyStorageImpl} does it.
 	 * The check can be handled by {@link com.skniro.industrial_elixir.energy.api.base.DelegatingEnergyStorage}.
 	 *
 	 * <p>This may be queried both client-side and server-side.
 	 * Returned APIs should behave the same regardless of the logical side.
 	 */
-	ItemCapability<EnergyStorage, ItemAccess> ITEM =
-			ItemCapability.create(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "energy"), EnergyStorage.class, ItemAccess.class);
+	ItemCapability<EnergyStorage, Void> ITEM =
+			ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "energy"), EnergyStorage.class);
 
 	/**
 	 * Always empty energy storage.
@@ -99,10 +98,10 @@ public interface EnergyStorage extends EnergyHandler {
 	 * Try to insert up to some amount of energy into this storage.
 	 *
 	 * @param maxAmount The maximum amount of energy to insert. May not be negative.
-	 * @param transaction The transaction this operation is part of.
+	 * @param simulate If {@code true}, the storage is not modified and the returned amount is only an estimate.
 	 * @return A nonnegative integer not greater than maxAmount: the amount that was inserted.
 	 */
-	long insert(long maxAmount, TransactionContext transaction);
+	long insert(long maxAmount, boolean simulate);
 
 	/**
 	 * Return false if calling {@link #extract} will absolutely always return 0, or true otherwise or in doubt.
@@ -118,10 +117,10 @@ public interface EnergyStorage extends EnergyHandler {
 	 * Try to extract up to some amount of energy from this storage.
 	 *
 	 * @param maxAmount The maximum amount of energy to extract. May not be negative.
-	 * @param transaction The transaction this operation is part of.
+	 * @param simulate If {@code true}, the storage is not modified and the returned amount is only an estimate.
 	 * @return A nonnegative integer not greater than maxAmount: the amount that was extracted.
 	 */
-	long extract(long maxAmount, TransactionContext transaction);
+	long extract(long maxAmount, boolean simulate);
 
 	/**
 	 * Return the current amount of energy that is stored.
@@ -133,22 +132,41 @@ public interface EnergyStorage extends EnergyHandler {
 	 */
 	long getCapacity();
 
-	@Override default long getAmountAsLong() {
-		return getAmount();
+	// ==========================================
+	// ==== IEnergyStorage (integer) bridge  ====
+	// ==========================================
+
+	@Override
+	default int receiveEnergy(int toReceive, boolean simulate) {
+		return clampToInt(insert(toReceive, simulate));
 	}
 
 	@Override
-	default long getCapacityAsLong() {
-		return getCapacity();
+	default int extractEnergy(int toExtract, boolean simulate) {
+		return clampToInt(extract(toExtract, simulate));
 	}
 
 	@Override
-    default int insert(int amount, TransactionContext transaction){
-		return Math.toIntExact(insert((long) amount, transaction));
+	default int getEnergyStored() {
+		return clampToInt(getAmount());
 	}
 
 	@Override
-	default int extract(int amount, TransactionContext transaction) {
-		return Math.toIntExact(extract((long) amount, transaction));
+	default int getMaxEnergyStored() {
+		return clampToInt(getCapacity());
+	}
+
+	@Override
+	default boolean canReceive() {
+		return supportsInsertion();
+	}
+
+	@Override
+	default boolean canExtract() {
+		return supportsExtraction();
+	}
+
+	private static int clampToInt(long amount) {
+		return (int) Math.min(Integer.MAX_VALUE, Math.max(0L, amount));
 	}
 }

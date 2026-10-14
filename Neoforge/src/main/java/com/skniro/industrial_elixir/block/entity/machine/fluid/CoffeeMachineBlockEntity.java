@@ -21,10 +21,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -44,14 +44,14 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         SingleFluidStorage.writeValue(fluidContainer, output);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
         SingleFluidStorage.readValue(fluidContainer, input);
     }
 
@@ -75,7 +75,7 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
         if (recipe.isEmpty()) return;
 
         CoffeeMachineCraftingRecipe coffeeRecipe = (CoffeeMachineCraftingRecipe) recipe.get().value();
-        ItemStack output = coffeeRecipe.output().create();
+        ItemStack output = coffeeRecipe.output().copy();
 
         this.removeItem(INPUT_SLOT, coffeeRecipe.requiredCount());
 
@@ -102,10 +102,7 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
         if (recipeOpt.isEmpty() || !(recipeOpt.get().value() instanceof CoffeeMachineCraftingRecipe coffeeRecipe)) {
             return;
         }
-        try (Transaction transaction = Transaction.openRoot()) {
-            fluidContainer.extract(fluidContainer.getResource(0), coffeeRecipe.requiredFluidAmount(), transaction);
-            transaction.commit();
-        }
+        fluidContainer.extract(fluidContainer.getResource(0), coffeeRecipe.requiredFluidAmount(), false);
     }
 
     /* SIDED INVENTORY */
@@ -181,7 +178,7 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
         var recipeHolder = opt.get();
         var recipe = recipeHolder.value();
         CoffeeMachineCraftingRecipe coffeeRecipe = (CoffeeMachineCraftingRecipe) recipe;
-        ItemStack output = coffeeRecipe.output().create();
+        ItemStack output = coffeeRecipe.output().copy();
 
         if (!canInsertAmountIntoOutputSlot(output.getCount()) || !canInsertItemIntoOutputSlot(output)) return false;
         if (!hasEnoughEnergyToCraft()) return false;

@@ -1,8 +1,9 @@
 package com.skniro.industrial_elixir.api.data.recipe;
 
 import com.skniro.industrial_elixir.recipe.machine.MaceratorCraftingRecipe;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -26,19 +27,19 @@ import net.minecraft.world.level.ItemLike;
 public class MaceratorRecipeJsonBuilder implements RecipeBuilder {
     private final HolderGetter<Item> itemLookup;
     private final List<Ingredient> ingredient = new ArrayList<>();
-    private final ItemStackTemplate result;
+    private final ItemStack result;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     @Nullable
     private String group;
 
-    private MaceratorRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStackTemplate result) {
+    private MaceratorRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStack result) {
         this.itemLookup = itemLookup;
         this.result = result;
     }
 
     public static MaceratorRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output, int count) {
-        return new MaceratorRecipeJsonBuilder(itemLookup, new ItemStackTemplate(output.asItem(), count));
+        return new MaceratorRecipeJsonBuilder(itemLookup, new ItemStack(output.asItem(), count));
     }
 
     public static MaceratorRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output) {
@@ -60,7 +61,7 @@ public class MaceratorRecipeJsonBuilder implements RecipeBuilder {
     }
 
     public MaceratorRecipeJsonBuilder input(TagKey<Item> tag, int amount) {
-        Ingredient ing = Ingredient.of(itemLookup.getOrThrow(tag));
+        Ingredient ing = Ingredient.of(tag);
         for (int i = 0; i < amount; i++) {
             this.ingredient.add(ing);
         }
@@ -80,28 +81,28 @@ public class MaceratorRecipeJsonBuilder implements RecipeBuilder {
     }
 
     @Override
-    public ResourceKey<Recipe<?>> defaultId() {
-        return RecipeBuilder.getDefaultRecipeId(this.result);
+    public Item getResult() {
+        return this.result.getItem();
     }
 
     @Override
-    public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
-        ResourceKey<Recipe<?>> finalKey = modifyRecipeKey(recipeKey, exporter);
+    public void save(RecipeOutput exporter, ResourceLocation recipeId) {
+        ResourceLocation finalRecipeId = modifyRecipeKey(recipeId, exporter);
         MaceratorCraftingRecipe recipe = new MaceratorCraftingRecipe(ingredient.getFirst(), result);
         if (criteria.isEmpty()) {
-            exporter.accept(finalKey, recipe, null);
+            exporter.accept(finalRecipeId, recipe, null);
             return;
         }
 
-        Advancement.Builder advancementBuilder = exporter.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey)).rewards(AdvancementRewards.Builder.recipe(recipeKey)).requirements(AdvancementRequirements.Strategy.OR);
+        Advancement.Builder advancementBuilder = exporter.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
 
         this.criteria.forEach(advancementBuilder::addCriterion);
 
-        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.identifier().withPrefix("recipes/")));
+        exporter.accept(finalRecipeId, recipe, advancementBuilder.build(finalRecipeId.withPrefix("recipes/")));
 
     }
 
-    private ResourceKey<Recipe<?>> modifyRecipeKey(ResourceKey<Recipe<?>> recipeKey, RecipeOutput exporter) {
-        return ResourceKey.create(recipeKey.registryKey(), exporter.getRecipeIdentifier(recipeKey.identifier().withPrefix("macerator/")));
+    private ResourceLocation modifyRecipeKey(ResourceLocation recipeId, RecipeOutput exporter) {
+        return exporter.getRecipeIdentifier(recipeId.withPrefix("macerator/"));
     }
 }

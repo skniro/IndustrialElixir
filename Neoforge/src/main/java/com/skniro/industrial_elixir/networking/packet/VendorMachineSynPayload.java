@@ -5,7 +5,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record VendorMachineSynPayload(List<OfferData> offers) implements CustomPacketPayload {
-    public static final Identifier ID = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "vendor_machine_sync");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "vendor_machine_sync");
     public static final Type<VendorMachineSynPayload> TYPE = new Type<>(ID);
 
     public record OfferData(ItemStack costA, Optional<ItemStack> costB, ItemStack result,

@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": "industrial_elixir:re_battery",
-    "G": "#minecraft:planks",
-    "S": "industrial_elixir:insulated_tin_cable"
+    "F": {
+      "item": "industrial_elixir:re_battery"
+    },
+    "G": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "industrial_elixir:insulated_tin_cable"
+    }
   },
   "pattern": [
     "GSG",
@@ -12,6 +18,7 @@
     "GGG"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:energy_box"
   }
 }

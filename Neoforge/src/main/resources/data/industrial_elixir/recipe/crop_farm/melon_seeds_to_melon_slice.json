@@ -1,9 +1,12 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:melon_seeds",
+  "ingredient": {
+    "item": "minecraft:melon_seeds"
+  },
   "process_time": 1200,
   "result": {
+    "count": 1,
     "id": "minecraft:melon_seeds"
   },
   "result2": {

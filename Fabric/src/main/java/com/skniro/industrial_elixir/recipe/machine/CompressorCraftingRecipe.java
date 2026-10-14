@@ -8,16 +8,16 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import com.skniro.industrial_elixir.recipe.ModRecipeSerializers;
 
 public class CompressorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
-    public CompressorCraftingRecipe(Ingredient ingredients, int requiredCount, ItemStackTemplate output) {
+    public CompressorCraftingRecipe(Ingredient ingredients, int requiredCount, ItemStack output) {
         super(ingredients, requiredCount, output);
     }
 
@@ -31,10 +31,6 @@ public class CompressorCraftingRecipe extends AbstractMachineCraftingRecipe {
         return AlchemyRecipeType.COMPRESSOR.type;
     }
 
-    @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
 
     public static final MapCodec<CompressorCraftingRecipe> CODEC =
             RecordCodecBuilder.mapCodec(inst -> inst.group(
@@ -44,7 +40,7 @@ public class CompressorCraftingRecipe extends AbstractMachineCraftingRecipe {
                     Codec.INT.fieldOf("count")
                             .forGetter(recipe -> recipe.requiredCount),
 
-                    ItemStackTemplate.CODEC.fieldOf("result")
+                    ItemStack.CODEC.fieldOf("result")
                             .forGetter(recipe -> recipe.output)
 
             ).apply(inst, CompressorCraftingRecipe::new));
@@ -52,11 +48,11 @@ public class CompressorCraftingRecipe extends AbstractMachineCraftingRecipe {
     public static final StreamCodec<RegistryFriendlyByteBuf, CompressorCraftingRecipe> STREAM_CODEC =
             StreamCodec.composite(Ingredient.CONTENTS_STREAM_CODEC, AbstractMachineCraftingRecipe::ingredient,
                     ByteBufCodecs.INT, AbstractMachineCraftingRecipe::requiredCount,
-                    ItemStackTemplate.STREAM_CODEC,AbstractMachineCraftingRecipe::output,
+                    ItemStack.STREAM_CODEC,AbstractMachineCraftingRecipe::output,
                     CompressorCraftingRecipe::new);
 
     public static final RecipeSerializer<CompressorCraftingRecipe> SERIALIZER =
-            new RecipeSerializer<>(CODEC, STREAM_CODEC);
+            ModRecipeSerializers.of(CODEC, STREAM_CODEC);
 
     public MapCodec<CompressorCraftingRecipe> codec() {
         return CODEC;

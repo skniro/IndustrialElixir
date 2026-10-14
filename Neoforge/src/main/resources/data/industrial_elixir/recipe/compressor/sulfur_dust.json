@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 9,
-  "ingredient": "industrial_elixir:small_sulfur_dust",
+  "ingredient": {
+    "item": "industrial_elixir:small_sulfur_dust"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:sulfur_dust"
   }
 }

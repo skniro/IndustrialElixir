@@ -21,8 +21,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -209,21 +210,21 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 	}
 
 	@Override
-	protected void saveAdditional(ValueOutput output) {
-		super.saveAdditional(output);
+	protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+		super.saveAdditional(output, registries);
 		output.putLong("matter_generator.ProgressEU", progressEU);
 		output.putLong("matter_generator.scrapConsumeTimer", scrapConsumeTimer);
 		output.putLong("matter_generator.scrap_amplifier", scrapAmplifier);
-		SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+		SingleVariantStorage.writeNbt(fluidContainer, FluidVariant.CODEC, output, registries);
 	}
 
 	@Override
-	protected void loadAdditional(ValueInput input) {
-		super.loadAdditional(input);
-		progressEU = input.getLongOr("matter_generator.ProgressEU", 0);
-		scrapConsumeTimer = input.getIntOr("matter_generator.scrapConsumeTimer", 0);
-		scrapAmplifier = input.getLongOr("matter_generator.scrap_amplifier", 0L);
-		SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+	protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+		super.loadAdditional(input, registries);
+		progressEU = (input.contains("matter_generator.ProgressEU") ? input.getLong("matter_generator.ProgressEU") : 0);
+		scrapConsumeTimer = (input.contains("matter_generator.scrapConsumeTimer") ? input.getInt("matter_generator.scrapConsumeTimer") : 0);
+		scrapAmplifier = (input.contains("matter_generator.scrap_amplifier") ? input.getLong("matter_generator.scrap_amplifier") : 0L);
+		SingleVariantStorage.readNbt(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input, registries);
 	}
 }
 

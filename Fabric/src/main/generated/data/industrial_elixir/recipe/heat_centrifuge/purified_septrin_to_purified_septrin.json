@@ -1,11 +1,15 @@
 {
   "type": "industrial_elixir:heat_centrifuge",
   "count": 1,
-  "ingredient": "industrial_elixir:purified_sacred",
+  "ingredient": {
+    "item": "industrial_elixir:purified_sacred"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:impure_sacred_stone"
   },
   "result2": {
+    "count": 1,
     "id": "industrial_elixir:stone_dust"
   }
 }

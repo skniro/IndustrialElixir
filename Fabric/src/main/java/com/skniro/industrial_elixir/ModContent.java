@@ -26,7 +26,6 @@ import com.skniro.industrial_elixir.world.gamerules.MapleGameRules;
 import com.skniro.industrial_elixir.world.gen.ModOreGeneration;
 import com.skniro.industrial_elixir.world.gen.ModTreeGeneration;
 import com.skniro.industrial_elixir.world.gen.trunk.RubberTrunkPlacer;
-import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 
 import java.util.Locale;
 
@@ -86,23 +85,15 @@ public class  ModContent {
     }
 
     public static void Compat() {
+        // 26.1 needed Fabric's recipe synchronisation API
+        // (net.fabricmc.fabric.api.recipe.v1.sync) to push the custom recipe
+        // serializers to the client. That API does not exist in 1.21.1: vanilla
+        // resolves every recipe through BuiltInRegistries.RECIPE_SERIALIZER and
+        // ships the serializers' stream codecs in ClientboundUpdateRecipesPacket,
+        // so as long as the serializers are registered (see AlchemyRecipeType)
+        // nothing else has to be synced here.
         if (IndustrialElixirJEIUtils.isJEIAvailable()) {
-            RecipeSynchronization.synchronizeRecipeSerializer(MaceratorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CompressorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MetalFormerRollingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MetalFormerCuttingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MetalFormerExtrudingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(MolecularTransformerCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(ExtractorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(AlchemyCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(RecyclerCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CuttingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(BrewReactorCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(OreWashingCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(HeatCentrifugeCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(ModBlastFurnaceCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CoffeeMachineCraftingRecipe.SERIALIZER);
-            RecipeSynchronization.synchronizeRecipeSerializer(CropFarmCraftingRecipe.SERIALIZER);
+            // Reserved for JEI-time registration hooks.
         }
     }
 

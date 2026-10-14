@@ -15,16 +15,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,8 +33,8 @@ import net.minecraft.world.level.material.Fluids;
 
 public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBlastFurnaceCraftingRecipe>> {
 
-    public static final IRecipeHolderType<ModBlastFurnaceCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.MOD_BLAST_FURNACE.type);
+    public static final RecipeType<RecipeHolder<ModBlastFurnaceCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.MOD_BLAST_FURNACE.type);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -44,7 +43,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
     private final SingleVariantStorage<FluidVariant> emptyFluid;
 
     public BlastFurnaceCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/blastfurnace.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/blastfurnace.png");
 
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
@@ -71,7 +70,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
     }
 
     @Override
-    public IRecipeType<RecipeHolder<ModBlastFurnaceCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<ModBlastFurnaceCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -98,20 +97,20 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ModBlastFurnaceCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 34)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 26)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
 
         recipe.value().output2().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 44).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 44).addItemStack(output));
 
         try {
-            Identifier fluidId = recipe.value().requiredFluid();
-            Identifier cellId = Identifier.fromNamespaceAndPath(fluidId.getNamespace(), fluidId.getPath() + "_cell");
+            ResourceLocation fluidId = recipe.value().requiredFluid();
+            ResourceLocation cellId = ResourceLocation.fromNamespaceAndPath(fluidId.getNamespace(), fluidId.getPath() + "_cell");
             Item cell = BuiltInRegistries.ITEM.getOptional(cellId).orElse(null);
             if (cell != null && cell != Items.AIR) {
-                builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).add(new ItemStack(cell));
+                builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).addItemStack(new ItemStack(cell));
             }
         } catch (Throwable ignored) {
         }
@@ -119,7 +118,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
 
     private SingleVariantStorage<FluidVariant> getRecipeFluidStorage(RecipeHolder<ModBlastFurnaceCraftingRecipe> recipe) {
         try {
-            Identifier fluidId = recipe.value().requiredFluid();
+            ResourceLocation fluidId = recipe.value().requiredFluid();
             int amount = recipe.value().requiredFluidAmount();
             Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
             return new SingleVariantStorage<>() {
@@ -144,7 +143,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
     }
 
     @Override
-    public void draw(RecipeHolder<ModBlastFurnaceCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<ModBlastFurnaceCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         arrow.draw(guiGraphics, 73, 34);
 
@@ -156,7 +155,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
         int fw = fluidRenderer.getWidth();
         int fh = fluidRenderer.getHeight();
         if (mouseX >= fx && mouseX <= fx + fw && mouseY >= fy && mouseY <= fy + fh) {
-            guiGraphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
+            guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
         }
 
         int count = recipe.value().requiredCount();
@@ -165,7 +164,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<RecipeHolder<ModBla
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 34 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

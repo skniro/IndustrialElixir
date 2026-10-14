@@ -17,10 +17,9 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
-    public static final Identifier TEXTURE = Helper.id("textures/gui/container/machine/orewashing.png");
+    public static final ResourceLocation TEXTURE = Helper.id("textures/gui/container/machine/orewashing.png");
 
     private final GuiFluidTankRenderer fluidRenderer = new GuiFluidTankRenderer(1000, true, 16, 50);
 
@@ -78,7 +77,7 @@ public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
             long tick = System.currentTimeMillis() / 50;
             int progress = (int) ((tick % 72) * 26 / 72);
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 70, startPoint.y + 34, 189, 0, progress, 16, 256, 256);
 
             var storage = getFluid(display);
             fluidRenderer.render(context, startPoint.x + 8, startPoint.y + 5, storage);
@@ -87,7 +86,7 @@ public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
             if (count > 1) {
                 Font font = Minecraft.getInstance().font;
                 String text = String.valueOf(count);
-                context.text(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 34 + 16 - 8 - 1, 0xFFFFFFFF, true);
+                context.drawString(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 34 + 16 - 8 - 1, 0xFFFFFFFF, true);
             }
         }));
 
@@ -95,7 +94,7 @@ public class OreWashingCategory implements DisplayCategory<OreWashingDisplay> {
     }
 
     private SingleVariantStorage<FluidVariant> getFluid(OreWashingDisplay display) {
-        Identifier fluidId = display.getFluid();
+        ResourceLocation fluidId = display.getFluid();
         int amount = display.getFluidAmount();
         Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
 

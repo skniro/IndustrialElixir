@@ -2,7 +2,7 @@ package com.skniro.industrial_elixir.registry.tag;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
@@ -22,6 +22,6 @@ public final class ModItemTags {
     }
 
     private static TagKey<Item> of(String id) {
-        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, id));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, id));
     }
 }

@@ -43,8 +43,8 @@ public class RecyclerEntity extends AbstractMachineEntity {
     protected void craftItem() {
         Optional<RecipeHolder<RecyclerCraftingRecipe>> recipe = getRecyclerRecipe();
         this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().item(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().count()));
+        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().getItem(),
+                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
     }
 
     protected Optional<RecipeHolder<RecyclerCraftingRecipe>> getRecyclerRecipe() {
@@ -59,7 +59,7 @@ public class RecyclerEntity extends AbstractMachineEntity {
             return false;
         }
 
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft();
     }
 

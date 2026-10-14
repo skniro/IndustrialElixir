@@ -94,7 +94,7 @@ public interface SimpleHeatItem {
 	}
 
 	static long getStoredHeatUnchecked(ItemVariant variant) {
-		return getStoredHeatUnchecked(variant.getComponents());
+		return getStoredHeatUnchecked(variant.getComponentMap());
 	}
 
 	static long getStoredHeatUnchecked(DataComponentMap components) {

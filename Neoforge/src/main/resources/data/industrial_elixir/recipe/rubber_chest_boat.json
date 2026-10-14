@@ -3,10 +3,15 @@
   "category": "misc",
   "group": "chest_boat",
   "ingredients": [
-    "minecraft:chest",
-    "industrial_elixir:rubber_boat"
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "industrial_elixir:rubber_boat"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:rubber_chest_boat"
   }
 }

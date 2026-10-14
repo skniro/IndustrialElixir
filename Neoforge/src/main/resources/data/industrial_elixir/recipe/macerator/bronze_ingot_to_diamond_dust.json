@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "minecraft:diamond",
+  "ingredient": {
+    "item": "minecraft:diamond"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:diamond_dust"
   }
 }

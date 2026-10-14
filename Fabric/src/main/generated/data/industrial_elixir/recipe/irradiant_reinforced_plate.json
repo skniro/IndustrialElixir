@@ -2,11 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "minecraft:redstone",
-    "D": "minecraft:diamond",
-    "L": "minecraft:lapis_lazuli",
-    "P": "industrial_elixir:luminite_part",
-    "R": "industrial_elixir:reinforced_iridium_amethyst_plate"
+    "A": {
+      "item": "minecraft:redstone"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "P": {
+      "item": "industrial_elixir:luminite_part"
+    },
+    "R": {
+      "item": "industrial_elixir:reinforced_iridium_amethyst_plate"
+    }
   },
   "pattern": [
     "APA",
@@ -14,6 +24,7 @@
     "ADA"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:irradiant_reinforced_plate"
   }
 }

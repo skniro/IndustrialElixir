@@ -46,13 +46,15 @@ public class EnergyBoxBlock extends AbstractMachineblock {
 
 
     @Override
-    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof BaseEnergyBoxBlockEntity) {
-            Containers.dropContents(world, pos, (Container) blockEntity);
-            world.updateNeighbourForOutputSignal(pos,this);
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof BaseEnergyBoxBlockEntity) {
+                Containers.dropContents(world, pos, (Container) blockEntity);
+                world.updateNeighbourForOutputSignal(pos,this);
+            }
         }
-        super.affectNeighborsAfterRemoval(state, world, pos, moved);
+        super.onRemove(state, world, pos, newState, moved);
     }
 
     @Nullable

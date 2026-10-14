@@ -3,14 +3,19 @@
   "count": 1,
   "fluid": "minecraft:water",
   "fluid_amount": 1000,
-  "ingredient": "industrial_elixir:crushed_silver",
+  "ingredient": {
+    "item": "industrial_elixir:crushed_silver"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:purified_silver"
   },
   "result2": {
+    "count": 1,
     "id": "industrial_elixir:small_silver_dust"
   },
   "result3": {
+    "count": 1,
     "id": "industrial_elixir:stone_dust"
   }
 }

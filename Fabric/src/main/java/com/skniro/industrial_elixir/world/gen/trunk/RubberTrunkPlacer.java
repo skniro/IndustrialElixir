@@ -12,9 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -46,7 +46,7 @@ public class RubberTrunkPlacer extends StraightTrunkPlacer {
     public static void registerTrunkPlacerType() {
         Registry.register(
                 BuiltInRegistries.TRUNK_PLACER_TYPE,
-                Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "rubber_trunk_placer"),
+                ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "rubber_trunk_placer"),
                 TYPE);
     }
 
@@ -56,7 +56,7 @@ public class RubberTrunkPlacer extends StraightTrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel world, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration config) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration config) {
         BlockState rubberRubberState = blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y).setValue(LogCropBlock.AGE, 2);
         BlockState normalLogState = GeneralBlocks.Rubber_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
 

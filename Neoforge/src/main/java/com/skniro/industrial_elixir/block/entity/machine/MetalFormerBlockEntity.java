@@ -12,8 +12,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 public class MetalFormerBlockEntity extends AbstractMachineEntity {
@@ -61,8 +62,8 @@ public class MetalFormerBlockEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putInt("metal_former.state", recipe_state.ordinal());
     }
 
@@ -75,9 +76,9 @@ public class MetalFormerBlockEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        this.recipe_state = MetalFormerState.values()[nbt.getIntOr("metal_former.state", 0)];
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        this.recipe_state = MetalFormerState.values()[(nbt.contains("metal_former.state") ? nbt.getInt("metal_former.state") : 0)];
+        super.loadAdditional(nbt, registries);
     }
 
     @Override

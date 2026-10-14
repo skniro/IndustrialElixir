@@ -5,9 +5,10 @@ import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.MapleArmorItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
@@ -18,14 +19,18 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.concurrent.CompletableFuture;
 
 public class ArmorRecipeGenerator extends FabricRecipeProvider {
-    public ArmorRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ArmorRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 shaped(RecipeCategory.TOOLS, MapleArmorItems.BRONZE_PICKAXE)
@@ -124,7 +129,7 @@ public class ArmorRecipeGenerator extends FabricRecipeProvider {
                                         MapleArmorItems.BRONZE_LEGGINGS,
                                         MapleArmorItems.BRONZE_BOOTS
                                 ),
-                                RecipeCategory.MISC, CookingBookCategory.MISC, GrowableOresItems.BRONZE_INGOT, 0.1F, 200)
+                                RecipeCategory.MISC, GrowableOresItems.BRONZE_INGOT, 0.1F, 200)
                         .unlockedBy("has_bronze_pickaxe", this.has(MapleArmorItems.BRONZE_PICKAXE))
                         .unlockedBy("has_bronze_axe", this.has(MapleArmorItems.BRONZE_AXE))
                         .unlockedBy("has_bronze_shovel", this.has(MapleArmorItems.BRONZE_SHOVEL))

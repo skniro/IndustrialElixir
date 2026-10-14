@@ -6,12 +6,10 @@ import com.skniro.industrial_elixir.block.entity.machine.fluid.ReplicatorBlockEn
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.ReplicatorScreenHandler;
 import com.skniro.industrial_elixir.screen.ingame.widgets.ReplicatorModeButton;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Items;
 
@@ -21,8 +19,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class ReplicatorScreen extends AbstractContainerScreen<ReplicatorScreenHandler> {
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/replicator.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/replicator.png");
     private GuiFluidTankRenderer fluidRenderer;
 
     public ReplicatorScreen(ReplicatorScreenHandler menu, Inventory inventory, Component title) {
@@ -88,27 +86,27 @@ public class ReplicatorScreen extends AbstractContainerScreen<ReplicatorScreenHa
                 + " EP"));
     }
 
-    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 129, y + 45, 176, 0, 13, menu.getScaledEnergyHeight(), 256, 256);
+    private void renderEnergyArea(GuiGraphics context, int x, int y) {
+        context.blit(TEXTURE, x + 129, y + 45, 176, 0, 13, menu.getScaledEnergyHeight(), 256, 256);
     }
 
-    private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
+    private void renderEnergyAreaTooltips(GuiGraphics context, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 131, 45, 13, 14)) {
-            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
+            context.renderTooltip(this.font, getTooltips(),
                     Optional.empty(), pMouseX, pMouseY);
         }
     }
 
-    private void renderFluidTooltipArea(GuiGraphicsExtractor guiGraphics, int pMouseX, int pMouseY, int x, int y) {
+    private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 8, 7, fluidRenderer)) {
-            guiGraphics.setComponentTooltipForNextFrame(this.font,
-                    fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), pMouseX - x, pMouseY - y);
+            guiGraphics.renderTooltip(this.font,
+                    fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
-        super.extractLabels(graphics, xm, ym);
+    protected void renderLabels(GuiGraphics graphics, int xm, int ym) {
+        super.renderLabels(graphics, xm, ym);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
@@ -119,36 +117,35 @@ public class ReplicatorScreen extends AbstractContainerScreen<ReplicatorScreenHa
         ReplicatorBlockEntity be = this.menu.blockEntity;
         if (be.getMode() != ReplicatorBlockEntity.Mode.STOP && (be.getReplicatingEnergyCost() > 0 || be.getReplicatingUUCost() > 0)) {
             int pct = be.getOverallProgressPercent();
-            graphics.text(font, pct + "%", 77, 41, -12566464, false);
+            graphics.drawString(font, pct + "%", 77, 41, -12566464, false);
         }
 
-        graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
-        graphics.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
+        graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
+        graphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
+    protected void renderBg(GuiGraphics graphics, float a, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        graphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
         renderEnergyArea(graphics, x, y);
         fluidRenderer.render(graphics, x + 8, y + 5, menu.blockEntity.fluidContainer);
         renderProgressArrow(graphics, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor guiGraphics, int x, int y) {
+    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 72, y + 22, 189, 0, menu.getScaledProgress(), 16, 256, 256);
+            guiGraphics.blit(TEXTURE, x + 72, y + 22, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        super.extractRenderState(context, mouseX, mouseY, delta);
-        extractTooltip(context, mouseX, mouseY);
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+        renderTooltip(context, mouseX, mouseY);
     }
 
     public static boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, GuiFluidTankRenderer renderer) {

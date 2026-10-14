@@ -15,8 +15,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.BoatItem;
+import net.minecraft.resources.ResourceLocation;
+import com.skniro.industrial_elixir.item.init.ModBoatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Fluids;
@@ -31,9 +31,9 @@ public class GrowableOresItems {
     public static final Item Rubber = registerItem("rubber", Item::new, new Item.Properties());
 
 
-    public static final Item RUBBER_BOAT = registerItem("rubber_boat", (settings) -> new BoatItem(MapleEntityType.RUBBER_BOAT, settings), new Item.Properties().stacksTo(1));
+    public static final Item RUBBER_BOAT = registerItem("rubber_boat", (settings) -> new ModBoatItem(MapleEntityType.RUBBER_BOAT, settings), new Item.Properties().stacksTo(1));
 
-    public static final Item RUBBER_CHEST_BOAT = registerItem("rubber_chest_boat", (settings) -> new BoatItem(MapleEntityType.RUBBER_CHEST_BOAT, settings), new Item.Properties().stacksTo(1));
+    public static final Item RUBBER_CHEST_BOAT = registerItem("rubber_chest_boat", (settings) -> new ModBoatItem(MapleEntityType.RUBBER_CHEST_BOAT, settings), new Item.Properties().stacksTo(1));
 
     public static final Item OVERCLOCKER = registerItem("overclocker", (settings) -> new ItemUpgradeModule(settings, ItemUpgradeModule.UpgradeType.OVERCLOCKER), new Item.Properties());
     public static final Item ENERGY_STORAGE = registerItem("energy_storage", (settings) -> new ItemUpgradeModule(settings, ItemUpgradeModule.UpgradeType.ENERGY_STORAGE), new Item.Properties());
@@ -173,8 +173,8 @@ public class GrowableOresItems {
     public static final Item HEAT_CONDUCTOR = registerItem("heat_conductor", Item::new, new Item.Properties());
 
     private static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {
-        Item item = factory.apply(settings.setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name))));
-        return Registry.register(BuiltInRegistries.ITEM, ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)), item);
+        Item item = factory.apply(settings);
+        return Registry.register(BuiltInRegistries.ITEM, ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)), item);
     }
 
     public static void shield_item(){

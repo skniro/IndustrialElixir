@@ -17,14 +17,13 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/brewreactor.png");
 
     private final GuiFluidTankRenderer fluidRenderer =
@@ -80,19 +79,18 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
                 .entries(display.getOutputEntries().get(0)).disableBackground().markOutput()
         );
 
-
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
             int count = display.getCount();
             if (count > 1) {
                 Font font = Minecraft.getInstance().font;
                 String text = String.valueOf(count);
-                context.text(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 20, 0xFFFFFFFF, true);
+                context.drawString(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 20, 0xFFFFFFFF, true);
             }
         }));
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
         long tick = System.currentTimeMillis() / 50;
         int progress = (int) ((tick % 72) * 11 / 72);
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 79, startPoint.y + 32, 189, 0, progress, 16, 256, 256);
+        context.blit(TEXTURE, startPoint.x + 79, startPoint.y + 32, 189, 0, progress, 16, 256, 256);
         var storage = getFluid(display);
         fluidRenderer.render(context, startPoint.x + 8, startPoint.y + 5, storage);
         }));
@@ -100,7 +98,7 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
     }
 
     private SingleFluidStorage getFluid(BrewReactorDisplay display) {
-        Optional<Identifier> fid = display.getFluid();
+        Optional<ResourceLocation> fid = display.getFluid();
         Optional<Integer> famt = display.getFluidAmount();
 
         if (fid.isPresent()) {
@@ -111,19 +109,18 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
             return new SingleFluidStorage() {
 
                 @Override
-                protected int getCapacity(FluidResource variant) {
+                protected int getCapacity(FluidStack variant) {
                     return 1000;
                 }
                 {
-                    this.variant = FluidResource.of(fluid);
-                    this.amount = amount;
+                    setFluid(new FluidStack(fluid, amount));
                 }
             };
         }
 
         return new SingleFluidStorage() {
             @Override
-            protected int getCapacity(FluidResource variant) {
+            protected int getCapacity(FluidStack variant) {
                 return 1000;
             }
         };

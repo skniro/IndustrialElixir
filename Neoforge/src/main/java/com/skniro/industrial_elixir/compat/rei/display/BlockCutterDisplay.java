@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.List;
 import java.util.Optional;
@@ -24,24 +24,9 @@ public class BlockCutterDisplay extends BasicDisplay {
     public static final CategoryIdentifier<BlockCutterDisplay> BlockCutter =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "block_cutter");
 
-    public static final DisplaySerializer<BlockCutterDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(BlockCutterDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(BlockCutterDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(BlockCutterDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(BlockCutterDisplay::getCount)
-            ).apply(instance, BlockCutterDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BlockCutterDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BlockCutterDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    BlockCutterDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    BlockCutterDisplay::getCount,
-                    BlockCutterDisplay::new
-            )
+    public static final DisplaySerializer<BlockCutterDisplay> SERIALIZER = BasicDisplay.Serializer.<BlockCutterDisplay>of(
+            (inputs, outputs, location, tag) -> new BlockCutterDisplay(inputs, outputs, location, tag.getInt("count")),
+            (display, tag) -> tag.putInt("count", display.getCount())
     );
 
     public BlockCutterDisplay(CuttingCraftingRecipe recipe) {
@@ -50,25 +35,20 @@ public class BlockCutterDisplay extends BasicDisplay {
         this.count = recipe.requiredCount();
     }
 
-    public BlockCutterDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count) {
+    public BlockCutterDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count) {
         super(inputs, outputs, location);
         this.count = count;
     }
 
     public BlockCutterDisplay(RecipeHolder<CuttingCraftingRecipe> recipe){
         super(List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
         this.count = recipe.value().requiredCount();
     }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return BlockCutter;
-    }
-
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
     }
 
     public int getCount() {

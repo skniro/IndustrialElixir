@@ -4,6 +4,9 @@ package com.skniro.industrial_elixir.compat.rei;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.compat.rei.category.*;
 import com.skniro.industrial_elixir.compat.rei.display.*;
+import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipe;
+import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
+import com.skniro.industrial_elixir.recipe.machine.*;
 import com.skniro.industrial_elixir.screen.ingame.machine.*;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.BrewReactorScreen;
 import com.skniro.industrial_elixir.screen.ingame.machine.fluid.CoffeeMachineScreen;
@@ -64,6 +67,22 @@ public class IndustrialModREIClient implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
+        registry.registerRecipeFiller(MaceratorCraftingRecipe.class, AlchemyRecipeType.MACERATOR.type, holder -> new MaceratorDisplay(holder));
+        registry.registerRecipeFiller(CompressorCraftingRecipe.class, AlchemyRecipeType.COMPRESSOR.type, holder -> new CompressorDisplay(holder));
+        registry.registerRecipeFiller(MetalFormerRollingCraftingRecipe.class, AlchemyRecipeType.METALFORMER_ROLLING.type, holder -> new MetalFormerRollingDisplay(holder));
+        registry.registerRecipeFiller(MetalFormerCuttingCraftingRecipe.class, AlchemyRecipeType.METALFORMER_CUTTING.type, holder -> new MetalFormerCuttingDisplay(holder));
+        registry.registerRecipeFiller(MetalFormerExtrudingCraftingRecipe.class, AlchemyRecipeType.METALFORMER_EXTRUDING.type, holder -> new MetalFormerExtrudingDisplay(holder));
+        registry.registerRecipeFiller(MolecularTransformerCraftingRecipe.class, AlchemyRecipeType.MOLECULAR_TRANSFORMER.type, holder -> new MolecularTransformerDisplay(holder));
+        registry.registerRecipeFiller(ExtractorCraftingRecipe.class, AlchemyRecipeType.EXTRACTOR.type, holder -> new ExtractorDisplay(holder));
+        registry.registerRecipeFiller(AlchemyCraftingRecipe.class, AlchemyRecipeType.CANE_CONVERTER.type, holder -> new GrowableOresDisplay(holder));
+        registry.registerRecipeFiller(RecyclerCraftingRecipe.class, AlchemyRecipeType.RECYCLER.type, holder -> new RecyclerDisplay(holder));
+        registry.registerRecipeFiller(CuttingCraftingRecipe.class, AlchemyRecipeType.CUTTING.type, holder -> new BlockCutterDisplay(holder));
+        registry.registerRecipeFiller(BrewReactorCraftingRecipe.class, AlchemyRecipeType.BREW_REACTOR.type, holder -> new BrewReactorDisplay(holder));
+        registry.registerRecipeFiller(HeatCentrifugeCraftingRecipe.class, AlchemyRecipeType.HEAT_CENTRIFUGE.type, holder -> new HeatCentrifugeDisplay(holder));
+        registry.registerRecipeFiller(OreWashingCraftingRecipe.class, AlchemyRecipeType.ORE_WASHING.type, holder -> new OreWashingDisplay(holder));
+        registry.registerRecipeFiller(ModBlastFurnaceCraftingRecipe.class, AlchemyRecipeType.MOD_BLAST_FURNACE.type, holder -> new BlastFurnaceDisplay(holder));
+        registry.registerRecipeFiller(CoffeeMachineCraftingRecipe.class, AlchemyRecipeType.COFFEE_MACHINE.type, holder -> new CoffeeMachineDisplay(holder));
+        registry.registerRecipeFiller(CropFarmCraftingRecipe.class, AlchemyRecipeType.CROP_FARM.type, holder -> new CropFarmDisplay(holder));
     }
 
     @Override

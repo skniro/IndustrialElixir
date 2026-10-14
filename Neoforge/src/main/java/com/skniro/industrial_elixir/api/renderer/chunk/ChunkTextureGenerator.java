@@ -22,13 +22,13 @@ public final class ChunkTextureGenerator {
 
         NativeImage image = new NativeImage(NativeImage.Format.RGBA, SIZE, SIZE, false);
 
-        LevelChunk chunk = level.getChunk(chunkPos.x(), chunkPos.z());
+        LevelChunk chunk = level.getChunk(chunkPos.x, chunkPos.z);
 
         // If chunk is not fully loaded, return a dark placeholder image
         if (chunk == null || chunk.isEmpty()) {
             for (int x = 0; x < SIZE; x++) {
                 for (int z = 0; z < SIZE; z++) {
-                    image.setPixelABGR(x, z, 0xFF222222);
+                    image.setPixelRGBA(x, z, 0xFF222222);
                 }
             }
             return image;
@@ -50,10 +50,20 @@ public final class ChunkTextureGenerator {
                 color = ChunkColorProvider.applyHeightShade(color, height - lastHeight);
                 lastHeight = height;
 
-                image.setPixel(x, z, color);
+                image.setPixelRGBA(x, z, argbToAbgr(color));
             }
         }
 
         return image;
+    }
+
+    /**
+     * {@link NativeImage} stores its pixels in ABGR byte order, while
+     * {@link ChunkColorProvider} produces conventional ARGB values.
+     */
+    private static int argbToAbgr(int argb) {
+        return (argb & 0xFF00FF00)
+                | ((argb & 0x000000FF) << 16)
+                | ((argb & 0x00FF0000) >>> 16);
     }
 }

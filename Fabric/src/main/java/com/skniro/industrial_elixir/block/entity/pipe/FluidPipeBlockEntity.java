@@ -370,16 +370,16 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput nbt) {
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         fluids.clear();
-        int count = Math.min(nbt.getIntOr("pipe.fluid_count", 0), MAX_PACKETS);
+        int count = Math.min((nbt.contains("pipe.fluid_count") ? nbt.getInt("pipe.fluid_count") : 0), MAX_PACKETS);
         for (int i = 0; i < count; i++) {
-            int fluidId = nbt.getIntOr("pipe.fid_" + i, -1);
-            long amount = nbt.getLongOr("pipe.amt_" + i, 0L);
-            int dirId = nbt.getIntOr("pipe.dir_" + i, -1);
-            int lastDirId = nbt.getIntOr("pipe.ldir_" + i, -1);
-            int progress = nbt.getIntOr("pipe.prog_" + i, 0);
+            int fluidId = (nbt.contains("pipe.fid_" + i) ? nbt.getInt("pipe.fid_" + i) : -1);
+            long amount = (nbt.contains("pipe.amt_" + i) ? nbt.getLong("pipe.amt_" + i) : 0L);
+            int dirId = (nbt.contains("pipe.dir_" + i) ? nbt.getInt("pipe.dir_" + i) : -1);
+            int lastDirId = (nbt.contains("pipe.ldir_" + i) ? nbt.getInt("pipe.ldir_" + i) : -1);
+            int progress = (nbt.contains("pipe.prog_" + i) ? nbt.getInt("pipe.prog_" + i) : 0);
             if (fluidId < 0 || dirId < 0 || amount <= 0) continue;
             Direction dir = Direction.from3DDataValue(dirId);
             if (dir == null) continue;
@@ -392,8 +392,8 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         int count = Math.min(fluids.size(), MAX_PACKETS);
         nbt.putInt("pipe.fluid_count", count);
 

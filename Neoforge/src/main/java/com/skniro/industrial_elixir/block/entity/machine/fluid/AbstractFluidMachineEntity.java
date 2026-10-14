@@ -26,9 +26,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
     public SingleFluidStorage fluidContainer = new SingleFluidStorage() {
 
         @Override
-        protected int getCapacity(FluidResource variant) {
+        protected int getCapacity(FluidStack variant) {
             return 1000 * 16; // 16 buckets = 16000 mB
         }
 
@@ -55,7 +55,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
         super(entityType, pos, state);
     }
 
-    public FluidResource getFluid() {
+    public FluidStack getFluid() {
         return this.fluidContainer.variant;
     }
 
@@ -120,48 +120,50 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
 
         for (Direction dir : Direction.values()) {
             BlockPos targetPos = pos.relative(dir);
-            var storage = level.getCapability(Capabilities.Fluid.BLOCK, targetPos, dir.getOpposite());
+            IFluidHandler storage = level.getCapability(Capabilities.FluidHandler.BLOCK, targetPos, dir.getOpposite());
             if (storage == null) continue;
 
-            FluidResource resource = storage.getResource(0);
+            FluidStack resource = storage.getFluidInTank(0);
             if (resource.isEmpty()) continue;
 
             // Only accept fluid that matches the tank's current fluid (or if tank is empty)
-            if (!tank.isResourceBlank() && !resource.equals(tank.variant)) continue;
+            if (!tank.isResourceBlank() && !resource.isFluidEqual(tank.variant)) continue;
 
             int available = Math.min(suckRate, tank.getCapacity() - tank.getAmount());
             if (available <= 0) continue;
 
-            try (Transaction tx = Transaction.openRoot()) {
-                int extracted = storage.extract(resource, available, tx);
-                if (extracted <= 0) continue;
+            // Probe both sides before mutating anything so a failed insert cannot
+            // destroy the extracted fluid.
+            FluidStack simulated = storage.drain(new FluidStack(resource.getFluid(), available), IFluidHandler.FluidAction.SIMULATE);
+            if (simulated.isEmpty()) continue;
 
-                int inserted = tank.insert(resource, extracted, tx);
-                if (inserted <= 0) continue;
+            int extracted = simulated.getAmount();
+            int inserted = tank.insert(resource, extracted, true);
+            if (inserted <= 0) continue;
 
-                tx.commit();
-                return true;
-            }
+            storage.drain(new FluidStack(resource.getFluid(), extracted), IFluidHandler.FluidAction.EXECUTE);
+            tank.insert(resource, extracted, false);
+            return true;
         }
 
         return false;
     }
 
-    private FluidResource findFluidInput() {
+    private FluidStack findFluidInput() {
         ItemStack stack = inventory.get(FLUID_ITEM_SLOT);
         if (stack.isEmpty()) return null;
 
         // Use the standard Neoforge fluid item capability to detect the fluid inside
         // any container (cells, buckets, tanks, etc.) instead of a hard-coded map.
-        var handler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
+        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler == null) return null;
 
-        FluidResource fluid = handler.getResource(0);
+        FluidStack fluid = handler.getFluidInTank(0);
         return fluid.isEmpty() ? null : fluid;
     }
 
     public void extractFluidForCrafting() {
-        FluidResource variant = fluidContainer.getResource(0);
+        FluidStack variant = fluidContainer.getResource(0);
 
         if (variant.isEmpty()) {
             return;
@@ -171,13 +173,10 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
             return;
         }
 
-        try (Transaction transaction = Transaction.openRoot()) {
-            long extracted = fluidContainer.extract(variant, FLUID_CRAFT_AMOUNT, transaction
-            );
+        int extracted = fluidContainer.extract(variant, FLUID_CRAFT_AMOUNT, true);
 
-            if (extracted == FLUID_CRAFT_AMOUNT) {
-                transaction.commit();
-            }
+        if (extracted == FLUID_CRAFT_AMOUNT) {
+            fluidContainer.extract(variant, FLUID_CRAFT_AMOUNT, false);
         }
     }
 
@@ -187,7 +186,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
             return false;
         }
 
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft() && hasEnoughFluidToCraft();
     }
 
@@ -202,7 +201,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
 
     public void fillUpFluidTank() {
         ItemStack inputStack = inventory.get(FLUID_ITEM_SLOT);
-        FluidResource toInsert = findFluidInput();
+        FluidStack toInsert = findFluidInput();
         if (toInsert == null) return;
 
         Item craftRemainderItem = findEmptyContainer(inputStack);
@@ -214,17 +213,14 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
         ItemStack craftRemainder = new ItemStack(craftRemainderItem);
         if (isFluidCell && !canStoreCraftRemainder(inputStack, craftRemainder)) return;
 
-        try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(toInsert, 1000, transaction);
-            if (inserted != 1000) return;
+        if (this.fluidContainer.insert(toInsert, 1000, true) != 1000) return;
+        this.fluidContainer.insert(toInsert, 1000, false);
 
-            if (isFluidCell) {
-                inputStack.shrink(1);
-                storeCraftRemainder(craftRemainder);
-            } else {
-                inventory.set(FLUID_ITEM_SLOT, craftRemainder);
-            }
-            transaction.commit();
+        if (isFluidCell) {
+            inputStack.shrink(1);
+            storeCraftRemainder(craftRemainder);
+        } else {
+            inventory.set(FLUID_ITEM_SLOT, craftRemainder);
         }
     }
 
@@ -240,8 +236,8 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
         return null;
     }
 
-    private boolean canAcceptFluid(FluidResource fluid, int amount) {
-        return (fluidContainer.variant.equals(fluid) || fluidContainer.isResourceBlank())
+    private boolean canAcceptFluid(FluidStack fluid, int amount) {
+        return (fluidContainer.variant.isFluidEqual(fluid) || fluidContainer.isResourceBlank())
                 && fluidContainer.getAmount() + amount <= fluidContainer.getCapacity();
     }
 

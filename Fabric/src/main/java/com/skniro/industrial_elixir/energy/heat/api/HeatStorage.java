@@ -16,7 +16,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -60,7 +60,7 @@ public interface HeatStorage {
 	 * On the client thread (i.e. with a client world), contents of queried HeatStorages are unreliable and should not be modified.
 	 */
 	BlockApiLookup<HeatStorage, @Nullable Direction> SIDED =
-			BlockApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_heat"), HeatStorage.class, Direction.class);
+			BlockApiLookup.get(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_heat"), HeatStorage.class, Direction.class);
 
 	/**
 	 * Item access to Heat storages.
@@ -76,7 +76,7 @@ public interface HeatStorage {
 	 * Returned APIs should behave the same regardless of the logical side.
 	 */
 	ItemApiLookup<HeatStorage, ContainerItemContext> ITEM =
-			ItemApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), HeatStorage.class, ContainerItemContext.class);
+			ItemApiLookup.get(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), HeatStorage.class, ContainerItemContext.class);
 
 	/**
 	 * Always empty Heat storage.

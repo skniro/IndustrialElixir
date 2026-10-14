@@ -4,36 +4,37 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import com.skniro.industrial_elixir.recipe.ModRecipeSerializers;
 
 public class BrewReactorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     private final Optional<Ingredient> ingredient2;
-    private final Optional<Identifier> requiredFluid;
+    private final Optional<ResourceLocation> requiredFluid;
     private final Optional<Integer> requiredFluidAmount;
 
-    public BrewReactorCraftingRecipe(Ingredient ingredients, Optional<Ingredient> ingredient2, int requiredCount, ItemStackTemplate output) {
+    public BrewReactorCraftingRecipe(Ingredient ingredients, Optional<Ingredient> ingredient2, int requiredCount, ItemStack output) {
         super(ingredients, requiredCount, output);
         this.ingredient2 = ingredient2;
         this.requiredFluid = Optional.empty();
         this.requiredFluidAmount = Optional.empty();
     }
 
-    public BrewReactorCraftingRecipe(Ingredient ingredients, Optional<Ingredient> ingredient2, int requiredCount, ItemStackTemplate output, Optional<Identifier> requiredFluid, Optional<Integer> requiredFluidAmount) {
+    public BrewReactorCraftingRecipe(Ingredient ingredients, Optional<Ingredient> ingredient2, int requiredCount, ItemStack output, Optional<ResourceLocation> requiredFluid, Optional<Integer> requiredFluidAmount) {
         super(ingredients, requiredCount, output);
         this.ingredient2 = ingredient2;
         this.requiredFluid = requiredFluid != null ? requiredFluid : Optional.empty();
         this.requiredFluidAmount = requiredFluidAmount != null ? requiredFluidAmount : Optional.empty();
     }
 
-    public BrewReactorCraftingRecipe(Ingredient ingredients, Optional<Ingredient> ingredient2, ItemStackTemplate output) {
+    public BrewReactorCraftingRecipe(Ingredient ingredients, Optional<Ingredient> ingredient2, ItemStack output) {
         super(ingredients, output);
         this.ingredient2 = ingredient2;
         this.requiredFluid = Optional.empty();
@@ -50,10 +51,6 @@ public class BrewReactorCraftingRecipe extends AbstractMachineCraftingRecipe {
         return AlchemyRecipeType.BREW_REACTOR.type.get();
     }
 
-    @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
 
     public static final MapCodec<BrewReactorCraftingRecipe> CODEC =
             RecordCodecBuilder.mapCodec(inst -> inst.group(
@@ -66,10 +63,10 @@ public class BrewReactorCraftingRecipe extends AbstractMachineCraftingRecipe {
                     Codec.INT.fieldOf("count")
                             .forGetter(recipe -> recipe.requiredCount),
 
-                    ItemStackTemplate.CODEC.fieldOf("result")
+                    ItemStack.CODEC.fieldOf("result")
                             .forGetter(recipe -> recipe.output),
 
-                    Identifier.CODEC.optionalFieldOf("fluid")
+                    ResourceLocation.CODEC.optionalFieldOf("fluid")
                             .forGetter(recipe -> recipe.requiredFluid),
 
                     Codec.INT.optionalFieldOf("fluid_amount")
@@ -79,15 +76,15 @@ public class BrewReactorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BrewReactorCraftingRecipe> STREAM_CODEC =
             StreamCodec.composite(Ingredient.CONTENTS_STREAM_CODEC, AbstractMachineCraftingRecipe::ingredient,
-                    Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient2,
+                    ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), recipe -> recipe.ingredient2,
                     ByteBufCodecs.INT, AbstractMachineCraftingRecipe::requiredCount,
-                    ItemStackTemplate.STREAM_CODEC,AbstractMachineCraftingRecipe::output,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC), recipe -> recipe.requiredFluid,
+                    ItemStack.STREAM_CODEC,AbstractMachineCraftingRecipe::output,
+                    ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), recipe -> recipe.requiredFluid,
                     ByteBufCodecs.optional(ByteBufCodecs.INT), recipe -> recipe.requiredFluidAmount,
                     (ing, ing2, count, out, fluidOpt, fluidAmtOpt) -> new BrewReactorCraftingRecipe(ing, ing2, count, out, fluidOpt, fluidAmtOpt));
 
     public static final RecipeSerializer<BrewReactorCraftingRecipe> SERIALIZER =
-            new RecipeSerializer<>(CODEC, STREAM_CODEC);
+            ModRecipeSerializers.of(CODEC, STREAM_CODEC);
 
     public MapCodec<BrewReactorCraftingRecipe> codec() {
         return CODEC;
@@ -122,7 +119,7 @@ public class BrewReactorCraftingRecipe extends AbstractMachineCraftingRecipe {
         return this.ingredient2 != null && this.ingredient2.isPresent() ? this.ingredient2.get() : null;
     }
 
-    public Optional<Identifier> requiredFluid() {
+    public Optional<ResourceLocation> requiredFluid() {
         return this.requiredFluid;
     }
 

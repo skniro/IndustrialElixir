@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -69,15 +69,12 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 	}
 
 	private boolean generateMatter() {
-		FluidResource variant = FluidResource.of(IndustrialElixirFluids.STILL_Fluid_UU.get());
-		try (Transaction tx = Transaction.openRoot()) {
-			long inserted = fluidContainer.insert(variant, MB_UNIT, tx);
-			if (inserted == MB_UNIT) {
-				tx.commit();
-				return true;
-			}
+		FluidStack variant = new FluidStack(IndustrialElixirFluids.STILL_Fluid_UU.get(), MB_UNIT);
+		if (fluidContainer.insert(variant, MB_UNIT, true) != MB_UNIT) {
 			return false;
 		}
+		fluidContainer.insert(variant, MB_UNIT, false);
+		return true;
 	}
 
 	private void updateScrapAmplifier() {
@@ -116,24 +113,20 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 			return;
 		}
 
-		try (Transaction tx = Transaction.openRoot()) {
-
-			long extracted = energyContainer.getSideStorage(null).extract(getEffectiveTier().getMaxInput(), tx);
-			if (extracted > 0) {
-				long gained = extracted;
-				if (scrapAmplifier > 0) {
-					long used = Math.min(scrapAmplifier, extracted);
-					gained += used * SCRAP_BOOST;
-					scrapAmplifier -= used;
-				}
-
-				progressEU += gained;
-				tx.commit();
-				working = true;
-			} else {
-				working = false;
-
+		long extracted = energyContainer.getSideStorage(null).extract(getEffectiveTier().getMaxInput(), false);
+		if (extracted > 0) {
+			long gained = extracted;
+			if (scrapAmplifier > 0) {
+				long used = Math.min(scrapAmplifier, extracted);
+				gained += used * SCRAP_BOOST;
+				scrapAmplifier -= used;
 			}
+
+			progressEU += gained;
+			working = true;
+		} else {
+			working = false;
+
 		}
 
 		// When we have accumulated enough energy for 1 mB, attempt to insert 1 mB into tank
@@ -173,19 +166,14 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 			return;
 		}
 
-		try (Transaction transaction = Transaction.openRoot()) {
-
-			long extracted = fluidContainer.extract(FluidResource.of(fluid), BUCKET_VOLUME_MB, transaction);
-
-			if (extracted != BUCKET_VOLUME_MB) {
-				return;
-			}
-
-			emptyContainerStack.shrink(1);
-			storeFilledContainer(fullContainer);
-
-			transaction.commit();
+		if (fluidContainer.extract(new FluidStack(fluid, BUCKET_VOLUME_MB), BUCKET_VOLUME_MB, true) != BUCKET_VOLUME_MB) {
+			return;
 		}
+
+		fluidContainer.extract(new FluidStack(fluid, BUCKET_VOLUME_MB), BUCKET_VOLUME_MB, false);
+
+		emptyContainerStack.shrink(1);
+		storeFilledContainer(fullContainer);
 	}
 
 	private boolean canStoreFilledContainer(ItemStack stack) {
@@ -207,8 +195,8 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 	}
 
 	@Override
-	protected void saveAdditional(ValueOutput output) {
-		super.saveAdditional(output);
+	protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+		super.saveAdditional(output, registries);
 		output.putLong("matter_generator.ProgressEU", progressEU);
 		output.putLong("matter_generator.scrapConsumeTimer", scrapConsumeTimer);
 		output.putLong("matter_generator.scrap_amplifier", scrapAmplifier);
@@ -216,11 +204,11 @@ public class MatterGeneratorEntity extends AbstractFluidMachineEntity {
 	}
 
 	@Override
-	protected void loadAdditional(ValueInput input) {
-		super.loadAdditional(input);
-		progressEU = input.getLongOr("matter_generator.ProgressEU", 0);
-		scrapConsumeTimer = input.getIntOr("matter_generator.scrapConsumeTimer", 0);
-		scrapAmplifier = input.getLongOr("matter_generator.scrap_amplifier", 0L);
+	protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+		super.loadAdditional(input, registries);
+		progressEU = (input.contains("matter_generator.ProgressEU") ? input.getLong("matter_generator.ProgressEU") : 0);
+		scrapConsumeTimer = (input.contains("matter_generator.scrapConsumeTimer") ? input.getInt("matter_generator.scrapConsumeTimer") : 0);
+		scrapAmplifier = (input.contains("matter_generator.scrap_amplifier") ? input.getLong("matter_generator.scrap_amplifier") : 0L);
 		SingleFluidStorage.readValue(fluidContainer, input);
 	}
 }

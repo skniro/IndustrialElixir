@@ -3,10 +3,7 @@ package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.impl.SimpleItemEnergyStorageImpl;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -25,11 +22,14 @@ public interface SimpleEnergyItem {
 	 * This is used internally for items that implement SimpleEnergyItem, but it may also be used outside of that.
 	 * The energy is stored in the {@link EnergyStorage#ENERGY_COMPONENT} of the stacks.
 	 *
+	 * <p>The {@code stack} is the one that the {@link EnergyStorage#ITEM} capability was queried with,
+	 * as 1.21.1 item capabilities do not provide any additional item context.
+	 *
 	 * <p>Stackable energy containers are supported just fine, and they will distribute energy evenly.
 	 * For example, insertion of 3 units of energy into a stack of 2 items using this class will either insert 0 or 2 depending on the remaining capacity.
 	 */
-	static EnergyStorage createStorage(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
-		return SimpleItemEnergyStorageImpl.createSimpleStorage(ctx, capacity, maxInsert, maxExtract);
+	static EnergyStorage createStorage(ItemStack stack, long capacity, long maxInsert, long maxExtract) {
+		return SimpleItemEnergyStorageImpl.createSimpleStorage(stack, capacity, maxInsert, maxExtract);
 	}
 
 	/**
@@ -90,14 +90,6 @@ public interface SimpleEnergyItem {
 	 */
 	static long getStoredEnergyUnchecked(ItemStack stack) {
 		return stack.getOrDefault(EnergyStorage.ENERGY_COMPONENT, 0L);
-	}
-
-	static long getStoredEnergyUnchecked(ItemResource variant) {
-		return getStoredEnergyUnchecked(variant.getComponents());
-	}
-
-	static long getStoredEnergyUnchecked(DataComponentMap components) {
-		return components.getOrDefault(EnergyStorage.ENERGY_COMPONENT, 0L);
 	}
 
 	/**

@@ -8,22 +8,19 @@ import com.skniro.industrial_elixir.screen.ingame.widgets.StateButtonWidget;
 import com.skniro.industrial_elixir.item.MapleArmorItems;
 import com.skniro.industrial_elixir.screen.handler.machine.MetalFormerScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-
 import java.util.List;
 import java.util.Optional;
 
-
 public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerScreenHandler> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/metal_former.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/metal_former.png");
     MetalFormerBlockEntity.MetalFormerState state = menu.blockEntity.getState();
 
     public MetalFormerBlockScreen(MetalFormerScreenHandler handler, Inventory inventory, Component title) {
@@ -67,7 +64,7 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
             @Override
             protected void nextState() {
                 MetalFormerBlockScreen.this.state = MetalFormerBlockEntity.MetalFormerState.values()[(state.ordinal() + 1) % MetalFormerBlockEntity.MetalFormerState.values().length];
-                ClientPacketDistributor.sendToServer(new MetalFormerStateC2SPayload(menu.blockEntity.getBlockPos(), state.ordinal()));
+                PacketDistributor.sendToServer(new MetalFormerStateC2SPayload(menu.blockEntity.getBlockPos(), state.ordinal()));
                 this.initialize();
             }
 
@@ -82,46 +79,46 @@ public class MetalFormerBlockScreen extends AbstractContainerScreen<MetalFormerS
                return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" EP"));
     }
 
-    private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
+    private void renderEnergyAreaTooltips(GuiGraphics context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 21, 31, 13, 16)) {
-            context.setTooltipForNextFrame(this.getFont(), getTooltips(),
+            context.renderTooltip(this.font, getTooltips(),
                     Optional.empty(), pMouseX, pMouseY);
         }
     }
 
-    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 21, y + 31, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+    private void renderEnergyArea(GuiGraphics context, int x, int y) {
+            context.blit(TEXTURE, x + 21, y + 31, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
 
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics context, int mouseX, int mouseY) {
         renderEnergyAreaTooltips(context, mouseX, mouseY, leftPos, topPos);
 
-        context.text(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
-        context.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
+        context.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
+        context.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
     }
 
     @Override
-       public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTicks) {
+       protected void renderBg(GuiGraphics context, float partialTicks, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight,256,256);
+        context.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight,256,256);
         renderProgressArrow(context, x, y);
         renderEnergyArea(context, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+    private void renderProgressArrow(GuiGraphics context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(),15,256,256);
+            context.blit(TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(),15,256,256);
         }
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context , int mouseX, int mouseY, float delta) {
-        super.extractRenderState(context, mouseX, mouseY, delta);
-         extractTooltip(context, mouseX, mouseY);
+    public void render(GuiGraphics context , int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+         renderTooltip(context, mouseX, mouseY);
     }
 
     private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {

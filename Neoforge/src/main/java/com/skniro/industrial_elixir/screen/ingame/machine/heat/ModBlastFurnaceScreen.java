@@ -2,18 +2,21 @@ package com.skniro.industrial_elixir.screen.ingame.machine.heat;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
+import com.skniro.industrial_elixir.screen.handler.machine.fluid.BrewReactorScreenHandler;
 import com.skniro.industrial_elixir.screen.handler.machine.heat.ModBlastFurnaceScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.List;
+import java.util.Optional;
+
 public class ModBlastFurnaceScreen extends AbstractContainerScreen<ModBlastFurnaceScreenHandler> {
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID,"textures/gui/container/machine/blastfurnace.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID,"textures/gui/container/machine/blastfurnace.png");
     private GuiFluidTankRenderer fluidRenderer;
 
     public ModBlastFurnaceScreen(ModBlastFurnaceScreenHandler menu, Inventory inventory, Component title) {
@@ -35,20 +38,20 @@ public class ModBlastFurnaceScreen extends AbstractContainerScreen<ModBlastFurna
         fluidRenderer = new GuiFluidTankRenderer(menu.blockEntity.fluidContainer.getCapacity(), true, 16, 50);
     }
 
-    private void renderFluidTooltipArea(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y,
+    private void renderFluidTooltipArea(GuiGraphics context, int pMouseX, int pMouseY, int x, int y,
                                         int offsetX, int offsetY, GuiFluidTankRenderer renderer) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) {
-            context.setComponentTooltipForNextFrame(this.font, renderer.getTooltip(menu.blockEntity.fluidContainer), pMouseX, pMouseY);
+            context.renderTooltip(this.font, renderer.getTooltip(menu.blockEntity.fluidContainer), Optional.empty(), pMouseX, pMouseY);
         }
     }
 
-    private void renderHeatAreaTooltips(GuiGraphicsExtractor context) {
-        context.text(font, menu.blockEntity.heatContainer.getSideStorage(null).getAmount() + "/" + menu.blockEntity.heatContainer.getSideStorage(null).getCapacity() + "H", 78, 68, -12566464, false);
+    private void renderHeatAreaTooltips(GuiGraphics context) {
+        context.drawString(font, menu.blockEntity.heatContainer.getSideStorage(null).getAmount() + "/" + menu.blockEntity.heatContainer.getSideStorage(null).getCapacity() + "H", 78, 68, -12566464, false);
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor context, int xm, int ym) {
-        super.extractLabels(context, xm, ym);
+    protected void renderLabels(GuiGraphics context, int xm, int ym) {
+        super.renderLabels(context, xm, ym);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
@@ -57,12 +60,11 @@ public class ModBlastFurnaceScreen extends AbstractContainerScreen<ModBlastFurna
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float a) {
-        super.extractBackground(context, mouseX, mouseY, a);
+    protected void renderBg(GuiGraphics context, float a, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0,
+        context.blit(TEXTURE, x, y, 0, 0,
                 imageWidth, imageHeight, 256, 256);
 
         fluidRenderer.render(context, x + 8, y + 5, menu.blockEntity.fluidContainer);
@@ -70,9 +72,9 @@ public class ModBlastFurnaceScreen extends AbstractContainerScreen<ModBlastFurna
         renderProgressArrow(context, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+    private void renderProgressArrow(GuiGraphics context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,x + 73, y + 34,
+            context.blit(TEXTURE,x + 73, y + 34,
                     189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }

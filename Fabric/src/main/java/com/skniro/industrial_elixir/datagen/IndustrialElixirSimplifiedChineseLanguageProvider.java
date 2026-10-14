@@ -208,9 +208,9 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(GrowableOresBlocks.COFFEE_MACHINE_Block, "咖啡机");
 
         translationBuilder.add(MapleSignBlocks.Rubber_SIGN, "橡胶木告示牌");
-        translationBuilder.add(MapleSignBlocks.Rubber_WALL_SIGN, "橡胶木墙上告示牌");
+  /*      translationBuilder.add(MapleSignBlocks.Rubber_WALL_SIGN, "橡胶木墙上告示牌");
         translationBuilder.add(MapleSignBlocks.Rubber_HANGING_SIGN, "悬挂式橡胶木告示牌");
-        translationBuilder.add(MapleSignBlocks.Rubber_WALL_HANGING_SIGN, "墙上悬挂式橡胶木告示牌");
+        translationBuilder.add(MapleSignBlocks.Rubber_WALL_HANGING_SIGN, "墙上悬挂式橡胶木告示牌");*/
 
         translationBuilder.add(AdvancedItems.IRRADIANT_SACRED_INGOT, "光辉神圣石锭");
         translationBuilder.add(AdvancedItems.IRRADIANT_GLASS_PANE, "光辉玻璃板");
@@ -465,12 +465,12 @@ public class IndustrialElixirSimplifiedChineseLanguageProvider extends FabricLan
         translationBuilder.add(GeneralBlocks.LATTE, "拿铁咖啡");
         translationBuilder.add(GeneralBlocks.HOT_COCOA, "热可可");
 
-        translationBuilder.add(MapleFoodComponents.Coffee_Black, "美式咖啡");
+/*        translationBuilder.add(MapleFoodComponents.Coffee_Black, "美式咖啡");
         translationBuilder.add(MapleFoodComponents.Cappuccino, "卡布奇诺");
         translationBuilder.add(MapleFoodComponents.Mocha, "摩卡咖啡");
         translationBuilder.add(MapleFoodComponents.Latte, "拿铁咖啡");
         translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "热可可");
-        translationBuilder.add(MapleFoodComponents.Coffee_Beans, "咖啡豆");
+        translationBuilder.add(MapleFoodComponents.Coffee_Beans, "咖啡豆");*/
 
         translationBuilder.add(GeneralBlocks.COBBLESTONE_STAIRS, "圆石楼梯（温泉版）");
 

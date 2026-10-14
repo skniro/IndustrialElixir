@@ -2,26 +2,26 @@ package com.skniro.industrial_elixir.client;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
-import org.joml.Matrix3x2fStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class WindowsWatermarkRenderer {
 
     private static final Minecraft mc = Minecraft.getInstance();
 
-    public static void render(GuiGraphicsExtractor context) {
+    public static void render(GuiGraphics context) {
 
         if (mc == null || mc.font == null) return;
 
-        Matrix3x2fStack matrices = context.pose();
-        matrices.pushMatrix();
+        PoseStack matrices = context.pose();
+        matrices.pushPose();
 
-        matrices.translate(0, 0);
+        matrices.translate(0, 0, 0);
 
         String line1 = "Unauthorized use or disclosure in any manner";
         String line2 = "may result in disciplinary action";
@@ -35,22 +35,22 @@ public class WindowsWatermarkRenderer {
         int color = 0x80FFFFFF;
         int x = 5;
         int y = height - 75;
-        context.text(mc.font, line1, x, y, color, false);
-        context.text(mc.font, line2, x, y + 10, color, false);
-        context.text(mc.font, line3, x, y + 20, color, false);
-        context.text(mc.font, line4, x, y + 30, color, false);
-        context.text(mc.font, line5, x, y + 40, color, false);
-        context.text(mc.font, line6, x, y + 50, color, false);
-        context.text(mc.font, playerName, x, y + 60, color, false);
+        context.drawString(mc.font, line1, x, y, color, false);
+        context.drawString(mc.font, line2, x, y + 10, color, false);
+        context.drawString(mc.font, line3, x, y + 20, color, false);
+        context.drawString(mc.font, line4, x, y + 30, color, false);
+        context.drawString(mc.font, line5, x, y + 40, color, false);
+        context.drawString(mc.font, line6, x, y + 50, color, false);
+        context.drawString(mc.font, playerName, x, y + 60, color, false);
 
-        matrices.popMatrix();
+        matrices.popPose();
     }
 
     @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
     public class ModHudEvents {
         @SubscribeEvent
         public static void onRenderGui(RenderGuiEvent.Post event) {
-            GuiGraphicsExtractor guiGraphics = event.getGuiGraphics();
+            GuiGraphics guiGraphics = event.getGuiGraphics();
             //render(guiGraphics);
         }
     }

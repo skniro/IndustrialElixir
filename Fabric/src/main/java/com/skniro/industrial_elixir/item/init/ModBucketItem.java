@@ -14,9 +14,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.attribute.EnvironmentAttributes;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -30,7 +28,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ModBucketItem extends Item implements DispensibleContainerItem {
     private final Fluid content;
@@ -40,13 +38,14 @@ public class ModBucketItem extends Item implements DispensibleContainerItem {
         this.content = content;
     }
 
-    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
+    @Override
+    public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         BlockHitResult hitResult = getPlayerPOVHitResult(level, player, this.content == Fluids.EMPTY ? net.minecraft.world.level.ClipContext.Fluid.SOURCE_ONLY : net.minecraft.world.level.ClipContext.Fluid.NONE);
         if (hitResult.getType() == Type.MISS) {
-            return InteractionResult.PASS;
+            return InteractionResultHolder.pass(itemStack);
         } else if (hitResult.getType() != Type.BLOCK) {
-            return InteractionResult.PASS;
+            return InteractionResultHolder.pass(itemStack);
         } else {
             BlockPos pos = hitResult.getBlockPos();
             Direction direction = hitResult.getDirection();
@@ -67,11 +66,11 @@ public class ModBucketItem extends Item implements DispensibleContainerItem {
                                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, taken);
                             }
 
-                            return InteractionResult.SUCCESS.heldItemTransformedTo(result);
+                            return InteractionResultHolder.sidedSuccess(result, level.isClientSide());
                         }
                     }
 
-                    return InteractionResult.FAIL;
+                    return InteractionResultHolder.fail(itemStack);
                 } else {
                     BlockState clicked = level.getBlockState(pos);
                     BlockPos placePos = clicked.getBlock() instanceof ModStairBlock && this.content == IndustrialElixirFluids.STILL_Hot_Spring ? pos : directionOffsetPos;
@@ -83,13 +82,13 @@ public class ModBucketItem extends Item implements DispensibleContainerItem {
 
                         player.awardStat(Stats.ITEM_USED.get(this));
                         ItemStack emptyResult = ItemUtils.createFilledResult(itemStack, player, getEmptySuccessItem(itemStack, player));
-                        return InteractionResult.SUCCESS.heldItemTransformedTo(emptyResult);
+                        return InteractionResultHolder.sidedSuccess(emptyResult, level.isClientSide());
                     } else {
-                        return InteractionResult.FAIL;
+                        return InteractionResultHolder.fail(itemStack);
                     }
                 }
             } else {
-                return InteractionResult.FAIL;
+                return InteractionResultHolder.fail(itemStack);
             }
         }
     }
@@ -98,10 +97,12 @@ public class ModBucketItem extends Item implements DispensibleContainerItem {
         return !player.hasInfiniteMaterials() ? new ItemStack(Items.BUCKET) : itemStack;
     }
 
-    public void checkExtraContent(final @Nullable LivingEntity user, final Level level, final ItemStack itemStack, final BlockPos pos) {
+    @Override
+    public void checkExtraContent(final @Nullable Player user, final Level level, final ItemStack itemStack, final BlockPos pos) {
     }
 
-    public boolean emptyContents(final @Nullable LivingEntity user, final Level level, final BlockPos pos, final @Nullable BlockHitResult hitResult) {
+    @Override
+    public boolean emptyContents(final @Nullable Player user, final Level level, final BlockPos pos, final @Nullable BlockHitResult hitResult) {
         Fluid var6 = this.content;
         BlockState blockState = level.getBlockState(pos);
         if (!(var6 instanceof FlowingFluid flowingFluid)) {
@@ -136,7 +137,7 @@ public class ModBucketItem extends Item implements DispensibleContainerItem {
             boolean canPlaceFluidInsideBlock = blockState.isAir() || placeLiquid && (!shiftKeyDown || hitResult == null);
             if (!canPlaceFluidInsideBlock) {
                 return hitResult != null && this.emptyContents(user, level, hitResult.getBlockPos().relative(hitResult.getDirection()), (BlockHitResult)null);
-            } else if ((Boolean)level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos) && this.content.is(FluidTags.WATER)) {
+            } else if (level.dimensionType().ultraWarm() && this.content.is(FluidTags.WATER)) {
                 int x = pos.getX();
                 int y = pos.getY();
                 int z = pos.getZ();
@@ -172,7 +173,7 @@ public class ModBucketItem extends Item implements DispensibleContainerItem {
         }
     }
 
-    protected void playEmptySound(final @Nullable LivingEntity user, final LevelAccessor level, final BlockPos pos) {
+    protected void playEmptySound(final @Nullable Player user, final LevelAccessor level, final BlockPos pos) {
         SoundEvent soundEvent = this.content.is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
         level.playSound(user, pos, soundEvent, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(user, GameEvent.FLUID_PLACE, pos);

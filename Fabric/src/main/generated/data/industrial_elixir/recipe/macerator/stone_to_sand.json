@@ -1,6 +1,8 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "minecraft:cobblestone",
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
   "result": {
     "count": 2,
     "id": "minecraft:sand"

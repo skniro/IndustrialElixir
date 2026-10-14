@@ -2,10 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:glassfiber_cable",
-    "C": "#industrial_elixir:diamond",
-    "I": "industrial_elixir:advanced_circuit",
-    "M": "industrial_elixir:advanced_machine"
+    "A": {
+      "item": "industrial_elixir:glassfiber_cable"
+    },
+    "C": {
+      "tag": "industrial_elixir:diamond"
+    },
+    "I": {
+      "item": "industrial_elixir:advanced_circuit"
+    },
+    "M": {
+      "item": "industrial_elixir:advanced_machine"
+    }
   },
   "pattern": [
     "ICI",
@@ -13,6 +21,7 @@
     "ICI"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:super_machine"
   }
 }

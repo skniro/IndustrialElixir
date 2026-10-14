@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": "industrial_elixir:irradiant_sacred",
-    "R": "industrial_elixir:luminite"
+    "D": {
+      "item": "industrial_elixir:irradiant_sacred"
+    },
+    "R": {
+      "item": "industrial_elixir:luminite"
+    }
   },
   "pattern": [
     "DDD",
@@ -11,6 +15,7 @@
     "DDD"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:enriched_luminite"
   }
 }

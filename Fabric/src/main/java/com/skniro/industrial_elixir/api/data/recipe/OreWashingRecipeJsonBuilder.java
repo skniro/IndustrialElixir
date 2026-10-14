@@ -5,16 +5,16 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
@@ -28,24 +28,24 @@ import java.util.Optional;
 public class OreWashingRecipeJsonBuilder implements RecipeBuilder {
     private final HolderGetter<Item> itemLookup;
     private Ingredient ingredient;
-    private final ItemStackTemplate result;
-    private ItemStackTemplate result2;
-    private ItemStackTemplate result3;
+    private final ItemStack result;
+    private ItemStack result2;
+    private ItemStack result3;
     private int requiredCount = 1;
-    private Identifier fluidId;
+    private ResourceLocation fluidId;
     private Integer fluidAmount;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     @Nullable
     private String group;
 
-    private OreWashingRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStackTemplate result) {
+    private OreWashingRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStack result) {
         this.itemLookup = itemLookup;
         this.result = result;
     }
 
     public static OreWashingRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output, int count) {
-        return new OreWashingRecipeJsonBuilder(itemLookup, new ItemStackTemplate(output.asItem(), count));
+        return new OreWashingRecipeJsonBuilder(itemLookup, new ItemStack(output.asItem(), count));
     }
 
     public static OreWashingRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output) {
@@ -67,7 +67,7 @@ public class OreWashingRecipeJsonBuilder implements RecipeBuilder {
     }
 
     public OreWashingRecipeJsonBuilder input(TagKey<Item> tag, int amount) {
-        this.ingredient = Ingredient.of(itemLookup.getOrThrow(tag));
+        this.ingredient = Ingredient.of(tag);
         this.requiredCount = amount;
         return this;
     }
@@ -77,7 +77,7 @@ public class OreWashingRecipeJsonBuilder implements RecipeBuilder {
     }
 
     public OreWashingRecipeJsonBuilder output2(ItemLike item, int count) {
-        this.result2 = new ItemStackTemplate(item.asItem(), count);
+        this.result2 = new ItemStack(item.asItem(), count);
         return this;
     }
 
@@ -86,11 +86,11 @@ public class OreWashingRecipeJsonBuilder implements RecipeBuilder {
     }
 
     public OreWashingRecipeJsonBuilder output3(ItemLike item, int count) {
-        this.result3 = new ItemStackTemplate(item.asItem(), count);
+        this.result3 = new ItemStack(item.asItem(), count);
         return this;
     }
 
-    public OreWashingRecipeJsonBuilder fluid(Identifier fluidId, int amount) {
+    public OreWashingRecipeJsonBuilder fluid(ResourceLocation fluidId, int amount) {
         this.fluidId = fluidId;
         this.fluidAmount = amount;
         return this;
@@ -111,13 +111,13 @@ public class OreWashingRecipeJsonBuilder implements RecipeBuilder {
     }
 
     @Override
-    public ResourceKey<Recipe<?>> defaultId() {
-        return RecipeBuilder.getDefaultRecipeId(this.result);
+    public Item getResult() {
+        return this.result.getItem();
     }
 
     @Override
-    public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
-        ResourceKey<Recipe<?>> finalKey = modifyRecipeKey(recipeKey, exporter);
+    public void save(RecipeOutput exporter, ResourceLocation recipeId) {
+        ResourceLocation finalRecipeId = modifyRecipeKey(recipeId, exporter);
         OreWashingCraftingRecipe recipe = new OreWashingCraftingRecipe(
                 ingredient,
                 requiredCount,
@@ -128,21 +128,21 @@ public class OreWashingRecipeJsonBuilder implements RecipeBuilder {
                 fluidAmount
         );
         if (criteria.isEmpty()) {
-            exporter.accept(finalKey, recipe, null);
+            exporter.accept(finalRecipeId, recipe, null);
             return;
         }
 
         Advancement.Builder advancementBuilder = exporter.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey))
-                .rewards(AdvancementRewards.Builder.recipe(recipeKey))
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
+                .rewards(AdvancementRewards.Builder.recipe(recipeId))
                 .requirements(AdvancementRequirements.Strategy.OR);
 
         this.criteria.forEach(advancementBuilder::addCriterion);
 
-        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.identifier().withPrefix("recipes/")));
+        exporter.accept(finalRecipeId, recipe, advancementBuilder.build(finalRecipeId.withPrefix("recipes/")));
     }
 
-    private ResourceKey<Recipe<?>> modifyRecipeKey(ResourceKey<Recipe<?>> recipeKey, RecipeOutput exporter) {
-        return ResourceKey.create(recipeKey.registryKey(), exporter.getRecipeIdentifier(recipeKey.identifier().withPrefix("ore_washing/")));
+    private ResourceLocation modifyRecipeKey(ResourceLocation recipeId, RecipeOutput exporter) {
+        return exporter.getRecipeIdentifier(recipeId.withPrefix("ore_washing/"));
     }
 }

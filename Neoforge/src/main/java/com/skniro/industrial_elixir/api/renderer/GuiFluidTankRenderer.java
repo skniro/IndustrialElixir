@@ -4,16 +4,14 @@ import com.google.common.base.Preconditions;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.fluid.SingleFluidStorage;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -34,8 +32,12 @@ public class GuiFluidTankRenderer {
     private final int width;
     private final int height;
 
-    private static final Identifier STILL_FLUID_TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID,
+    private static final ResourceLocation STILL_FLUID_TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID,
             "textures/gui/still_fluid.png");
+
+    /** 1.21.1 {@link CommonColors} has no dark variants; keep the 26.1 values. */
+    private static final int DARK_GRAY = 0xFF404040;
+    private static final int DARK_PURPLE = 0xFF501E50;
 
     enum TooltipMode {
         SHOW_AMOUNT,
@@ -58,10 +60,17 @@ public class GuiFluidTankRenderer {
         this.height = height;
     }
 
-    public void render(GuiGraphicsExtractor guiGraphics, int x, int y, SingleFluidStorage fluidStorage) {
+    public void render(GuiGraphics guiGraphics, int x, int y, SingleFluidStorage fluidStorage) {
         int scaledAmount = getScaledAmount(fluidStorage);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, STILL_FLUID_TEXTURE,
-                x, y + height - scaledAmount, 0f, 0f, width, scaledAmount, 16, 16, getColorTint(fluidStorage));
+        int tint = getColorTint(fluidStorage);
+        guiGraphics.setColor(
+                ((tint >> 16) & 0xFF) / 255f,
+                ((tint >> 8) & 0xFF) / 255f,
+                (tint & 0xFF) / 255f,
+                ((tint >> 24) & 0xFF) / 255f);
+        guiGraphics.blit(STILL_FLUID_TEXTURE,
+                x, y + height - scaledAmount, 0f, 0f, width, scaledAmount, 16, 16);
+        guiGraphics.setColor(1f, 1f, 1f, 1f);
     }
 
     private int getScaledAmount(SingleFluidStorage fluidStorage) {
@@ -81,14 +90,14 @@ public class GuiFluidTankRenderer {
         return fluidStorage.variant.getFluid() == Fluids.WATER ? CommonColors.BLUE :
                 fluidStorage.variant.getFluid() == Fluids.LAVA ? CommonColors.RED :
                 fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Hot_Spring.get() ? CommonColors.LIGHTER_GRAY :
-                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_UU.get() ? CommonColors.DARK_PURPLE :
+                fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_UU.get() ? DARK_PURPLE :
                 fluidStorage.variant.getFluid() == IndustrialElixirFluids.STILL_Fluid_AIR.get() ? CommonColors.LIGHT_GRAY :
                 CommonColors.WHITE;
     }
 
     public List<Component> getTooltip(SingleFluidStorage fluidStorage) {
         List<Component> tooltip = new ArrayList<>();
-        FluidResource fluidType = fluidStorage.variant;
+        var fluidType = fluidStorage.variant;
         if (fluidType.isEmpty()) {
             return List.of(Component.literal("Empty"));
         }
@@ -99,10 +108,10 @@ public class GuiFluidTankRenderer {
         long amount = fluidStorage.getAmount();
         if (tooltipMode == TooltipMode.SHOW_AMOUNT_AND_CAPACITY) {
             MutableComponent amountString = Component.translatable("industrial_elixir.tooltip.liquid.amount.with.capacity",   nf.format(amount)+ "Mb" + " / " + nf.format(capacityMb) + "Mb");
-            tooltip.add(amountString.withStyle(Style.EMPTY.withColor(CommonColors.DARK_GRAY)));
+            tooltip.add(amountString.withStyle(Style.EMPTY.withColor(DARK_GRAY)));
         } else if (tooltipMode == TooltipMode.SHOW_AMOUNT) {
             MutableComponent amountString = Component.translatable("industrial_elixir.tooltip.liquid.amount",  nf.format(amount) + "Mb");
-            tooltip.add(amountString.withStyle(Style.EMPTY.withColor(CommonColors.DARK_GRAY)));
+            tooltip.add(amountString.withStyle(Style.EMPTY.withColor(DARK_GRAY)));
         }
 
         return tooltip;

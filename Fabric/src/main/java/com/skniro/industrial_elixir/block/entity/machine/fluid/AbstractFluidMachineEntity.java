@@ -126,7 +126,7 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
             return false;
         }
 
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft() && hasEnoughFluidToCraft();
     }
 
@@ -150,8 +150,8 @@ public abstract class AbstractFluidMachineEntity extends AbstractMachineEntity {
 
         ItemStack craftRemainder = inputStack.getItem() instanceof FluidCellItem
                 ? new ItemStack(GrowableOresItems.EMPTY_CELL)
-                : (inputStack.getItem().getCraftingRemainder() != null
-                ? inputStack.getItem().getCraftingRemainder().create()
+                : (inputStack.getItem().hasCraftingRemainingItem()
+                ? new ItemStack(inputStack.getItem().getCraftingRemainingItem())
                 : new ItemStack(Items.BUCKET));
 
         if (!canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {

@@ -9,7 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 
 // CREDIT: https://github.com/TechReborn/energy
@@ -22,7 +22,7 @@ public class HeatImpl {
 			.build();
 
 	public static void init() {
-		Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), Heat_COMPONENT);
+		Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), Heat_COMPONENT);
 		HeatStorage.ITEM.registerFallback((stack, ctx) -> {
 			if (stack.getItem() instanceof SimpleHeatItem HeatItem) {
 				return SimpleHeatItem.createStorage(ctx, HeatItem.getHeatCapacity(stack), HeatItem.getHeatMaxInput(stack), HeatItem.getHeatMaxOutput(stack));

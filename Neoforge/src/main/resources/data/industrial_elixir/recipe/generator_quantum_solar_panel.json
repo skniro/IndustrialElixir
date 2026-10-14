@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:generator_ultimate_solar_panel",
-    "P": "industrial_elixir:quantum_core"
+    "A": {
+      "item": "industrial_elixir:generator_ultimate_solar_panel"
+    },
+    "P": {
+      "item": "industrial_elixir:quantum_core"
+    }
   },
   "pattern": [
     "AAA",
@@ -11,6 +15,7 @@
     "AAA"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:generator_quantum_solar_panel"
   }
 }

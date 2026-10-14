@@ -2,10 +2,15 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:tool_rolling",
-    "industrial_elixir:steel_ingot"
+    {
+      "item": "industrial_elixir:tool_rolling"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:steel_plate"
   }
 }

@@ -26,7 +26,7 @@ public class BatteryItem extends Item implements SimpleEnergyItem, TieredEnergyI
 
     @SubscribeEvent
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerItem(EnergyStorage.ITEM, (stack, context) -> SimpleEnergyItem.createStorage(context, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
+        event.registerItem(EnergyStorage.ITEM, (stack, ignored) -> SimpleEnergyItem.createStorage(stack, this.getEnergyCapacity(stack), this.getEnergyMaxInput(stack), this.getEnergyMaxOutput(stack)), this);
     }
 
     @Override

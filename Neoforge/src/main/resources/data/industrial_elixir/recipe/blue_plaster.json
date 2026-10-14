@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "b": "industrial_elixir:plaster",
-    "i": "minecraft:blue_dye"
+    "b": {
+      "item": "industrial_elixir:plaster"
+    },
+    "i": {
+      "item": "minecraft:blue_dye"
+    }
   },
   "pattern": [
     "bbb",

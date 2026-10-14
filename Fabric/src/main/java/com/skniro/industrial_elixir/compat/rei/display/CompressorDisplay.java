@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.List;
 import java.util.Optional;
@@ -24,24 +24,9 @@ public class CompressorDisplay extends BasicDisplay {
     public static final CategoryIdentifier<CompressorDisplay> Compressor =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "compressor");
 
-    public static final DisplaySerializer<CompressorDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(CompressorDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(CompressorDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(CompressorDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(CompressorDisplay::getCount)
-            ).apply(instance, CompressorDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    CompressorDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    CompressorDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    CompressorDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    CompressorDisplay::getCount,
-                    CompressorDisplay::new
-            )
+    public static final DisplaySerializer<CompressorDisplay> SERIALIZER = BasicDisplay.Serializer.<CompressorDisplay>of(
+            (inputs, outputs, location, tag) -> new CompressorDisplay(inputs, outputs, location, tag.getInt("count")),
+            (display, tag) -> tag.putInt("count", display.getCount())
     );
 
     public CompressorDisplay(CompressorCraftingRecipe recipe) {
@@ -50,14 +35,14 @@ public class CompressorDisplay extends BasicDisplay {
         this.count = recipe.requiredCount();
     }
 
-    public CompressorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count) {
+    public CompressorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count) {
         super(inputs, outputs, location);
         this.count = count;
     }
 
     public CompressorDisplay(RecipeHolder<CompressorCraftingRecipe> recipe){
         super(List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
         this.count = recipe.value().requiredCount();
     }
 
@@ -66,10 +51,6 @@ public class CompressorDisplay extends BasicDisplay {
         return Compressor;
     }
 
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
-    }
 
     public int getCount() {
         return count;

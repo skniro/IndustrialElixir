@@ -3,7 +3,7 @@ package com.skniro.industrial_elixir.init;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.Level;
@@ -17,7 +17,7 @@ public final class ModDamageTypes {
     }
 
     static {
-        ELECTRIC_SHOCK = ResourceKey.create(Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "electric_shock"));
-        FUSION = ResourceKey.create(Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "fusion"));
+        ELECTRIC_SHOCK = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "electric_shock"));
+        FUSION = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "fusion"));
     }
 }

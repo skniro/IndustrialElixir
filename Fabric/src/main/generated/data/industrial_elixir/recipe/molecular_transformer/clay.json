@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:molecular_transformer",
   "energy": 50000,
-  "ingredient": "minecraft:dirt",
+  "ingredient": {
+    "item": "minecraft:dirt"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:clay"
   }
 }

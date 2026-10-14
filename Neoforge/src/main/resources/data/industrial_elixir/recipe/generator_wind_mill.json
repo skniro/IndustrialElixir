@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": "minecraft:iron_ingot",
-    "S": "industrial_elixir:coal_generator"
+    "G": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "industrial_elixir:coal_generator"
+    }
   },
   "pattern": [
     "G G",
@@ -11,6 +15,7 @@
     "G G"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:generator_wind_mill"
   }
 }

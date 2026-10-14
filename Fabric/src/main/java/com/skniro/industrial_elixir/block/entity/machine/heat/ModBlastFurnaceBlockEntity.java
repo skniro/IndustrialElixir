@@ -42,9 +42,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -210,8 +209,8 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
 
         ItemStack craftRemainder = inputStack.getItem() instanceof FluidCellItem
                 ? new ItemStack(GrowableOresItems.EMPTY_CELL)
-                : (inputStack.getItem().getCraftingRemainder() != null
-                   ? inputStack.getItem().getCraftingRemainder().create()
+                : (inputStack.getItem().hasCraftingRemainingItem()
+                   ? new ItemStack(inputStack.getItem().getCraftingRemainingItem())
                    : new ItemStack(Items.BUCKET));
 
         if (!canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
@@ -263,8 +262,8 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
     protected void craftItem() {
         ModBlastFurnaceCraftingRecipe recipe = (ModBlastFurnaceCraftingRecipe) getCurrentRecipe().get().value();
         this.removeItem(INPUT_SLOT, recipe.requiredCount());
-        insertOutput(OUTPUT_SLOT, recipe.output().create());
-        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
+        insertOutput(OUTPUT_SLOT, recipe.output().copy());
+        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.copy()));
         try (Transaction tx = Transaction.openOuter()) {
             fluidContainer.extract(fluidContainer.getResource(), recipe.requiredFluidAmount(), tx);
             tx.commit();
@@ -337,8 +336,8 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         var recipe = recipeHolder.value();
         ModBlastFurnaceCraftingRecipe washingRecipe = (ModBlastFurnaceCraftingRecipe) recipe;
 
-        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().create())) return false;
-        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().create())) return false;
+        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().copy())) return false;
+        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().copy())) return false;
 
         Fluid currentFluid = this.fluidContainer.getResource().getFluid();
         Optional<Fluid> requiredFluid = BuiltInRegistries.FLUID.getOptional(washingRecipe.requiredFluid());
@@ -376,23 +375,23 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putInt("blast_furnace_machine.progress", progress);
         nbt.putInt("blast_furnace_machine.max_progress", maxProgress);
         nbt.putLong("blast_furnace_machine.heat", heatContainer.amount);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, nbt);
+        SingleVariantStorage.writeNbt(fluidContainer, FluidVariant.CODEC, nbt, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        progress = nbt.getIntOr("blast_furnace_machine.progress", 0);
-        maxProgress = nbt.getIntOr("blast_furnace_machine.max_progress", maxProgress);
-        heatContainer.amount = nbt.getLongOr("blast_furnace_machine.heat", 0);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, nbt);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        progress = (nbt.contains("blast_furnace_machine.progress") ? nbt.getInt("blast_furnace_machine.progress") : 0);
+        maxProgress = (nbt.contains("blast_furnace_machine.max_progress") ? nbt.getInt("blast_furnace_machine.max_progress") : maxProgress);
+        heatContainer.amount = (nbt.contains("blast_furnace_machine.heat") ? nbt.getLong("blast_furnace_machine.heat") : 0);
+        SingleVariantStorage.readNbt(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, nbt, registries);
+        super.loadAdditional(nbt, registries);
     }
 
     @org.jetbrains.annotations.Nullable

@@ -14,7 +14,7 @@ import com.skniro.industrial_elixir.screen.handler.generator.fluid.FluidGenerato
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -33,8 +33,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -166,7 +165,7 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
                 Container inventory = this.getOptionalInventory().get();
                 EnergyStorageUtil.move(
                         energyContainer.getSideStorage(null),
-                        ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM),
+                        ContainerItemContext.ofSingleSlot(InventoryStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM),
                         Long.MAX_VALUE,
                         null
                 );
@@ -183,15 +182,15 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
+        SingleVariantStorage.writeNbt(fluidContainer, FluidVariant.CODEC, output, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        SingleVariantStorage.readNbt(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input, registries);
     }
 
     @Nullable

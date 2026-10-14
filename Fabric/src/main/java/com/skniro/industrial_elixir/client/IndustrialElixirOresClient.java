@@ -1,14 +1,11 @@
 package com.skniro.industrial_elixir.client;
 
-import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.renderer.AlchemyblockentityRenderer;
 import com.skniro.industrial_elixir.client.particle.MapleCampfireSmokeParticle;
 import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
-import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIPlugin;
-import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.keybind.ModClientEvents;
 import com.skniro.industrial_elixir.keybind.ModKeyMappings;
@@ -32,31 +29,23 @@ import com.skniro.industrial_elixir.screen.ingame.generator.GeneratorSolarPanelS
 import com.skniro.industrial_elixir.screen.ingame.generator.GeneratorWindMillScreen;
 import com.skniro.industrial_elixir.screen.ingame.generator.NuclearReactorScreen;
 import com.skniro.industrial_elixir.screen.ingame.generator.SacredGeneratorScreen;
-import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.growableoresir.client.GrowableOresClienttwo;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.fabricmc.fabric.api.client.recipe.v1.sync.ClientRecipeSynchronizedEvent;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.object.boat.BoatModel;
-import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.client.renderer.entity.BoatRenderer;
-import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public class IndustrialElixirOresClient implements ClientModInitializer {
@@ -65,7 +54,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         ModKeyMappings.registerKeys();
         ClientTickEvents.END_CLIENT_TICK.register(ModClientEvents::onEndTick);
 
-        ChunkSectionLayer renderLayer2 = ChunkSectionLayer.CUTOUT;
+        RenderType renderLayer2 = RenderType.cutout();
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING, renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_LEAVES, renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.GLASSFIBER_CABLE, renderLayer2);
@@ -75,7 +64,7 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block, renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass, renderLayer2);
 
-        ChunkSectionLayer renderLayer3 = ChunkSectionLayer.TRANSLUCENT;
+        RenderType renderLayer3 = RenderType.translucent();
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK, renderLayer3);
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Hot_Spring, renderLayer3);
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Hot_Spring, renderLayer3);
@@ -124,60 +113,37 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
         //BlockEntityRenderers.register(AlchemyBlockEntityType.FLUID_TANK_BLOCK_ENTITY, FluidTankRenderer::new);
 
-        registerClientEntityRenderer();
-
-        HudElementRegistry.addFirst(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "water"), this::renderHud);
+        HudRenderCallback.EVENT.register(this::renderHud);
 
         GrowableOresClienttwo.register();
 
-        ClientRecipeSynchronizedEvent.EVENT.register((minecraft, synchronizedRecipes) -> {
-            if (IndustrialElixirJEIUtils.isJEIAvailable()) {
-                IndustrialElixirJEIPlugin.recipeMap = synchronizedRecipes;
-                try {
-                    IndustrialElixirJEIPlugin.pushRecipesToJei();
-                } catch (Throwable ignored) {
-                }
-            }
-        });
-
-        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Hot_Spring, IndustrialElixirFluids.FLOWING_Hot_Spring,
-                new FluidModel.Unbaked(
-                        new Material(Identifier.parse("industrial_elixir:block/spring_still")),
-                        new Material(Identifier.parse("industrial_elixir:block/spring_flow")),
-                        null,
-                        () -> 0xEDDBDBDB
+        FluidRenderHandlerRegistry.INSTANCE.register(IndustrialElixirFluids.STILL_Hot_Spring, IndustrialElixirFluids.FLOWING_Hot_Spring,
+                new SimpleFluidRenderHandler(
+                        ResourceLocation.parse("industrial_elixir:block/spring_still"),
+                        ResourceLocation.parse("industrial_elixir:block/spring_flow"),
+                        0xEDDBDBDB
                 ));
 
-        final FluidModel.Unbaked Fluid_UU_MODEL = new FluidModel.Unbaked(
-                new Material(Identifier.withDefaultNamespace("block/water_still")),
-                new Material(Identifier.withDefaultNamespace("block/water_flow")),
-                new Material(Identifier.withDefaultNamespace("block/water_overlay")), () -> 0xA1BFBFBF);
+        final SimpleFluidRenderHandler Fluid_UU_MODEL = new SimpleFluidRenderHandler(
+                SimpleFluidRenderHandler.WATER_STILL,
+                SimpleFluidRenderHandler.WATER_FLOWING,
+                SimpleFluidRenderHandler.WATER_OVERLAY,
+                0xA1BFBFBF);
 
-        final FluidModel.Unbaked Fluid_AIR_MODEL = new FluidModel.Unbaked(
-                new Material(Identifier.withDefaultNamespace("block/water_still")),
-                new Material(Identifier.withDefaultNamespace("block/water_flow")),
-                new Material(Identifier.withDefaultNamespace("block/water_overlay")), () -> 0xA1C64CEB);
+        final SimpleFluidRenderHandler Fluid_AIR_MODEL = new SimpleFluidRenderHandler(
+                SimpleFluidRenderHandler.WATER_STILL,
+                SimpleFluidRenderHandler.WATER_FLOWING,
+                SimpleFluidRenderHandler.WATER_OVERLAY,
+                0xA1C64CEB);
 
 
-        ParticleProviderRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING, MapleCampfireSmokeParticle.CosySmokeFactory::new);
+        ParticleFactoryRegistry.getInstance().register(MapleParticleTypes.HOT_SPRING, MapleCampfireSmokeParticle.CosySmokeFactory::new);
 
-        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_UU, IndustrialElixirFluids.FLOWING_Fluid_UU, Fluid_UU_MODEL);
-        FluidRenderingRegistry.register(IndustrialElixirFluids.STILL_Fluid_AIR, IndustrialElixirFluids.FLOWING_Fluid_AIR, Fluid_AIR_MODEL);
+        FluidRenderHandlerRegistry.INSTANCE.register(IndustrialElixirFluids.STILL_Fluid_UU, IndustrialElixirFluids.FLOWING_Fluid_UU, Fluid_UU_MODEL);
+        FluidRenderHandlerRegistry.INSTANCE.register(IndustrialElixirFluids.STILL_Fluid_AIR, IndustrialElixirFluids.FLOWING_Fluid_AIR, Fluid_AIR_MODEL);
     }
 
-    private void renderHud(GuiGraphicsExtractor context, DeltaTracker tickCounter) {
+    private void renderHud(GuiGraphics context, DeltaTracker tickCounter) {
         //WindowsWatermarkRenderer.render(context);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void registerClientEntityRenderer() {
-
-        var rubber_boat = new ModelLayerLocation(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "boat/rubber"), "main");
-        ModelLayerRegistry.registerModelLayer(rubber_boat, BoatModel::createBoatModel);
-        EntityRendererRegistry.register(MapleEntityType.RUBBER_BOAT, (dispatcher) -> new BoatRenderer(dispatcher, rubber_boat));
-
-        var rubber_chest_boat = new ModelLayerLocation(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "chest_boat/rubber"), "main");
-        ModelLayerRegistry.registerModelLayer(rubber_chest_boat, BoatModel::createChestBoatModel);
-        EntityRendererRegistry.register(MapleEntityType.RUBBER_CHEST_BOAT, (dispatcher) -> new BoatRenderer(dispatcher, rubber_chest_boat));
     }
 }

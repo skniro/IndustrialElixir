@@ -2,10 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "industrial_elixir:iridium_plate",
-    "A": "industrial_elixir:alloy_plate",
-    "C": "industrial_elixir:carbon_plate",
-    "L": "industrial_elixir:lapotron_crystal"
+    "#": {
+      "item": "industrial_elixir:iridium_plate"
+    },
+    "A": {
+      "item": "industrial_elixir:alloy_plate"
+    },
+    "C": {
+      "item": "industrial_elixir:carbon_plate"
+    },
+    "L": {
+      "item": "industrial_elixir:lapotron_crystal"
+    }
   },
   "pattern": [
     "CCC",
@@ -13,6 +21,7 @@
     "#A#"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:quantum_chestplate"
   }
 }

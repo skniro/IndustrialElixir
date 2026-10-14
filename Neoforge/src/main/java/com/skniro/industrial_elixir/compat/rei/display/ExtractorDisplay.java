@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.List;
 import java.util.Optional;
@@ -24,24 +24,9 @@ public class ExtractorDisplay extends BasicDisplay {
     public static final CategoryIdentifier<ExtractorDisplay> Extractor =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "extractor");
 
-    public static final DisplaySerializer<ExtractorDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(ExtractorDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(ExtractorDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(ExtractorDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(ExtractorDisplay::getCount)
-            ).apply(instance, ExtractorDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    ExtractorDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    ExtractorDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    ExtractorDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    ExtractorDisplay::getCount,
-                    ExtractorDisplay::new
-            )
+    public static final DisplaySerializer<ExtractorDisplay> SERIALIZER = BasicDisplay.Serializer.<ExtractorDisplay>of(
+            (inputs, outputs, location, tag) -> new ExtractorDisplay(inputs, outputs, location, tag.getInt("count")),
+            (display, tag) -> tag.putInt("count", display.getCount())
     );
 
     public ExtractorDisplay(ExtractorCraftingRecipe recipe) {
@@ -50,25 +35,20 @@ public class ExtractorDisplay extends BasicDisplay {
         this.count = recipe.requiredCount();
     }
 
-    public ExtractorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count) {
+    public ExtractorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count) {
         super(inputs, outputs, location);
         this.count = count;
     }
 
     public ExtractorDisplay(RecipeHolder<ExtractorCraftingRecipe> recipe){
         super(List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
         this.count = recipe.value().requiredCount();
     }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return Extractor;
-    }
-
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
     }
 
     public int getCount() {

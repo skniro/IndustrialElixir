@@ -15,19 +15,19 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 
 public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<CuttingCraftingRecipe>> {
-    public static final IRecipeHolderType<CuttingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.CUTTING.type);
+    public static final RecipeType<RecipeHolder<CuttingCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.CUTTING.type);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -35,7 +35,7 @@ public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<Cutting
     private final IDrawableAnimated arrow;
 
     public BlockCutterCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/block_cutter.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/block_cutter.png");
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(GrowableOresBlocks.CUTTING_Block));
@@ -44,7 +44,7 @@ public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<Cutting
     }
 
     @Override
-    public IRecipeHolderType<CuttingCraftingRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<CuttingCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -71,13 +71,13 @@ public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<Cutting
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CuttingCraftingRecipe> recipe, IFocusGroup iFocusGroup) {
         builder.addSlot(RecipeIngredientRole.INPUT, 21, 13)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 118, 34)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
     }
 
     @Override
-    public void draw(RecipeHolder<CuttingCraftingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<CuttingCraftingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 22, 32);
         arrow.draw(guiGraphics, 70, 33);
@@ -88,7 +88,7 @@ public class BlockCutterCategory implements IRecipeCategory<RecipeHolder<Cutting
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 13 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

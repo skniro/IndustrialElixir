@@ -4,20 +4,16 @@ import com.mojang.serialization.MapCodec;
 
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
-import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.heat.ModBlastFurnaceBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,7 +29,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ModBlastFurnaceBlock extends AbstractMachineblock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -75,15 +71,17 @@ public class ModBlastFurnaceBlock extends AbstractMachineblock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!world.isClientSide()) {
-            BlockEntity entity = world.getBlockEntity(pos);
-            if (entity instanceof ModBlastFurnaceBlockEntity abstractMachineEntity) {
-                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(abstractMachineEntity, abstractMachineEntity.getDisplayName()), pos);
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
+                                               Player player, BlockHitResult hitResult) {
+        if(!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+            if(entity instanceof ModBlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                player.openMenu(blastFurnaceBlockEntity);
             }
         }
         return InteractionResult.SUCCESS;
     }
+
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
                                                                             BlockEntityType<T> type) {
@@ -120,7 +118,7 @@ public class ModBlastFurnaceBlock extends AbstractMachineblock {
         level.addParticle(ParticleTypes.SMOKE, xPos + xOffsets, yPos + yOffset, zPos + zOffset, 0.0, 0.0, 0.0);
 
         if(level.getBlockEntity(pos) instanceof ModBlastFurnaceBlockEntity blastFurnaceBlockEntity && !blastFurnaceBlockEntity.inventory.get(1).isEmpty()) {
-            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, blastFurnaceBlockEntity.inventory.get(1).getItem()),
+            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, blastFurnaceBlockEntity.inventory.get(1)),
                     xPos + xOffsets, yPos + yOffset, zPos + zOffset, 0.0, 0.0, 0.0);
         }
     }

@@ -93,7 +93,7 @@ public interface SimpleEnergyItem {
 	}
 
 	static long getStoredEnergyUnchecked(ItemVariant variant) {
-		return getStoredEnergyUnchecked(variant.getComponents());
+		return getStoredEnergyUnchecked(variant.getComponentMap());
 	}
 
 	static long getStoredEnergyUnchecked(DataComponentMap components) {

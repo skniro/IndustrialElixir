@@ -2,17 +2,36 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part",
-    "industrial_elixir:luminite_part"
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    },
+    {
+      "item": "industrial_elixir:luminite_part"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:luminite"
   }
 }

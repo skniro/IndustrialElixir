@@ -13,15 +13,14 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class MetalFormerRollingCategory implements DisplayCategory<MetalFormerRollingDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/metal_former.png");
 
     private static final int ENERGY_X = 22;
@@ -71,7 +70,7 @@ public class MetalFormerRollingCategory implements DisplayCategory<MetalFormerRo
             int arrowWidth = 48;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 34, 190, 0, progress, 15, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 70, startPoint.y + 34, 190, 0, progress, 15, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

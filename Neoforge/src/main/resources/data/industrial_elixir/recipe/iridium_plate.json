@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "industrial_elixir:alloy_plate",
-    "I": "minecraft:diamond",
-    "T": "industrial_elixir:iridium_ore"
+    "B": {
+      "item": "industrial_elixir:alloy_plate"
+    },
+    "I": {
+      "item": "minecraft:diamond"
+    },
+    "T": {
+      "item": "industrial_elixir:iridium_ore"
+    }
   },
   "pattern": [
     "TBT",
@@ -12,6 +18,7 @@
     "TBT"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:iridium_plate"
   }
 }

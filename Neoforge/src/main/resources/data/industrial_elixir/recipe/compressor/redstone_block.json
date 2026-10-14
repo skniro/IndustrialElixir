@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 9,
-  "ingredient": "minecraft:redstone",
+  "ingredient": {
+    "item": "minecraft:redstone"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:redstone_block"
   }
 }

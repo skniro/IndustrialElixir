@@ -6,7 +6,7 @@ import com.skniro.industrial_elixir.fluid.init.MapleHotSpringFluidBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,14 +27,11 @@ public class IndustrialElixirFluidBlocks {
             (settings)-> new MapleHotSpringFluidBlock(IndustrialElixirFluids.STILL_Fluid_UU.get(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER));
 
     public static <B extends Block> Supplier<Block> register(String name, Function<BlockBehaviour.Properties, ? extends B> func, BlockBehaviour.Properties props) {
-        return BLOCKS.register(name, () -> {
-            return (Block)func.apply(props.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
-        });
+        return BLOCKS.register(name, () -> (Block) func.apply(props));
     }
 
     private static <B extends Block> Supplier<Block> registerBlockWithoutItem(String name, Function<BlockBehaviour.Properties, ? extends B> block, BlockBehaviour.Properties properties) {
-        Supplier<Block> register = register(name, block, properties.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
-        return register;
+        return register(name, block, properties);
     }
 
     public static void registerFluidBlocks(IEventBus eventBus) {

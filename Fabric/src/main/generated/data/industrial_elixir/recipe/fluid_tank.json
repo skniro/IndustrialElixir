@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": "industrial_elixir:empty_cell",
-    "I": "industrial_elixir:iron_plate"
+    "E": {
+      "item": "industrial_elixir:empty_cell"
+    },
+    "I": {
+      "item": "industrial_elixir:iron_plate"
+    }
   },
   "pattern": [
     "IEI",
@@ -11,6 +15,7 @@
     "IEI"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:fluid_tank"
   }
 }

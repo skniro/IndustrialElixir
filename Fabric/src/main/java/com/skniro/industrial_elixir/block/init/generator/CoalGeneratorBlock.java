@@ -7,13 +7,12 @@ import com.skniro.industrial_elixir.block.entity.generator.CoalGeneratorBlockEnt
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.*;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -70,16 +69,16 @@ public class CoalGeneratorBlock  extends AbstractMachineblock {
     }
 
     @Override
-    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        if (world.getBlockEntity(pos) instanceof CoalGeneratorBlockEntity coalGeneratorBlockEntity) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock()) && world.getBlockEntity(pos) instanceof CoalGeneratorBlockEntity coalGeneratorBlockEntity) {
             Containers.dropContents(world, pos, coalGeneratorBlockEntity);
             world.updateNeighbourForOutputSignal(pos,this);
-            super.affectNeighborsAfterRemoval(state, world, pos, moved);
         }
+        super.onRemove(state, world, pos, newState, moved);
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide()) {
             MenuProvider screenHandlerFactory = ((CoalGeneratorBlockEntity) world.getBlockEntity(pos));
 
@@ -88,7 +87,7 @@ public class CoalGeneratorBlock  extends AbstractMachineblock {
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override

@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "industrial_elixir:insulated_copper_cable",
-    "I": "industrial_elixir:iron_plate",
-    "T": "minecraft:redstone"
+    "B": {
+      "item": "industrial_elixir:insulated_copper_cable"
+    },
+    "I": {
+      "item": "industrial_elixir:iron_plate"
+    },
+    "T": {
+      "item": "minecraft:redstone"
+    }
   },
   "pattern": [
     "BBB",
@@ -12,6 +18,7 @@
     "BBB"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:circuit"
   }
 }

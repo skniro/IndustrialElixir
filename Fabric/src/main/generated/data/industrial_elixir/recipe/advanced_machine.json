@@ -2,10 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:alloy_plate",
-    "C": "industrial_elixir:carbon_plate",
-    "I": "industrial_elixir:steel_plate",
-    "M": "industrial_elixir:machine"
+    "A": {
+      "item": "industrial_elixir:alloy_plate"
+    },
+    "C": {
+      "item": "industrial_elixir:carbon_plate"
+    },
+    "I": {
+      "item": "industrial_elixir:steel_plate"
+    },
+    "M": {
+      "item": "industrial_elixir:machine"
+    }
   },
   "pattern": [
     "ICI",
@@ -13,6 +21,7 @@
     "ICI"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:advanced_machine"
   }
 }

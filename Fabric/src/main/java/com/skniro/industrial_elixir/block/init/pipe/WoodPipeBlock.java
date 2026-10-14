@@ -5,7 +5,7 @@ import com.skniro.industrial_elixir.block.entity.pipe.PipeExtractDirectionContro
 import com.skniro.industrial_elixir.block.entity.pipe.WoodPipeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

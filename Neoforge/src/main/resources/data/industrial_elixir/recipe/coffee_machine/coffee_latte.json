@@ -3,8 +3,11 @@
   "count": 1,
   "fluid": "minecraft:water",
   "fluid_amount": 1000,
-  "ingredient": "industrial_elixir:coffee_beans",
+  "ingredient": {
+    "item": "industrial_elixir:coffee_beans"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:latte"
   }
 }

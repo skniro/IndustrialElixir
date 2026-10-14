@@ -13,15 +13,14 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class MolecularTransformerCategory implements DisplayCategory<MolecularTransformerDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/molecular_transformer.png");
 
     private static final int ENERGY_X = 52;
@@ -71,7 +70,7 @@ public class MolecularTransformerCategory implements DisplayCategory<MolecularTr
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 74, startPoint.y + 37, 194, 2, progress, 12, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 74, startPoint.y + 37, 194, 2, progress, 12, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

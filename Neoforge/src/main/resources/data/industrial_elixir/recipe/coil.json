@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": "industrial_elixir:copper_cable",
-    "T": "minecraft:iron_ingot"
+    "I": {
+      "item": "industrial_elixir:copper_cable"
+    },
+    "T": {
+      "item": "minecraft:iron_ingot"
+    }
   },
   "pattern": [
     "III",
@@ -11,6 +15,7 @@
     "III"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:coil"
   }
 }

@@ -69,12 +69,12 @@ public class CoalGeneratorBlock  extends AbstractMachineblock {
     }
 
     @Override
-    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        if (world.getBlockEntity(pos) instanceof CoalGeneratorBlockEntity coalGeneratorBlockEntity) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock()) && world.getBlockEntity(pos) instanceof CoalGeneratorBlockEntity coalGeneratorBlockEntity) {
             Containers.dropContents(world, pos, coalGeneratorBlockEntity);
             world.updateNeighbourForOutputSignal(pos,this);
-            super.affectNeighborsAfterRemoval(state, world, pos, moved);
         }
+        super.onRemove(state, world, pos, newState, moved);
     }
 
     @Override

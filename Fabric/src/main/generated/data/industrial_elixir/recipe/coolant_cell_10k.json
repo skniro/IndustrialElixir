@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": "industrial_elixir:water_cell",
-    "P": "industrial_elixir:tin_plate"
+    "C": {
+      "item": "industrial_elixir:water_cell"
+    },
+    "P": {
+      "item": "industrial_elixir:tin_plate"
+    }
   },
   "pattern": [
     " P ",
@@ -11,6 +15,7 @@
     " P "
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:coolant_cell_10k"
   }
 }

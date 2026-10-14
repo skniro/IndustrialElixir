@@ -10,9 +10,8 @@ import com.skniro.industrial_elixir.block.entity.pipe.PipeExtractDirectionContro
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 
@@ -32,7 +31,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -93,9 +91,9 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
     }
 
     @Override
-    public BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
-        if ((Boolean)state.getValue(WATERLOGGED) && world instanceof LevelAccessor worldIn) {
-            worldIn.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+        if (state.getValue(WATERLOGGED)) {
+            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
         return state;
@@ -103,14 +101,14 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
 
     @Override
     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block,
-                               @Nullable Orientation wireOrientation, boolean notify) {
+                               BlockPos fromPos, boolean notify) {
 
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof PipeBlockEntity pipe) {
             pipe.neighborUpdate();
         }
 
-        super.neighborChanged(state, world, pos, block, wireOrientation, notify);
+        super.neighborChanged(state, world, pos, block, fromPos, notify);
     }
 
 
@@ -127,7 +125,7 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter world, BlockPos pos) {
         return PipeShapeUtil.getShape(state);
     }
 
@@ -138,7 +136,7 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
     }
 
     @Override
-    public boolean canPlaceLiquid(LivingEntity player, BlockGetter view, BlockPos pos, BlockState state, Fluid fluid) {
+    public boolean canPlaceLiquid(Player player, BlockGetter view, BlockPos pos, BlockState state, Fluid fluid) {
         return !state.getValue(COVERED) && SimpleWaterloggedBlock.super.canPlaceLiquid(player, view, pos, state, fluid);
     }
 
@@ -147,21 +145,6 @@ public abstract class PipeBlock extends BaseEntityBlock implements SimpleWaterlo
         return state.getValue(WATERLOGGED)
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
-    }
-
-    @Override
-    public BlockState getAppearance(BlockState state, BlockAndLightGetter view, BlockPos pos,
-                                    Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
-
-        if (state.getValue(COVERED)) {
-            Object data = view.getBlockEntityRenderData(pos);
-            if (data instanceof BlockState cover) {
-                return cover;
-            }
-            return Blocks.OAK_PLANKS.defaultBlockState();
-        }
-
-        return super.getAppearance(state, view, pos, side, sourceState, sourcePos);
     }
 
     @Override

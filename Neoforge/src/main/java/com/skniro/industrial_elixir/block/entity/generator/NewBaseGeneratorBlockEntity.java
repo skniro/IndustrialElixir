@@ -32,7 +32,7 @@ public abstract class NewBaseGeneratorBlockEntity extends BasePowerBlockBlockEnt
         for (Direction dir : Direction.values()) {
             EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(dir), null,null, dir.getOpposite());
             if (target == null) continue;
-            EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, ((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier().getMaxOutput(), null);
+            EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, ((AbstractMachineblock)getBlockState().getBlock()).getEnergyTier().getMaxOutput());
         }
     }
 

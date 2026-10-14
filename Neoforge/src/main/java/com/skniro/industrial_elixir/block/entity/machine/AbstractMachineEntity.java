@@ -7,10 +7,7 @@ import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.ContainerHelper;
@@ -21,9 +18,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -157,21 +153,21 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putInt("abstract_machine.progress", progress);
         nbt.putInt("abstract_machine.max_progress", maxProgress);
         nbt.putLong("abstract_machine.energy", energyContainer.amount);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        progress = nbt.getIntOr("abstract_machine.progress", 0);
-        maxProgress = nbt.getIntOr("abstract_machine.max_progress", DEFAULT_MAX_PROGRESS);
-        energyContainer.amount = nbt.getLongOr("abstract_machine.energy", 300);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        progress = (nbt.contains("abstract_machine.progress") ? nbt.getInt("abstract_machine.progress") : 0);
+        maxProgress = (nbt.contains("abstract_machine.max_progress") ? nbt.getInt("abstract_machine.max_progress") : DEFAULT_MAX_PROGRESS);
+        energyContainer.amount = (nbt.contains("abstract_machine.energy") ? nbt.getLong("abstract_machine.energy") : 300);
+        super.loadAdditional(nbt, registries);
     }
 
     public void tick(Level world, BlockPos pos, BlockState state) {
@@ -202,10 +198,7 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
     public void useEnergyForCrafting() {
         long baseUse = getCraftEnergyCost() / 20;
         long effectiveUse = (long)(baseUse * getEnergyDemandMultiplier());
-        try (Transaction tx = Transaction.openRoot()) {
-            energyContainer.getSideStorage(null).extract(effectiveUse, tx);
-            tx.commit();
-        }
+        energyContainer.getSideStorage(null).extract(effectiveUse, false);
     }
 
 
@@ -216,7 +209,7 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
 
     protected void craftItem() {
         Optional<RecipeHolder<AbstractMachineCraftingRecipe>> recipe = getCurrentRecipe();
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         this.removeItem(INPUT_SLOT, recipe.get().value().requiredCount());
         if (this.getItem(OUTPUT_SLOT).isEmpty()) {
             this.setItem(OUTPUT_SLOT, output.copy());
@@ -259,7 +252,7 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
             return false;
         }
 
-        ItemStack output = recipe.get().value().output().create();
+        ItemStack output = recipe.get().value().output().copy();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft();
     }
 
@@ -296,107 +289,77 @@ public abstract class AbstractMachineEntity extends BasePowerBlockBlockEntity im
         return ENERGY_CRAFTING_AMOUNT;
     }
 
-    public ResourceHandler<ItemResource> getItemHandler(@Nullable Direction side) {
+    public IItemHandler getItemHandler(@Nullable Direction side) {
 
-        return new ResourceHandler<>() {
+        return new IItemHandler() {
 
             @Override
-            public int size() {
+            public int getSlots() {
                 return inventory.size();
             }
 
-
             @Override
-            public ItemResource getResource(int index) {
-                ItemStack stack = inventory.get(index);
-
-                if(stack.isEmpty())
-                    return ItemResource.EMPTY;
-
-                return ItemResource.of(stack);
+            public ItemStack getStackInSlot(int slot) {
+                return inventory.get(slot);
             }
 
-
             @Override
-            public long getAmountAsLong(int index) {
-                return inventory.get(index).getCount();
+            public int getSlotLimit(int slot) {
+                return inventory.get(slot).isEmpty() ? 64 : inventory.get(slot).getMaxStackSize();
             }
 
-
             @Override
-            public long getCapacityAsLong(int index, ItemResource resource) {
-                return inventory.get(index).getMaxStackSize();
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return canPlaceItemThroughFace(slot, stack, side);
             }
 
-
             @Override
-            public boolean isValid(int index, ItemResource resource) {
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+                if (stack.isEmpty() || !isItemValid(slot, stack)) return stack;
 
-                ItemStack stack = resource.toStack();
+                ItemStack existing = inventory.get(slot);
+                if (!existing.isEmpty() && !ItemStack.isSameItemSameComponents(existing, stack)) return stack;
 
-                return canPlaceItemThroughFace(
-                        index,
-                        stack,
-                        side
-                );
-            }
+                int limit = Math.min(getSlotLimit(slot), stack.getMaxStackSize());
+                int room = limit - existing.getCount();
+                if (room <= 0) return stack;
 
+                int inserted = Math.min(room, stack.getCount());
+                if (inserted <= 0) return stack;
 
-            @Override
-            public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
-                if(!isValid(index, resource)) return 0;
-                ItemStack insert = resource.toStack(amount);
-                ItemStack old = inventory.get(index);
-                int inserted = Math.min(amount, old.isEmpty() ? insert.getMaxStackSize() : old.getMaxStackSize() - old.getCount());
-                if(inserted <= 0) return 0;
-                inventorySnapshots.updateSnapshots(transaction);
-                if(old.isEmpty()) {
-                    inventory.set(index, insert.copyWithCount(inserted));
-                } else {
-                    old.grow(inserted);
+                if (!simulate) {
+                    if (existing.isEmpty()) {
+                        inventory.set(slot, stack.copyWithCount(inserted));
+                    } else {
+                        existing.grow(inserted);
+                    }
+                    setChanged();
                 }
-                setChanged();
-                return inserted;
+
+                if (inserted >= stack.getCount()) return ItemStack.EMPTY;
+                ItemStack remainder = stack.copyWithCount(stack.getCount() - inserted);
+                return remainder;
             }
 
-
-
             @Override
-            public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (amount <= 0) return ItemStack.EMPTY;
 
-                ItemStack current = inventory.get(index);
+                ItemStack current = inventory.get(slot);
+                if (current.isEmpty()) return ItemStack.EMPTY;
+                if (!canTakeItemThroughFace(slot, current, side)) return ItemStack.EMPTY;
 
-                if(current.isEmpty()) return 0;
-                if(!ItemResource.of(current).equals(resource)) return 0;
-                if(!canTakeItemThroughFace(index, current, side)) return 0;
                 int extracted = Math.min(amount, current.getCount());
-                if(extracted <= 0) return 0;
-                inventorySnapshots.updateSnapshots(transaction);
-                current.shrink(extracted);
-                if(current.isEmpty()) inventory.set(index, ItemStack.EMPTY);
-                setChanged();
-                return extracted;
+                if (extracted <= 0) return ItemStack.EMPTY;
+
+                ItemStack result = current.copyWithCount(extracted);
+                if (!simulate) {
+                    current.shrink(extracted);
+                    if (current.isEmpty()) inventory.set(slot, ItemStack.EMPTY);
+                    setChanged();
+                }
+                return result;
             }
         };
     }
-
-    private final SnapshotJournal<ItemStack[]> inventorySnapshots = new SnapshotJournal<>() {
-
-        @Override
-        protected ItemStack[] createSnapshot() {
-            ItemStack[] copy = new ItemStack[inventory.size()];
-            for(int i = 0; i < inventory.size(); i++) {
-                copy[i] = inventory.get(i).copy();
-            }
-            return copy;
-        }
-
-        @Override
-        protected void revertToSnapshot(ItemStack[] snapshot) {
-            for(int i = 0; i < snapshot.length; i++) {
-                inventory.set(i, snapshot[i]);
-            }
-            setChanged();
-        }
-    };
 }

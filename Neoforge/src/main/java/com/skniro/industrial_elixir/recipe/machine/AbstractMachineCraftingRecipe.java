@@ -2,30 +2,26 @@ package com.skniro.industrial_elixir.recipe.machine;
 
 
 import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 
 public abstract class AbstractMachineCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput> {
-    protected final ItemStackTemplate output;
+    protected final ItemStack output;
     protected final Ingredient ingredient;
     protected final int requiredCount;
-    @Nullable
-    private PlacementInfo ingredientPlacement;
 
 
-    public AbstractMachineCraftingRecipe(Ingredient ingredients, int requiredCount, ItemStackTemplate output) {
+    public AbstractMachineCraftingRecipe(Ingredient ingredients, int requiredCount, ItemStack output) {
         this.output = output;
         this.ingredient = ingredients;
         this.requiredCount = requiredCount;
     }
 
-    public AbstractMachineCraftingRecipe(Ingredient ingredients, ItemStackTemplate output) {
+    public AbstractMachineCraftingRecipe(Ingredient ingredients, ItemStack output) {
         this.output = output;
         this.ingredient = ingredients;
         this.requiredCount = 1;
@@ -39,7 +35,7 @@ public abstract class AbstractMachineCraftingRecipe implements Recipe<AlchemyCra
         return this.ingredient;
     }
 
-    public ItemStackTemplate output() {
+    public ItemStack output() {
         return this.output;
     }
 
@@ -53,17 +49,18 @@ public abstract class AbstractMachineCraftingRecipe implements Recipe<AlchemyCra
     }
 
     @Override
-    public ItemStack assemble(AlchemyCraftingRecipeInput input) {
-        return output.create();
+    public ItemStack assemble(AlchemyCraftingRecipeInput input, HolderLookup.Provider registries) {
+        return output.copy();
     }
 
     @Override
-    public PlacementInfo placementInfo() {
-        if (this.ingredientPlacement == null) {
-            this.ingredientPlacement = PlacementInfo.create(this.ingredient);
-        }
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
+    }
 
-        return this.ingredientPlacement;
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
+        return output.copy();
     }
 
     @Override
@@ -72,7 +69,7 @@ public abstract class AbstractMachineCraftingRecipe implements Recipe<AlchemyCra
     }
 
     @Override
-    public String group() {
+    public String getGroup() {
         return "";
     }
 }

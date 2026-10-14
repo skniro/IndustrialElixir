@@ -15,9 +15,6 @@ import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe
 import com.skniro.industrial_elixir.recipe.machine.ModBlastFurnaceCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.heat.ModBlastFurnaceScreenHandler;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -41,9 +38,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.NbtOps;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -52,7 +50,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
     public SingleFluidStorage fluidContainer = new SingleFluidStorage() {
 
         @Override
-        protected int getCapacity(FluidResource variant) {
+        protected int getCapacity(FluidStack variant) {
             return Math.toIntExact((FluidConstants.BUCKET / 81) * 8); // 1 Bucket = 81000 Droplets = 1000mB || * 16 ==> 16,000mB = 16 Buckets
         }
 
@@ -123,14 +121,12 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         HeatStorage input = HeatStorage.SIDED.getCapability(level, worldPosition.relative(direction), null, null,direction.getOpposite());
         if (input == null) return;
 
-        try (Transaction tx = Transaction.openRoot()) {
-            long moved = input.extract(1, tx);
+        long moved = input.extract(1, true);
 
-            if (moved > 0) {
-                heatContainer.getSideStorage(null).insert(moved, tx);
-                receivingHeat = true;
-                tx.commit();
-            }
+        if (moved > 0) {
+            input.extract(1, false);
+            heatContainer.getSideStorage(null).insert(moved, false);
+            receivingHeat = true;
         }
     }
 
@@ -154,10 +150,7 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         boolean heated = stored >= cap;
 
         if (!receivingHeat && stored > 0) {
-            try (Transaction tx = Transaction.openRoot()) {
-                heatContainer.getSideStorage(null).extract(Math.min(20, stored), tx);
-                tx.commit();
-            }
+            heatContainer.getSideStorage(null).extract(Math.min(20, stored), false);
         }
 
         if (heated && hasRecipe() && canInsertIntoOutputSlot()) {
@@ -184,12 +177,12 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         if (stack.isEmpty()) {
             return false;
         }
-        var fluidHandler = Capabilities.Fluid.ITEM.getCapability(stack, ItemAccess.forStack(stack));
+        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (fluidHandler == null) {
             return false;
         }
 
-        return !fluidHandler.getResource(0).isEmpty();
+        return !fluidHandler.getFluidInTank(0).isEmpty();
     }
 
     @Override
@@ -204,41 +197,38 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
 
     public void fillUpFluidTank() {
         ItemStack inputStack = inventory.get(FLUID_ITEM_SLOT);
-        var itemStorage = Capabilities.Fluid.ITEM.getCapability(inputStack, ItemAccess.forStack(inputStack));
-        if (itemStorage == null || itemStorage.getResource(0).isEmpty()) {
+        IFluidHandlerItem itemStorage = inputStack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (itemStorage == null || itemStorage.getFluidInTank(0).isEmpty()) {
             return;
         }
 
-        FluidResource fluid = itemStorage.getResource(0);
+        FluidStack fluid = itemStorage.getFluidInTank(0);
 
         ItemStack craftRemainder = inputStack.getItem() instanceof FluidCellItem
                 ? new ItemStack(GrowableOresItems.EMPTY_CELL.get())
-                : (inputStack.getItem().getCraftingRemainder() != null
-                   ? inputStack.getItem().getCraftingRemainder().create()
+                : (inputStack.getItem().hasCraftingRemainingItem()
+                   ? new ItemStack(inputStack.getItem().getCraftingRemainingItem())
                    : new ItemStack(Items.BUCKET));
 
         if (!canAcceptFluid(fluid, 1000) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
             return;
         }
 
-        try (Transaction transaction = Transaction.openRoot()) {
-            long inserted = this.fluidContainer.insert(fluid, 1000, transaction);
-            if (inserted != 1000) {
-                return;
-            }
+        if (this.fluidContainer.insert(fluid, 1000, true) != 1000) {
+            return;
+        }
+        this.fluidContainer.insert(fluid, 1000, false);
 
-            if (inputStack.getItem() instanceof FluidCellItem) {
-                inputStack.shrink(1);
-                storeCraftRemainder(craftRemainder);
-            } else {
-                inventory.set(FLUID_ITEM_SLOT, craftRemainder);
-            }
-            transaction.commit();
+        if (inputStack.getItem() instanceof FluidCellItem) {
+            inputStack.shrink(1);
+            storeCraftRemainder(craftRemainder);
+        } else {
+            inventory.set(FLUID_ITEM_SLOT, craftRemainder);
         }
     }
 
-    private boolean canAcceptFluid(FluidResource fluid, int amount) {
-        return (fluidContainer.isResourceBlank() || fluidContainer.getResource(0).equals(fluid))
+    private boolean canAcceptFluid(FluidStack fluid, int amount) {
+        return (fluidContainer.isResourceBlank() || fluidContainer.getResource(0).isFluidEqual(fluid))
                 && fluidContainer.getAmount() + amount <= fluidContainer.getCapacity();
     }
 
@@ -266,12 +256,9 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
     protected void craftItem() {
         ModBlastFurnaceCraftingRecipe recipe = (ModBlastFurnaceCraftingRecipe) getCurrentRecipe().get().value();
         this.removeItem(INPUT_SLOT, recipe.requiredCount());
-        insertOutput(OUTPUT_SLOT, recipe.output().create());
-        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
-        try (Transaction tx = Transaction.openRoot()) {
-            fluidContainer.extract(fluidContainer.getResource(0), recipe.requiredFluidAmount(), tx);
-            tx.commit();
-        }
+        insertOutput(OUTPUT_SLOT, recipe.output().copy());
+        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.copy()));
+        fluidContainer.extract(fluidContainer.getResource(0), recipe.requiredFluidAmount(), false);
     }
 
     private void insertOutput(int slot, ItemStack output) {
@@ -340,8 +327,8 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
         var recipe = recipeHolder.value();
         ModBlastFurnaceCraftingRecipe washingRecipe = (ModBlastFurnaceCraftingRecipe) recipe;
 
-        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().create())) return false;
-        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().create())) return false;
+        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().copy())) return false;
+        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().copy())) return false;
 
         Fluid currentFluid = this.fluidContainer.getResource(0).getFluid();
         Optional<Fluid> requiredFluid = BuiltInRegistries.FLUID.getOptional(washingRecipe.requiredFluid());
@@ -379,9 +366,9 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putInt("blast_furnace_machine.progress", progress);
         nbt.putInt("blast_furnace_machine.max_progress", maxProgress);
         nbt.putLong("blast_furnace_machine.heat", heatContainer.amount);
@@ -389,13 +376,13 @@ public class ModBlastFurnaceBlockEntity extends AbstractHeatMachineEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        progress = nbt.getIntOr("blast_furnace_machine.progress", 0);
-        maxProgress = nbt.getIntOr("blast_furnace_machine.max_progress", maxProgress);
-        heatContainer.amount = nbt.getLongOr("blast_furnace_machine.heat", 0);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        progress = (nbt.contains("blast_furnace_machine.progress") ? nbt.getInt("blast_furnace_machine.progress") : 0);
+        maxProgress = (nbt.contains("blast_furnace_machine.max_progress") ? nbt.getInt("blast_furnace_machine.max_progress") : maxProgress);
+        heatContainer.amount = (nbt.contains("blast_furnace_machine.heat") ? nbt.getLong("blast_furnace_machine.heat") : 0);
         SingleFluidStorage.readValue(fluidContainer, nbt);
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, registries);
     }
 
     @org.jetbrains.annotations.Nullable

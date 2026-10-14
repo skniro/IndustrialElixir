@@ -1,8 +1,9 @@
 package com.skniro.industrial_elixir.api.data.recipe;
 
 import com.skniro.industrial_elixir.recipe.machine.MetalFormerRollingCraftingRecipe;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -24,20 +25,20 @@ import net.minecraft.world.level.ItemLike;
 public class MetalFormerRollingRecipeJsonBuilder implements RecipeBuilder {
     private final HolderGetter<Item> itemLookup;
     private Ingredient ingredient;
-    private final ItemStackTemplate result;
+    private final ItemStack result;
     private int requiredCount;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     @Nullable
     private String group;
 
-    private MetalFormerRollingRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStackTemplate result) {
+    private MetalFormerRollingRecipeJsonBuilder(HolderGetter<Item> itemLookup, ItemStack result) {
         this.itemLookup = itemLookup;
         this.result = result;
     }
 
     public static MetalFormerRollingRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output, int count) {
-        return new MetalFormerRollingRecipeJsonBuilder(itemLookup, new ItemStackTemplate(output.asItem(), count));
+        return new MetalFormerRollingRecipeJsonBuilder(itemLookup, new ItemStack(output.asItem(), count));
     }
 
     public static MetalFormerRollingRecipeJsonBuilder create(HolderGetter<Item> itemLookup, ItemLike output) {
@@ -58,7 +59,7 @@ public class MetalFormerRollingRecipeJsonBuilder implements RecipeBuilder {
     }
 
     public MetalFormerRollingRecipeJsonBuilder input(TagKey<Item> tag, int amount) {
-        this.ingredient = Ingredient.of(itemLookup.getOrThrow(tag));
+        this.ingredient = Ingredient.of(tag);
         this.requiredCount = amount;
         return this;
     }
@@ -76,28 +77,28 @@ public class MetalFormerRollingRecipeJsonBuilder implements RecipeBuilder {
     }
 
     @Override
-    public ResourceKey<Recipe<?>> defaultId() {
-        return RecipeBuilder.getDefaultRecipeId(this.result);
+    public Item getResult() {
+        return this.result.getItem();
     }
 
     @Override
-    public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
-        ResourceKey<Recipe<?>> finalKey = modifyRecipeKey(recipeKey, exporter);
+    public void save(RecipeOutput exporter, ResourceLocation recipeId) {
+        ResourceLocation finalRecipeId = modifyRecipeKey(recipeId, exporter);
         MetalFormerRollingCraftingRecipe recipe = new MetalFormerRollingCraftingRecipe(ingredient, requiredCount, result);
         if (criteria.isEmpty()) {
-            exporter.accept(finalKey, recipe, null);
+            exporter.accept(finalRecipeId, recipe, null);
             return;
         }
 
-        Advancement.Builder advancementBuilder = exporter.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey)).rewards(AdvancementRewards.Builder.recipe(recipeKey)).requirements(AdvancementRequirements.Strategy.OR);
+        Advancement.Builder advancementBuilder = exporter.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(AdvancementRequirements.Strategy.OR);
 
         this.criteria.forEach(advancementBuilder::addCriterion);
 
-        exporter.accept(finalKey, recipe, advancementBuilder.build(finalKey.identifier().withPrefix("recipes/")));
+        exporter.accept(finalRecipeId, recipe, advancementBuilder.build(finalRecipeId.withPrefix("recipes/")));
 
     }
 
-    private ResourceKey<Recipe<?>> modifyRecipeKey(ResourceKey<Recipe<?>> recipeKey, RecipeOutput exporter) {
-        return ResourceKey.create(recipeKey.registryKey(), exporter.getRecipeIdentifier(recipeKey.identifier().withPrefix("metalformer_rolling/")));
+    private ResourceLocation modifyRecipeKey(ResourceLocation recipeId, RecipeOutput exporter) {
+        return exporter.getRecipeIdentifier(recipeId.withPrefix("metalformer_rolling/"));
     }
 }

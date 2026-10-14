@@ -1,6 +1,8 @@
 {
   "type": "industrial_elixir:extractor",
-  "ingredient": "minecraft:snow_block",
+  "ingredient": {
+    "item": "minecraft:snow_block"
+  },
   "result": {
     "count": 4,
     "id": "minecraft:snowball"

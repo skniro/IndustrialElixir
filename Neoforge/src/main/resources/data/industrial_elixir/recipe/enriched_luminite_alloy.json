@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": "industrial_elixir:luminite_alloy",
-    "R": "industrial_elixir:enriched_luminite"
+    "D": {
+      "item": "industrial_elixir:luminite_alloy"
+    },
+    "R": {
+      "item": "industrial_elixir:enriched_luminite"
+    }
   },
   "pattern": [
     " R ",
@@ -11,6 +15,7 @@
     " R "
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:enriched_luminite_alloy"
   }
 }

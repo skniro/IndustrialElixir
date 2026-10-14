@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "tin_ingot",
-  "ingredient": "industrial_elixir:crushed_tin",
+  "ingredient": {
+    "item": "industrial_elixir:crushed_tin"
+  },
   "result": {
     "id": "industrial_elixir:tin_ingot"
   }

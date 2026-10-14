@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ModBlastFurnaceBlock extends AbstractMachineblock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -118,7 +118,7 @@ public class ModBlastFurnaceBlock extends AbstractMachineblock {
         level.addParticle(ParticleTypes.SMOKE, xPos + xOffsets, yPos + yOffset, zPos + zOffset, 0.0, 0.0, 0.0);
 
         if(level.getBlockEntity(pos) instanceof ModBlastFurnaceBlockEntity blastFurnaceBlockEntity && !blastFurnaceBlockEntity.inventory.get(1).isEmpty()) {
-            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, blastFurnaceBlockEntity.inventory.get(1).getItem()),
+            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, blastFurnaceBlockEntity.inventory.get(1)),
                     xPos + xOffsets, yPos + yOffset, zPos + zOffset, 0.0, 0.0, 0.0);
         }
     }

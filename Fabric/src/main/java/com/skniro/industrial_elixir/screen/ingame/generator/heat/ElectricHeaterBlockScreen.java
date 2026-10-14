@@ -6,18 +6,17 @@ import com.skniro.industrial_elixir.util.MouseUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class ElectricHeaterBlockScreen extends AbstractContainerScreen<ElectricHeaterScreenHandler> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/generator/heat/guielectricheatgenerator.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/generator/heat/guielectricheatgenerator.png");
 
     public ElectricHeaterBlockScreen(ElectricHeaterScreenHandler handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -34,43 +33,43 @@ public class ElectricHeaterBlockScreen extends AbstractContainerScreen<ElectricH
                return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount()+" / "+ menu.blockEntity.energyContainer.getSideStorage(null).getCapacity()+" EP"));
     }
 
-    private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
+    private void renderEnergyAreaTooltips(GuiGraphics context, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 8, 42, 13, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(),
+            context.renderTooltip(Screens.getTextRenderer(this), getTooltips(),
                     Optional.empty(), pMouseX, pMouseY);
         }
     }
 
-    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 8, y + 42, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+    private void renderEnergyArea(GuiGraphics context, int x, int y) {
+        context.blit(TEXTURE, x + 8, y + 42, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
 
-    private void renderHeatAreaTooltips(GuiGraphicsExtractor context) {
-        context.text(font, menu.getHeatTooltips(), 43, 68,  -12566464, false);
+    private void renderHeatAreaTooltips(GuiGraphics context) {
+        context.drawString(font, menu.getHeatTooltips(), 43, 68,  -12566464, false);
     }
 
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
-        super.extractLabels(context, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics context, int mouseX, int mouseY) {
+        super.renderLabels(context, mouseX, mouseY);
         renderEnergyAreaTooltips(context, mouseX, mouseY, leftPos, topPos);
         renderHeatAreaTooltips(context);
     }
 
     @Override
-       public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTicks) {
+       protected void renderBg(GuiGraphics context, float partialTicks, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight,256,256);
+        context.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight,256,256);
         renderEnergyArea(context, x, y);
     }
 
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
-        super.extractRenderState(context, mouseX, mouseY, deltaTicks);
-        this.extractTooltip(context, mouseX, mouseY);
+    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+        super.render(context, mouseX, mouseY, deltaTicks);
+        this.renderTooltip(context, mouseX, mouseY);
     }
 
     private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {

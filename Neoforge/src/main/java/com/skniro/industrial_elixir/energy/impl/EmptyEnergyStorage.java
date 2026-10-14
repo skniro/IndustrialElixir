@@ -1,7 +1,6 @@
 package com.skniro.industrial_elixir.energy.impl;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.ApiStatus;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
@@ -18,7 +17,7 @@ public final class EmptyEnergyStorage implements EnergyStorage {
 	}
 
 	@Override
-	public long insert(long maxAmount, TransactionContext transaction) {
+	public long insert(long maxAmount, boolean simulate) {
 		return 0;
 	}
 
@@ -28,7 +27,7 @@ public final class EmptyEnergyStorage implements EnergyStorage {
 	}
 
 	@Override
-	public long extract(long maxAmount, TransactionContext transaction) {
+	public long extract(long maxAmount, boolean simulate) {
 		return 0;
 	}
 

@@ -2,11 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:alloy_plate",
-    "C": "industrial_elixir:advanced_circuit",
-    "L": "industrial_elixir:lapotron_crystal",
-    "M": "industrial_elixir:advanced_machine",
-    "S": "industrial_elixir:super_machine"
+    "A": {
+      "item": "industrial_elixir:alloy_plate"
+    },
+    "C": {
+      "item": "industrial_elixir:advanced_circuit"
+    },
+    "L": {
+      "item": "industrial_elixir:lapotron_crystal"
+    },
+    "M": {
+      "item": "industrial_elixir:advanced_machine"
+    },
+    "S": {
+      "item": "industrial_elixir:super_machine"
+    }
   },
   "pattern": [
     "ACA",
@@ -14,6 +24,7 @@
     "ALA"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:crop_farm"
   }
 }

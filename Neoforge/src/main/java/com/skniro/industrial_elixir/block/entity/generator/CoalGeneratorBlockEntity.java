@@ -7,7 +7,6 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.screen.handler.generator.CoalGeneratorScreenHandler;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,9 +25,9 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -73,21 +72,21 @@ public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putLong(("coal_generator.energy"), energyContainer.amount);
         nbt.putInt(("coal_generator.burn_progress"), burnProgress);
         nbt.putInt(("coal_generator.max_burn_progress"), maxBurnProgress);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
-        energyContainer.amount = nbt.getLongOr("coal_generator.energy", 0);
-        burnProgress = nbt.getIntOr("coal_generator.burn_progress", 0);
-        maxBurnProgress = nbt.getIntOr("coal_generator.max_burn_progress", 0);
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
+        energyContainer.amount = (nbt.contains("coal_generator.energy") ? nbt.getLong("coal_generator.energy") : 0);
+        burnProgress = (nbt.contains("coal_generator.burn_progress") ? nbt.getInt("coal_generator.burn_progress") : 0);
+        maxBurnProgress = (nbt.contains("coal_generator.max_burn_progress") ? nbt.getInt("coal_generator.max_burn_progress") : 0);
+        super.loadAdditional(nbt, registries);
     }
 
     @Override
@@ -119,7 +118,7 @@ public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
         }
 
         if (this.level != null) {
-            return this.level.fuelValues().burnDuration(stack) / 2;
+            return AbstractFurnaceBlockEntity.getFuel().getOrDefault(stack.getItem(), 0) / 2;
         }
 
         return 0;
@@ -166,17 +165,13 @@ public class CoalGeneratorBlockEntity extends NewBaseGeneratorBlockEntity {
             EnergyStorageUtil.move(
                     this.energyContainer.getSideStorage(direction),
                     target,
-                    ENERGY_TRANSFER_AMOUNT,
-                    null
+                    ENERGY_TRANSFER_AMOUNT
             );
         }
     }
 
     private void fillUpOnEnergy() {
-        try (Transaction transaction = Transaction.openRoot()) {
-            this.energyContainer.getSideStorage(null).insert(energyTier.getMaxInput(), transaction);
-            transaction.commit();
-        }
+        this.energyContainer.getSideStorage(null).insert(energyTier.getMaxInput(), false);
     }
 
     private boolean hasFuelItemInSlot() {

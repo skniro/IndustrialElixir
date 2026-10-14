@@ -2,11 +2,9 @@ package com.skniro.industrial_elixir.fluid;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.Helper;
-import net.minecraft.client.renderer.block.FluidModel;
-import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;

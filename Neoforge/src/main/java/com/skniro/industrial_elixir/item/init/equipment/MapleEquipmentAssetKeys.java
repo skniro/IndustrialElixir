@@ -1,18 +1,22 @@
 package com.skniro.industrial_elixir.item.init.equipment;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.equipment.EquipmentAsset;
-import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ArmorMaterial;
 
+/**
+ * Armour texture layers for the mod's armour sets.
+ *
+ * <p>26.1 models armour textures through a data-driven {@code EquipmentAsset}; 1.21.1 has no such
+ * registry and instead resolves the texture straight from an {@link ArmorMaterial.Layer}.</p>
+ */
 public interface MapleEquipmentAssetKeys {
-    ResourceKey<EquipmentAsset> QUANTUM = register("quantum");
-    ResourceKey<EquipmentAsset> BRONZE = register("bronze");
-    ResourceKey<EquipmentAsset> ELECTRIC_JETPACK = register("electric_jetpack");
+    ArmorMaterial.Layer QUANTUM = register("quantum");
+    ArmorMaterial.Layer BRONZE = register("bronze");
+    ArmorMaterial.Layer ELECTRIC_JETPACK = register("electric_jetpack");
 
-    static ResourceKey<EquipmentAsset> register(String name) {
-        return ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID,name));
+    static ArmorMaterial.Layer register(String name) {
+        return new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
     }
 
     public static void registerMapleArmorAssetsKeys() {

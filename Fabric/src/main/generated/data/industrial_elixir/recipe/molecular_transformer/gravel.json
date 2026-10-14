@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:molecular_transformer",
   "energy": 50000,
-  "ingredient": "minecraft:sand",
+  "ingredient": {
+    "item": "minecraft:sand"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:gravel"
   }
 }

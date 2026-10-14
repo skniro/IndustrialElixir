@@ -8,7 +8,7 @@ import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import com.skniro.industrial_elixir.screen.handler.container.fluid.FluidTankScreenHandler;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -41,8 +41,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -50,7 +49,7 @@ import java.util.Map;
 
 import static com.skniro.industrial_elixir.api.fluid.FluidOutputMap.FLUID_CONTAINERS;
 
-public class FluidTankBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos>, ImplementedInventory {
+public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
     private static final long BUCKET_VOLUME_MB = FluidConstants.BUCKET / 81;
     private static final long TANK_CAPACITY_MB = BUCKET_VOLUME_MB * 16;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -223,8 +222,8 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedMenuPro
 
         ItemStack craftRemainder = inputStack.getItem() instanceof FluidCellItem
                 ? new ItemStack(GrowableOresItems.EMPTY_CELL)
-                : (inputStack.getItem().getCraftingRemainder() != null
-                   ? inputStack.getItem().getCraftingRemainder().create()
+                : (inputStack.getItem().hasCraftingRemainingItem()
+                   ? new ItemStack(inputStack.getItem().getCraftingRemainingItem())
                    : new ItemStack(Items.BUCKET));
 
         if (!canAcceptFluid(fluidStorage) || !canStoreCraftRemainder(inputStack, craftRemainder)) {
@@ -383,8 +382,8 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedMenuPro
 
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putLong("tank.amount", fluidContainer.amount);
         if (!fluidContainer.variant.isBlank()) {
             nbt.putInt("tank.fluid_id", BuiltInRegistries.FLUID.getId(fluidContainer.variant.getFluid()));
@@ -394,10 +393,10 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedMenuPro
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        super.loadAdditional(nbt);
-        long amount = nbt.getLongOr("tank.amount", 0);
-        int fluidId = nbt.getIntOr("tank.fluid_id", -1);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
+        long amount = (nbt.contains("tank.amount") ? nbt.getLong("tank.amount") : 0);
+        int fluidId = (nbt.contains("tank.fluid_id") ? nbt.getInt("tank.fluid_id") : -1);
         if (amount <= 0 || fluidId < 0) {
             fluidContainer.variant = FluidVariant.blank();
             fluidContainer.amount = 0;

@@ -17,8 +17,9 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
@@ -70,19 +71,19 @@ public class MolecularTransformerBlockEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putLong("molecular_transformer.energy_progress", energyProgress);
         nbt.putLong("molecular_transformer.energy_required", energyRequired);
         nbt.putLong("molecular_transformer.energy_input_per_tick", energyInputPerTick);
     }
 
     @Override
-    protected void loadAdditional(ValueInput nbt) {
-        super.loadAdditional(nbt);
-        energyProgress = nbt.getLongOr("molecular_transformer.energy_progress", energyProgress);
-        energyRequired = nbt.getLongOr("molecular_transformer.energy_required", energyRequired);
-        energyInputPerTick = nbt.getLongOr("molecular_transformer.energy_input_per_tick", energyInputPerTick);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
+        energyProgress = (nbt.contains("molecular_transformer.energy_progress") ? nbt.getLong("molecular_transformer.energy_progress") : energyProgress);
+        energyRequired = (nbt.contains("molecular_transformer.energy_required") ? nbt.getLong("molecular_transformer.energy_required") : energyRequired);
+        energyInputPerTick = (nbt.contains("molecular_transformer.energy_input_per_tick") ? nbt.getLong("molecular_transformer.energy_input_per_tick") : energyInputPerTick);
     }
 
     @Override

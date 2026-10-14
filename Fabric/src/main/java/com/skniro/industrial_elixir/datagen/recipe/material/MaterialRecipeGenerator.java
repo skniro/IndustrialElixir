@@ -10,7 +10,9 @@ import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -26,8 +28,12 @@ public class MaterialRecipeGenerator extends FabricRecipeProvider {
 
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 shaped(RecipeCategory.MISC, GrowableOresItems.ENERGIUM_DUST)

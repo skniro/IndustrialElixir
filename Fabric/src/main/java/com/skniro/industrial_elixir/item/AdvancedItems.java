@@ -6,7 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class AdvancedItems {
@@ -27,8 +27,8 @@ public class AdvancedItems {
     public static final Item PIPE_PLUG = registerItem("pipe_plug", Item::new, new Item.Properties());
 
     private static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {
-        Item item = factory.apply(settings.setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name))));
-        return Registry.register(BuiltInRegistries.ITEM, ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)), item);
+        Item item = factory.apply(settings);
+        return Registry.register(BuiltInRegistries.ITEM, ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)), item);
     }
 
     public static void registerAdvancedItem(){

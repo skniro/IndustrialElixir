@@ -6,7 +6,6 @@ import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.init.ItemUpgradeModule;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.handler.machine.InductionFurnaceScreenHandler;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,8 +25,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -171,7 +169,7 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
         ItemStack projectedOutput = this.getItem(OUTPUT_SLOT).copy();
         Optional<RecipeHolder<SmeltingRecipe>> firstRecipe = getSmeltingRecipe(INPUT_SLOT_A);
         if (firstRecipe.isPresent()) {
-            ItemStack output = firstRecipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT_A))).copy();
+            ItemStack output = firstRecipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT_A)), this.getLevel().registryAccess()).copy();
             if (canMergeOutput(projectedOutput, output)) {
                 projectedOutput = mergedOutput(projectedOutput, output);
                 count++;
@@ -179,7 +177,7 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
         }
         Optional<RecipeHolder<SmeltingRecipe>> secondRecipe = getSmeltingRecipe(INPUT_SLOT_B);
         if (secondRecipe.isPresent()) {
-            ItemStack output = secondRecipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT_B))).copy();
+            ItemStack output = secondRecipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT_B)), this.getLevel().registryAccess()).copy();
             if (canMergeOutput(projectedOutput, output)) {
                 count++;
             }
@@ -196,10 +194,7 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
     }
 
     private void extractEnergy(long amount) {
-        try (Transaction transaction = Transaction.openRoot()) {
-            energyContainer.getSideStorage(null).extract(amount, transaction);
-            transaction.commit();
-        }
+        energyContainer.getSideStorage(null).extract(amount, false);
     }
 
     private boolean hasSmeltingRecipe(int inputSlot) {
@@ -207,7 +202,7 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
         if (recipe.isEmpty()) {
             return false;
         }
-        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(inputSlot))).copy();
+        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(inputSlot)), this.getLevel().registryAccess()).copy();
         return canMergeOutput(this.getItem(OUTPUT_SLOT), output);
     }
 
@@ -236,7 +231,7 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
         if (recipe.isEmpty()) {
             return;
         }
-        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(inputSlot))).copy();
+        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(inputSlot)), this.getLevel().registryAccess()).copy();
         if (!hasSmeltingRecipe(inputSlot)) {
             return;
         }
@@ -273,17 +268,17 @@ public class InductionFurnaceEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         output.putInt("induction_furnace.heat", heat);
         output.putInt("induction_furnace.heat_tick", heatTick);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        heat = input.getIntOr("induction_furnace.heat", 0);
-        heatTick = input.getIntOr("induction_furnace.heat_tick", 0);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        heat = (input.contains("induction_furnace.heat") ? input.getInt("induction_furnace.heat") : 0);
+        heatTick = (input.contains("induction_furnace.heat_tick") ? input.getInt("induction_furnace.heat_tick") : 0);
         maxProgress = getProgressTicksForHeat();
     }
 

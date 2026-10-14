@@ -65,30 +65,32 @@ public class FluidTankBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof AbstractMachineEntity) {
-            Containers.dropContents(world, pos, (Container) blockEntity);
-            world.updateNeighbourForOutputSignal(pos,this);
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof AbstractMachineEntity) {
+                Containers.dropContents(world, pos, (Container) blockEntity);
+                world.updateNeighbourForOutputSignal(pos,this);
+            }
         }
-        super.affectNeighborsAfterRemoval(state, world, pos, moved);
+        super.onRemove(state, world, pos, newState, moved);
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!(blockEntity instanceof FluidTankBlockEntity fluidTank)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (isFluidBucket(stack)) {
             if (world.isClientSide()) {
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
 
             InteractionResult bucketResult = fluidTank.interactBucket(player, hand);
             if (bucketResult != InteractionResult.PASS) {
-                return bucketResult;
+                return bucketResult.consumesAction() ? ItemInteractionResult.sidedSuccess(world.isClientSide()) : ItemInteractionResult.FAIL;
             }
         }
 
@@ -96,7 +98,7 @@ public class FluidTankBlock extends BaseEntityBlock {
             player.openMenu(fluidTank);
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     private static boolean isFluidBucket(ItemStack stack) {

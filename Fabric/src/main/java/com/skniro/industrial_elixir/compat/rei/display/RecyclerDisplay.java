@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -27,32 +27,24 @@ public class RecyclerDisplay extends BasicDisplay {
     public static final CategoryIdentifier<RecyclerDisplay> Recycler =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "recycler");
 
-    public static final DisplaySerializer<RecyclerDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(BasicDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(BasicDisplay::getDisplayLocation)
-            ).apply(instance, RecyclerDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BasicDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    BasicDisplay::getDisplayLocation,
-                    RecyclerDisplay::new
-            )
+    public static final DisplaySerializer<RecyclerDisplay> SERIALIZER = BasicDisplay.Serializer.<RecyclerDisplay>of(
+            (inputs, outputs, location, tag) -> new RecyclerDisplay(outputs, location),
+            (display, tag) -> {
+            }
     );
 
     public RecyclerDisplay(RecyclerCraftingRecipe recipe) {
         super(List.of(EntryIngredients.ofItemStacks(getAllItems())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.output()))));
     }
 
-    public RecyclerDisplay(List<EntryIngredient> outputs, Optional<Identifier> location) {
+    public RecyclerDisplay(List<EntryIngredient> outputs, Optional<ResourceLocation> location) {
         super(List.of(EntryIngredients.ofItemStacks(getAllItems())), outputs, location);
     }
 
     public RecyclerDisplay(RecipeHolder<RecyclerCraftingRecipe> recipe){
         super(List.of(EntryIngredients.ofItemStacks(getAllItems())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
     }
 
     private static List<ItemStack> getAllItems() {
@@ -68,8 +60,4 @@ public class RecyclerDisplay extends BasicDisplay {
         return RecyclerDisplay.Recycler;
     }
 
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
-    }
 }

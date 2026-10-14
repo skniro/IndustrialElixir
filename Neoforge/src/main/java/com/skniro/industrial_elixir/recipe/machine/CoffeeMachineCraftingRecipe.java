@@ -8,26 +8,26 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.Optional;
+import com.skniro.industrial_elixir.recipe.ModRecipeSerializers;
 
 public class CoffeeMachineCraftingRecipe extends AbstractMachineCraftingRecipe {
 
     private final Optional<Ingredient> ingredient2;
     private final Optional<Ingredient> ingredient3;
-    private final Identifier requiredFluid;
+    private final ResourceLocation requiredFluid;
     private final int requiredFluidAmount;
 
     public CoffeeMachineCraftingRecipe(Ingredient ingredient, Optional<Ingredient> ingredient2,
                                        Optional<Ingredient> ingredient3, int requiredCount,
-                                       ItemStackTemplate output, Identifier requiredFluid, int requiredFluidAmount) {
+                                       ItemStack output, ResourceLocation requiredFluid, int requiredFluidAmount) {
         super(ingredient, requiredCount, output);
         this.ingredient2 = ingredient2;
         this.ingredient3 = ingredient3;
@@ -45,10 +45,6 @@ public class CoffeeMachineCraftingRecipe extends AbstractMachineCraftingRecipe {
         return AlchemyRecipeType.COFFEE_MACHINE.type.get();
     }
 
-    @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
 
     public Optional<Ingredient> ingredient2() {
         return ingredient2;
@@ -58,7 +54,7 @@ public class CoffeeMachineCraftingRecipe extends AbstractMachineCraftingRecipe {
         return ingredient3;
     }
 
-    public Identifier requiredFluid() {
+    public ResourceLocation requiredFluid() {
         return requiredFluid;
     }
 
@@ -72,24 +68,43 @@ public class CoffeeMachineCraftingRecipe extends AbstractMachineCraftingRecipe {
                     Ingredient.CODEC.optionalFieldOf("ingredient2").forGetter(recipe -> recipe.ingredient2),
                     Ingredient.CODEC.optionalFieldOf("ingredient3").forGetter(recipe -> recipe.ingredient3),
                     Codec.INT.fieldOf("count").forGetter(recipe -> recipe.requiredCount),
-                    ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.output),
-                    Identifier.CODEC.fieldOf("fluid").forGetter(recipe -> recipe.requiredFluid),
+                    ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.output),
+                    ResourceLocation.CODEC.fieldOf("fluid").forGetter(recipe -> recipe.requiredFluid),
                     Codec.INT.fieldOf("fluid_amount").forGetter(recipe -> recipe.requiredFluidAmount)
             ).apply(inst, CoffeeMachineCraftingRecipe::new));
 
+    /**
+     * 1.21.1's {@link StreamCodec#composite} only goes up to six components, so the
+     * first six fields are packed into a small carrier record and the fluid amount
+     * is appended afterwards.
+     */
+    private record Base(Ingredient ingredient, Optional<Ingredient> ingredient2,
+                        Optional<Ingredient> ingredient3, int requiredCount,
+                        ItemStack output, ResourceLocation requiredFluid) {
+    }
+
+    private static final StreamCodec<RegistryFriendlyByteBuf, Base> BASE_STREAM_CODEC =
+            StreamCodec.composite(
+                    Ingredient.CONTENTS_STREAM_CODEC, Base::ingredient,
+                    ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), Base::ingredient2,
+                    ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), Base::ingredient3,
+                    ByteBufCodecs.INT, Base::requiredCount,
+                    ItemStack.STREAM_CODEC, Base::output,
+                    ResourceLocation.STREAM_CODEC, Base::requiredFluid,
+                    Base::new);
+
     public static final StreamCodec<RegistryFriendlyByteBuf, CoffeeMachineCraftingRecipe> STREAM_CODEC =
             StreamCodec.composite(
-                    Ingredient.CONTENTS_STREAM_CODEC, AbstractMachineCraftingRecipe::ingredient,
-                    Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient2,
-                    Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC, recipe -> recipe.ingredient3,
-                    ByteBufCodecs.INT, AbstractMachineCraftingRecipe::requiredCount,
-                    ItemStackTemplate.STREAM_CODEC, AbstractMachineCraftingRecipe::output,
-                    Identifier.STREAM_CODEC, CoffeeMachineCraftingRecipe::requiredFluid,
+                    BASE_STREAM_CODEC,
+                    recipe -> new Base(recipe.ingredient, recipe.ingredient2, recipe.ingredient3,
+                            recipe.requiredCount, recipe.output, recipe.requiredFluid),
                     ByteBufCodecs.INT, CoffeeMachineCraftingRecipe::requiredFluidAmount,
-                    CoffeeMachineCraftingRecipe::new);
+                    (base, amount) -> new CoffeeMachineCraftingRecipe(base.ingredient(), base.ingredient2(),
+                            base.ingredient3(), base.requiredCount(), base.output(),
+                            base.requiredFluid(), amount));
 
     public static final RecipeSerializer<CoffeeMachineCraftingRecipe> SERIALIZER =
-            new RecipeSerializer<>(CODEC, STREAM_CODEC);
+            ModRecipeSerializers.of(CODEC, STREAM_CODEC);
 
     @Override
     public boolean matches(AlchemyCraftingRecipeInput input, net.minecraft.world.level.Level world) {

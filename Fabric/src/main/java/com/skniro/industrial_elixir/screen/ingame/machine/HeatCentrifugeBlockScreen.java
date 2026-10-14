@@ -5,19 +5,18 @@ import com.skniro.industrial_elixir.api.renderer.GuiFluidTankRenderer;
 import com.skniro.industrial_elixir.screen.handler.machine.HeatCentrifugeScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentrifugeScreenHandler> {
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/heatcentrifuge.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/heatcentrifuge.png");
     private GuiFluidTankRenderer fluidRenderer;
 
     public HeatCentrifugeBlockScreen(HeatCentrifugeScreenHandler menu, Inventory inventory, Component title) {
@@ -36,39 +35,38 @@ public class HeatCentrifugeBlockScreen extends AbstractContainerScreen<HeatCentr
         return List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " EP"));
     }
 
-    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 129, y + 45, 176, 0, 13, menu.getScaledEnergyHeight(), 256, 256);
+    private void renderEnergyArea(GuiGraphics context, int x, int y) {
+        context.blit(TEXTURE, x + 129, y + 45, 176, 0, 13, menu.getScaledEnergyHeight(), 256, 256);
     }
 
-    private void renderHeatAreaTooltips(GuiGraphicsExtractor context) {
-        context.text(font, Component.literal("Heat: " + menu.getHeat() / 60 + "%"), 23, 56, -12566464, false);
+    private void renderHeatAreaTooltips(GuiGraphics context) {
+        context.drawString(font, Component.literal("Heat: " + menu.getHeat() / 60 + "%"), 23, 56, -12566464, false);
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor context, int xm, int ym) {
-        super.extractLabels(context, xm, ym);
+    protected void renderLabels(GuiGraphics context, int xm, int ym) {
+        super.renderLabels(context, xm, ym);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         renderHeatAreaTooltips(context);
         if (MouseUtil.isMouseOver(xm, ym, x + 131, y + 45, 13, 16)) {
-            context.setTooltipForNextFrame(Screens.getFont(this), getTooltips(), Optional.empty(), xm, ym);
+            context.renderTooltip(Screens.getTextRenderer(this), getTooltips(), Optional.empty(), xm, ym);
         }
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float a) {
-        super.extractBackground(context, mouseX, mouseY, a);
+    protected void renderBg(GuiGraphics context, float a, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        context.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         renderEnergyArea(context, x, y);
         renderProgressArrow(context, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+    private void renderProgressArrow(GuiGraphics context, int x, int y) {
         if (menu.isCrafting()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(), 16, 256, 256);
+            context.blit(TEXTURE, x + 70, y + 34, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 }

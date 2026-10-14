@@ -207,9 +207,9 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(GrowableOresBlocks.COFFEE_MACHINE_Block, "Coffee Maker");
 
         translationBuilder.add(MapleSignBlocks.Rubber_SIGN, "Rubber Sign");
-        translationBuilder.add(MapleSignBlocks.Rubber_WALL_SIGN, "Rubber Wall Sign");
-        translationBuilder.add(MapleSignBlocks.Rubber_HANGING_SIGN, "Rubber Hanging Sign");
-        translationBuilder.add(MapleSignBlocks.Rubber_WALL_HANGING_SIGN, "Rubber Wall Hanging Sign");
+        //translationBuilder.add(MapleSignBlocks.Rubber_WALL_SIGN, "Rubber Wall Sign");
+        //translationBuilder.add(MapleSignBlocks.Rubber_HANGING_SIGN, "Rubber Hanging Sign");
+        //translationBuilder.add(MapleSignBlocks.Rubber_WALL_HANGING_SIGN, "Rubber Wall Hanging Sign");
 
         translationBuilder.add(AdvancedItems.IRRADIANT_SACRED_INGOT, "Irradiant Sacred Ingot");
         translationBuilder.add(AdvancedItems.IRRADIANT_GLASS_PANE, "Irradiant Glass Pane");
@@ -466,12 +466,12 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add(GeneralBlocks.LATTE, "Latte");
         translationBuilder.add(GeneralBlocks.HOT_COCOA, "Hot Cocoa");
 
-        translationBuilder.add(MapleFoodComponents.Coffee_Black, "Americano");
+/*        translationBuilder.add(MapleFoodComponents.Coffee_Black, "Americano");
         translationBuilder.add(MapleFoodComponents.Cappuccino, "Cappuccino");
         translationBuilder.add(MapleFoodComponents.Mocha, "Mocha");
         translationBuilder.add(MapleFoodComponents.Latte, "Latte");
         translationBuilder.add(MapleFoodComponents.Hot_Cocoa, "Hot Cocoa");
-        translationBuilder.add(MapleFoodComponents.Coffee_Beans, "Coffee Bean");
+        translationBuilder.add(MapleFoodComponents.Coffee_Beans, "Coffee Bean");*/
 
         translationBuilder.add(GeneralBlocks.COBBLESTONE_STAIRS, "Cobblestone stairs(Hot spring)");
 

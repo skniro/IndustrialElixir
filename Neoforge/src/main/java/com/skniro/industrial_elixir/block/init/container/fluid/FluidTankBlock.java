@@ -2,13 +2,11 @@ package com.skniro.industrial_elixir.block.init.container.fluid;
 
 import com.mojang.serialization.MapCodec;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
-import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.entity.container.fluid.FluidTankBlockEntity;
 import com.skniro.industrial_elixir.block.entity.machine.AbstractMachineEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -67,41 +65,40 @@ public class FluidTankBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof AbstractMachineEntity) {
-            Containers.dropContents(world, pos, (Container) blockEntity);
-            world.updateNeighbourForOutputSignal(pos,this);
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof AbstractMachineEntity) {
+                Containers.dropContents(world, pos, (Container) blockEntity);
+                world.updateNeighbourForOutputSignal(pos,this);
+            }
         }
-        super.affectNeighborsAfterRemoval(state, world, pos, moved);
+        super.onRemove(state, world, pos, newState, moved);
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!(blockEntity instanceof FluidTankBlockEntity fluidTank)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (isFluidBucket(stack)) {
             if (world.isClientSide()) {
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
 
             InteractionResult bucketResult = fluidTank.interactBucket(player, hand);
             if (bucketResult != InteractionResult.PASS) {
-                return bucketResult;
+                return bucketResult.consumesAction() ? ItemInteractionResult.sidedSuccess(world.isClientSide()) : ItemInteractionResult.FAIL;
             }
         }
 
         if (!world.isClientSide()) {
-            BlockEntity entity = world.getBlockEntity(pos);
-            if (entity instanceof FluidTankBlockEntity abstractMachineEntity) {
-                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(abstractMachineEntity, abstractMachineEntity.getDisplayName()), pos);
-            }
+            player.openMenu(fluidTank);
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     private static boolean isFluidBucket(ItemStack stack) {

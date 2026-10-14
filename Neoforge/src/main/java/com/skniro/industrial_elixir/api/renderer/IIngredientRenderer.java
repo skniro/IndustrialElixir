@@ -2,7 +2,7 @@ package com.skniro.industrial_elixir.api.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
 
@@ -14,31 +14,31 @@ public interface IIngredientRenderer<T> {
 	/**
 	 * Renders an ingredient.
 	 *
-	 * @param guiGraphics The current {@link GuiGraphicsExtractor} for rendering the ingredient.
+	 * @param guiGraphics The current {@link GuiGraphics} for rendering the ingredient.
 	 * @param ingredient the ingredient to render.
 	 *
 	 * @since 9.3.0
 	 */
-	void render(GuiGraphicsExtractor guiGraphics, T ingredient);
+	void render(GuiGraphics guiGraphics, T ingredient);
 
 	/**
 	 * Renders an ingredient at a specific location.
 	 *
-	 * @param guiGraphics The current {@link GuiGraphicsExtractor} for rendering the ingredient.
+	 * @param guiGraphics The current {@link GuiGraphics} for rendering the ingredient.
 	 * @param ingredient the ingredient to render.
 	 * @param posX       the x offset for rendering this ingredient
 	 * @param posY       the y offset for rendering this ingredient
 	 *
 	 * @since 19.5.5
 	 */
-	default void render(GuiGraphicsExtractor guiGraphics, T ingredient, int posX, int posY) {
+	default void render(GuiGraphics guiGraphics, T ingredient, int posX, int posY) {
 		var poseStack = guiGraphics.pose();
-		poseStack.pushMatrix();
+		poseStack.pushPose();
 		{
-			poseStack.translate(posX, posY);
+			poseStack.translate(posX, posY, 0);
 			render(guiGraphics, ingredient);
 		}
-		poseStack.popMatrix();
+		poseStack.popPose();
 	}
 
 

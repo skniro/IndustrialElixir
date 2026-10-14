@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:iron_plate",
-    "C": "industrial_elixir:coolant_cell_10k",
-    "P": "industrial_elixir:tin_plate"
+    "A": {
+      "item": "industrial_elixir:iron_plate"
+    },
+    "C": {
+      "item": "industrial_elixir:coolant_cell_10k"
+    },
+    "P": {
+      "item": "industrial_elixir:tin_plate"
+    }
   },
   "pattern": [
     "PCP",
@@ -12,6 +18,7 @@
     "PCP"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:coolant_cell_60k"
   }
 }

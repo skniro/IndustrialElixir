@@ -7,7 +7,6 @@ import com.skniro.industrial_elixir.item.init.ReactorComponentItem;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.screen.slot.BatteryChargeSlot;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;

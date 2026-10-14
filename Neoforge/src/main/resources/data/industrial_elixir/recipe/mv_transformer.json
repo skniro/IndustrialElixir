@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": "industrial_elixir:insulated_copper_cable",
-    "G": "industrial_elixir:machine"
+    "F": {
+      "item": "industrial_elixir:insulated_copper_cable"
+    },
+    "G": {
+      "item": "industrial_elixir:machine"
+    }
   },
   "pattern": [
     " F ",
@@ -11,6 +15,7 @@
     " F "
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:mv_transformer"
   }
 }

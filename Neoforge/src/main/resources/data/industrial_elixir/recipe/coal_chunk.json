@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "minecraft:iron_block",
-    "I": "industrial_elixir:coal_ball"
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "I": {
+      "item": "industrial_elixir:coal_ball"
+    }
   },
   "pattern": [
     "III",
@@ -11,6 +15,7 @@
     "III"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:coal_chunk"
   }
 }

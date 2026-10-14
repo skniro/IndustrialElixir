@@ -27,8 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MapleHotSpringFluid extends FlowingFluid {
     @Override
-    protected boolean canConvertToSource(ServerLevel world) {
-        return world.getGameRules().get(MapleGameRules.HOT_SPRING_SOURCE_CONVERSION);
+    protected boolean canConvertToSource(Level world) {
+        return world.getGameRules().getBoolean(MapleGameRules.HOT_SPRING_SOURCE_CONVERSION);
     }
 
     @Override

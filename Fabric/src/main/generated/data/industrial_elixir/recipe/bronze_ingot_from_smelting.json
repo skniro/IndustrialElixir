@@ -4,15 +4,33 @@
   "cookingtime": 200,
   "experience": 0.1,
   "ingredient": [
-    "industrial_elixir:bronze_pickaxe",
-    "industrial_elixir:bronze_axe",
-    "industrial_elixir:bronze_shovel",
-    "industrial_elixir:bronze_sword",
-    "industrial_elixir:bronze_hoe",
-    "industrial_elixir:bronze_helmet",
-    "industrial_elixir:bronze_chestplate",
-    "industrial_elixir:bronze_leggings",
-    "industrial_elixir:bronze_boots"
+    {
+      "item": "industrial_elixir:bronze_pickaxe"
+    },
+    {
+      "item": "industrial_elixir:bronze_axe"
+    },
+    {
+      "item": "industrial_elixir:bronze_shovel"
+    },
+    {
+      "item": "industrial_elixir:bronze_sword"
+    },
+    {
+      "item": "industrial_elixir:bronze_hoe"
+    },
+    {
+      "item": "industrial_elixir:bronze_helmet"
+    },
+    {
+      "item": "industrial_elixir:bronze_chestplate"
+    },
+    {
+      "item": "industrial_elixir:bronze_leggings"
+    },
+    {
+      "item": "industrial_elixir:bronze_boots"
+    }
   ],
   "result": {
     "id": "industrial_elixir:bronze_ingot"

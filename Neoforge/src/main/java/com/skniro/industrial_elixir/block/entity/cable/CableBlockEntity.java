@@ -19,8 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.NbtOps;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.Nullable;
 
@@ -180,17 +179,17 @@ public class CableBlockEntity extends BlockEntity implements BlockEntityTicker<C
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public void loadAdditional(ValueInput view) {
-        super.loadAdditional(view);
-        this.energyContainer.amount = view.getLongOr("energy", 0L);
-        this.cover = (BlockState)view.read("cover", BlockState.CODEC).orElse((BlockState) null);
+    public void loadAdditional(CompoundTag view, HolderLookup.Provider registries) {
+        super.loadAdditional(view, registries);
+        this.energyContainer.amount = (view.contains("energy") ? view.getLong("energy") : 0L);
+        this.cover = (BlockState)BlockState.CODEC.parse(NbtOps.INSTANCE, view.get("cover")).result().orElse((BlockState) null);
     }
 
-    public void saveAdditional(ValueOutput view) {
-        super.saveAdditional(view);
+    public void saveAdditional(CompoundTag view, HolderLookup.Provider registries) {
+        super.saveAdditional(view, registries);
         view.putLong("energy", this.energyContainer.amount);
         if (this.cover != null) {
-            view.store("cover", BlockState.CODEC, this.cover);
+            view.put("cover", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.cover).getOrThrow());
         }
 
     }

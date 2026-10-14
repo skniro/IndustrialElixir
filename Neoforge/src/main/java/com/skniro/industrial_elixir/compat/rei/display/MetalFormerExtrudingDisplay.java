@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.List;
 import java.util.Optional;
@@ -24,24 +24,9 @@ public class MetalFormerExtrudingDisplay extends BasicDisplay {
     public static final CategoryIdentifier<MetalFormerExtrudingDisplay> MetalFormerExtruding =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "metalformer_extruding");
 
-    public static final DisplaySerializer<MetalFormerExtrudingDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(MetalFormerExtrudingDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(MetalFormerExtrudingDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(MetalFormerExtrudingDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(MetalFormerExtrudingDisplay::getCount)
-            ).apply(instance, MetalFormerExtrudingDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    MetalFormerExtrudingDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    MetalFormerExtrudingDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    MetalFormerExtrudingDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    MetalFormerExtrudingDisplay::getCount,
-                    MetalFormerExtrudingDisplay::new
-            )
+    public static final DisplaySerializer<MetalFormerExtrudingDisplay> SERIALIZER = BasicDisplay.Serializer.<MetalFormerExtrudingDisplay>of(
+            (inputs, outputs, location, tag) -> new MetalFormerExtrudingDisplay(inputs, outputs, location, tag.getInt("count")),
+            (display, tag) -> tag.putInt("count", display.getCount())
     );
 
     public MetalFormerExtrudingDisplay(MetalFormerExtrudingCraftingRecipe recipe) {
@@ -50,25 +35,20 @@ public class MetalFormerExtrudingDisplay extends BasicDisplay {
         this.count = recipe.requiredCount();
     }
 
-    public MetalFormerExtrudingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count) {
+    public MetalFormerExtrudingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count) {
         super(inputs, outputs, location);
         this.count = count;
     }
 
     public MetalFormerExtrudingDisplay(RecipeHolder<MetalFormerExtrudingCraftingRecipe> recipe){
         super(List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
         this.count = recipe.value().requiredCount();
     }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return MetalFormerExtruding;
-    }
-
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
     }
 
     public int getCount() {

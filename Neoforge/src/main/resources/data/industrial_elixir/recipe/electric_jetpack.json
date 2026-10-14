@@ -2,10 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "industrial_elixir:advanced_circuit",
-    "G": "minecraft:glowstone_dust",
-    "I": "industrial_elixir:iron_casing",
-    "L": "industrial_elixir:energy_box"
+    "#": {
+      "item": "industrial_elixir:advanced_circuit"
+    },
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "I": {
+      "item": "industrial_elixir:iron_casing"
+    },
+    "L": {
+      "item": "industrial_elixir:energy_box"
+    }
   },
   "pattern": [
     "I#I",
@@ -13,6 +21,7 @@
     "G G"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:electric_jetpack"
   }
 }

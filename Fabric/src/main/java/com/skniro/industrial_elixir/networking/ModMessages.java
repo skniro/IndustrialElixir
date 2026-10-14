@@ -11,8 +11,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public class ModMessages {
     public static void register() {
-        registerS2CPackets(PayloadTypeRegistry.clientboundPlay());
-        registerC2SPackets(PayloadTypeRegistry.serverboundPlay());
+        registerS2CPackets(PayloadTypeRegistry.playS2C());
+        registerC2SPackets(PayloadTypeRegistry.playC2S());
         NetworkUtilsImpl.getInstance().initialize();
     }
 

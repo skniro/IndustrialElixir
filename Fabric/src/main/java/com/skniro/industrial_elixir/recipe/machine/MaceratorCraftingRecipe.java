@@ -6,16 +6,16 @@ import com.skniro.industrial_elixir.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import com.skniro.industrial_elixir.recipe.ModRecipeSerializers;
 
 public class MaceratorCraftingRecipe extends AbstractMachineCraftingRecipe {
 
-    public MaceratorCraftingRecipe(Ingredient ingredients, ItemStackTemplate output) {
+    public MaceratorCraftingRecipe(Ingredient ingredients, ItemStack output) {
         super(ingredients, output);
     }
 
@@ -29,16 +29,12 @@ public class MaceratorCraftingRecipe extends AbstractMachineCraftingRecipe {
         return AlchemyRecipeType.MACERATOR.type;
     }
 
-    @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
 
     public static final MapCodec<MaceratorCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             Ingredient.CODEC.fieldOf("ingredient").forGetter((recipe) -> {
                 return recipe.ingredient;
             }),
-            ItemStackTemplate.CODEC.fieldOf("result").forGetter((recipe) -> {
+            ItemStack.CODEC.fieldOf("result").forGetter((recipe) -> {
                 return recipe.output;
             })
     ).apply(inst, MaceratorCraftingRecipe::new));
@@ -46,11 +42,11 @@ public class MaceratorCraftingRecipe extends AbstractMachineCraftingRecipe {
     public static final StreamCodec<RegistryFriendlyByteBuf, MaceratorCraftingRecipe> STREAM_CODEC =
             StreamCodec.composite(
                     Ingredient.CONTENTS_STREAM_CODEC, AbstractMachineCraftingRecipe::ingredient,
-                    ItemStackTemplate.STREAM_CODEC, AbstractMachineCraftingRecipe::output,
+                    ItemStack.STREAM_CODEC, AbstractMachineCraftingRecipe::output,
                     MaceratorCraftingRecipe::new);
 
     public static final RecipeSerializer<MaceratorCraftingRecipe> SERIALIZER =
-            new RecipeSerializer<>(CODEC, STREAM_CODEC);
+            ModRecipeSerializers.of(CODEC, STREAM_CODEC);
 
 
     public MapCodec<MaceratorCraftingRecipe> codec() {

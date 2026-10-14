@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": "industrial_elixir:iridium_plate",
-    "R": "industrial_elixir:iridium_ingot"
+    "D": {
+      "item": "industrial_elixir:iridium_plate"
+    },
+    "R": {
+      "item": "industrial_elixir:iridium_ingot"
+    }
   },
   "pattern": [
     "DDD",
@@ -11,6 +15,7 @@
     "DDD"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:iridium_amethyst_plate"
   }
 }

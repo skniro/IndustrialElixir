@@ -5,21 +5,26 @@ import com.skniro.industrial_elixir.api.data.recipe.CraftingDataHelper;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
 public class CropFarmRecipeGenerator extends CraftingDataHelper {
-    public CropFarmRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public CropFarmRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 // 小麦
@@ -167,15 +172,6 @@ public class CropFarmRecipeGenerator extends CraftingDataHelper {
                         .processTime(1600)
                         .unlockedBy("has_oak_sapling", has(Items.OAK_SAPLING))
                         .save(output, "oak_sapling_to_oak_log");
-
-                //苍白橡树
-                createCropFarm(Items.PALE_OAK_SAPLING)
-                        .input(Items.PALE_OAK_SAPLING)
-                        .output2(Items.PALE_OAK_LOG, 5)
-                        .output3(Items.RESIN_CLUMP, 1)
-                        .processTime(1600)
-                        .unlockedBy("has_pale_oak_sapling", has(Items.PALE_OAK_SAPLING))
-                        .save(output, "pale_oak_sapling_to_oak_log");
 
 
                // 云杉

@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:sacred_block"
+    {
+      "item": "industrial_elixir:sacred_block"
+    }
   ],
   "result": {
     "count": 9,

@@ -1,192 +1,273 @@
 package com.skniro.industrial_elixir.api.fluid;
 
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public abstract class SingleFluidStorage extends SnapshotJournal<ResourceAmount<FluidResource>> implements ResourceHandler<FluidResource> {
+/**
+ * A fluid storage with a fixed capacity, a per-variant capacity and change hooks.
+ *
+ * <p>This is the 1.21.1 counterpart of the 26.1 transfer-API based {@code SingleFluidStorage}:
+ * the transaction machinery ({@code SnapshotJournal}, {@code TransactionContext}) is replaced by an
+ * explicit {@code simulate} flag, and {@link #onFinalCommit()} is invoked directly after a
+ * successful non-simulated modification.
+ *
+ * <p>It implements {@link IFluidHandler} with a single tank, so instances can be returned straight
+ * from {@code Capabilities.FluidHandler.BLOCK}.
+ */
+public abstract class SingleFluidStorage implements IFluidHandler {
+	/** NBT keys used by {@link #readValue} / {@link #writeValue}. */
+	private static final String FLUID_KEY = "variant";
+	private static final String AMOUNT_KEY = "amount";
+
 	/**
-	 * Create a fluid storage with a fixed capacity and a change handler.
-	 *
-	 * @param capacity Fixed capacity of the fluid storage. Must be non-negative.
-	 * @param onChange Change handler, generally for {@code setChanged()} or similar calls. May not be null.
+	 * The stored fluid. Never contains an amount that differs from {@link #amount}.
+	 * Use {@link #setFluid(FluidStack)} or {@link #insert}/{@link #extract} to modify it.
 	 */
+	public FluidStack variant = getBlankVariant();
+	/**
+	 * The amount of {@link #variant} that is currently stored.
+	 */
+	public int amount = 0;
 
-    public FluidResource variant = getBlankVariant();
-    public int amount = 0;
+	protected FluidStack getBlankVariant() {
+		return FluidStack.EMPTY;
+	}
 
-    protected final FluidResource getBlankVariant() {
-        return FluidResource.EMPTY;
-    }
+	/**
+	 * @param variant The fluid that the capacity is queried for.
+	 * @return The capacity of this storage for the passed fluid.
+	 */
+	protected abstract int getCapacity(FluidStack variant);
 
+	/**
+	 * @return {@code true} if the passed non-blank variant can be inserted, {@code false} otherwise.
+	 */
+	protected boolean canInsert(FluidStack variant) {
+		return true;
+	}
 
-    protected abstract int getCapacity(FluidResource variant);
+	/**
+	 * @return {@code true} if the passed non-blank variant can be extracted, {@code false} otherwise.
+	 */
+	protected boolean canExtract(FluidStack variant) {
+		return true;
+	}
 
-    /**
-     * @return {@code true} if the passed non-blank variant can be inserted, {@code false} otherwise.
-     */
-    protected boolean canInsert(FluidResource variant) {
-        return true;
-    }
+	/**
+	 * Called after a successful non-simulated insertion or extraction,
+	 * generally for {@code setChanged()} or similar calls.
+	 */
+	protected void onFinalCommit() {
 
-    @Override
-    public int size() {
-        return 1;
-    }
+	}
 
-    /**
-     * @return {@code true} if the passed non-blank variant can be extracted, {@code false} otherwise.
-     */
-    protected boolean canExtract(FluidResource variant) {
-        return true;
-    }
+	/**
+	 * Try to insert up to {@code maxAmount} of the passed fluid into this storage.
+	 *
+	 * @param insertedVariant The fluid to insert. Its amount is ignored, {@code maxAmount} is authoritative.
+	 * @param maxAmount The maximum amount to insert. May not be negative.
+	 * @param simulate If {@code true}, the storage is not modified and the returned amount is only an estimate.
+	 * @return The amount that was inserted.
+	 */
+	public int insert(FluidStack insertedVariant, int maxAmount, boolean simulate) {
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative: " + maxAmount);
+		if (insertedVariant.isEmpty()) return 0;
 
-    protected void onFinalCommit() {
+		boolean sameFluid = !variant.isEmpty() && FluidStack.isSameFluidSameComponents(variant, insertedVariant);
 
-    }
+		if ((sameFluid || variant.isEmpty()) && canInsert(insertedVariant)) {
+			int insertedAmount = Math.min(maxAmount, getCapacity(insertedVariant) - amount);
 
-    @Override
-    public int insert(int index, FluidResource insertedVariant, int maxAmount, TransactionContext transaction) {
-        return insert(insertedVariant, maxAmount, transaction);
-    }
+			if (insertedAmount > 0) {
+				if (!simulate) {
+					setFluid(sameFluid ? variant.copyWithAmount(amount + insertedAmount) : insertedVariant.copyWithAmount(insertedAmount));
+					onFinalCommit();
+				}
 
-    @Override
-    public int insert(FluidResource insertedVariant, int maxAmount, TransactionContext transaction) {
-        TransferPreconditions.checkNonEmptyNonNegative(insertedVariant, maxAmount);
+				return insertedAmount;
+			}
+		}
 
-        if ((insertedVariant.equals(variant) || variant.isEmpty()) && canInsert(insertedVariant)) {
-            int insertedAmount = Math.min(maxAmount, getCapacity(insertedVariant) - amount);
+		return 0;
+	}
 
-            if (insertedAmount > 0) {
-                updateSnapshots(transaction);
+	/**
+	 * Try to extract up to {@code maxAmount} of the passed fluid from this storage.
+	 *
+	 * @param extractedVariant The fluid to extract. Its amount is ignored, {@code maxAmount} is authoritative.
+	 * @param maxAmount The maximum amount to extract. May not be negative.
+	 * @param simulate If {@code true}, the storage is not modified and the returned amount is only an estimate.
+	 * @return The amount that was extracted.
+	 */
+	public int extract(FluidStack extractedVariant, int maxAmount, boolean simulate) {
+		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative: " + maxAmount);
+		if (extractedVariant.isEmpty()) return 0;
 
-                if (variant.isEmpty()) {
-                    variant = insertedVariant;
-                    amount = insertedAmount;
-                } else {
-                    amount += insertedAmount;
-                }
+		if (!variant.isEmpty() && FluidStack.isSameFluidSameComponents(variant, extractedVariant) && canExtract(extractedVariant)) {
+			int extractedAmount = Math.min(maxAmount, amount);
 
-                return insertedAmount;
-            }
-        }
+			if (extractedAmount > 0) {
+				if (!simulate) {
+					setFluid(extractedAmount >= amount ? getBlankVariant() : variant.copyWithAmount(amount - extractedAmount));
+					onFinalCommit();
+				}
 
-        return 0;
-    }
+				return extractedAmount;
+			}
+		}
 
-    @Override
-    public int extract(int index, FluidResource extractedVariant, int maxAmount, TransactionContext transaction) {
-       return extract(extractedVariant, maxAmount, transaction);
-    }
+		return 0;
+	}
 
-    @Override
-    public int extract(FluidResource extractedVariant, int maxAmount, TransactionContext transaction) {
-        TransferPreconditions.checkNonEmptyNonNegative(extractedVariant, maxAmount);
+	/**
+	 * Directly set the contents of this storage. The amount is taken from the passed stack.
+	 */
+	public void setFluid(FluidStack stack) {
+		if (stack.isEmpty() || stack.getAmount() <= 0) {
+			this.variant = getBlankVariant();
+			this.amount = 0;
+		} else {
+			this.variant = stack.copy();
+			this.amount = stack.getAmount();
+		}
+	}
 
-        if (extractedVariant.equals(variant) && canExtract(extractedVariant)) {
-            long extractedAmount = Math.min(maxAmount, amount);
+	/**
+	 * @return The stored fluid, including its amount.
+	 */
+	public FluidStack getFluid() {
+		return variant;
+	}
 
-            if (extractedAmount > 0) {
-                updateSnapshots(transaction);
-                amount -= extractedAmount;
+	/**
+	 * @return The stored fluid. Kept for compatibility with the 26.1 transfer-API accessor.
+	 */
+	public FluidStack getResource(int index) {
+		return variant;
+	}
 
-                if (amount == 0) {
-                    variant = getBlankVariant();
-                }
+	public int getAmount() {
+		return amount;
+	}
 
-                return Math.toIntExact(extractedAmount);
-            }
-        }
+	public int getCapacity() {
+		return getCapacity(variant);
+	}
 
-        return 0;
-    }
+	public boolean isEmpty() {
+		return variant.isEmpty();
+	}
 
-    public boolean isResourceBlank() {
-        return variant.isEmpty();
-    }
+	public boolean isResourceBlank() {
+		return variant.isEmpty();
+	}
 
-    @Override
-    public boolean isValid(int index, FluidResource resource) {
-        return isResourceBlank();
-    }
+	// ======================
+	// ==== IFluidHandler ====
+	// ======================
 
-    @Override
-    public FluidResource getResource(int index) {
-        return variant;
-    }
+	@Override
+	public int getTanks() {
+		return 1;
+	}
 
-    @Override
-    public long getAmountAsLong(int index) {
-        return getAmount();
-    }
+	@Override
+	public FluidStack getFluidInTank(int tank) {
+		return variant;
+	}
 
+	@Override
+	public int getTankCapacity(int tank) {
+		return getCapacity(variant);
+	}
 
-    public int getAmount() {
-        return amount;
-    }
+	@Override
+	public boolean isFluidValid(int tank, FluidStack stack) {
+		return canInsert(stack);
+	}
 
-    @Override
-    public long getCapacityAsLong(int index, FluidResource resource) {
-        return getCapacity();
-    }
+	@Override
+	public int fill(FluidStack resource, FluidAction action) {
+		return insert(resource, resource.getAmount(), action.simulate());
+	}
 
-    public int getCapacity() {
-        return getCapacity(variant);
-    }
+	@Override
+	public FluidStack drain(FluidStack resource, FluidAction action) {
+		if (resource.isEmpty() || variant.isEmpty() || !FluidStack.isSameFluidSameComponents(variant, resource)) {
+			return FluidStack.EMPTY;
+		}
 
-    @Override
-    protected ResourceAmount<FluidResource> createSnapshot() {
-        return new ResourceAmount<>(variant, amount);
-    }
+		return drain(resource.getAmount(), action);
+	}
 
-    @Override
-    protected void revertToSnapshot(ResourceAmount<FluidResource> snapshot) {
-        variant = snapshot.resource();
-        amount = snapshot.amount();
-    }
+	@Override
+	public FluidStack drain(int maxDrain, FluidAction action) {
+		if (maxDrain <= 0 || variant.isEmpty()) return FluidStack.EMPTY;
 
-    @Override
-    public String toString() {
-        return "SingleVariantStorage[%d %s]".formatted(amount, variant);
-    }
+		// Compute the drained stack before the extraction, as it may empty the tank.
+		FluidStack drained = variant.copyWithAmount(Math.min(maxDrain, amount));
 
-    @Override
-    protected void onRootCommit(ResourceAmount<FluidResource> resource) {
-        onFinalCommit();
-    }
+		if (extract(variant, maxDrain, action.simulate()) <= 0) return FluidStack.EMPTY;
 
-    public static void readValue(SingleFluidStorage singleFluidStorage, ValueInput value) {
-        singleFluidStorage.variant = value.read("variant", FluidResource.CODEC).orElse(FluidResource.EMPTY);
-        singleFluidStorage.amount = value.getIntOr("amount", 0);
-    }
+		return drained;
+	}
 
-    public static void writeValue(SingleFluidStorage singleFluidStorage, ValueOutput value) {
-        if (!singleFluidStorage.variant.isEmpty()) {
-            value.store("variant", FluidResource.CODEC, singleFluidStorage.variant);
-        }
-        value.putLong("amount", singleFluidStorage.amount);
-    }
+	// =============
+	// ==== NBT ====
+	// =============
 
-    public static SingleFluidStorage withFixedCapacity(int capacity, Runnable onChange) {
-        TransferPreconditions.checkNonNegative(capacity);
-        Objects.requireNonNull(onChange, "onChange may not be null");
+	/**
+	 * Read the contents of the passed storage from the {@code variant} (fluid id) and {@code amount} keys,
+	 * which is the same layout the 26.1 code used, and the one the Fabric half of this mod uses for its tanks.
+	 */
+	public static void readValue(SingleFluidStorage singleFluidStorage, CompoundTag tag) {
+		Fluid fluid = tag.contains(FLUID_KEY) ? BuiltInRegistries.FLUID.get(ResourceLocation.tryParse(tag.getString(FLUID_KEY))) : null;
+		long amount = tag.getLong(AMOUNT_KEY);
 
-        return new SingleFluidStorage() {
-            @Override
-            protected int getCapacity(FluidResource variant) {
-                return capacity;
-            }
+		if (fluid == null || fluid == Fluids.EMPTY || amount <= 0) {
+			singleFluidStorage.setFluid(FluidStack.EMPTY);
+		} else {
+			singleFluidStorage.setFluid(new FluidStack(fluid, (int) Math.min(Integer.MAX_VALUE, amount)));
+		}
+	}
 
-            @Override
-            protected void onFinalCommit() {
-                onChange.run();
-            }
-        };
-    }
+	public static void writeValue(SingleFluidStorage singleFluidStorage, CompoundTag tag) {
+		if (singleFluidStorage.variant.isEmpty()) {
+			tag.remove(FLUID_KEY);
+			tag.remove(AMOUNT_KEY);
+		} else {
+			tag.putString(FLUID_KEY, BuiltInRegistries.FLUID.getKey(singleFluidStorage.variant.getFluid()).toString());
+			tag.putLong(AMOUNT_KEY, singleFluidStorage.amount);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "SingleVariantStorage[%d %s]".formatted(amount, variant);
+	}
+
+	public static SingleFluidStorage withFixedCapacity(int capacity, @Nullable Runnable onChange) {
+		if (capacity < 0) throw new IllegalArgumentException("Capacity must not be negative: " + capacity);
+		Objects.requireNonNull(onChange, "onChange may not be null");
+
+		return new SingleFluidStorage() {
+			@Override
+			protected int getCapacity(FluidStack variant) {
+				return capacity;
+			}
+
+			@Override
+			protected void onFinalCommit() {
+				onChange.run();
+			}
+		};
+	}
 }

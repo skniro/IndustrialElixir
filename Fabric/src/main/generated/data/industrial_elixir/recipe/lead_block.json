@@ -2,17 +2,36 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot",
-    "industrial_elixir:lead_ingot"
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    },
+    {
+      "item": "industrial_elixir:lead_ingot"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:lead_block"
   }
 }

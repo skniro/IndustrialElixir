@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 
 public final class ChunkTextureCache {
 
-    private static final Map<ChunkPos, Identifier> CACHE = new HashMap<>();
+    private static final Map<ChunkPos, ResourceLocation> CACHE = new HashMap<>();
 
     private static final String TEXTURE_PREFIX =
             "chunk_map/";
@@ -25,19 +25,19 @@ public final class ChunkTextureCache {
     /**
      * 获取 Chunk 的地图纹理
      */
-    public static Identifier getTexture(
+    public static ResourceLocation getTexture(
             Level level,
             ChunkPos chunkPos
     ) {
 
-        Identifier cached = CACHE.get(chunkPos);
+        ResourceLocation cached = CACHE.get(chunkPos);
 
         if (cached != null) {
             return cached;
         }
 
 
-        Identifier textureId = createTexture(
+        ResourceLocation textureId = createTexture(
                 level,
                 chunkPos
         );
@@ -57,7 +57,7 @@ public final class ChunkTextureCache {
     /**
      * 创建并上传 GPU 纹理
      */
-    private static Identifier createTexture(
+    private static ResourceLocation createTexture(
             Level level,
             ChunkPos chunkPos
     ) {
@@ -75,19 +75,16 @@ public final class ChunkTextureCache {
                 );
 
 
-        Identifier id = Identifier.fromNamespaceAndPath(
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(
                 "industrialelixir",
                 TEXTURE_PREFIX
-                        + chunkPos.x()
+                        + chunkPos.x
                         + "_"
-                        + chunkPos.z()
+                        + chunkPos.z
         );
 
 
-        DynamicTexture texture = new DynamicTexture(
-                () -> "chunk_map_" + chunkPos.x() + "_" + chunkPos.z(),
-                image
-        );
+        DynamicTexture texture = new DynamicTexture(image);
 
 
         textureManager.register(
@@ -128,7 +125,7 @@ public final class ChunkTextureCache {
                 minecraft.getTextureManager();
 
 
-        for (Identifier id : CACHE.values()) {
+        for (ResourceLocation id : CACHE.values()) {
 
             manager.release(id);
         }

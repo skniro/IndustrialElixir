@@ -5,15 +5,16 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.RandomSource;
 
-public class MapleCampfireSmokeParticle extends SingleQuadParticle {
+public class MapleCampfireSmokeParticle extends TextureSheetParticle {
     MapleCampfireSmokeParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, boolean signal, TextureAtlasSprite sprite) {
-        super(world, x, y, z, sprite);
+        super(world, x, y, z);
+        this.setSprite(sprite);
         this.scale(1.0F);
         this.setSize(0.25F, 0.25F);
         if (signal) {
@@ -46,8 +47,8 @@ public class MapleCampfireSmokeParticle extends SingleQuadParticle {
         }
     }
 
-    public Layer getLayer() {
-        return Layer.TRANSLUCENT;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Environment(EnvType.CLIENT)
@@ -58,8 +59,8 @@ public class MapleCampfireSmokeParticle extends SingleQuadParticle {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientLevel clientWorld, double d, double e, double f, double g, double h, double i, RandomSource random) {
-            MapleCampfireSmokeParticle campfireSmokeParticle = new MapleCampfireSmokeParticle(clientWorld, d, e, f, g, h, i, true, this.spriteProvider.get(random));
+        public Particle createParticle(SimpleParticleType defaultParticleType, ClientLevel clientWorld, double d, double e, double f, double g, double h, double i) {
+            MapleCampfireSmokeParticle campfireSmokeParticle = new MapleCampfireSmokeParticle(clientWorld, d, e, f, g, h, i, true, this.spriteProvider.get(clientWorld.random));
             campfireSmokeParticle.setAlpha(0.95F);
             return campfireSmokeParticle;
         }
@@ -73,8 +74,8 @@ public class MapleCampfireSmokeParticle extends SingleQuadParticle {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType defaultParticleType, ClientLevel clientWorld, double d, double e, double f, double g, double h, double i, RandomSource random) {
-            MapleCampfireSmokeParticle campfireSmokeParticle = new MapleCampfireSmokeParticle(clientWorld, d, e, f, g, h, i, false, this.spriteProvider.get(random));
+        public Particle createParticle(SimpleParticleType defaultParticleType, ClientLevel clientWorld, double d, double e, double f, double g, double h, double i) {
+            MapleCampfireSmokeParticle campfireSmokeParticle = new MapleCampfireSmokeParticle(clientWorld, d, e, f, g, h, i, false, this.spriteProvider.get(clientWorld.random));
             campfireSmokeParticle.setAlpha(0.7F);
             return campfireSmokeParticle;
         }

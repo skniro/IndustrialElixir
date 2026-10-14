@@ -18,9 +18,8 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -32,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/brewreactor.png");
 
     private final GuiFluidTankRenderer fluidRenderer =
@@ -86,13 +85,13 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
             if (count > 1) {
                 Font font = Minecraft.getInstance().font;
                 String text = String.valueOf(count);
-                context.text(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 20, 0xFFFFFFFF, true);
+                context.drawString(font, text, startPoint.x + 52 + 16 - font.width(text) - 1, startPoint.y + 20, 0xFFFFFFFF, true);
             }
         }));
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
         long tick = System.currentTimeMillis() / 50;
         int progress = (int) ((tick % 72) * 11 / 72);
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 79, startPoint.y + 32, 189, 0, progress, 16, 256, 256);
+        context.blit(TEXTURE, startPoint.x + 79, startPoint.y + 32, 189, 0, progress, 16, 256, 256);
         var storage = getFluid(display);
         fluidRenderer.render(context, startPoint.x + 8, startPoint.y + 5, storage);
         }));
@@ -100,7 +99,7 @@ public class BrewReactorCategory implements DisplayCategory<BrewReactorDisplay> 
     }
 
     private SingleVariantStorage<FluidVariant> getFluid(BrewReactorDisplay display) {
-        Optional<Identifier> fid = display.getFluid();
+        Optional<ResourceLocation> fid = display.getFluid();
         Optional<Integer> famt = display.getFluidAmount();
 
         if (fid.isPresent()) {

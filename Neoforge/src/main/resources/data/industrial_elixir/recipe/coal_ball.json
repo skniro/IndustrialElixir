@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "minecraft:flint",
-    "I": "industrial_elixir:coal_dust"
+    "B": {
+      "item": "minecraft:flint"
+    },
+    "I": {
+      "item": "industrial_elixir:coal_dust"
+    }
   },
   "pattern": [
     "III",
@@ -11,6 +15,7 @@
     "III"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:coal_ball"
   }
 }

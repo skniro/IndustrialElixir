@@ -2,17 +2,36 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot",
-    "industrial_elixir:steel_ingot"
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    },
+    {
+      "item": "industrial_elixir:steel_ingot"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:steel_block"
   }
 }

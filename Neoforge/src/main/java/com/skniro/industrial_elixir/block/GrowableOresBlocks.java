@@ -2,7 +2,6 @@ package com.skniro.industrial_elixir.block;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.ModContent;
-import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.api.energytier.EnergyTier;
 import com.skniro.industrial_elixir.block.init.*;
 import com.skniro.industrial_elixir.block.init.energybox.ChargePadBlock;
@@ -31,8 +30,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -126,12 +123,12 @@ public class GrowableOresBlocks {
 
     public static <B extends Block> Supplier<Block> register(String name, Function<BlockBehaviour.Properties, ? extends B> func, BlockBehaviour.Properties props) {
         return BLOCKS.register(name, () -> {
-            return (Block)func.apply(props.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
+            return (Block)func.apply(props);
         });
     }
 
     private static <B extends Block> Supplier<Block> registerBlockWithoutItem(String name, Function<BlockBehaviour.Properties, ? extends B> block, BlockBehaviour.Properties properties) {
-        Supplier<Block> register = register(name, block, properties.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
+        Supplier<Block> register = register(name, block, properties);
         return register;
     }
 
@@ -143,7 +140,7 @@ public class GrowableOresBlocks {
 
     private static <T extends Block> Supplier<Item> registerBlockItem(String name, Supplier<T> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, Helper.id(name)))));
+                new Item.Properties()));
     }
 
     public static void registerGrowableOresBlocks(IEventBus eventBus) {

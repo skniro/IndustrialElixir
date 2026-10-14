@@ -11,7 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -25,12 +25,11 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -66,7 +65,7 @@ public class GeneralBlocks {
             (settings)-> new FlowerPotBlock(Rubber_SAPLING, settings), BlockBehaviour.Properties.of().instabreak().noOcclusion());
 
     public static final Block Rubber_LEAVES =registerBlock("rubber_leaves",
-            (settings)-> new TintedParticleLeavesBlock(0.1f, settings), (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN)));
+            LeavesBlock::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN)));
 
     public static final Block Rubber_Rubber_LOG =registerBlock("rubber_rubber_log",
             (settings)-> new LogCropBlock(settings, GrowableOresItems.Sticky_Resin), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(MapColor.COLOR_BROWN));
@@ -82,7 +81,7 @@ public class GeneralBlocks {
     public static final Block Rubber_PLANKS = registerBlock("rubber_planks",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.COLOR_BROWN)));
     public static final Block Rubber_BUTTON = registerBlock("rubber_button",
-            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), Blocks.buttonProperties());
+            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
     public static final Block Rubber_STAIRS = registerBlock("rubber_stairs",
             (settings)-> new ModStairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Block Rubber_SLAB = registerBlock("rubber_slab",
@@ -97,10 +96,12 @@ public class GeneralBlocks {
             (settings)-> new TrapDoorBlock(MapleBlockSetType.Rubber, settings),BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(3.0F).noOcclusion());
     public static final Block Rubber_PRESSURE_PLATE = registerBlock("rubber_pressure_plate",
             (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), BlockBehaviour.Properties.of().mapColor(
-                    Rubber_PLANKS.defaultMapColor()).noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
+                    Rubber_PLANKS.defaultMapColor()).noCollission().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
 
+    // 26.1's ShelfBlock / SoundType.SHELF do not exist in 1.21.1; keep the block registered as a
+    // plain wooden block so the item, recipes and datagen entries stay valid.
     public static final Block Rubber_SHELF = registerBlock("rubber_shelf",
-            ShelfBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.SHELF).ignitedByLava().strength(2.0F, 3.0F));
+            Block::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).ignitedByLava().strength(2.0F, 3.0F));
 
     public static final Block Reinforced_Stone = registerBlock("reinforced_stone",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)).mapColor(MapColor.TERRACOTTA_GRAY).strength(100.0F, 1000.0F));
@@ -155,24 +156,24 @@ public class GeneralBlocks {
             (settings)-> new ModStairBlock(Blocks.COBBLESTONE_STAIRS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_STAIRS));
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
-        Block block = (Block)factory.apply(settings.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name))));
+        Block block = (Block)factory.apply(settings);
         registerBlockItem(name, block);
-        return Registry.register(BuiltInRegistries.BLOCK, ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)), block);
+        return Registry.register(BuiltInRegistries.BLOCK, ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)), block);
     }
 
     private static Item registerBlockItem(String name, Block block) {
-        return Registry.register(BuiltInRegistries.ITEM, ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)),
-                new BlockItem(block, new Item.Properties().useBlockDescriptionPrefix()
-                        .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)))));
+        return Registry.register(BuiltInRegistries.ITEM, ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name)),
+                new BlockItem(block, new Item.Properties()
+                        ));
     }
 
     private static Block registerBlockWithoutItem(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
-        Block block = (Block)factory.apply(settings.setId(keyOf(name)));
+        Block block = (Block)factory.apply(settings);
         return Registry.register(BuiltInRegistries.BLOCK, keyOf(name), block);
     }
 
     private static ResourceKey<Block> keyOf(String name) {
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
+        return ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
     }
 
     public static void registerNetherOresBlock() {

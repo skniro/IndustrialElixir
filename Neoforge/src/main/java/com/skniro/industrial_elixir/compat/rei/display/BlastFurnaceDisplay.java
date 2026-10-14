@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
@@ -22,36 +22,20 @@ import java.util.Optional;
 
 public class BlastFurnaceDisplay extends BasicDisplay {
     private final int count;
-    private final Identifier fluid;
+    private final ResourceLocation fluid;
     private final int fluidAmount;
 
     public static final CategoryIdentifier<BlastFurnaceDisplay> BLAST_FURNACE =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "blast_furnace");
 
-    public static final DisplaySerializer<BlastFurnaceDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(BasicDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(BasicDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(BasicDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(d -> d.count),
-                    Identifier.CODEC.fieldOf("fluid").forGetter(d -> d.fluid),
-                    Codec.INT.fieldOf("fluid_amount").forGetter(d -> d.fluidAmount)
-            ).apply(instance, BlastFurnaceDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BasicDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BasicDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    BasicDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    d -> d.count,
-                    Identifier.STREAM_CODEC,
-                    d -> d.fluid,
-                    ByteBufCodecs.INT,
-                    d -> d.fluidAmount,
-                    BlastFurnaceDisplay::new
-            )
+    public static final DisplaySerializer<BlastFurnaceDisplay> SERIALIZER = BasicDisplay.Serializer.<BlastFurnaceDisplay>of(
+            (inputs, outputs, location, tag) -> new BlastFurnaceDisplay(inputs, outputs, location, tag.getInt("count"),
+                    ResourceLocation.parse(tag.getString("fluid")), tag.getInt("fluid_amount")),
+            (display, tag) -> {
+                tag.putInt("count", display.getCount());
+                tag.putString("fluid", display.getFluid().toString());
+                tag.putInt("fluid_amount", display.getFluidAmount());
+            }
     );
 
     public BlastFurnaceDisplay(ModBlastFurnaceCraftingRecipe recipe) {
@@ -74,7 +58,7 @@ public class BlastFurnaceDisplay extends BasicDisplay {
         this.fluidAmount = recipe.value().requiredFluidAmount();
     }
 
-    public BlastFurnaceDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count, Identifier fluid, int fluidAmount) {
+    public BlastFurnaceDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count, ResourceLocation fluid, int fluidAmount) {
         super(inputs, outputs, location);
         this.count = count;
         this.fluid = fluid;
@@ -83,8 +67,8 @@ public class BlastFurnaceDisplay extends BasicDisplay {
 
     private static List<EntryIngredient> buildOutputs(ModBlastFurnaceCraftingRecipe recipe) {
         List<EntryIngredient> outputs = new ArrayList<>();
-        outputs.add(EntryIngredient.of(EntryStacks.of(recipe.output().create())));
-        recipe.output2().ifPresent(o -> outputs.add(EntryIngredient.of(EntryStacks.of(o.create()))));
+        outputs.add(EntryIngredient.of(EntryStacks.of(recipe.output())));
+        recipe.output2().ifPresent(o -> outputs.add(EntryIngredient.of(EntryStacks.of(o))));
         return outputs;
     }
 
@@ -93,16 +77,11 @@ public class BlastFurnaceDisplay extends BasicDisplay {
         return BLAST_FURNACE;
     }
 
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
-    }
-
     public int getCount() {
         return count;
     }
 
-    public Identifier getFluid() {
+    public ResourceLocation getFluid() {
         return fluid;
     }
 

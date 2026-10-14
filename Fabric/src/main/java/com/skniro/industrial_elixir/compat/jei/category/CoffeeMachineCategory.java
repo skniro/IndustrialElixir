@@ -15,15 +15,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
+import mezz.jei.api.recipe.RecipeType;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,8 +32,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<CoffeeMachineCraftingRecipe>> {
-    public static final IRecipeHolderType<CoffeeMachineCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.COFFEE_MACHINE.type);
+    public static final RecipeType<RecipeHolder<CoffeeMachineCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.COFFEE_MACHINE.type);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -42,7 +42,7 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
     private final GuiFluidTankRenderer fluidRenderer;
 
     public CoffeeMachineCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/coffee_machine.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/coffee_machine.png");
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(GrowableOresBlocks.COFFEE_MACHINE_Block));
         energyBar = helper.createDrawable(texture, 176, 0, 13, 16);
@@ -52,7 +52,7 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
     }
 
     @Override
-    public IRecipeHolderType<CoffeeMachineCraftingRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<CoffeeMachineCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -79,30 +79,30 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CoffeeMachineCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 15)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         recipe.value().ingredient2().ifPresent(ing ->
-                builder.addSlot(RecipeIngredientRole.INPUT, 52, 33).add(ing));
+                builder.addSlot(RecipeIngredientRole.INPUT, 52, 33).addIngredients(ing));
 
         recipe.value().ingredient3().ifPresent(ing ->
-                builder.addSlot(RecipeIngredientRole.INPUT, 52, 51).add(ing));
+                builder.addSlot(RecipeIngredientRole.INPUT, 52, 51).addIngredients(ing));
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
 
         try {
-            Identifier fluidId = recipe.value().requiredFluid();
-            Identifier cellId = Identifier.fromNamespaceAndPath(fluidId.getNamespace(), fluidId.getPath() + "_cell");
+            ResourceLocation fluidId = recipe.value().requiredFluid();
+            ResourceLocation cellId = ResourceLocation.fromNamespaceAndPath(fluidId.getNamespace(), fluidId.getPath() + "_cell");
             Item cell = BuiltInRegistries.ITEM.getOptional(cellId).orElse(null);
             if (cell != null && cell != Items.AIR) {
-                builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).add(new ItemStack(cell));
+                builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).addItemStack(new ItemStack(cell));
             }
         } catch (Throwable ignored) {
         }
     }
 
     private SingleVariantStorage<FluidVariant> getRecipeFluidStorage(RecipeHolder<CoffeeMachineCraftingRecipe> recipe) {
-        Identifier fluidId = recipe.value().requiredFluid();
+        ResourceLocation fluidId = recipe.value().requiredFluid();
         int amount = recipe.value().requiredFluidAmount();
         Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
         return new SingleVariantStorage<>() {
@@ -124,7 +124,7 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
     }
 
     @Override
-    public void draw(RecipeHolder<CoffeeMachineCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<CoffeeMachineCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 70, 34);
@@ -137,7 +137,7 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
         int fw = fluidRenderer.getWidth();
         int fh = fluidRenderer.getHeight();
         if (mouseX >= fx && mouseX <= fx + fw && mouseY >= fy && mouseY <= fy + fh) {
-            guiGraphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
+            guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
         }
 
         int count = recipe.value().requiredCount();
@@ -146,7 +146,7 @@ public class CoffeeMachineCategory implements IRecipeCategory<RecipeHolder<Coffe
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 15 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

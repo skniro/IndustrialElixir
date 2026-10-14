@@ -5,7 +5,6 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -44,8 +43,8 @@ class CableTickManager {
                         networkAmount = networkCapacity;
                     }
 
-                    networkAmount += dispatchTransfer(minTransferRate, EnergyStorage::extract, networkCapacity - networkAmount);
-                    networkAmount -= dispatchTransfer(minTransferRate, EnergyStorage::insert, networkAmount);
+                    networkAmount += dispatchTransfer(minTransferRate, TransferOperation.EXTRACT, networkCapacity - networkAmount);
+                    networkAmount -= dispatchTransfer(minTransferRate, TransferOperation.INSERT, networkAmount);
                     int cableCount = cableList.size();
 
                     for(CableBlockEntity cable : cableList) {
@@ -121,24 +120,21 @@ class CableTickManager {
         Collections.shuffle(sortedTargets);
         sortedTargets.sort(Comparator.comparingLong((sortableStorage) -> sortableStorage.simulationResult));
 
-        try (Transaction transaction = Transaction.openRoot()) {
-            long transferredAmount = 0L;
+        long transferredAmount = 0L;
 
-            for(int i = 0; i < sortedTargets.size(); ++i) {
-                SortableStorage target = (SortableStorage)sortedTargets.get(i);
-                int remainingTargets = sortedTargets.size() - i;
-                long remainingAmount = maxAmount - transferredAmount;
-                long targetMaxAmount = Math.min(remainingAmount / (long)remainingTargets, transferRate);
-                long localTransferred = operation.transfer(target.storage.storage(), targetMaxAmount, transaction);
-                if (localTransferred > 0L) {
-                    transferredAmount += localTransferred;
-                    target.storage.afterTransfer();
-                }
+        for(int i = 0; i < sortedTargets.size(); ++i) {
+            SortableStorage target = (SortableStorage)sortedTargets.get(i);
+            int remainingTargets = sortedTargets.size() - i;
+            long remainingAmount = maxAmount - transferredAmount;
+            long targetMaxAmount = Math.min(remainingAmount / (long)remainingTargets, transferRate);
+            long localTransferred = operation.transfer(target.storage.storage(), targetMaxAmount);
+            if (localTransferred > 0L) {
+                transferredAmount += localTransferred;
+                target.storage.afterTransfer();
             }
-
-            transaction.commit();
-            return transferredAmount;
         }
+
+        return transferredAmount;
     }
 
     @SubscribeEvent
@@ -152,15 +148,46 @@ class CableTickManager {
 
         SortableStorage(TransferOperation operation, OfferedEnergyStorage storage) {
             this.storage = storage;
-
-            try (Transaction tx = Transaction.openRoot()) {
-                this.simulationResult = operation.transfer(storage.storage(), Long.MAX_VALUE, tx);
-            }
-
+            this.simulationResult = operation.simulate(storage.storage(), Long.MAX_VALUE);
         }
     }
 
-    private interface TransferOperation {
-        long transfer(EnergyStorage var1, long var2, Transaction var4);
+    /**
+     * A single energy direction: either pulling energy out of the adjacent storage into
+     * the cable network, or pushing network energy into the adjacent storage.
+     *
+     * <p>Without a transaction system the "dry run" used for sorting has to be computed
+     * from the storage's own amount/capacity instead of by rolling a mutation back.
+     */
+    private enum TransferOperation {
+        EXTRACT {
+            @Override
+            long transfer(EnergyStorage storage, long maxAmount) {
+                return storage.extract(maxAmount, false);
+            }
+
+            @Override
+            long simulate(EnergyStorage storage, long maxAmount) {
+                if (!storage.supportsExtraction()) return 0L;
+                return Math.min(maxAmount, storage.getAmount());
+            }
+        },
+        INSERT {
+            @Override
+            long transfer(EnergyStorage storage, long maxAmount) {
+                return storage.insert(maxAmount, false);
+            }
+
+            @Override
+            long simulate(EnergyStorage storage, long maxAmount) {
+                if (!storage.supportsInsertion()) return 0L;
+                long space = storage.getCapacity() - storage.getAmount();
+                return Math.max(0L, Math.min(maxAmount, space));
+            }
+        };
+
+        abstract long transfer(EnergyStorage storage, long maxAmount);
+
+        abstract long simulate(EnergyStorage storage, long maxAmount);
     }
 }

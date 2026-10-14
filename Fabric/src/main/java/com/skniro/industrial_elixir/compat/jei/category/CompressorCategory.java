@@ -16,20 +16,19 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class CompressorCategory implements IRecipeCategory<RecipeHolder<CompressorCraftingRecipe>> {
 
-    public static final IRecipeHolderType<CompressorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.COMPRESSOR.type);
+    public static final RecipeType<RecipeHolder<CompressorCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.COMPRESSOR.type);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -37,7 +36,7 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
     private final IDrawableAnimated arrow;
 
     public CompressorCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id(
+        ResourceLocation texture = Helper.id(
                 "textures/gui/container/machine/compressor.png"
         );
 
@@ -50,7 +49,7 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
     }
 
     @Override
-    public IRecipeType<RecipeHolder<CompressorCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<CompressorCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -77,13 +76,13 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CompressorCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 13)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 34)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
     }
 
     @Override
-    public void draw(RecipeHolder<CompressorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<CompressorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 52, 31);
         arrow.draw(guiGraphics, 72, 33);
@@ -95,7 +94,7 @@ public class CompressorCategory implements IRecipeCategory<RecipeHolder<Compress
             int x = 52 + 16 - font.width(text) - 1;
             int y = 13 + 16 - 8 - 1;
 
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

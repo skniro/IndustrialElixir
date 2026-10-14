@@ -10,12 +10,12 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import com.skniro.industrial_elixir.recipe.machine.AbstractMachineCraftingRecipe;
 import com.skniro.industrial_elixir.recipe.machine.HeatCentrifugeCraftingRecipe;
 import com.skniro.industrial_elixir.screen.handler.machine.HeatCentrifugeScreenHandler;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -195,24 +195,21 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
     }
 
     private void extractEnergy(long amount) {
-        try (Transaction transaction = Transaction.openRoot()) {
-            energyContainer.getSideStorage(null).extract(amount, transaction);
-            transaction.commit();
-        }
+        energyContainer.getSideStorage(null).extract(amount, false);
     }
 
     @Override
-    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         output.putInt("heat_centrifuge.heat", heat);
         output.putInt("heat_centrifuge.heat_tick", heatTick);
     }
 
     @Override
-    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput input) {
-        super.loadAdditional(input);
-        heat = input.getIntOr("heat_centrifuge.heat", 0);
-        heatTick = input.getIntOr("heat_centrifuge.heat_tick", 0);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        heat = (input.contains("heat_centrifuge.heat") ? input.getInt("heat_centrifuge.heat") : 0);
+        heatTick = (input.contains("heat_centrifuge.heat_tick") ? input.getInt("heat_centrifuge.heat_tick") : 0);
         maxProgress = PROCESS_TICKS;
     }
 
@@ -234,9 +231,9 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
     protected void craftItem() {
         HeatCentrifugeCraftingRecipe recipe = (HeatCentrifugeCraftingRecipe) getCurrentRecipe().get().value();
         this.removeItem(INPUT_SLOT, recipe.requiredCount());
-        insertOutput(OUTPUT_SLOT, recipe.output().create());
-        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
-        recipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.create()));
+        insertOutput(OUTPUT_SLOT, recipe.output().copy());
+        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.copy()));
+        recipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.copy()));
     }
 
     private void insertOutput(int slot, ItemStack output) {
@@ -287,9 +284,9 @@ public class HeatCentrifugeEntity extends AbstractMachineEntity {
         var recipe = recipeHolder.value();
         HeatCentrifugeCraftingRecipe washingRecipe = (HeatCentrifugeCraftingRecipe) recipe;
 
-        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().create())) return false;
-        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().create())) return false;
-        if (washingRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, washingRecipe.output3().get().create())) return false;
+        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().copy())) return false;
+        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().copy())) return false;
+        if (washingRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, washingRecipe.output3().get().copy())) return false;
         if (!hasEnoughEnergyToCraft()) return false;
         return true;
     }

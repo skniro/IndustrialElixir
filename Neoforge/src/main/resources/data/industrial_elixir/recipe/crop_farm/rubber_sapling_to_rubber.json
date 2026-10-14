@@ -1,7 +1,9 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "industrial_elixir:rubber_sapling",
+  "ingredient": {
+    "item": "industrial_elixir:rubber_sapling"
+  },
   "process_time": 600,
   "result": {
     "count": 3,
@@ -12,6 +14,7 @@
     "id": "industrial_elixir:rubber_log"
   },
   "result3": {
+    "count": 1,
     "id": "industrial_elixir:rubber_sapling"
   }
 }

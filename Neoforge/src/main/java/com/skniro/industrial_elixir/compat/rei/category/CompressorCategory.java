@@ -1,6 +1,5 @@
 package com.skniro.industrial_elixir.compat.rei.category;
 
-
 import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.compat.rei.display.CompressorDisplay;
@@ -14,15 +13,14 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class CompressorCategory implements DisplayCategory<CompressorDisplay> {
-    public static final Identifier TEXTURE = Helper.id("textures/gui/container/machine/compressor.png");
+    public static final ResourceLocation TEXTURE = Helper.id("textures/gui/container/machine/compressor.png");
 
     private static final int ENERGY_X = 52;
     private static final int ENERGY_Y = 31;
@@ -71,7 +69,7 @@ public class CompressorCategory implements DisplayCategory<CompressorDisplay> {
             int arrowWidth = 23;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 72, startPoint.y + 33, 190, 0, progress, 15, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 72, startPoint.y + 33, 190, 0, progress, 15, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

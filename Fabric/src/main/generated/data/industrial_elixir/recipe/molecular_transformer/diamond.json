@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:molecular_transformer",
   "energy": 1000000,
-  "ingredient": "industrial_elixir:industrial_diamond",
+  "ingredient": {
+    "item": "industrial_elixir:industrial_diamond"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:diamond"
   }
 }

@@ -8,9 +8,7 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.base.SimpleEnergyItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Unit;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,25 +17,22 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEnergyItem {
+public class QuantumSuitItem extends ArmorItem implements SimpleEnergyItem, TieredEnergyItem {
 
     public static final long CAPACITY = 10_000_000;
 
@@ -55,7 +50,7 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     private static final int HUNGER_REFILL_AMOUNT = 3;
 
     // Sprint speed modifier ID for Quantum Leggings
-    private static final Identifier LEGGINGS_SPRINT_SPEED_ID = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "leggings_sprint_speed");
+    private static final ResourceLocation LEGGINGS_SPRINT_SPEED_ID = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "leggings_sprint_speed");
 
     // Damage absorption
     private static final long DAMAGE_BASE_COST = 900;
@@ -70,15 +65,15 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     private static final Map<UUID, Boolean> nightVisionToggled = new ConcurrentHashMap<>();
     private static final Map<UUID, Boolean> nightVisionPaid = new ConcurrentHashMap<>();
 
-    private ArmorType slotType;
+    private ArmorItem.Type slotType;
     private EnergyTier energyTier;
 
     private final ImmutableMultimap<Holder<net.minecraft.world.entity.ai.attributes.Attribute>, AttributeModifier> noPowerAttributes;
     private final ImmutableMultimap<Holder<net.minecraft.world.entity.ai.attributes.Attribute>, AttributeModifier> hasPowerAttributes;
     private final ImmutableMultimap<Holder<net.minecraft.world.entity.ai.attributes.Attribute>, AttributeModifier> fullSuitAttributes;
 
-    public QuantumSuitItem(Properties settings, ArmorMaterial material, ArmorType slotType, EnergyTier energyTier) {
-        super(settings.stacksTo(1).humanoidArmor(material, slotType).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.TOOLTIP_DISPLAY, UNBREAKABLE_HIDE));
+    public QuantumSuitItem(Properties settings, Holder<ArmorMaterial> material, ArmorItem.Type slotType, EnergyTier energyTier) {
+        super(material, slotType, settings.stacksTo(1).component(DataComponents.UNBREAKABLE, new Unbreakable(false)));
         this.energyTier = energyTier;
         this.slotType = slotType;
         switch (slotType) {
@@ -107,19 +102,19 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
         ImmutableMultimap.Builder<Holder<net.minecraft.world.entity.ai.attributes.Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
         if (armor > 0) {
             builder.put(Attributes.ARMOR,
-                    new AttributeModifier(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "armor"), armor, AttributeModifier.Operation.ADD_VALUE));
+                    new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "armor"), armor, AttributeModifier.Operation.ADD_VALUE));
         }
         if (toughness > 0) {
             builder.put(Attributes.ARMOR_TOUGHNESS,
-                    new AttributeModifier(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "toughness"), toughness, AttributeModifier.Operation.ADD_VALUE));
+                    new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "toughness"), toughness, AttributeModifier.Operation.ADD_VALUE));
         }
         if (knockback > 0) {
             builder.put(Attributes.KNOCKBACK_RESISTANCE,
-                    new AttributeModifier(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "knockback"), knockback, AttributeModifier.Operation.ADD_VALUE));
+                    new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "knockback"), knockback, AttributeModifier.Operation.ADD_VALUE));
         }
         if (speed > 0) {
             builder.put(Attributes.MOVEMENT_SPEED,
-                    new AttributeModifier(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "speed"), speed, AttributeModifier.Operation.ADD_VALUE));
+                    new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "speed"), speed, AttributeModifier.Operation.ADD_VALUE));
         }
         return builder.build();
     }
@@ -175,8 +170,13 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     // Main tick logic
     // ===============================================
 
-    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean selected) {
         if (!(entity instanceof Player player)) return;
+        // 26.1 hands the equipment slot straight to inventoryTick; 1.21.1 only passes an inventory
+        // index, so resolve the slot the piece is worn in and skip anything merely carried around.
+        EquipmentSlot slot = player.getEquipmentSlotForItem(stack);
+        if (player.getItemBySlot(slot) != stack) return;
         SimpleEnergyItem storage = (SimpleEnergyItem) stack.getItem();
         boolean powered = storage.getStoredEnergy(stack) > 0;
 
@@ -350,12 +350,12 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
         return true;
     }
 
-    private static ArmorType getArmorTypeForSlot(EquipmentSlot slot) {
+    private static ArmorItem.Type getArmorTypeForSlot(EquipmentSlot slot) {
         return switch (slot) {
-            case HEAD -> ArmorType.HELMET;
-            case CHEST -> ArmorType.CHESTPLATE;
-            case LEGS -> ArmorType.LEGGINGS;
-            case FEET -> ArmorType.BOOTS;
+            case HEAD -> ArmorItem.Type.HELMET;
+            case CHEST -> ArmorItem.Type.CHESTPLATE;
+            case LEGS -> ArmorItem.Type.LEGGINGS;
+            case FEET -> ArmorItem.Type.BOOTS;
             default -> null;
         };
     }
@@ -363,7 +363,7 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     public static boolean tryNegateFallDamage(Player player) {
         ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
         if (!(boots.getItem() instanceof QuantumSuitItem suitItem)
-                || suitItem.getSlotType() != ArmorType.BOOTS) return false;
+                || suitItem.getSlotType() != ArmorItem.Type.BOOTS) return false;
 
         SimpleEnergyItem storage = (SimpleEnergyItem) boots.getItem();
         long stored = storage.getStoredEnergy(boots);
@@ -424,16 +424,16 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     // ===============================================
 
     public void onUnequip(Player player) {
-        ArmorType slot = slotType;
-        if (slot == ArmorType.CHESTPLATE) {
+        ArmorItem.Type slot = slotType;
+        if (slot == ArmorItem.Type.CHESTPLATE) {
             JetpackHelper.onUnequip(player.getUUID());
         }
-        if (slot == ArmorType.HELMET) {
+        if (slot == ArmorItem.Type.HELMET) {
             player.removeEffect(MobEffects.NIGHT_VISION);
             nightVisionToggled.remove(player.getUUID());
             nightVisionPaid.remove(player.getUUID());
         }
-        if (slot == ArmorType.LEGGINGS) {
+        if (slot == ArmorItem.Type.LEGGINGS) {
             var attr = player.getAttribute(Attributes.MOVEMENT_SPEED);
             if (attr != null) attr.removeModifier(LEGGINGS_SPRINT_SPEED_ID);
         }
@@ -442,7 +442,7 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     @Override
     public EnergyTier getEnergyTier() { return energyTier; }
 
-    public ArmorType getSlotType() { return slotType; }
+    public ArmorItem.Type getSlotType() { return slotType; }
 
     // ===============================================
     // Boost Jump (Quantum Boots)
@@ -451,7 +451,7 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
     public static void performBoostJump(Player player) {
         ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
         if (!(boots.getItem() instanceof QuantumSuitItem suitItem)
-                || suitItem.getSlotType() != ArmorType.BOOTS) return;
+                || suitItem.getSlotType() != ArmorItem.Type.BOOTS) return;
 
         SimpleEnergyItem storage = (SimpleEnergyItem) boots.getItem();
         if (storage.getStoredEnergy(boots) < BOOST_JUMP_COST) return;
@@ -463,7 +463,4 @@ public class QuantumSuitItem extends Item implements SimpleEnergyItem, TieredEne
         }
     }
 
-    public static TooltipDisplay UNBREAKABLE_HIDE = new TooltipDisplay(
-            false, new LinkedHashSet<>(Set.of(DataComponents.UNBREAKABLE))
-    );
 }

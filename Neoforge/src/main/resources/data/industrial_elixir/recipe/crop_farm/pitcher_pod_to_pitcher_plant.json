@@ -1,12 +1,16 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:pitcher_pod",
+  "ingredient": {
+    "item": "minecraft:pitcher_pod"
+  },
   "process_time": 600,
   "result": {
+    "count": 1,
     "id": "minecraft:pitcher_pod"
   },
   "result2": {
+    "count": 1,
     "id": "minecraft:pitcher_plant"
   }
 }

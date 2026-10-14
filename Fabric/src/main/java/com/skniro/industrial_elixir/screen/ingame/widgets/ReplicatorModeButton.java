@@ -1,22 +1,19 @@
 package com.skniro.industrial_elixir.screen.ingame.widgets;
 
 import com.skniro.industrial_elixir.block.entity.machine.fluid.ReplicatorBlockEntity;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.input.InputWithModifiers;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class ReplicatorModeButton extends Button {
     private static final WidgetSprites SPRITES = new WidgetSprites(
-            Identifier.withDefaultNamespace("widget/button"),
-            Identifier.withDefaultNamespace("widget/button_disabled"),
-            Identifier.withDefaultNamespace("widget/button_highlighted"));
+            ResourceLocation.withDefaultNamespace("widget/button"),
+            ResourceLocation.withDefaultNamespace("widget/button_disabled"),
+            ResourceLocation.withDefaultNamespace("widget/button_highlighted"));
 
     private final ReplicatorBlockEntity.Mode mode;
     private final boolean active;
@@ -31,19 +28,21 @@ public class ReplicatorModeButton extends Button {
     }
 
     @Override
-    protected void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTicks) {
+    protected void renderWidget(GuiGraphics context, int mouseX, int mouseY, float partialTicks) {
         if (visible) {
-            context.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITES.get(this.isActive(), this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight(), ARGB.white(this.alpha));
+            context.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+            context.blitSprite(SPRITES.get(this.isActive(), this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            context.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             // Render icon in the center of the button
             if (!icon.isEmpty()) {
-                context.item(icon, getX() + 1, getY() + 1);
+                context.renderItem(icon, getX() + 1, getY() + 1);
             }
         }
     }
 
     @Override
-    public void onPress(InputWithModifiers inputWithModifiers) {
-        super.onPress(inputWithModifiers);
+    public void onPress() {
+        super.onPress();
     }
 }

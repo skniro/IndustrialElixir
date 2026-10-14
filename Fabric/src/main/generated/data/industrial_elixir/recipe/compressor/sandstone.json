@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 4,
-  "ingredient": "minecraft:sand",
+  "ingredient": {
+    "item": "minecraft:sand"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:sandstone"
   }
 }

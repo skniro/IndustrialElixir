@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -54,7 +54,7 @@ public interface EnergyStorage {
 	 * On the client thread (i.e. with a client world), contents of queried EnergyStorages are unreliable and should not be modified.
 	 */
 	BlockApiLookup<EnergyStorage, @Nullable Direction> SIDED =
-			BlockApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_energy"), EnergyStorage.class, Direction.class);
+			BlockApiLookup.get(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_energy"), EnergyStorage.class, Direction.class);
 
 	/**
 	 * Item access to energy storages.
@@ -70,7 +70,7 @@ public interface EnergyStorage {
 	 * Returned APIs should behave the same regardless of the logical side.
 	 */
 	ItemApiLookup<EnergyStorage, ContainerItemContext> ITEM =
-			ItemApiLookup.get(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "energy"), EnergyStorage.class, ContainerItemContext.class);
+			ItemApiLookup.get(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "energy"), EnergyStorage.class, ContainerItemContext.class);
 
 	/**
 	 * Always empty energy storage.

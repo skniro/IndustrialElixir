@@ -1,12 +1,16 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:torchflower_seeds",
+  "ingredient": {
+    "item": "minecraft:torchflower_seeds"
+  },
   "process_time": 600,
   "result": {
+    "count": 1,
     "id": "minecraft:torchflower_seeds"
   },
   "result2": {
+    "count": 1,
     "id": "minecraft:torchflower"
   }
 }

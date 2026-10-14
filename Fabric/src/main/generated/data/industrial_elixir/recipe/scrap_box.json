@@ -2,17 +2,36 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap",
-    "industrial_elixir:scrap"
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    },
+    {
+      "item": "industrial_elixir:scrap"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:scrap_box"
   }
 }

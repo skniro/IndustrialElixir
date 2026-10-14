@@ -13,7 +13,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,8 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
@@ -41,7 +42,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
     private int fluidProgress = 0;
 
     // Pattern data from crystal
-    @Nullable private Identifier replicatingItemId;
+    @Nullable private ResourceLocation replicatingItemId;
     private long replicatingEnergyCost = 0;
     private int replicatingUUCost = 0;
 
@@ -94,7 +95,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
             this.replicatingItemId = null;
             return;
         }
-        Identifier itemId = PatternStorageBlockEntity.getPatternItem(crystal);
+        ResourceLocation itemId = PatternStorageBlockEntity.getPatternItem(crystal);
         int uuCost = PatternStorageBlockEntity.getPatternUUCost(crystal);
         int energyCost = PatternStorageBlockEntity.getPatternEnergyCost(crystal);
         if (itemId != null) {
@@ -238,7 +239,7 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
     public long getReplicatingEnergyCost() { return replicatingEnergyCost; }
     public int getFluidProgress() { return fluidProgress; }
     public int getReplicatingUUCost() { return replicatingUUCost; }
-    @Nullable public Identifier getReplicatingItemId() { return replicatingItemId; }
+    @Nullable public ResourceLocation getReplicatingItemId() { return replicatingItemId; }
 
     public int getOverallProgressPercent() {
         if (replicatingEnergyCost == 0 && replicatingUUCost == 0) return 0;
@@ -249,8 +250,8 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
 
     // ---- Save/Load ----
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         output.putInt("replicator.mode", mode.ordinal());
         output.putLong("replicator.energy_progress", energyProgress);
         output.putInt("replicator.fluid_progress", fluidProgress);
@@ -259,21 +260,21 @@ public class ReplicatorBlockEntity extends AbstractFluidMachineEntity {
         }
         output.putLong("replicator.energy_cost", replicatingEnergyCost);
         output.putInt("replicator.uu_cost", replicatingUUCost);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+        SingleVariantStorage.writeNbt(fluidContainer, FluidVariant.CODEC, output, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        int modeOrdinal = input.getIntOr("replicator.mode", 0);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        int modeOrdinal = (input.contains("replicator.mode") ? input.getInt("replicator.mode") : 0);
         this.mode = Mode.values()[Math.min(modeOrdinal, Mode.values().length - 1)];
-        energyProgress = input.getLongOr("replicator.energy_progress", 0);
-        fluidProgress = input.getIntOr("replicator.fluid_progress", 0);
-        String itemId = input.getStringOr("replicator.item_id", null);
-        this.replicatingItemId = itemId != null ? Identifier.parse(itemId) : null;
-        replicatingEnergyCost = input.getLongOr("replicator.energy_cost", 0);
-        replicatingUUCost = input.getIntOr("replicator.uu_cost", 0);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+        energyProgress = (input.contains("replicator.energy_progress") ? input.getLong("replicator.energy_progress") : 0);
+        fluidProgress = (input.contains("replicator.fluid_progress") ? input.getInt("replicator.fluid_progress") : 0);
+        String itemId = (input.contains("replicator.item_id") ? input.getString("replicator.item_id") : null);
+        this.replicatingItemId = itemId != null ? ResourceLocation.parse(itemId) : null;
+        replicatingEnergyCost = (input.contains("replicator.energy_cost") ? input.getLong("replicator.energy_cost") : 0);
+        replicatingUUCost = (input.contains("replicator.uu_cost") ? input.getInt("replicator.uu_cost") : 0);
+        SingleVariantStorage.readNbt(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input, registries);
     }
 
     public void drops() {

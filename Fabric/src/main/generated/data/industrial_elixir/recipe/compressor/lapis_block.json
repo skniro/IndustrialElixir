@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 9,
-  "ingredient": "minecraft:lapis_lazuli",
+  "ingredient": {
+    "item": "minecraft:lapis_lazuli"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:lapis_block"
   }
 }

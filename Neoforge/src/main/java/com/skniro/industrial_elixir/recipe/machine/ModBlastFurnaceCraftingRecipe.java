@@ -8,19 +8,20 @@ import com.skniro.industrial_elixir.recipe.AlchemyRecipeType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 
 import java.util.Optional;
+import com.skniro.industrial_elixir.recipe.ModRecipeSerializers;
 
 public class ModBlastFurnaceCraftingRecipe extends AbstractMachineCraftingRecipe {
-    private final Optional<ItemStackTemplate> output2;
-    private final Identifier requiredFluid;
+    private final Optional<ItemStack> output2;
+    private final ResourceLocation requiredFluid;
     private final int requiredFluidAmount;
 
-    public ModBlastFurnaceCraftingRecipe(Ingredient ingredient, int requiredCount, ItemStackTemplate output,
-                                         Optional<ItemStackTemplate> output2, Identifier requiredFluid, int requiredFluidAmount) {
+    public ModBlastFurnaceCraftingRecipe(Ingredient ingredient, int requiredCount, ItemStack output,
+                                         Optional<ItemStack> output2, ResourceLocation requiredFluid, int requiredFluidAmount) {
         super(ingredient, requiredCount, output);
         this.output2 = output2 != null ? output2 : Optional.empty();
         this.requiredFluid = requiredFluid;
@@ -37,16 +38,12 @@ public class ModBlastFurnaceCraftingRecipe extends AbstractMachineCraftingRecipe
         return AlchemyRecipeType.MOD_BLAST_FURNACE.type.get();
     }
 
-    @Override
-    public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
 
-    public Optional<ItemStackTemplate> output2() {
+    public Optional<ItemStack> output2() {
         return output2;
     }
 
-    public Identifier requiredFluid() {
+    public ResourceLocation requiredFluid() {
         return requiredFluid;
     }
 
@@ -58,9 +55,9 @@ public class ModBlastFurnaceCraftingRecipe extends AbstractMachineCraftingRecipe
             RecordCodecBuilder.mapCodec(inst -> inst.group(
                     Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
                     Codec.INT.fieldOf("count").forGetter(recipe -> recipe.requiredCount),
-                    ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.output),
-                    ItemStackTemplate.CODEC.optionalFieldOf("result2").forGetter(recipe -> recipe.output2),
-                    Identifier.CODEC.fieldOf("fluid").forGetter(recipe -> recipe.requiredFluid),
+                    ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.output),
+                    ItemStack.CODEC.optionalFieldOf("result2").forGetter(recipe -> recipe.output2),
+                    ResourceLocation.CODEC.fieldOf("fluid").forGetter(recipe -> recipe.requiredFluid),
                     Codec.INT.fieldOf("fluid_amount").forGetter(recipe -> recipe.requiredFluidAmount)
             ).apply(inst, ModBlastFurnaceCraftingRecipe::new));
 
@@ -68,12 +65,12 @@ public class ModBlastFurnaceCraftingRecipe extends AbstractMachineCraftingRecipe
             StreamCodec.composite(
                     Ingredient.CONTENTS_STREAM_CODEC, AbstractMachineCraftingRecipe::ingredient,
                     ByteBufCodecs.INT, AbstractMachineCraftingRecipe::requiredCount,
-                    ItemStackTemplate.STREAM_CODEC, AbstractMachineCraftingRecipe::output,
-                    ByteBufCodecs.optional(ItemStackTemplate.STREAM_CODEC), ModBlastFurnaceCraftingRecipe::output2,
-                    Identifier.STREAM_CODEC, ModBlastFurnaceCraftingRecipe::requiredFluid,
+                    ItemStack.STREAM_CODEC, AbstractMachineCraftingRecipe::output,
+                    ByteBufCodecs.optional(ItemStack.STREAM_CODEC), ModBlastFurnaceCraftingRecipe::output2,
+                    ResourceLocation.STREAM_CODEC, ModBlastFurnaceCraftingRecipe::requiredFluid,
                     ByteBufCodecs.INT, ModBlastFurnaceCraftingRecipe::requiredFluidAmount,
                     ModBlastFurnaceCraftingRecipe::new);
 
     public static final RecipeSerializer<ModBlastFurnaceCraftingRecipe> SERIALIZER =
-            new RecipeSerializer<>(CODEC, STREAM_CODEC);
+            ModRecipeSerializers.of(CODEC, STREAM_CODEC);
 }

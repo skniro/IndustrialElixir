@@ -12,7 +12,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.List;
 import java.util.Optional;
@@ -22,21 +22,8 @@ public class MaceratorDisplay extends BasicDisplay {
     public static final CategoryIdentifier<MaceratorDisplay> MACERATOR =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "macerator");
 
-    public static final DisplaySerializer<MaceratorDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(MaceratorDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(MaceratorDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(MaceratorDisplay::getDisplayLocation)
-            ).apply(instance, MaceratorDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    MaceratorDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    MaceratorDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    MaceratorDisplay::getDisplayLocation,
-                    MaceratorDisplay::new
-            )
+    public static final DisplaySerializer<MaceratorDisplay> SERIALIZER = BasicDisplay.Serializer.<MaceratorDisplay>ofSimple(
+            (inputs, outputs, location) -> new MaceratorDisplay(inputs, outputs, location)
     );
 
     public MaceratorDisplay(MaceratorCraftingRecipe recipe) {
@@ -45,13 +32,13 @@ public class MaceratorDisplay extends BasicDisplay {
                 Optional.empty());
     }
 
-    public MaceratorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location) {
+    public MaceratorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location) {
         super(inputs, outputs, location);
     }
 
     public MaceratorDisplay(RecipeHolder<MaceratorCraftingRecipe> recipe) {
         super(List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
     }
 
     @Override
@@ -59,8 +46,4 @@ public class MaceratorDisplay extends BasicDisplay {
         return MACERATOR;
     }
 
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
-    }
 }

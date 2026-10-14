@@ -1,13 +1,12 @@
 package com.skniro.industrial_elixir.item.init;
 
+import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 
 public class ItemUpgradeModule extends Item {
 
@@ -20,29 +19,29 @@ public class ItemUpgradeModule extends Item {
 
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> textConsumer, TooltipFlag type) {
 
         switch (this.type) {
 
             case OVERCLOCKER -> {
-                textConsumer.accept(Component.literal("Speed: -30%")
+                textConsumer.add(Component.literal("Speed: -30%")
                         .withStyle(ChatFormatting.GRAY));
-                textConsumer.accept(Component.literal("Power: +60%")
+                textConsumer.add(Component.literal("Power: +60%")
                         .withStyle(ChatFormatting.GRAY));
             }
 
             case TRANSFORMER -> {
-                textConsumer.accept(Component.literal("Energy Tier +1 per item")
+                textConsumer.add(Component.literal("Energy Tier +1 per item")
                         .withStyle(ChatFormatting.GRAY));
             }
 
             case ENERGY_STORAGE -> {
-                textConsumer.accept(Component.literal("Extra Storage: +10000 EU")
+                textConsumer.add(Component.literal("Extra Storage: +10000 EU")
                         .withStyle(ChatFormatting.GRAY));
             }
 
             case REDSTONE_INVERTER -> {
-                textConsumer.accept(Component.literal("Inverts Redstone Signal")
+                textConsumer.add(Component.literal("Inverts Redstone Signal")
                         .withStyle(ChatFormatting.GRAY));
             }
         }

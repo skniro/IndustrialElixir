@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:molecular_transformer",
   "energy": 1000000,
-  "ingredient": "minecraft:glowstone_dust",
+  "ingredient": {
+    "item": "minecraft:glowstone_dust"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:luminite_part"
   }
 }

@@ -2,11 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:generator_solar_panel",
-    "D": "industrial_elixir:alloy_plate",
-    "E": "industrial_elixir:irradiant_reinforced_plate",
-    "P": "industrial_elixir:advanced_circuit",
-    "R": "industrial_elixir:irradiant_glass_pane"
+    "A": {
+      "item": "industrial_elixir:generator_solar_panel"
+    },
+    "D": {
+      "item": "industrial_elixir:alloy_plate"
+    },
+    "E": {
+      "item": "industrial_elixir:irradiant_reinforced_plate"
+    },
+    "P": {
+      "item": "industrial_elixir:advanced_circuit"
+    },
+    "R": {
+      "item": "industrial_elixir:irradiant_glass_pane"
+    }
   },
   "pattern": [
     "RRR",
@@ -14,6 +24,7 @@
     "PEP"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:generator_advanced_solar_panel"
   }
 }

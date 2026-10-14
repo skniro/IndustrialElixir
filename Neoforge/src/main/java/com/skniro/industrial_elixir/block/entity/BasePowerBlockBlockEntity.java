@@ -18,19 +18,17 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class BasePowerBlockBlockEntity extends BlockEntity implements MenuProvider, ImplementedInventory, ItemOwner, MachineEnergyProvider {
+public abstract class BasePowerBlockBlockEntity extends BlockEntity implements MenuProvider, ImplementedInventory, MachineEnergyProvider {
     public NonNullList<ItemStack> inventory = NonNullList.withSize(13, ItemStack.EMPTY);
     private float rotation = 0;
     protected static final int FLUID_ITEM_SLOT = 0;
@@ -143,8 +141,8 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements M
                         Container inventory = this.getOptionalInventory().get();
                         ItemStack stack = inventory.getItem(slot);
                         if(!stack.isEmpty()) {
-                            EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
-                            EnergyStorageUtil.move(itemEnergyStorage, this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
+                            EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM);
+                            EnergyStorageUtil.move(itemEnergyStorage, this.getSideEnergyStorage(null), Long.MAX_VALUE);
                         }
                     }
                 }
@@ -159,8 +157,8 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements M
                     Container inventory = this.getOptionalInventory().get();
                     ItemStack stack = inventory.getItem(slot);
                     if(!stack.isEmpty()) {
-                        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM, ItemAccess.forStack(stack));
-                        EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE, null);
+                        EnergyStorage itemEnergyStorage = stack.getCapability(EnergyStorage.ITEM);
+                        EnergyStorageUtil.move(this.getSideEnergyStorage(null), itemEnergyStorage, Long.MAX_VALUE);
                     }
                 }
             }
@@ -188,7 +186,7 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements M
         for (Direction dir : Direction.values()) {
             EnergyStorage target = EnergyStorage.SIDED.getCapability(level, worldPosition.relative(dir),null,null,dir.getOpposite());
             if (target == null) continue;
-            EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, getEffectiveTier().getMaxOutput(), null);
+            EnergyStorageUtil.move(energyContainer.getSideStorage(dir), target, getEffectiveTier().getMaxOutput());
         }
     }
 
@@ -218,17 +216,14 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements M
         return inventory;
     }
 
-    @Override
     public Level level() {
         return this.level;
     }
 
-    @Override
     public Vec3 position() {
         return this.getBlockPos().getCenter();
     }
 
-    @Override
     public float getVisualRotationYInDegrees() {
         return this.getBlockState().getValue(AbstractMachineblock.FACING).getOpposite().getStepY();
     }

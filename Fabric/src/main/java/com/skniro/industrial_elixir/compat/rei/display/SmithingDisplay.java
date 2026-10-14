@@ -11,7 +11,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.ByIdMap.OutOfBoundsStrategy;
-import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 

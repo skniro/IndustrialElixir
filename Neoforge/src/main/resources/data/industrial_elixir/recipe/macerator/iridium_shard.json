@@ -1,6 +1,8 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "industrial_elixir:iridium_ore",
+  "ingredient": {
+    "item": "industrial_elixir:iridium_ore"
+  },
   "result": {
     "count": 9,
     "id": "industrial_elixir:iridium_shard"

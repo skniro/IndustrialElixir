@@ -3,29 +3,22 @@ package com.skniro.industrial_elixir.block.renderer.container.fluid;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.skniro.industrial_elixir.block.entity.container.fluid.FluidTankBlockEntity;
-import com.skniro.industrial_elixir.block.renderer.state.FluidTankBlockEntityRenderState;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
-
-public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEntity, FluidTankBlockEntityRenderState> {
+public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEntity> {
     private static final float TANK_INSET = 0.14f;
     private static final float MIN_FLUID_Y = 0.02f;
     private static final float MAX_FLUID_Y = 0.98f;
@@ -35,31 +28,34 @@ public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEnti
     }
 
     @Override
-    public FluidTankBlockEntityRenderState createRenderState() {
-        return new FluidTankBlockEntityRenderState();
-    }
+    public void render(FluidTankBlockEntity entity, float partialTick, PoseStack matrices, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        Level level = entity.getLevel();
+        int lightmapCoordinates = level == null ? LightTexture.FULL_BRIGHT : getLightLevel(level, entity.getBlockPos());
 
-    @Override
-    public void submit(FluidTankBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
-        
-        if (!state.hasFluid) {
-            System.out.println("[FluidTankRenderer.submit] No fluid, skipping render");
+        FluidVariant fluidVariant = entity.getFluidVariant();
+        boolean hasFluid = entity.getAmount() > 0 && !fluidVariant.isBlank();
+        if (!hasFluid) {
             return;
         }
 
+        int fluidColor = resolveColor(fluidVariant);
+        float fluidHeight = getFluidHeight(entity.getFillRatio());
+
+        TextureAtlasSprite fluidStillSprite = FluidVariantRendering.getSprite(fluidVariant);
+        TextureAtlasSprite fluidFlowSprite = fluidStillSprite;
+
         matrices.pushPose();
-        
+
         // 即使没有精灵，我们也可以渲染纯色液体
         // 这会允许至少看到液体的存在
-        if (state.fluidStillSprite != null && state.fluidFlowSprite != null) {
-            queue.submitCustomGeometry(matrices, RenderTypes.translucentMovingBlock(), (pose, vertexConsumer) ->
-                    renderFluidBox(pose, vertexConsumer, state.fluidStillSprite, state.fluidFlowSprite, state.fluidColor, state.lightmapCoordinates, state.fluidHeight));
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.translucentMovingBlock());
+        if (fluidStillSprite != null && fluidFlowSprite != null) {
+            renderFluidBox(matrices.last(), vertexConsumer, fluidStillSprite, fluidFlowSprite, fluidColor, lightmapCoordinates, fluidHeight);
         } else {
             // 作为回退，使用纯色渲染
-            queue.submitCustomGeometry(matrices, RenderTypes.translucentMovingBlock(), (pose, vertexConsumer) ->
-                    renderFluidBoxSolidColor(pose, vertexConsumer, state.fluidColor, state.lightmapCoordinates, state.fluidHeight));
+            renderFluidBoxSolidColor(matrices.last(), vertexConsumer, fluidColor, lightmapCoordinates, fluidHeight);
         }
-        
+
         matrices.popPose();
     }
 
@@ -133,35 +129,10 @@ public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEnti
                 -1.0f, 0.0f, 0.0f);
     }
 
-    @Override
-    public void extractRenderState(FluidTankBlockEntity entity, FluidTankBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        BlockEntityRenderer.super.extractRenderState(entity, state, tickProgress, cameraPos, crumblingOverlay);
-
-        Level level = entity.getLevel();
-        state.lightmapCoordinates = level == null ? 15728880 : getLightLevel(level, entity.getBlockPos());
-        state.fluidVariant = entity.getFluidVariant();
-        state.hasFluid = entity.getAmount() > 0 && !state.fluidVariant.isBlank();
-        
-        if (!state.hasFluid) {
-            state.fluidStillSprite = null;
-            state.fluidFlowSprite = null;
-            state.fluidColor = 0;
-            state.fluidHeight = 0.0f;
-            return;
-        }
-
-        FluidVariant fluid = state.fluidVariant;
-        state.fluidFlowSprite = state.fluidStillSprite;
-
-        
-        state.fluidColor = resolveColor(fluid);
-        state.fluidHeight = getFluidHeight(entity.getFillRatio());
-    }
-
     private int getLightLevel(Level world, BlockPos pos) {
         int bLight = world.getBrightness(LightLayer.BLOCK, pos);
         int sLight = world.getBrightness(LightLayer.SKY, pos);
-        return LightCoordsUtil.pack(bLight, Math.max(sLight, 15));
+        return LightTexture.pack(bLight, Math.max(sLight, 15));
     }
 
     private static float getFluidHeight(float fillRatio) {
@@ -264,23 +235,6 @@ public class FluidTankRenderer implements BlockEntityRenderer<FluidTankBlockEnti
 
     private static float lerp(float delta, float start, float end) {
         return start + delta * (end - start);
-    }
-
-    private static Object findFirstResult(Object target, String... methodNames) {
-        return invokeFirstResult(target, null, methodNames);
-    }
-
-    private static Object invokeFirstResult(Object target, @Nullable Object argument, String... methodNames) {
-        for (String methodName : methodNames) {
-            try {
-                Method method = argument == null
-                        ? target.getClass().getMethod(methodName)
-                        : target.getClass().getMethod(methodName, argument.getClass());
-                return argument == null ? method.invoke(target) : method.invoke(target, argument);
-            } catch (ReflectiveOperationException ignored) {
-            }
-        }
-        return null;
     }
 
     private static void quad(VertexConsumer consumer, PoseStack.Pose pose, int color, int light,

@@ -11,12 +11,9 @@ import com.skniro.industrial_elixir.energy.heat.impl.HeatImpl;
 import com.skniro.industrial_elixir.energy.heat.impl.SimpleItemHeatStorageImpl;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -29,15 +26,14 @@ import java.util.Objects;
  * <p><ul>
  *     <li>{@link #supportsInsertion} and {@link #supportsExtraction} can be used to tell if insertion and extraction
  *     functionality are possibly supported by this storage.</li>
- *     <li>{@link #insert} and {@link #extract} can be used to insert or extract resources from this storage.</li>
+ *     <li>{@link #insert} and {@link #extract} can be used to insert or extract resources from this storage.
+ *     Both take a {@code simulate} flag, which replaces the transactions of the original TechReborn API.</li>
  *     <li>{@link #getAmount} and {@link #getCapacity} can be used to query the current amount and capacity of this storage.
  *     There is no guarantee that the current amount of Heat can be extracted,
  *     nor that something can be inserted if capacity > amount.
  *     If you want to know, you can simulate the operation with {@link #insert} and {@link #extract}.
  *     </li>
  * </ul>
- *
- * @see Transaction
  */
 @SuppressWarnings({"unused"})
 public interface HeatStorage {
@@ -59,22 +55,22 @@ public interface HeatStorage {
 	 * On the client thread (i.e. with a client world), contents of queried HeatStorages are unreliable and should not be modified.
 	 */
 	BlockCapability<HeatStorage, @Nullable Direction> SIDED =
-			BlockCapability.createSided(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_heat"), HeatStorage.class);
+			BlockCapability.createSided(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "sided_heat"), HeatStorage.class);
 
 	/**
 	 * Item access to Heat storages.
 	 *
 	 * <p>{@link SimpleItemHeatStorageImpl} is provided as an implementation example.
 	 * Instances of it can be optained through {@link SimpleHeatItem#createStorage}.
-	 * Custom implementations should treat the context as a wrapper around a single slot,
-	 * and always check the current item variant and amount before any operation, like {@code SimpleItemHeatStorageImpl} does it.
+	 * Custom implementations should always check the current item of the queried stack before any operation,
+	 * like {@code SimpleItemHeatStorageImpl} does it.
 	 * The check can be handled by {@link DelegatingHeatStorage}.
 	 *
 	 * <p>This may be queried both client-side and server-side.
 	 * Returned APIs should behave the same regardless of the logical side.
 	 */
-	ItemCapability<HeatStorage, ItemAccess> ITEM =
-			ItemCapability.create(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), HeatStorage.class, ItemAccess.class);
+	ItemCapability<HeatStorage, Void> ITEM =
+			ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "heat"), HeatStorage.class);
 
 	/**
 	 * Always empty Heat storage.
@@ -104,10 +100,10 @@ public interface HeatStorage {
 	 * Try to insert up to some amount of Heat into this storage.
 	 *
 	 * @param maxAmount The maximum amount of Heat to insert. May not be negative.
-	 * @param transaction The transaction this operation is part of.
+	 * @param simulate If {@code true}, the storage is not modified and the returned amount is only an estimate.
 	 * @return A nonnegative integer not greater than maxAmount: the amount that was inserted.
 	 */
-	long insert(long maxAmount, TransactionContext transaction);
+	long insert(long maxAmount, boolean simulate);
 
 	/**
 	 * Return false if calling {@link #extract} will absolutely always return 0, or true otherwise or in doubt.
@@ -123,10 +119,10 @@ public interface HeatStorage {
 	 * Try to extract up to some amount of Heat from this storage.
 	 *
 	 * @param maxAmount The maximum amount of Heat to extract. May not be negative.
-	 * @param transaction The transaction this operation is part of.
+	 * @param simulate If {@code true}, the storage is not modified and the returned amount is only an estimate.
 	 * @return A nonnegative integer not greater than maxAmount: the amount that was extracted.
 	 */
-	long extract(long maxAmount, TransactionContext transaction);
+	long extract(long maxAmount, boolean simulate);
 
 	/**
 	 * Return the current amount of Heat that is stored.

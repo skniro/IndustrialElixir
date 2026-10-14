@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 9,
-  "ingredient": "minecraft:iron_ingot",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:iron_block"
   }
 }

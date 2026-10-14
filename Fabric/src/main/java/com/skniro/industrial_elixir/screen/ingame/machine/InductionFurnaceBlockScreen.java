@@ -6,11 +6,10 @@ import com.skniro.industrial_elixir.util.MouseUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class InductionFurnaceBlockScreen extends AbstractContainerScreen<InductionFurnaceScreenHandler> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/inductionfurnace.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/inductionfurnace.png");
 
     public InductionFurnaceBlockScreen(InductionFurnaceScreenHandler handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -30,42 +29,42 @@ public class InductionFurnaceBlockScreen extends AbstractContainerScreen<Inducti
         titleLabelX = (imageWidth - font.width(title)) / 2;
     }
 
-    private void renderHeatAreaTooltips(GuiGraphicsExtractor context) {
-        context.text(font, Component.literal("Heat: " + menu.getHeat() + "%"), 88, 68, -12566464, false);
+    private void renderHeatAreaTooltips(GuiGraphics context) {
+        context.drawString(font, Component.literal("Heat: " + menu.getHeat() + "%"), 88, 68, -12566464, false);
     }
 
-    private void renderEnergyAreaTooltips(GuiGraphicsExtractor context, int pMouseX, int pMouseY, int x, int y) {
+    private void renderEnergyAreaTooltips(GuiGraphics context, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 15, 32, 13, 13)) {
-            context.setTooltipForNextFrame(Screens.getFont(this),
+            context.renderTooltip(Screens.getTextRenderer(this),
                     List.of(Component.literal(menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " / " + menu.blockEntity.energyContainer.getSideStorage(null).getCapacity() + " E")),
                     Optional.empty(), pMouseX, pMouseY);
         }
     }
 
-    private void renderEnergyArea(GuiGraphicsExtractor context, int x, int y) {
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 15, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
+    private void renderEnergyArea(GuiGraphics context, int x, int y) {
+        context.blit(TEXTURE, x + 15, y + 32, 176, 0, 13, menu.getScaledEnergyHeight(),256,256);
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics context, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
         renderEnergyAreaTooltips(context, mouseX, mouseY, x, y);
         renderHeatAreaTooltips(context);
-        context.text(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
-        context.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
+        context.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
+        context.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTicks) {
+    protected void renderBg(GuiGraphics context, float partialTicks, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        context.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
         if (menu.isCrafting()) {
             int progress = menu.getScaledProgress();
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 73, y + 34, 190, 0, progress, 15, 256, 256);
+            context.blit(TEXTURE, x + 73, y + 34, 190, 0, progress, 15, 256, 256);
         }
 
         renderEnergyArea(context, x, y);

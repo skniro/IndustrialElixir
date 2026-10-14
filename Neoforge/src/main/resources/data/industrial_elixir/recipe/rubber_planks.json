@@ -3,7 +3,9 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    "industrial_elixir:rubber_log"
+    {
+      "item": "industrial_elixir:rubber_log"
+    }
   ],
   "result": {
     "count": 4,

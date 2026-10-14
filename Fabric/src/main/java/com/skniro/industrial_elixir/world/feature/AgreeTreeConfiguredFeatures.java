@@ -6,8 +6,8 @@ import com.skniro.industrial_elixir.world.gen.trunk.RubberTrunkPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.random.WeightedList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -21,8 +21,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 public class AgreeTreeConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> Rubber_TREE = registerKey("rubber_tree");
 
-    static WeightedList.Builder<BlockState> pool() {
-        return WeightedList.builder();
+    static SimpleWeightedRandomList.Builder<BlockState> pool() {
+        return SimpleWeightedRandomList.builder();
     }
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> featureRegisterable) {
@@ -39,7 +39,7 @@ public class AgreeTreeConfiguredFeatures {
 
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
     }
 
     private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context,

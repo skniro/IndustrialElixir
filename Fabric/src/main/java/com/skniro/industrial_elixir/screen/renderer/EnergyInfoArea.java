@@ -2,7 +2,7 @@ package com.skniro.industrial_elixir.screen.renderer;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import java.util.List;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 
@@ -34,7 +34,7 @@ public class EnergyInfoArea {
         return List.of(Component.literal(energy.getAmount()+" / "+energy.getCapacity()+" E"));
     }
 
-    public void draw(GuiGraphicsExtractor context) {
+    public void draw(GuiGraphics context) {
         final int height = area.getHeight();
         int stored = (int)(height*(energy.getAmount()/(float)energy.getCapacity()));
         context.fillGradient(

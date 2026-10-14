@@ -86,7 +86,9 @@ public class  ModContent {
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerItem(EnergyStorage.ITEM,
-                (stack, context) -> SimpleEnergyItem.createStorage(context,
+                // 1.21.1 item capabilities have a Void context, so the queried stack is passed
+                // through instead of 26.1's ItemAccess.
+                (stack, context) -> SimpleEnergyItem.createStorage(stack,
                         ((SimpleEnergyItem) stack.getItem()).getEnergyCapacity(stack),
                         ((SimpleEnergyItem) stack.getItem()).getEnergyMaxInput(stack),
                         ((SimpleEnergyItem) stack.getItem()).getEnergyMaxOutput(stack)),
@@ -105,9 +107,9 @@ public class  ModContent {
     @SubscribeEvent
     public static void FluidCellinit(RegisterCapabilitiesEvent event) {
         List<Item> items = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof FluidCellItem).toList();
-        event.registerItem(Capabilities.Fluid.ITEM, (stack, ctx) -> {
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
                     if (stack.getItem() instanceof FluidCellItem cellItem) {
-                        return new FullFluidCellHandler(ctx, cellItem);
+                        return new FullFluidCellHandler(stack, cellItem);
                     } else {
                         return null;
                     }

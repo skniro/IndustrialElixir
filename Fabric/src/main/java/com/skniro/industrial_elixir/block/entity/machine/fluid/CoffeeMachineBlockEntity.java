@@ -24,9 +24,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -46,15 +47,15 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        SingleVariantStorage.writeValue(fluidContainer, FluidVariant.CODEC, output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
+        SingleVariantStorage.writeNbt(fluidContainer, FluidVariant.CODEC, output, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        SingleVariantStorage.readValue(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        SingleVariantStorage.readNbt(fluidContainer, FluidVariant.CODEC, FluidVariant::blank, input, registries);
     }
 
     public void drops() {
@@ -77,7 +78,7 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
         if (recipe.isEmpty()) return;
 
         CoffeeMachineCraftingRecipe coffeeRecipe = (CoffeeMachineCraftingRecipe) recipe.get().value();
-        ItemStack output = coffeeRecipe.output().create();
+        ItemStack output = coffeeRecipe.output().copy();
 
         this.removeItem(INPUT_SLOT, coffeeRecipe.requiredCount());
 
@@ -183,7 +184,7 @@ public class CoffeeMachineBlockEntity extends AbstractFluidMachineEntity {
         var recipeHolder = opt.get();
         var recipe = recipeHolder.value();
         CoffeeMachineCraftingRecipe coffeeRecipe = (CoffeeMachineCraftingRecipe) recipe;
-        ItemStack output = coffeeRecipe.output().create();
+        ItemStack output = coffeeRecipe.output().copy();
 
         if (!canInsertAmountIntoOutputSlot(output.getCount()) || !canInsertItemIntoOutputSlot(output)) return false;
         if (!hasEnoughEnergyToCraft()) return false;

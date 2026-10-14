@@ -5,7 +5,7 @@ import com.skniro.industrial_elixir.fluid.init.MapleHotSpringFluidBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,12 +21,12 @@ public class IndustrialElixirFluidBlocks {
             (settings)-> new MapleHotSpringFluidBlock(IndustrialElixirFluids.STILL_Fluid_UU, settings), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER));
 
     private static Block registerBlockWithoutItem(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
-        Block block = (Block)factory.apply(settings.setId(keyOf(name)));
+        Block block = (Block)factory.apply(settings);
         return Registry.register(BuiltInRegistries.BLOCK, keyOf(name), block);
     }
 
     private static ResourceKey<Block> keyOf(String name) {
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
+        return ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, name));
     }
 
     public static void registerFluidBlocks() {

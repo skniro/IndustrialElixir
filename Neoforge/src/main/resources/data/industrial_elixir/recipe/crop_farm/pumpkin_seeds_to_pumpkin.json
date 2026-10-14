@@ -1,12 +1,16 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:pumpkin_seeds",
+  "ingredient": {
+    "item": "minecraft:pumpkin_seeds"
+  },
   "process_time": 1200,
   "result": {
+    "count": 1,
     "id": "minecraft:pumpkin"
   },
   "result2": {
+    "count": 1,
     "id": "minecraft:pumpkin_seeds"
   }
 }

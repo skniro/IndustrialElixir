@@ -1,8 +1,6 @@
 package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
-import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.Objects;
 // CREDIT: https://github.com/TechReborn/energy
@@ -35,8 +33,8 @@ public class LimitingEnergyStorage implements EnergyStorage {
 	}
 
 	@Override
-	public long insert(long maxAmount, TransactionContext transaction) {
-		return backingStorage.insert(Math.min(maxAmount, maxInsert), transaction);
+	public long insert(long maxAmount, boolean simulate) {
+		return backingStorage.insert(Math.min(maxAmount, maxInsert), simulate);
 	}
 
 	@Override
@@ -45,8 +43,8 @@ public class LimitingEnergyStorage implements EnergyStorage {
 	}
 
 	@Override
-	public long extract(long maxAmount, TransactionContext transaction) {
-		return backingStorage.extract(Math.min(maxAmount, maxExtract), transaction);
+	public long extract(long maxAmount, boolean simulate) {
+		return backingStorage.extract(Math.min(maxAmount, maxExtract), simulate);
 	}
 
 	@Override

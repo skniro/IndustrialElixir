@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "iron_ingot",
-  "ingredient": "industrial_elixir:iron_dust",
+  "ingredient": {
+    "item": "industrial_elixir:iron_dust"
+  },
   "result": {
     "id": "minecraft:iron_ingot"
   }

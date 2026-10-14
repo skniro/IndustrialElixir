@@ -2,9 +2,10 @@ package com.skniro.industrial_elixir.datagen.recipe.machine;
 
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -13,13 +14,17 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.concurrent.CompletableFuture;
 
 public class HeatCentrifugeRecipeGenerator extends FabricRecipeProvider {
-    public HeatCentrifugeRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public HeatCentrifugeRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 heatCentrifuge(GrowableOresItems.CRUSHED_COPPER, GrowableOresItems.COPPER_DUST, GrowableOresItems.SMALL_TIN_DUST, GrowableOresItems.STONE_DUST, "crushed_copper_to_purified_copper");

@@ -7,12 +7,8 @@ import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.renderer.AlchemyblockentityRenderer;
 import com.skniro.industrial_elixir.client.particle.MapleCampfireSmokeParticle;
 import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
-import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIPlugin;
-import com.skniro.industrial_elixir.compat.jei.IndustrialElixirJEIUtils;
-import com.skniro.industrial_elixir.compat.rei.IndustrialModREIClient;
-import com.skniro.industrial_elixir.compat.rei.IndustrialModREIUtils;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
-import com.skniro.industrial_elixir.fluid.init.BaseFluidType;
+import com.skniro.industrial_elixir.fluid.MapleFluidTypes;
 import com.skniro.industrial_elixir.screen.ingame.energybox.ChargePadBlockScreen;
 import com.skniro.industrial_elixir.screen.ingame.energybox.EnergyBoxBlockScreen;
 import com.skniro.industrial_elixir.screen.ingame.generator.heat.ElectricHeaterBlockScreen;
@@ -36,18 +32,16 @@ import com.skniro.industrial_elixir.screen.ingame.generator.SacredGeneratorScree
 import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.object.boat.BoatModel;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.BoatRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
 public class IndustrialElixirOresClient {
@@ -55,7 +49,7 @@ public class IndustrialElixirOresClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
 
-        ChunkSectionLayer renderLayer2 = ChunkSectionLayer.CUTOUT;
+        RenderType renderLayer2 = RenderType.cutout();
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_LEAVES.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.GLASSFIBER_CABLE.get(), renderLayer2);
@@ -63,7 +57,7 @@ public class IndustrialElixirOresClient {
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block.get(), renderLayer2);
         ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass.get(), renderLayer2);
 
-        ChunkSectionLayer renderLayer3 = ChunkSectionLayer.TRANSLUCENT;
+        RenderType renderLayer3 = RenderType.translucent();
         ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK.get(), renderLayer3);
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Hot_Spring.get(), renderLayer3);
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Hot_Spring.get(), renderLayer3);
@@ -71,33 +65,14 @@ public class IndustrialElixirOresClient {
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_AIR.get(), renderLayer3);
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_UU.get(), renderLayer3);
         ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_UU.get(), renderLayer3);
-
-
-        BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
-    }
-
-    @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
-    public static class ClientGameEvents {
-        @SubscribeEvent
-        public static void onRecipesReceived(RecipesReceivedEvent event) {
-            if(IndustrialElixirJEIUtils.isJEIAvailable()) {
-                IndustrialElixirJEIPlugin.recipeMap = event.getRecipeMap();
-            }
-
-            if(IndustrialModREIUtils.isREIAvailable()) {
-                IndustrialModREIClient.recipeMap = event.getRecipeMap();
-            }
-        }
     }
 
     @SubscribeEvent
-    public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        var rubber_boat = new ModelLayerLocation(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "boat/rubber"), "main");
-        var rubber_chest_boat = new ModelLayerLocation(Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "chest_boat/rubber"), "main");
-        EntityRenderers.register(MapleEntityType.RUBBER_BOAT.get(), pContext -> new BoatRenderer(pContext, rubber_boat));
-        EntityRenderers.register(MapleEntityType.RUBBER_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, rubber_chest_boat));
-        event.registerLayerDefinition(rubber_boat, BoatModel::createBoatModel);
-        event.registerLayerDefinition(rubber_chest_boat, BoatModel::createChestBoatModel);
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
+        // 1.21.1 boat models are picked from the vanilla {@code Boat.Type}; there is no data driven boat model.
+        event.registerEntityRenderer(MapleEntityType.RUBBER_BOAT.get(), pContext -> new BoatRenderer(pContext, false));
+        event.registerEntityRenderer(MapleEntityType.RUBBER_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, true));
     }
 
     @SubscribeEvent
@@ -136,11 +111,42 @@ public class IndustrialElixirOresClient {
         event.register(AlchemyScreenHandlerType.VendorMachine.get(), VendorMachineScreen::new);
     }
 
+    /**
+     * 1.21.1 has no {@code FluidModel} / {@code RegisterFluidModelsEvent}; custom fluid sprites and
+     * tints are supplied through the client fluid type extensions instead.
+     */
     @SubscribeEvent
-    public static void onRegisterFluidModels(RegisterFluidModelsEvent event) {
-        event.register(BaseFluidType.Fluid_UU_MODEL, IndustrialElixirFluids.STILL_Fluid_UU.get(), IndustrialElixirFluids.FLOWING_Fluid_UU.get());
-        event.register(BaseFluidType.Fluid_AIR_MODEL, IndustrialElixirFluids.STILL_Fluid_AIR.get(), IndustrialElixirFluids.FLOWING_Fluid_AIR.get());
-        event.register(BaseFluidType.Fluid_HOT_SPRING_MODEL, IndustrialElixirFluids.STILL_Hot_Spring.get(), IndustrialElixirFluids.FLOWING_Hot_Spring.get());
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return ResourceLocation.parse("industrial_elixir:block/spring_still");
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return ResourceLocation.parse("industrial_elixir:block/spring_flow");
+            }
+
+            @Override
+            public int getTintColor() {
+                return 0xEDDBDBDB;
+            }
+        }, MapleFluidTypes.Spring_FLUID_TYPE.get());
+
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public int getTintColor() {
+                return 0xA1BFBFBF;
+            }
+        }, MapleFluidTypes.UU_FLUID_TYPE.get());
+
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public int getTintColor() {
+                return 0xA1C64CEB;
+            }
+        }, MapleFluidTypes.AIR_FLUID_TYPE.get());
     }
 
     @SubscribeEvent

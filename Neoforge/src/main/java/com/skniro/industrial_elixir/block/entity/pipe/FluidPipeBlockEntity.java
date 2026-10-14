@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -17,11 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,7 +35,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     private static final double ARRIVAL_EPSILON = 1.0E-6;
     private final List<FluidPacket> fluids = new ArrayList<>();
 
-    private final ResourceHandler<FluidResource> fluidHandler = new PipeFluidHandler();
+    private final IFluidHandler fluidHandler = new PipeFluidHandler();
 
     protected FluidPipeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -49,7 +47,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         BlockPos target = worldPosition.relative(dir);
         BlockEntity be = level.getBlockEntity(target);
         if (be instanceof FluidPipeBlockEntity) return true;
-        var storage = level.getCapability(Capabilities.Fluid.BLOCK, target, dir.getOpposite());
+        var storage = level.getCapability(Capabilities.FluidHandler.BLOCK, target, dir.getOpposite());
         return storage != null;
     }
 
@@ -143,10 +141,10 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     /**
-     * Return a Neoforge {@link ResourceHandler} that exposes this pipe's internal fluid packets
+     * Return a Neoforge {@link IFluidHandler} that exposes this pipe's internal fluid packets
      * so adjacent blocks can insert/extract via the standard Neoforge fluid API.
      */
-    public ResourceHandler<FluidResource> getFluidHandler() {
+    public IFluidHandler getFluidHandler() {
         return fluidHandler;
     }
 
@@ -174,7 +172,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             if (!state.getValue(PipeBlock.PROPERTY_MAP.get(dir))) continue;
 
             BlockPos next = pos.relative(dir);
-            if (world.getCapability(Capabilities.Fluid.BLOCK, next, dir.getOpposite()) != null) return true;
+            if (world.getCapability(Capabilities.FluidHandler.BLOCK, next, dir.getOpposite()) != null) return true;
             BlockEntity nextBe = world.getBlockEntity(next);
             if (nextBe instanceof FluidPipeBlockEntity) {
                 if (searchOutputPath(world, next, dir.getOpposite(), visited)) return true;
@@ -229,7 +227,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         packet.amount -= moveAmount;
         if (packet.amount <= 0) {
             packet.amount = 0;
-            packet.variant = FluidResource.EMPTY;
+            packet.variant = FluidStack.EMPTY;
         }
         pipe.syncToClient();
         return true;
@@ -254,7 +252,7 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
 
     private boolean tryInsert(Level world, BlockPos pos, Direction insertDir, FluidPacket packet) {
         if (isBlocked(insertDir)) return false;
-        var storage = world.getCapability(Capabilities.Fluid.BLOCK, pos, insertDir.getOpposite());
+        IFluidHandler storage = world.getCapability(Capabilities.FluidHandler.BLOCK, pos, insertDir.getOpposite());
         if (storage == null) return false;
 
         BlockEntity be = world.getBlockEntity(pos);
@@ -265,37 +263,31 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
             if (pullProp != null && state.getValue(pullProp)) return false;
         }
         int before = packet.amount;
-        try (Transaction tx = Transaction.openRoot()) {
-            int inserted = storage.insert(packet.variant, before, tx);
-            if (inserted <= 0) return false;
-            packet.amount -= inserted;
-            tx.commit();
-            if (packet.amount <= 0) {
-                packet.amount = 0;
-                packet.variant = FluidResource.EMPTY;
-            }
-            syncToClient();
-            return true;
+        int inserted = storage.fill(packet.variant.copyWithAmount(before), IFluidHandler.FluidAction.EXECUTE);
+        if (inserted <= 0) return false;
+        packet.amount -= inserted;
+        if (packet.amount <= 0) {
+            packet.amount = 0;
+            packet.variant = FluidStack.EMPTY;
         }
+        syncToClient();
+        return true;
     }
 
     private boolean tryExtractFromSide(Level world, BlockPos pos, Direction dir) {
         if (isBlocked(dir)) return false;
         BlockPos targetPos = pos.relative(dir);
-        var storage = world.getCapability(Capabilities.Fluid.BLOCK, targetPos, dir.getOpposite());
+        IFluidHandler storage = world.getCapability(Capabilities.FluidHandler.BLOCK, targetPos, dir.getOpposite());
         if (storage != null) {
-            FluidResource resource = storage.getResource(0);
+            FluidStack resource = storage.getFluidInTank(0);
             if (!resource.isEmpty()) {
                 int toExtract = Math.min(STEP, PIPE_CAPACITY - getFluidVolume());
                 if (toExtract > 0) {
-                    try (Transaction tx = Transaction.openRoot()) {
-                        int extracted = storage.extract(resource, toExtract, tx);
-                        if (extracted > 0) {
-                            fluids.add(new FluidPacket(resource, extracted, dir.getOpposite()));
-                            tx.commit();
-                            syncToClient();
-                            return true;
-                        }
+                    FluidStack drained = storage.drain(resource.copyWithAmount(toExtract), IFluidHandler.FluidAction.EXECUTE);
+                    if (!drained.isEmpty()) {
+                        fluids.add(new FluidPacket(variantOf(drained), drained.getAmount(), dir.getOpposite()));
+                        syncToClient();
+                        return true;
                     }
                 }
             }
@@ -306,10 +298,10 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
         // Fallback: pull directly from source fluid blocks (e.g. water/lava source).
         FluidState fluidState = world.getFluidState(targetPos);
         if (!fluidState.isEmpty() && fluidState.isSource()) {
-            FluidResource source = FluidResource.of(fluidState.getType());
             int amount = Math.min(STEP, PIPE_CAPACITY - getFluidVolume());
             if (amount <= 0) return false;
-            fluids.add(new FluidPacket(source, amount, dir.getOpposite()));
+            FluidStack source = new FluidStack(fluidState.getType(), amount);
+            fluids.add(new FluidPacket(variantOf(source), amount, dir.getOpposite()));
             syncToClient();
             return true;
         }
@@ -318,130 +310,128 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     /**
-     * Neoforge {@link ResourceHandler} that wraps the pipe's fluid packets.
+     * Neoforge {@link IFluidHandler} that wraps the pipe's fluid packets.
      */
-    private class PipeFluidHandler extends SnapshotJournal<List<FluidPacket>> implements ResourceHandler<FluidResource> {
+    private class PipeFluidHandler implements IFluidHandler {
 
         @Override
-        public int size() {
+        public int getTanks() {
             return 1;
         }
 
         @Override
-        public boolean isValid(int index, FluidResource resource) {
-            return getFluidVolume() < PIPE_CAPACITY && fluids.size() < MAX_PACKETS;
-        }
-
-        @Override
-        public FluidResource getResource(int index) {
+        public FluidStack getFluidInTank(int tank) {
             for (FluidPacket packet : fluids) {
                 if (!packet.variant.isEmpty() && packet.amount > 0) {
-                    return packet.variant;
+                    return packet.variant.copyWithAmount(packet.amount);
                 }
             }
-            return FluidResource.EMPTY;
+            return FluidStack.EMPTY;
         }
 
         @Override
-        public long getAmountAsLong(int index) {
-            long total = 0;
-            for (FluidPacket packet : fluids) {
-                total += packet.amount;
-            }
-            return total;
-        }
-
-        @Override
-        public long getCapacityAsLong(int index, FluidResource resource) {
+        public int getTankCapacity(int tank) {
             return PIPE_CAPACITY;
         }
 
         @Override
-        public int insert(FluidResource resource, int maxAmount, TransactionContext transaction) {
+        public boolean isFluidValid(int tank, FluidStack stack) {
+            return getFluidVolume() < PIPE_CAPACITY && fluids.size() < MAX_PACKETS;
+        }
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
+            if (resource.isEmpty()) return 0;
+
             int volume = getFluidVolume();
             if (volume >= PIPE_CAPACITY || fluids.size() >= MAX_PACKETS) return 0;
-            int toInsert = Math.min(maxAmount, PIPE_CAPACITY - volume);
+            int toInsert = Math.min(resource.getAmount(), PIPE_CAPACITY - volume);
             if (toInsert <= 0) return 0;
 
             // Try to merge into an existing matching packet first
             for (FluidPacket packet : fluids) {
-                if (packet.variant.equals(resource)) {
+                if (packet.variant.isFluidEqual(resource)) {
                     int added = Math.min(toInsert, PIPE_CAPACITY - getFluidVolume());
                     if (added <= 0) return 0;
-                    updateSnapshots(transaction);
-                    packet.amount += added;
+                    if (action.execute()) {
+                        packet.amount += added;
+                        syncToClient();
+                    }
                     return added;
                 }
             }
 
             // New packet - the incoming direction is unknown, so lastDirection is
             // null. This lets tryRoutePacket send it out through any connected side.
-            updateSnapshots(transaction);
-            FluidPacket newPacket = new FluidPacket(resource, toInsert, Direction.NORTH);
-            newPacket.lastDirection = null;
-            fluids.add(newPacket);
+            if (action.execute()) {
+                FluidPacket newPacket = new FluidPacket(variantOf(resource), toInsert, Direction.NORTH);
+                newPacket.lastDirection = null;
+                fluids.add(newPacket);
+                syncToClient();
+            }
             return toInsert;
         }
 
         @Override
-        public int insert(int index, FluidResource resource, int maxAmount, TransactionContext transaction) {
-            return insert(resource, maxAmount, transaction);
-        }
+        public FluidStack drain(FluidStack resource, FluidAction action) {
+            if (resource.isEmpty()) return FluidStack.EMPTY;
 
-        @Override
-        public int extract(FluidResource resource, int maxAmount, TransactionContext transaction) {
-            for (FluidPacket packet : fluids) {
-                if (packet.variant.equals(resource)) {
-                    int toExtract = Math.min(maxAmount, packet.amount);
-                    if (toExtract <= 0) return 0;
-                    updateSnapshots(transaction);
-                    packet.amount -= toExtract;
-                    if (packet.amount <= 0) {
-                        fluids.remove(packet);
+            Iterator<FluidPacket> it = fluids.iterator();
+            while (it.hasNext()) {
+                FluidPacket packet = it.next();
+                if (packet.variant.isFluidEqual(resource)) {
+                    int toExtract = Math.min(resource.getAmount(), packet.amount);
+                    if (toExtract <= 0) return FluidStack.EMPTY;
+                    if (action.execute()) {
+                        packet.amount -= toExtract;
+                        if (packet.amount <= 0) {
+                            it.remove();
+                        }
+                        syncToClient();
                     }
-                    return toExtract;
+                    return resource.copyWithAmount(toExtract);
                 }
             }
-            return 0;
+            return FluidStack.EMPTY;
         }
 
         @Override
-        public int extract(int index, FluidResource resource, int maxAmount, TransactionContext transaction) {
-            return extract(resource, maxAmount, transaction);
-        }
+        public FluidStack drain(int maxDrain, FluidAction action) {
+            if (maxDrain <= 0) return FluidStack.EMPTY;
 
-        @Override
-        protected List<FluidPacket> createSnapshot() {
-            List<FluidPacket> copy = new ArrayList<>(fluids.size());
-            for (FluidPacket p : fluids) {
-                FluidPacket c = new FluidPacket(p.variant, p.amount, p.direction);
-                c.lastDirection = p.lastDirection;
-                c.progress = p.progress;
-                copy.add(c);
+            Iterator<FluidPacket> it = fluids.iterator();
+            while (it.hasNext()) {
+                FluidPacket packet = it.next();
+                if (!packet.variant.isEmpty() && packet.amount > 0) {
+                    int toExtract = Math.min(maxDrain, packet.amount);
+                    if (toExtract <= 0) return FluidStack.EMPTY;
+                    FluidStack drained = packet.variant.copyWithAmount(toExtract);
+                    if (action.execute()) {
+                        packet.amount -= toExtract;
+                        if (packet.amount <= 0) {
+                            it.remove();
+                        }
+                        syncToClient();
+                    }
+                    return drained;
+                }
             }
-            return copy;
-        }
-
-        @Override
-        protected void revertToSnapshot(List<FluidPacket> snapshot) {
-            fluids.clear();
-            fluids.addAll(snapshot);
-        }
-
-        @Override
-        protected void onRootCommit(List<FluidPacket> snapshot) {
-            syncToClient();
+            return FluidStack.EMPTY;
         }
     }
 
+    private static FluidStack variantOf(FluidStack stack) {
+        return stack.copyWithAmount(1);
+    }
+
     private static final class FluidPacket {
-        FluidResource variant;
+        FluidStack variant;
         int amount;
         Direction direction;
         Direction lastDirection;
         double progress;
 
-        FluidPacket(FluidResource variant, int amount, Direction direction) {
+        FluidPacket(FluidStack variant, int amount, Direction direction) {
             this.variant = variant;
             this.amount = amount;
             this.direction = direction;
@@ -451,16 +441,18 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput nbt) {
-        super.loadAdditional(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         fluids.clear();
-        int count = Math.min(nbt.getIntOr("pipe.fluid_count", 0), MAX_PACKETS);
+        int count = Math.min((nbt.contains("pipe.fluid_count") ? nbt.getInt("pipe.fluid_count") : 0), MAX_PACKETS);
         for (int i = 0; i < count; i++) {
-            FluidResource variant = nbt.read("pipe.variant_" + i, FluidResource.CODEC).orElse(FluidResource.EMPTY);
-            int amount = nbt.getIntOr("pipe.amt_" + i, 0);
-            int dirId = nbt.getIntOr("pipe.dir_" + i, -1);
-            int lastDirId = nbt.getIntOr("pipe.ldir_" + i, -1);
-            int progress = nbt.getIntOr("pipe.prog_" + i, 0);
+            Tag variantTag = nbt.get("pipe.variant_" + i);
+            FluidStack variant = variantTag == null ? FluidStack.EMPTY
+                    : FluidStack.parse(registries, variantTag).orElse(FluidStack.EMPTY);
+            int amount = (nbt.contains("pipe.amt_" + i) ? nbt.getInt("pipe.amt_" + i) : 0);
+            int dirId = (nbt.contains("pipe.dir_" + i) ? nbt.getInt("pipe.dir_" + i) : -1);
+            int lastDirId = (nbt.contains("pipe.ldir_" + i) ? nbt.getInt("pipe.ldir_" + i) : -1);
+            int progress = (nbt.contains("pipe.prog_" + i) ? nbt.getInt("pipe.prog_" + i) : 0);
             if (variant.isEmpty() || dirId < 0 || amount <= 0) continue;
             Direction dir = Direction.from3DDataValue(dirId);
             if (dir == null) continue;
@@ -473,14 +465,14 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         int count = Math.min(fluids.size(), MAX_PACKETS);
         nbt.putInt("pipe.fluid_count", count);
 
         for (int i = 0; i < count; i++) {
             FluidPacket packet = fluids.get(i);
-            nbt.store("pipe.variant_" + i, FluidResource.CODEC, packet.variant);
+            nbt.put("pipe.variant_" + i, packet.variant.save(registries));
             nbt.putInt("pipe.amt_" + i, packet.amount);
             nbt.putInt("pipe.dir_" + i, packet.direction.get3DDataValue());
             nbt.putInt("pipe.ldir_" + i, packet.lastDirection != null ? packet.lastDirection.get3DDataValue() : -1);
@@ -506,12 +498,12 @@ public abstract class FluidPipeBlockEntity extends PipeBlockEntity {
     }
 
     public static final class PipeFluid {
-        public final FluidResource variant;
+        public final FluidStack variant;
         public final long amount;
         public final Direction direction;
         public final double progress;
 
-        private PipeFluid(FluidResource variant, long amount, Direction direction, double progress) {
+        private PipeFluid(FluidStack variant, long amount, Direction direction, double progress) {
             this.variant = variant;
             this.amount = amount;
             this.direction = direction;

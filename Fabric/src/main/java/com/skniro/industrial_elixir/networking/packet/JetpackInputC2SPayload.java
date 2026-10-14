@@ -4,11 +4,11 @@ import com.skniro.industrial_elixir.IndustrialElixir;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public record JetpackInputC2SPayload(boolean jumpHeld, boolean forwardHeld, float strafe) implements CustomPacketPayload {
 
-    public static final Identifier ID = Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "jetpack_input");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "jetpack_input");
     public static final Type<JetpackInputC2SPayload> TYPE = new Type<>(ID);
     public static final StreamCodec<RegistryFriendlyByteBuf, JetpackInputC2SPayload> CODEC =
             StreamCodec.composite(

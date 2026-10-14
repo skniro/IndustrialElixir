@@ -14,20 +14,19 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<AlchemyCraftingRecipe>> {
 
-    public static final IRecipeHolderType<AlchemyCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.CANE_CONVERTER.type);
+    public static final RecipeType<RecipeHolder<AlchemyCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.CANE_CONVERTER.type);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -35,7 +34,7 @@ public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<Alchem
     private final IDrawableAnimated arrow;
 
     public GrowableOresCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/cane_converter.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/cane_converter.png");
 
         background = helper.createDrawable(texture, 0, 0, 175, 82);
 
@@ -47,7 +46,7 @@ public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<Alchem
     }
 
     @Override
-    public IRecipeType<RecipeHolder<AlchemyCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<AlchemyCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -74,14 +73,14 @@ public class GrowableOresCategory implements IRecipeCategory<RecipeHolder<Alchem
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<AlchemyCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 34)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 34)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
     }
 
     @Override
-    public void draw(RecipeHolder<AlchemyCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<AlchemyCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
 
         energyBar.draw(guiGraphics, 15, 32);

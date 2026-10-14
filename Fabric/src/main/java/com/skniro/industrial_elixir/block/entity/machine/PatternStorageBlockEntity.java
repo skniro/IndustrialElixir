@@ -13,7 +13,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -23,8 +23,8 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.Nullable;
 
 public class PatternStorageBlockEntity extends AbstractMachineEntity {
@@ -33,7 +33,7 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
 
     // Scanned pattern data
     @Nullable
-    private Identifier scannedItemId;
+    private ResourceLocation scannedItemId;
     private int uuCost = 0;
     private int energyCost = 0;
 
@@ -76,19 +76,18 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
 
     // Read pattern data from a crystal
     @Nullable
-    public static Identifier getPatternItem(ItemStack stack) {
+    public static ResourceLocation getPatternItem(ItemStack stack) {
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 
-        return tag.getString("pattern_item")
-                .map(Identifier::tryParse)
-                .orElse(null);
+        String id = tag.getString("pattern_item");
+        return id.isEmpty() ? null : ResourceLocation.tryParse(id);
     }
 
     // Read UU cost from a crystal
     public static int getPatternUUCost(ItemStack stack) {
         CompoundTag custom = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();;
         if (custom.contains("uu_cost")) {
-            return custom.getInt("uu_cost").orElse(0);
+            return custom.getInt("uu_cost");
         }
         return 0;
     }
@@ -97,12 +96,12 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
     public static int getPatternEnergyCost(ItemStack stack) {
         CompoundTag custom = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();;
         if (custom.contains("energy_cost")) {
-            return custom.getInt("energy_cost").orElse(0);
+            return custom.getInt("energy_cost");
         }
         return 0;
     }
 
-    public static void writePatternData(ItemStack stack, Identifier itemId, int uu, int energy) {
+    public static void writePatternData(ItemStack stack, ResourceLocation itemId, int uu, int energy) {
         stack.update(
                 DataComponents.CUSTOM_DATA,
                 CustomData.EMPTY,
@@ -138,7 +137,7 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
         // Update scanned item from crystal in slot 1 for display
         ItemStack crystalSlot = inventory.get(INPUT_SLOT);
         if (!crystalSlot.isEmpty() && hasPatternData(crystalSlot)) {
-            Identifier stored = getPatternItem(crystalSlot);
+            ResourceLocation stored = getPatternItem(crystalSlot);
             if (stored != null && !stored.equals(this.scannedItemId)) {
                 this.scannedItemId = stored;
                 this.uuCost = getPatternUUCost(crystalSlot);
@@ -160,7 +159,7 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
 
             if (hasCraftingFinished()) {
                 // Complete the scan
-                Identifier itemId = BuiltInRegistries.ITEM.getKey(scanItem.getItem());
+                ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(scanItem.getItem());
                 calculateCosts(scanItem);
                 writePatternData(crystalSlot, itemId, uuCost, energyCost);
                 this.scannedItemId = itemId;
@@ -197,7 +196,7 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
         if (targetCrystal.isEmpty() || !targetCrystal.is(GrowableOresItems.PATTERN_STORAGE_CRYSTAL)) return;
         if (hasPatternData(targetCrystal)) return; // Target already has data
 
-        Identifier patternItem = getPatternItem(sourceCrystal);
+        ResourceLocation patternItem = getPatternItem(sourceCrystal);
         int uu = getPatternUUCost(sourceCrystal);
         int energy = getPatternEnergyCost(sourceCrystal);
 
@@ -230,7 +229,7 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
 
     // ---- Getters for display ----
     @Nullable
-    public Identifier getScannedItemId() {
+    public ResourceLocation getScannedItemId() {
         return scannedItemId;
     }
 
@@ -244,8 +243,8 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
 
     // ---- Save/Load ----
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         if (scannedItemId != null) {
             output.putString("pattern.scanned_item", scannedItemId.toString());
         }
@@ -254,12 +253,12 @@ public class PatternStorageBlockEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        String id = input.getStringOr("pattern.scanned_item", null);
-        this.scannedItemId = id != null ? Identifier.parse(id) : null;
-        this.uuCost = input.getIntOr("pattern.uu_cost", 0);
-        this.energyCost = input.getIntOr("pattern.energy_cost", 0);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        String id = (input.contains("pattern.scanned_item") ? input.getString("pattern.scanned_item") : null);
+        this.scannedItemId = id != null ? ResourceLocation.parse(id) : null;
+        this.uuCost = (input.contains("pattern.uu_cost") ? input.getInt("pattern.uu_cost") : 0);
+        this.energyCost = (input.contains("pattern.energy_cost") ? input.getInt("pattern.energy_cost") : 0);
     }
 
     // ---- Sided I/O ----

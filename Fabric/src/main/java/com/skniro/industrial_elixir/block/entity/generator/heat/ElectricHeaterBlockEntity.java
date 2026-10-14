@@ -29,9 +29,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(21, ItemStack.EMPTY);
@@ -133,15 +132,15 @@ public class ElectricHeaterBlockEntity extends AbstractMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        ContainerHelper.saveAllItems(output, inventory);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
+        ContainerHelper.saveAllItems(output, inventory, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        ContainerHelper.loadAllItems(input, inventory);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        ContainerHelper.loadAllItems(input, inventory, registries);
     }
 
     public HeatStorage getHeatStorage() {

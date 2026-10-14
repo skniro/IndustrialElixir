@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 1,
-  "ingredient": "industrial_elixir:coal_chunk",
+  "ingredient": {
+    "item": "industrial_elixir:coal_chunk"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:diamond"
   }
 }

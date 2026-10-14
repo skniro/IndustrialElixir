@@ -3,11 +3,15 @@
   "count": 1,
   "fluid": "industrial_elixir:fluid_air",
   "fluid_amount": 1000,
-  "ingredient": "minecraft:iron_ingot",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:steel_ingot"
   },
   "result2": {
+    "count": 1,
     "id": "industrial_elixir:slag"
   }
 }

@@ -6,19 +6,18 @@ import com.skniro.industrial_elixir.screen.handler.machine.fluid.MatterGenerator
 import com.skniro.industrial_elixir.screen.handler.machine.fluid.OreWashingScreenHandler;
 import com.skniro.industrial_elixir.util.MouseUtil;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class MatterGeneratorScreen extends AbstractContainerScreen<MatterGeneratorScreenHandler> {
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/matter_generator.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID, "textures/gui/container/machine/matter_generator.png");
     private GuiFluidTankRenderer fluidRenderer;
 
     public MatterGeneratorScreen(MatterGeneratorScreenHandler menu, Inventory inventory, Component title) {
@@ -35,33 +34,32 @@ public class MatterGeneratorScreen extends AbstractContainerScreen<MatterGenerat
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
-        super.extractLabels(graphics, xm, ym);
+    protected void renderLabels(GuiGraphics graphics, int xm, int ym) {
+        super.renderLabels(graphics, xm, ym);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.text(font, menu.blockEntity.getProgressPercent() + "%", 77, 41, -12566464, false);
-        graphics.text(font, menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " EP", 70, 61, -12566464, false);
+        graphics.drawString(font, menu.blockEntity.getProgressPercent() + "%", 77, 41, -12566464, false);
+        graphics.drawString(font, menu.blockEntity.energyContainer.getSideStorage(null).getAmount() + " EP", 70, 61, -12566464, false);
 
         if (MouseUtil.isMouseOver(xm, ym, x + 8, y + 5, fluidRenderer.getWidth(), fluidRenderer.getHeight())) {
-            graphics.setComponentTooltipForNextFrame(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), xm, ym);
+            graphics.renderTooltip(this.font, fluidRenderer.getTooltip(menu.blockEntity.fluidContainer), Optional.empty(), xm, ym);
         }
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
+    protected void renderBg(GuiGraphics graphics, float a, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        graphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         fluidRenderer.render(graphics, x + 8, y + 5, menu.blockEntity.fluidContainer);
         renderProgressArrow(graphics, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor guiGraphics, int x, int y) {
+    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 79, y + 32, 189, 0, menu.getScaledProgress(), 16, 256, 256);
+            guiGraphics.blit(TEXTURE, x + 79, y + 32, 189, 0, menu.getScaledProgress(), 16, 256, 256);
         }
     }
 }

@@ -15,21 +15,26 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeMap;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.ArrayList;
 
 @JeiPlugin
 @REIPluginCompatIgnore
 public class IndustrialElixirJEIPlugin implements IModPlugin {
-    public static RecipeMap recipeMap = null;
+    /**
+     * Set from the client recipe-sync event; kept as a hook so the plugin can hand the
+     * synchronised recipes to JEI without going through the client level again.
+     */
+    public static RecipeManager recipeMap = null;
     private static IJeiRuntime jeiRuntime = null;
 
     @Override
-    public Identifier getPluginUid() {
-        return Identifier.fromNamespaceAndPath(IndustrialElixir.MOD_ID,"jei_plugin");
+    public ResourceLocation getPluginUid() {
+        return ResourceLocation.fromNamespaceAndPath(IndustrialElixir.MOD_ID,"jei_plugin");
     }
 
     @Override
@@ -56,111 +61,113 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        if (recipeMap != null) {
-            registration.addRecipes(
-                    MaceratorCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.MACERATOR.type.get()))
-            );
-
-            registration.addRecipes(
-                    CompressorCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.COMPRESSOR.type.get()))
-            );
-
-            registration.addRecipes(
-                    MetalFormerRollingCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.METALFORMER_ROLLING.type.get()))
-            );
-
-            registration.addRecipes(
-                    MetalFormerCuttingCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.METALFORMER_CUTTING.type.get()))
-            );
-
-            registration.addRecipes(
-                    MetalFormerExtrudingCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.METALFORMER_EXTRUDING.type.get()))
-            );
-
-            registration.addRecipes(
-                    MolecularTransformerCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get()))
-            );
-
-            registration.addRecipes(
-                    ExtractorCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.EXTRACTOR.type.get()))
-            );
-
-            registration.addRecipes(
-                    GrowableOresCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.CANE_CONVERTER.type.get()))
-            );
-
-            registration.addRecipes(
-                    RecyclerCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.RECYCLER.type.get()))
-            );
-
-            registration.addRecipes(
-                    BlockCutterCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.CUTTING.type.get()))
-            );
-
-            registration.addRecipes(
-                    BrewReactorCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.BREW_REACTOR.type.get()))
-            );
-
-            registration.addRecipes(
-                    HeatCentrifugeCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get()))
-            );
-
-            registration.addRecipes(
-                    OreWashingCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.ORE_WASHING.type.get()))
-            );
-
-            registration.addRecipes(
-                    BlastFurnaceCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.MOD_BLAST_FURNACE.type.get()))
-            );
-
-            registration.addRecipes(
-                    CoffeeMachineCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.COFFEE_MACHINE.type.get()))
-            );
-
-            registration.addRecipes(
-                    CropFarmCategory.TYPE,
-                    new ArrayList<>(recipeMap.byType(AlchemyRecipeType.CROP_FARM.type.get()))
-            );
-        } else {
-            IndustrialElixir.LOGGER.info("JEI recipe registration: recipeMap not available yet; deferring recipes until sync event.");
+        RecipeManager recipeManager = getClientRecipeManager();
+        if (recipeManager == null) {
+            IndustrialElixir.LOGGER.info("JEI recipe registration: client level is not available yet; deferring recipes until the JEI runtime is ready.");
+            return;
         }
+
+        registration.addRecipes(
+                MaceratorCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.MACERATOR.type.get()))
+        );
+
+        registration.addRecipes(
+                CompressorCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.COMPRESSOR.type.get()))
+        );
+
+        registration.addRecipes(
+                MetalFormerRollingCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.METALFORMER_ROLLING.type.get()))
+        );
+
+        registration.addRecipes(
+                MetalFormerCuttingCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.METALFORMER_CUTTING.type.get()))
+        );
+
+        registration.addRecipes(
+                MetalFormerExtrudingCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.METALFORMER_EXTRUDING.type.get()))
+        );
+
+        registration.addRecipes(
+                MolecularTransformerCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get()))
+        );
+
+        registration.addRecipes(
+                ExtractorCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.EXTRACTOR.type.get()))
+        );
+
+        registration.addRecipes(
+                GrowableOresCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.CANE_CONVERTER.type.get()))
+        );
+
+        registration.addRecipes(
+                RecyclerCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.RECYCLER.type.get()))
+        );
+
+        registration.addRecipes(
+                BlockCutterCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.CUTTING.type.get()))
+        );
+
+        registration.addRecipes(
+                BrewReactorCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.BREW_REACTOR.type.get()))
+        );
+
+        registration.addRecipes(
+                HeatCentrifugeCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get()))
+        );
+
+        registration.addRecipes(
+                OreWashingCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.ORE_WASHING.type.get()))
+        );
+
+        registration.addRecipes(
+                BlastFurnaceCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.MOD_BLAST_FURNACE.type.get()))
+        );
+
+        registration.addRecipes(
+                CoffeeMachineCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.COFFEE_MACHINE.type.get()))
+        );
+
+        registration.addRecipes(
+                CropFarmCategory.TYPE,
+                new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.CROP_FARM.type.get()))
+        );
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(GrowableOresBlocks.Iron_Furnace_Block.get()));
-        registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(GrowableOresBlocks.INDUCTION_FURNACE.get()));
-        registration.addCraftingStation(MaceratorCategory.TYPE, new ItemStack(GrowableOresBlocks.Macerator_Block.get()));
-        registration.addCraftingStation(CompressorCategory.TYPE, new ItemStack(GrowableOresBlocks.Compressor_Block.get()));
-        registration.addCraftingStation(MetalFormerRollingCategory.TYPE, new ItemStack(GrowableOresBlocks.MetalFormerBlock.get()));
-        registration.addCraftingStation(MetalFormerCuttingCategory.TYPE, new ItemStack(GrowableOresBlocks.MetalFormerBlock.get()));
-        registration.addCraftingStation(MetalFormerExtrudingCategory.TYPE, new ItemStack(GrowableOresBlocks.MetalFormerBlock.get()));
-        registration.addCraftingStation(ExtractorCategory.TYPE, new ItemStack(GrowableOresBlocks.Extractor_Block.get()));
-        registration.addCraftingStation(MolecularTransformerCategory.TYPE, new ItemStack(GrowableOresBlocks.MolecularTransformerBlock.get()));
-        registration.addCraftingStation(GrowableOresCategory.TYPE, new ItemStack(GrowableOresBlocks.GrowableOres_Block.get()));
-        registration.addCraftingStation(RecyclerCategory.TYPE, new ItemStack(GrowableOresBlocks.RECYCLER_Block.get()));
-        registration.addCraftingStation(BlockCutterCategory.TYPE, new ItemStack(GrowableOresBlocks.CUTTING_Block.get()));
-        registration.addCraftingStation(BrewReactorCategory.TYPE, new ItemStack(GrowableOresBlocks.Brew_Reactor_BLOCK.get()));
-        registration.addCraftingStation(HeatCentrifugeCategory.TYPE, new ItemStack(GrowableOresBlocks.HEAT_CENTRIFUGE.get()));
-        registration.addCraftingStation(OreWashingCategory.TYPE, new ItemStack(GrowableOresBlocks.Ore_Washing_Block.get()));
-        registration.addCraftingStation(BlastFurnaceCategory.TYPE, new ItemStack(GrowableOresBlocks.BLAST_FURNACE_BLOCK.get()));
-        registration.addCraftingStation(CoffeeMachineCategory.TYPE, new ItemStack(GrowableOresBlocks.COFFEE_MACHINE_Block.get()));
-        registration.addCraftingStation(CropFarmCategory.TYPE, new ItemStack(GrowableOresBlocks.CROP_FARM_Block.get()));
+        registration.addRecipeCatalysts(RecipeTypes.SMELTING, new ItemStack(GrowableOresBlocks.Iron_Furnace_Block.get()));
+        registration.addRecipeCatalysts(RecipeTypes.SMELTING, new ItemStack(GrowableOresBlocks.INDUCTION_FURNACE.get()));
+        registration.addRecipeCatalysts(MaceratorCategory.TYPE, new ItemStack(GrowableOresBlocks.Macerator_Block.get()));
+        registration.addRecipeCatalysts(CompressorCategory.TYPE, new ItemStack(GrowableOresBlocks.Compressor_Block.get()));
+        registration.addRecipeCatalysts(MetalFormerRollingCategory.TYPE, new ItemStack(GrowableOresBlocks.MetalFormerBlock.get()));
+        registration.addRecipeCatalysts(MetalFormerCuttingCategory.TYPE, new ItemStack(GrowableOresBlocks.MetalFormerBlock.get()));
+        registration.addRecipeCatalysts(MetalFormerExtrudingCategory.TYPE, new ItemStack(GrowableOresBlocks.MetalFormerBlock.get()));
+        registration.addRecipeCatalysts(ExtractorCategory.TYPE, new ItemStack(GrowableOresBlocks.Extractor_Block.get()));
+        registration.addRecipeCatalysts(MolecularTransformerCategory.TYPE, new ItemStack(GrowableOresBlocks.MolecularTransformerBlock.get()));
+        registration.addRecipeCatalysts(GrowableOresCategory.TYPE, new ItemStack(GrowableOresBlocks.GrowableOres_Block.get()));
+        registration.addRecipeCatalysts(RecyclerCategory.TYPE, new ItemStack(GrowableOresBlocks.RECYCLER_Block.get()));
+        registration.addRecipeCatalysts(BlockCutterCategory.TYPE, new ItemStack(GrowableOresBlocks.CUTTING_Block.get()));
+        registration.addRecipeCatalysts(BrewReactorCategory.TYPE, new ItemStack(GrowableOresBlocks.Brew_Reactor_BLOCK.get()));
+        registration.addRecipeCatalysts(HeatCentrifugeCategory.TYPE, new ItemStack(GrowableOresBlocks.HEAT_CENTRIFUGE.get()));
+        registration.addRecipeCatalysts(OreWashingCategory.TYPE, new ItemStack(GrowableOresBlocks.Ore_Washing_Block.get()));
+        registration.addRecipeCatalysts(BlastFurnaceCategory.TYPE, new ItemStack(GrowableOresBlocks.BLAST_FURNACE_BLOCK.get()));
+        registration.addRecipeCatalysts(CoffeeMachineCategory.TYPE, new ItemStack(GrowableOresBlocks.COFFEE_MACHINE_Block.get()));
+        registration.addRecipeCatalysts(CropFarmCategory.TYPE, new ItemStack(GrowableOresBlocks.CROP_FARM_Block.get()));
 
     }
 
@@ -189,34 +196,43 @@ public class IndustrialElixirJEIPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
         jeiRuntime = runtime;
+        // push the recipes that are already synchronized to the client into the JEI runtime
+        pushRecipesToJei();
+    }
+
+    private static RecipeManager getClientRecipeManager() {
         if (recipeMap != null) {
-            // push recipes into JEI runtime if synchronized recipes already present
-            pushRecipesToJei();
+            return recipeMap;
         }
+        Minecraft minecraft = Minecraft.getInstance();
+        return minecraft.level == null ? null : minecraft.level.getRecipeManager();
     }
 
     public static void pushRecipesToJei() {
-        if (jeiRuntime == null || recipeMap == null) return;
+        if (jeiRuntime == null) return;
+
+        RecipeManager recipeManager = getClientRecipeManager();
+        if (recipeManager == null) return;
 
         try {
             var rm = jeiRuntime.getRecipeManager();
             try {
-                rm.addRecipes(MaceratorCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.MACERATOR.type.get())));
-                rm.addRecipes(CompressorCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.COMPRESSOR.type.get())));
-                rm.addRecipes(MetalFormerRollingCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.METALFORMER_ROLLING.type.get())));
-                rm.addRecipes(MetalFormerCuttingCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.METALFORMER_CUTTING.type.get())));
-                rm.addRecipes(MetalFormerExtrudingCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.METALFORMER_EXTRUDING.type.get())));
-                rm.addRecipes(MolecularTransformerCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get())));
-                rm.addRecipes(ExtractorCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.EXTRACTOR.type.get())));
-                rm.addRecipes(GrowableOresCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.CANE_CONVERTER.type.get())));
-                rm.addRecipes(RecyclerCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.RECYCLER.type.get())));
-                rm.addRecipes(BlockCutterCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.CUTTING.type.get())));
-                rm.addRecipes(BrewReactorCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.BREW_REACTOR.type.get())));
-                rm.addRecipes(HeatCentrifugeCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get())));
-                rm.addRecipes(OreWashingCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.ORE_WASHING.type.get())));
-                rm.addRecipes(BlastFurnaceCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.MOD_BLAST_FURNACE.type.get())));
-                rm.addRecipes(CoffeeMachineCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.COFFEE_MACHINE.type.get())));
-                rm.addRecipes(CropFarmCategory.TYPE, new ArrayList<>(recipeMap.byType(AlchemyRecipeType.CROP_FARM.type.get())));
+                rm.addRecipes(MaceratorCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.MACERATOR.type.get())));
+                rm.addRecipes(CompressorCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.COMPRESSOR.type.get())));
+                rm.addRecipes(MetalFormerRollingCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.METALFORMER_ROLLING.type.get())));
+                rm.addRecipes(MetalFormerCuttingCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.METALFORMER_CUTTING.type.get())));
+                rm.addRecipes(MetalFormerExtrudingCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.METALFORMER_EXTRUDING.type.get())));
+                rm.addRecipes(MolecularTransformerCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.MOLECULAR_TRANSFORMER.type.get())));
+                rm.addRecipes(ExtractorCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.EXTRACTOR.type.get())));
+                rm.addRecipes(GrowableOresCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.CANE_CONVERTER.type.get())));
+                rm.addRecipes(RecyclerCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.RECYCLER.type.get())));
+                rm.addRecipes(BlockCutterCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.CUTTING.type.get())));
+                rm.addRecipes(BrewReactorCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.BREW_REACTOR.type.get())));
+                rm.addRecipes(HeatCentrifugeCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get())));
+                rm.addRecipes(OreWashingCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.ORE_WASHING.type.get())));
+                rm.addRecipes(BlastFurnaceCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.MOD_BLAST_FURNACE.type.get())));
+                rm.addRecipes(CoffeeMachineCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.COFFEE_MACHINE.type.get())));
+                rm.addRecipes(CropFarmCategory.TYPE, new ArrayList<>(recipeManager.getAllRecipesFor(AlchemyRecipeType.CROP_FARM.type.get())));
             } catch (Throwable t) {
                 IndustrialElixir.LOGGER.warn("Unable to push recipes into JEI runtime: {}", t.toString());
             }

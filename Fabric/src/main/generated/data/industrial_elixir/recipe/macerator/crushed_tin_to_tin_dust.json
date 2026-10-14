@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "industrial_elixir:crushed_tin",
+  "ingredient": {
+    "item": "industrial_elixir:crushed_tin"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:tin_dust"
   }
 }

@@ -9,7 +9,7 @@ import com.skniro.industrial_elixir.item.init.ModBucketItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -40,21 +40,15 @@ public class IndustrialElixirFluidItems {
             (settings)->  new FluidCellItem(settings, IndustrialElixirFluids.STILL_Hot_Spring.get()), () -> new Item.Properties().craftRemainder(GrowableOresItems.EMPTY_CELL.get()).stacksTo(16));
 
     public static <B extends Item> Supplier<Item> register(String name, Function<Item.Properties, ? extends B> func, Item.Properties props) {
-        return ITEMS.register(name, () -> {
-            return (Item)func.apply(props.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        });
+        return ITEMS.register(name, () -> (Item) func.apply(props));
     }
 
     private static <T extends Item> Supplier<Item> registerItem(String name, Function<Item.Properties, ? extends T> item, Item.Properties properties) {
-        Supplier<Item> toReturn = register(name, item, properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        return toReturn;
+        return register(name, item, properties);
     }
 
     private static <T extends Item> Supplier<Item> registerItemDeferred(String name, Function<Item.Properties, ? extends T> item, Supplier<Item.Properties> propertiesSupplier) {
-        return ITEMS.register(name, () -> {
-            Item.Properties properties = propertiesSupplier.get();
-            return item.apply(properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        });
+        return ITEMS.register(name, () -> item.apply(propertiesSupplier.get()));
     }
 
     public static void registerFluidItems(IEventBus eventBus) {

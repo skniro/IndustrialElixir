@@ -46,7 +46,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
     @Override
     protected void craftItem() {
         Optional<RecipeHolder<SmeltingRecipe>> recipe = getRecipe();
-        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT))).copy();
+        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT)), this.getLevel().registryAccess()).copy();
         this.removeItem(INPUT_SLOT, 1);
         this.setItem(OUTPUT_SLOT, new ItemStack(output.getItem(),
                 this.getItem(OUTPUT_SLOT).getCount() + output.getCount()));
@@ -64,7 +64,7 @@ public class ElectricFurnaceEntity extends AbstractMachineEntity {
         if(recipe.isEmpty()) {
             return false;
         }
-        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT))).copy();
+        ItemStack output = recipe.get().value().assemble(new SingleRecipeInput(this.getItem(INPUT_SLOT)), this.getLevel().registryAccess()).copy();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft();
     }
 

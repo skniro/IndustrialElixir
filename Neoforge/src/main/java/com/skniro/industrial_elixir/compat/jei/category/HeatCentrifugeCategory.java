@@ -14,20 +14,19 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<HeatCentrifugeCraftingRecipe>> {
 
-    public static final IRecipeHolderType<HeatCentrifugeCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get());
+    public static final RecipeType<RecipeHolder<HeatCentrifugeCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.HEAT_CENTRIFUGE.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -35,7 +34,7 @@ public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<Heat
     private final IDrawableAnimated arrow;
 
     public HeatCentrifugeCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/heatcentrifuge.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/heatcentrifuge.png");
 
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
@@ -46,7 +45,7 @@ public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<Heat
     }
 
     @Override
-    public IRecipeType<RecipeHolder<HeatCentrifugeCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<HeatCentrifugeCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -73,20 +72,20 @@ public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<Heat
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<HeatCentrifugeCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 34)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 16)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
 
         recipe.value().output2().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34).addItemStack(output));
 
         recipe.value().output3().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 52).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 52).addItemStack(output));
     }
 
     @Override
-    public void draw(RecipeHolder<HeatCentrifugeCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<HeatCentrifugeCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 70, 34);
@@ -97,7 +96,7 @@ public class HeatCentrifugeCategory implements IRecipeCategory<RecipeHolder<Heat
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 34 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

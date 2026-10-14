@@ -3,9 +3,10 @@ package com.skniro.industrial_elixir.datagen.recipe.machine;
 import com.skniro.industrial_elixir.api.data.recipe.ModRecipeGenerator;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -15,13 +16,17 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlastFurnaceRecipeGenerator extends FabricRecipeProvider {
-    public ModBlastFurnaceRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModBlastFurnaceRecipeGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected ModRecipeGenerator createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-        return new ModRecipeGenerator(wrapperLookup, exporter) {
+        public void buildRecipes(RecipeOutput exporter) {
+        createRecipeProvider(exporter).buildRecipes();
+    }
+
+    protected ModRecipeGenerator createRecipeProvider(RecipeOutput exporter) {
+        return new ModRecipeGenerator(BuiltInRegistries.ITEM.asLookup(), exporter) {
             @Override
             public void buildRecipes() {
                 blastFurnace(Items.IRON_INGOT, GrowableOresItems.STEEL_INGOT, GrowableOresItems.SLAG, "iron_ingot_to_stell_ingot");

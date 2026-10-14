@@ -1,9 +1,12 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "industrial_elixir:ier_sacred_ore_cane",
+  "ingredient": {
+    "item": "industrial_elixir:ier_sacred_ore_cane"
+  },
   "process_time": 2400,
   "result": {
+    "count": 1,
     "id": "industrial_elixir:ier_sacred_ore_cane"
   }
 }

@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:molecular_transformer",
   "energy": 500000,
-  "ingredient": "minecraft:yellow_wool",
+  "ingredient": {
+    "item": "minecraft:yellow_wool"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:glowstone"
   }
 }

@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": "industrial_elixir:tin_plate",
-    "M": "minecraft:lever"
+    "G": {
+      "item": "industrial_elixir:tin_plate"
+    },
+    "M": {
+      "item": "minecraft:lever"
+    }
   },
   "pattern": [
     "G G",
@@ -11,6 +15,7 @@
     "G G"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:redstone_inverter"
   }
 }

@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 1,
-  "ingredient": "industrial_elixir:lapis_dust",
+  "ingredient": {
+    "item": "industrial_elixir:lapis_dust"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:lapis_plate"
   }
 }

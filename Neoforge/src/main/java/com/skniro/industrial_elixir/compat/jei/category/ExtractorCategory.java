@@ -14,20 +14,19 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class ExtractorCategory implements IRecipeCategory<RecipeHolder<ExtractorCraftingRecipe>> {
 
-    public static final IRecipeHolderType<ExtractorCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.EXTRACTOR.type.get());
+    public static final RecipeType<RecipeHolder<ExtractorCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.EXTRACTOR.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -35,7 +34,7 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
     private final IDrawableAnimated arrow;
 
     public ExtractorCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id( "textures/gui/container/machine/extractor.png");
+        ResourceLocation texture = Helper.id( "textures/gui/container/machine/extractor.png");
 
         background = helper.createDrawable(texture, 0, 0, 175, 82);
 
@@ -47,7 +46,7 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
     }
 
     @Override
-    public IRecipeType<RecipeHolder<ExtractorCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<ExtractorCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -74,13 +73,13 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ExtractorCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 13)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 100, 33)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
     }
 
     @Override
-    public void draw(RecipeHolder<ExtractorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<ExtractorCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
 
         energyBar.draw(guiGraphics, 52, 31);
@@ -96,7 +95,7 @@ public class ExtractorCategory implements IRecipeCategory<RecipeHolder<Extractor
             int x = 52 + 16 - font.width(text) - 1;
             int y = 13 + 16 - 8 - 1;
 
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

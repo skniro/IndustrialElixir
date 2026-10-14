@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.VegetationBlock;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,7 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
+public class CoffeeBlock extends BushBlock implements BonemealableBlock {
     private static final float field_31260 = 0.003F;
     public static final int MAX_AGE = 3;
     public static final IntegerProperty AGE;
@@ -47,7 +48,7 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
     }
 
     @Override
-    protected MapCodec<? extends VegetationBlock> codec() {
+    protected MapCodec<? extends BushBlock> codec() {
         throw new IllegalStateException("Block does not support getCodec!");
     }
 
@@ -100,11 +101,11 @@ public class CoffeeBlock extends VegetationBlock implements BonemealableBlock {
         }
     }
 
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int i = (Integer)state.getValue(AGE);
         boolean bl = i == 3;
         if (!bl && player.getItemInHand(hand).is(Items.BONE_MEAL)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         return super.useItemOn(stack,state, world, pos, player, hand, hit);
     }

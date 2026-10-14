@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "minecraft:stick",
-    "W": "industrial_elixir:rubber_planks"
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "item": "industrial_elixir:rubber_planks"
+    }
   },
   "pattern": [
     "W#W",

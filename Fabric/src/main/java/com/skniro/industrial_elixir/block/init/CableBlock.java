@@ -10,17 +10,15 @@ import com.skniro.industrial_elixir.block.entity.cable.CableBlockEntity;
 import com.skniro.industrial_elixir.block.entity.cable.CableElectrocutionEvent;
 import com.skniro.industrial_elixir.init.ModDamageTypes;
 
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +27,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -46,7 +43,6 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -111,33 +107,33 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         return (BlockState)this.defaultBlockState().setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
-    public BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
-        if ((Boolean)state.getValue(WATERLOGGED) && world instanceof LevelAccessor worldIn) {
-            worldIn.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+        if ((Boolean)state.getValue(WATERLOGGED)) {
+            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
         return state;
     }
 
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, @Nullable Orientation wireOrientation, boolean notify) {
+    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         BlockEntity var8 = world.getBlockEntity(pos);
         if (var8 instanceof CableBlockEntity cable) {
             cable.neighborUpdate();
         }
 
-        super.neighborChanged(state, world, pos, block, wireOrientation, notify);
+        super.neighborChanged(state, world, pos, block, fromPos, notify);
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext shapeContext) {
         return (Boolean)state.getValue(COVERED) ? Shapes.block() : CableShapeUtil.getShape(state);
     }
 
-    public VoxelShape getOcclusionShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter world, BlockPos pos) {
         return CableShapeUtil.getShape(state);
     }
 
-    protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier handler, boolean bl) {
-        super.entityInside(state, world, pos, entity, handler, bl);
+    protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+        super.entityInside(state, world, pos, entity);
         if (this.type.canKill) {
             if (entity instanceof LivingEntity) {
                 BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -151,9 +147,8 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                                     entity.igniteForSeconds(1.0F);
                                 }
 
-                                if (world instanceof ServerLevel) {
-                                    ServerLevel serverWorld = (ServerLevel)world;
-                                    entity.hurtServer(serverWorld, ModDamageTypes.create(world, ModDamageTypes.ELECTRIC_SHOCK), 1.0F);
+                                if (!world.isClientSide()) {
+                                    entity.hurt(ModDamageTypes.create(world, ModDamageTypes.ELECTRIC_SHOCK), 1.0F);
                                 }
 
                                 blockEntityCable.setEnergy(0L);
@@ -179,29 +174,12 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         return !(Boolean)state.getValue(COVERED) && SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluidState);
     }
 
-    public boolean canPlaceLiquid(LivingEntity player, BlockGetter view, BlockPos pos, BlockState state, Fluid fluid) {
+    public boolean canPlaceLiquid(Player player, BlockGetter view, BlockPos pos, BlockState state, Fluid fluid) {
         return !(Boolean)state.getValue(COVERED) && SimpleWaterloggedBlock.super.canPlaceLiquid(player, view, pos, state, fluid);
     }
 
     public FluidState getFluidState(BlockState state) {
         return (Boolean)state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    public BlockState getAppearance(BlockState state, BlockAndTintGetter renderView, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
-        if ((Boolean)state.getValue(COVERED)) {
-            Object var9 = renderView.getBlockEntityRenderData(pos);
-            BlockState cover;
-            if (var9 instanceof BlockState) {
-                BlockState blockState = (BlockState)var9;
-                cover = blockState;
-            } else {
-                cover = Blocks.OAK_PLANKS.defaultBlockState();
-            }
-
-            return cover;
-        } else {
-            return super.getAppearance(state, renderView, pos, side, sourceState, sourcePos);
-        }
     }
 
     static {

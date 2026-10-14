@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "minecraft:lapis_lazuli",
+  "ingredient": {
+    "item": "minecraft:lapis_lazuli"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:lapis_dust"
   }
 }

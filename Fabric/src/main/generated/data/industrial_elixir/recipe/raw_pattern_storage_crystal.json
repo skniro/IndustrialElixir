@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": "industrial_elixir:obsidian_dust",
-    "I": "industrial_elixir:silicon_dioxide_dust"
+    "E": {
+      "item": "industrial_elixir:obsidian_dust"
+    },
+    "I": {
+      "item": "industrial_elixir:silicon_dioxide_dust"
+    }
   },
   "pattern": [
     "IEI",
@@ -11,6 +15,7 @@
     "IEI"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:raw_pattern_storage_crystal"
   }
 }

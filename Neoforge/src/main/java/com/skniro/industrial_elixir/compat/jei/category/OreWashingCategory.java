@@ -16,26 +16,25 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeHolderType;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashingCraftingRecipe>> {
 
-    public static final IRecipeHolderType<OreWashingCraftingRecipe> TYPE =
-            IRecipeHolderType.create(AlchemyRecipeType.ORE_WASHING.type.get());
+    public static final RecipeType<RecipeHolder<OreWashingCraftingRecipe>> TYPE =
+            RecipeType.createFromVanilla(AlchemyRecipeType.ORE_WASHING.type.get());
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -45,7 +44,7 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
     private final SingleFluidStorage emptyFluid;
 
     public OreWashingCategory(IGuiHelper helper) {
-        Identifier texture = Helper.id("textures/gui/container/machine/orewashing.png");
+        ResourceLocation texture = Helper.id("textures/gui/container/machine/orewashing.png");
 
         background = helper.createDrawable(texture, 0, 0, 175, 82);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
@@ -57,19 +56,18 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
         this.emptyFluid = new SingleFluidStorage() {
 
             @Override
-            protected int getCapacity(FluidResource variant) {
+            protected int getCapacity(FluidStack variant) {
                 return 1000;
             }
 
             {
-                this.variant = FluidResource.EMPTY;
-                this.amount = 0;
+                setFluid(FluidStack.EMPTY);
             }
         };
     }
 
     @Override
-    public IRecipeType<RecipeHolder<OreWashingCraftingRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<OreWashingCraftingRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -96,23 +94,23 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<OreWashingCraftingRecipe> recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 52, 34)
-                .add(recipe.value().ingredient());
+                .addIngredients(recipe.value().ingredient());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 16)
-                .add(recipe.value().output());
+                .addItemStack(recipe.value().output());
 
         recipe.value().output2().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 34).addItemStack(output));
 
         recipe.value().output3().ifPresent(output ->
-                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 52).add(output));
+                builder.addSlot(RecipeIngredientRole.OUTPUT, 104, 52).addItemStack(output));
 
         try {
-            Identifier fluidId = recipe.value().requiredFluid();
-            Identifier cellId = Identifier.fromNamespaceAndPath(fluidId.getNamespace(), fluidId.getPath() + "_cell");
+            ResourceLocation fluidId = recipe.value().requiredFluid();
+            ResourceLocation cellId = ResourceLocation.fromNamespaceAndPath(fluidId.getNamespace(), fluidId.getPath() + "_cell");
             Item cell = BuiltInRegistries.ITEM.getOptional(cellId).orElse(null);
             if (cell != null && cell != Items.AIR) {
-                builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).add(new ItemStack(cell));
+                builder.addSlot(RecipeIngredientRole.INPUT, 8, 5).addItemStack(new ItemStack(cell));
             }
         } catch (Throwable ignored) {
         }
@@ -120,18 +118,17 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
 
     private SingleFluidStorage getRecipeFluidStorage(RecipeHolder<OreWashingCraftingRecipe> recipe) {
         try {
-            Identifier fluidId = recipe.value().requiredFluid();
+            ResourceLocation fluidId = recipe.value().requiredFluid();
             int amount = recipe.value().requiredFluidAmount();
             Fluid fluid = BuiltInRegistries.FLUID.getOptional(fluidId).orElse(Fluids.EMPTY);
             return new SingleFluidStorage() {
                 @Override
-                protected int getCapacity(FluidResource variant) {
+                protected int getCapacity(FluidStack variant) {
                     return 1000;
                 }
 
                 {
-                    this.variant = FluidResource.of(fluid);
-                    this.amount = amount;
+                    setFluid(new FluidStack(fluid, amount));
                 }
             };
         } catch (Throwable ignored) {
@@ -140,7 +137,7 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
     }
 
     @Override
-    public void draw(RecipeHolder<OreWashingCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<OreWashingCraftingRecipe> recipe, IRecipeSlotsView slots, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
         energyBar.draw(guiGraphics, 129, 45);
         arrow.draw(guiGraphics, 70, 34);
@@ -153,7 +150,7 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
         int fw = fluidRenderer.getWidth();
         int fh = fluidRenderer.getHeight();
         if (mouseX >= fx && mouseX <= fx + fw && mouseY >= fy && mouseY <= fy + fh) {
-            guiGraphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
+            guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, fluidRenderer.getTooltip(storage), (int) mouseX, (int) mouseY);
         }
 
         int count = recipe.value().requiredCount();
@@ -162,7 +159,7 @@ public class OreWashingCategory implements IRecipeCategory<RecipeHolder<OreWashi
             String text = String.valueOf(count);
             int x = 52 + 16 - font.width(text) - 1;
             int y = 34 + 16 - 8 - 1;
-            guiGraphics.text(font, text, x, y, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

@@ -1,30 +1,17 @@
 package com.skniro.industrial_elixir.item;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.block.GeneralBlocks;
-import com.skniro.industrial_elixir.item.init.CoffeeBeansItem;
-import com.skniro.industrial_elixir.item.init.ItemBottle;
 import com.skniro.industrial_elixir.item.init.MapleBlockItem;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.Consumables;
-import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -54,12 +41,8 @@ public class MapleFoodComponents {
                                     .nutrition(4)
                                     .saturationModifier(0.6F)
                                     .alwaysEdible()
-                                    .build(),
-                            Consumables.defaultDrink()
-                                    .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(
-                                            new MobEffectInstance(MobEffects.SPEED, 2400, 1),
-                                            new MobEffectInstance(MobEffects.HASTE, 1200, 0)),
-                                            1.0F))
+                                    .effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 1), 1.0F)
+                                    .effect(new MobEffectInstance(MobEffects.DIG_SPEED, 1200, 0), 1.0F)
                                     .build()
                     )
                     .stacksTo(1)
@@ -74,12 +57,8 @@ public class MapleFoodComponents {
                                     .nutrition(9)
                                     .saturationModifier(1.2F)
                                     .alwaysEdible()
-                                    .build(),
-                            Consumables.defaultDrink()
-                                    .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(
-                                            new MobEffectInstance(MobEffects.SPEED, 1800, 1),
-                                            new MobEffectInstance(MobEffects.REGENERATION, 300, 0)),
-                                            1.0F))
+                                    .effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800, 1), 1.0F)
+                                    .effect(new MobEffectInstance(MobEffects.REGENERATION, 300, 0), 1.0F)
                                     .build()
                     )
                     .stacksTo(1)
@@ -94,11 +73,7 @@ public class MapleFoodComponents {
                                     .nutrition(7)
                                     .saturationModifier(1.0F)
                                     .alwaysEdible()
-                                    .build(),
-                            Consumables.defaultDrink()
-                                    .onConsume(new ApplyStatusEffectsConsumeEffect(
-                                            new MobEffectInstance(MobEffects.SPEED, 1200, 0),
-                                            1.0F))
+                                    .effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 0), 1.0F)
                                     .build()
                     )
                     .stacksTo(1)
@@ -113,12 +88,8 @@ public class MapleFoodComponents {
                                     .nutrition(10)
                                     .saturationModifier(1.3F)
                                     .alwaysEdible()
-                                    .build(),
-                            Consumables.defaultDrink()
-                                    .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(
-                                            new MobEffectInstance(MobEffects.SPEED, 2400, 1),
-                                            new MobEffectInstance(MobEffects.REGENERATION, 600, 0)),
-                                            1.0F))
+                                    .effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 1), 1.0F)
+                                    .effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 1.0F)
                                     .build()
                     )
                     .stacksTo(1)
@@ -133,12 +104,8 @@ public class MapleFoodComponents {
                                     .nutrition(6)
                                     .saturationModifier(1.0F)
                                     .alwaysEdible()
-                                    .build(),
-                            Consumables.defaultDrink()
-                                    .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(
-                                            new MobEffectInstance(MobEffects.RESISTANCE, 400, 0),
-                                            new MobEffectInstance(MobEffects.REGENERATION, 600, 0)),
-                                            1.0F))
+                                    .effect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 400, 0), 1.0F)
+                                    .effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 1.0F)
                                     .build()
                     )
                     .stacksTo(1)
@@ -147,27 +114,19 @@ public class MapleFoodComponents {
 
 
     public static <B extends Item> Supplier<Item> register(String name, Function<Item.Properties, ? extends B> func) {
-        return ITEMS.register(name, () -> {
-            return (Item)func.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        });
+        return ITEMS.register(name, () -> (Item) func.apply(new Item.Properties()));
     }
 
     private static <T extends Item> DeferredItem<T> registerItem(String name, Function<Item.Properties, ? extends T> item, Item.Properties properties) {
-        DeferredItem<T> toReturn = ITEMS.registerItem(name, item, ()->  properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        return toReturn;
+        return ITEMS.registerItem(name, item, properties);
     }
 
     private static <T extends Item> Supplier<Item> registerItemDeferred(String name, Function<Item.Properties, ? extends T> item, Supplier<Item.Properties> propertiesSupplier) {
-        return ITEMS.register(name, () -> {
-            Item.Properties properties = propertiesSupplier.get();
-            return item.apply(properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        });
+        return ITEMS.register(name, () -> item.apply(propertiesSupplier.get()));
     }
 
     private static Function<Item.Properties, Item> createBlockItemWithUniqueName(Supplier<Block> block) {
-        return (properties) -> {
-            return new MapleBlockItem(block, properties.useItemDescriptionPrefix());
-        };
+        return (properties) -> new MapleBlockItem(block, properties);
     }
 
 

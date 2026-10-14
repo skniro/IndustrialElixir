@@ -6,9 +6,9 @@ import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
-import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -46,7 +46,7 @@ public abstract class NewBaseGeneratorBlockEntity extends BasePowerBlockBlockEnt
             if (!this.level.isClientSide()) {
                 if (!this.getOptionalInventory().isEmpty()) {
                     Container inventory = this.getOptionalInventory().get();
-                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
+                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(InventoryStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
                 }
             }
         }

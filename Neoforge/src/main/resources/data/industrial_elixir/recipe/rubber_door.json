@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": "industrial_elixir:rubber_planks"
+    "#": {
+      "item": "industrial_elixir:rubber_planks"
+    }
   },
   "pattern": [
     "##",

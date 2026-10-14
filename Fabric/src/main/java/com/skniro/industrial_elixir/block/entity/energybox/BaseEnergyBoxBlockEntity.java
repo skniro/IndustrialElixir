@@ -9,7 +9,7 @@ import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
 import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -91,7 +91,7 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
             if (!this.level.isClientSide()) {
                 if (!this.getOptionalInventory().isEmpty()) {
                     Container inventory = this.getOptionalInventory().get();
-                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
+                    EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(InventoryStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
                 }
             }
         }
@@ -104,7 +104,7 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
                 if (chargeEnergy > 0L) {
                     if (!this.getOptionalInventory().isEmpty()) {
                         Container inventory = this.getOptionalInventory().get();
-                        EnergyStorageUtil.move(ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
+                        EnergyStorageUtil.move(ContainerItemContext.ofSingleSlot(InventoryStorage.of(inventory, null).getSlots().get(slot)).find(EnergyStorage.ITEM), this.getSideEnergyStorage(null), Long.MAX_VALUE, null);
                     }
                 }
             }
@@ -138,7 +138,7 @@ public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity
                     int itemTier = energyItem.getEnergyTier().ordinal();
                     if (itemTier >= this.energyTier.ordinal()) {
                         Container inventory = player.getInventory();
-                        long moved = EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(ContainerStorage.of(inventory, null).getSlots().get(i)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
+                        long moved = EnergyStorageUtil.move(this.getSideEnergyStorage(null), ContainerItemContext.ofSingleSlot(InventoryStorage.of(inventory, null).getSlots().get(i)).find(EnergyStorage.ITEM), Long.MAX_VALUE, null);
                         if (moved > 0) {
                             charged = true;
                         }

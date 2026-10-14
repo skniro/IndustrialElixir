@@ -1,8 +1,11 @@
 {
   "type": "industrial_elixir:compressor",
   "count": 5,
-  "ingredient": "minecraft:blaze_powder",
+  "ingredient": {
+    "item": "minecraft:blaze_powder"
+  },
   "result": {
+    "count": 1,
     "id": "minecraft:blaze_rod"
   }
 }

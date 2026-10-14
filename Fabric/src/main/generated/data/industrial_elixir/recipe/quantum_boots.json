@@ -2,10 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "industrial_elixir:iridium_plate",
-    "C": "industrial_elixir:carbon_plate",
-    "L": "industrial_elixir:lapotron_crystal",
-    "R": "industrial_elixir:rubber"
+    "#": {
+      "item": "industrial_elixir:iridium_plate"
+    },
+    "C": {
+      "item": "industrial_elixir:carbon_plate"
+    },
+    "L": {
+      "item": "industrial_elixir:lapotron_crystal"
+    },
+    "R": {
+      "item": "industrial_elixir:rubber"
+    }
   },
   "pattern": [
     "CCC",
@@ -13,6 +21,7 @@
     "RLR"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:quantum_boots"
   }
 }

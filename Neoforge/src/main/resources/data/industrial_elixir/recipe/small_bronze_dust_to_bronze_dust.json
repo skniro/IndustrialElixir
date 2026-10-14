@@ -2,17 +2,36 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust",
-    "industrial_elixir:small_bronze_dust"
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    },
+    {
+      "item": "industrial_elixir:small_bronze_dust"
+    }
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:bronze_dust"
   }
 }

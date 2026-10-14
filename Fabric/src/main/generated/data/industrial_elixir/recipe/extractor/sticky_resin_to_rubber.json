@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:extractor",
-  "ingredient": "industrial_elixir:sticky_resin",
+  "ingredient": {
+    "item": "industrial_elixir:sticky_resin"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:rubber"
   }
 }

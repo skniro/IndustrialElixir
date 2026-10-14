@@ -2,12 +2,24 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "industrial_elixir:generator_advanced_solar_panel",
-    "D": "industrial_elixir:iridium_plate",
-    "E": "industrial_elixir:enriched_luminite",
-    "L": "minecraft:lapis_block",
-    "P": "industrial_elixir:advanced_circuit",
-    "R": "industrial_elixir:carbon_plate"
+    "A": {
+      "item": "industrial_elixir:generator_advanced_solar_panel"
+    },
+    "D": {
+      "item": "industrial_elixir:iridium_plate"
+    },
+    "E": {
+      "item": "industrial_elixir:enriched_luminite"
+    },
+    "L": {
+      "item": "minecraft:lapis_block"
+    },
+    "P": {
+      "item": "industrial_elixir:advanced_circuit"
+    },
+    "R": {
+      "item": "industrial_elixir:carbon_plate"
+    }
   },
   "pattern": [
     "RLR",
@@ -15,6 +27,7 @@
     "PEP"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:generator_hybrid_solar_panel"
   }
 }

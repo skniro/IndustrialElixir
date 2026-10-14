@@ -3,7 +3,9 @@
   "category": "misc",
   "group": "shelf",
   "key": {
-    "#": "industrial_elixir:stripped_rubber_log"
+    "#": {
+      "item": "industrial_elixir:stripped_rubber_log"
+    }
   },
   "pattern": [
     "###",

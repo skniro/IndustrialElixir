@@ -2,95 +2,108 @@ package com.skniro.industrial_elixir.api.fluid;
 
 import java.util.function.Function;
 
-import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-public final class FullItemFluidStorage extends SingleFluidStorage {
-	private final ItemAccess context;
-	private final ItemResource fullItem;
-	private final Function<ItemResource, ItemResource> fullToEmptyMapping;
-	private final FluidResource containedFluid;
-	private final int containedAmount;
+/**
+ * The fluid view of an already filled item, e.g. a fluid cell.
+ *
+ * <p>It can only be drained, and draining it replaces the container by the "empty" item that is
+ * produced by {@code fullToEmptyMapping}. As 1.21.1 item capabilities give access to the queried
+ * stack only, the replacement is exposed through {@link #getContainer()}.
+ */
+public final class FullItemFluidStorage implements IFluidHandlerItem {
+	private final Function<ItemStack, ItemStack> fullToEmptyMapping;
+	private final FluidStack containedFluid;
+	private final Item fullItem;
+	private ItemStack container;
 
-	public FullItemFluidStorage(ItemAccess context, ItemResource emptyItem, FluidResource containedFluid, int containedAmount) {
-		this(context, fullVariant -> emptyItem, containedFluid, containedAmount);
+	public FullItemFluidStorage(ItemStack container, Item emptyItem, FluidStack containedFluid) {
+		this(container, full -> new ItemStack(emptyItem), containedFluid);
 	}
 
-	public FullItemFluidStorage(ItemAccess context, Function<ItemResource, ItemResource> fullToEmptyMapping, FluidResource containedFluid, int containedAmount) {
-		TransferPreconditions.checkNonEmptyNonNegative(containedFluid, containedAmount);
+	public FullItemFluidStorage(ItemStack container, Function<ItemStack, ItemStack> fullToEmptyMapping, FluidStack containedFluid) {
+		if (containedFluid.isEmpty()) throw new IllegalArgumentException("The contained fluid must not be empty");
 
-		this.context = context;
-		this.fullItem = context.getResource();
+		this.container = container;
+		this.fullItem = container.getItem();
 		this.fullToEmptyMapping = fullToEmptyMapping;
-		this.containedFluid = containedFluid;
-		this.containedAmount = containedAmount;
+		this.containedFluid = containedFluid.copy();
 	}
 
 	@Override
-	public int extract(FluidResource resource, int maxAmount, TransactionContext transaction) {
-		TransferPreconditions.checkNonEmptyNonNegative(resource, maxAmount);
-
-		if (!context.getResource().matches(fullItem.toStack())) return 0;
-
-		if (resource.equals(containedFluid) && maxAmount >= containedAmount) {
-			ItemResource newVariant = fullToEmptyMapping.apply(context.getResource());
-
-			if (context.exchange(newVariant, 1, transaction) == 1) {
-				return containedAmount;
-			}
-		}
-
-		return 0;
+	public ItemStack getContainer() {
+		return container;
 	}
 
-	@Override
-	public int insert(FluidResource resource, int maxAmount, TransactionContext transaction) {
-		return 0;
+	private boolean hasFluid() {
+		return !container.isEmpty() && container.getItem() == fullItem;
 	}
 
-	@Override
-	protected int getCapacity(FluidResource variant) {
-		return 0;
+	public FluidStack getFluid() {
+		return hasFluid() ? containedFluid : FluidStack.EMPTY;
 	}
 
-	@Override
-	public boolean isResourceBlank() {
-		return getResource(0).isEmpty();
-	}
-
-	@Override
-	public FluidResource getResource(int index) {
-		if (context.getResource().matches(fullItem.toStack())) {
-			return containedFluid;
-		} else {
-			return FluidResource.EMPTY;
-		}
-	}
-
-	public FluidResource getResource() {
-		return getResource(0);
-	}
-
-	@Override
 	public int getAmount() {
-		if (context.getResource().matches(fullItem.toStack())) {
-			return containedAmount;
-		} else {
-			return 0;
-		}
+		return hasFluid() ? containedFluid.getAmount() : 0;
 	}
 
-	@Override
 	public int getCapacity() {
 		return getAmount();
 	}
 
 	@Override
+	public int getTanks() {
+		return 1;
+	}
+
+	@Override
+	public FluidStack getFluidInTank(int tank) {
+		return getFluid();
+	}
+
+	@Override
+	public int getTankCapacity(int tank) {
+		return getCapacity();
+	}
+
+	@Override
+	public boolean isFluidValid(int tank, FluidStack stack) {
+		return false;
+	}
+
+	@Override
+	public int fill(FluidStack resource, FluidAction action) {
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(FluidStack resource, FluidAction action) {
+		if (!hasFluid() || resource.isEmpty() || !FluidStack.isSameFluidSameComponents(containedFluid, resource)) {
+			return FluidStack.EMPTY;
+		}
+
+		return drain(resource.getAmount(), action);
+	}
+
+	@Override
+	public FluidStack drain(int maxDrain, FluidAction action) {
+		if (!hasFluid() || maxDrain < containedFluid.getAmount()) return FluidStack.EMPTY;
+
+		FluidStack drained = containedFluid.copy();
+
+		if (action.execute()) {
+			container = fullToEmptyMapping.apply(container);
+		}
+
+		return drained;
+	}
+
+	@Override
 	public String toString() {
-		return "FullItemFluidStorage[context=%s, fluid=%s, amount=%d]"
-				.formatted(context, containedFluid, containedAmount);
+		return "FullItemFluidStorage[fluid=%s, amount=%d]".formatted(containedFluid, getAmount());
 	}
 }

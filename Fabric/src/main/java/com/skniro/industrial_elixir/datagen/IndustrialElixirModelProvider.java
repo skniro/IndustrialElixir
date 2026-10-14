@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.level.block.Blocks;
 
 
@@ -53,9 +54,11 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         blockStateModelGenerator.woodProvider(GeneralBlocks.Rubber_LOG).logWithHorizontal(GeneralBlocks.Rubber_LOG).wood(GeneralBlocks.Rubber_WOOD);
         blockStateModelGenerator.woodProvider(GeneralBlocks.STRIPPED_Rubber_LOG).logWithHorizontal(GeneralBlocks.STRIPPED_Rubber_LOG).wood(GeneralBlocks.STRIPPED_Rubber_WOOD);
 
-        blockStateModelGenerator.createPlantWithDefaultItem(GeneralBlocks.Rubber_SAPLING, GeneralBlocks.POTTED_Rubber_SAPLING, BlockModelGenerators.PlantType.NOT_TINTED);
+        blockStateModelGenerator.createPlant(GeneralBlocks.Rubber_SAPLING, GeneralBlocks.POTTED_Rubber_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
         blockStateModelGenerator.createTrivialCube(GeneralBlocks.Rubber_LEAVES);
-        blockStateModelGenerator.createShelf(GeneralBlocks.Rubber_SHELF, GeneralBlocks.STRIPPED_Rubber_WOOD);
+        // 26.1's ShelfBlock (and BlockModelGenerators#createShelf) do not exist in 1.21.1; the block is
+        // registered as a plain wooden block, so it gets the matching trivial cube model.
+        blockStateModelGenerator.createTrivialCube(GeneralBlocks.Rubber_SHELF);
 
         blockStateModelGenerator.createHangingSign(GeneralBlocks.STRIPPED_Rubber_LOG, MapleSignBlocks.Rubber_HANGING_SIGN, MapleSignBlocks.Rubber_WALL_HANGING_SIGN);
 
@@ -126,12 +129,12 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         mapleModelDatagenHelper.registerMachineDiffBottom(GrowableOresBlocks.RECYCLER_Block, true);
         mapleModelDatagenHelper.registerMachineExtractor(GrowableOresBlocks.CUTTING_Block, true);
 
-        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_Bronze_Cane, BlockModelGenerators.PlantType.TINTED);
-        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_silver_Cane, BlockModelGenerators.PlantType.TINTED);
-        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_Tin_Cane, BlockModelGenerators.PlantType.TINTED);
-        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_SACRED_Cane, BlockModelGenerators.PlantType.TINTED);
-        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_steel_Cane, BlockModelGenerators.PlantType.TINTED);
-        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_LEAD_Cane, BlockModelGenerators.PlantType.TINTED);
+        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_Bronze_Cane, BlockModelGenerators.TintState.TINTED);
+        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_silver_Cane, BlockModelGenerators.TintState.TINTED);
+        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_Tin_Cane, BlockModelGenerators.TintState.TINTED);
+        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_SACRED_Cane, BlockModelGenerators.TintState.TINTED);
+        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_steel_Cane, BlockModelGenerators.TintState.TINTED);
+        blockStateModelGenerator.createCrossBlockWithDefaultItem(GrowableICOresBlocks.IER_LEAD_Cane, BlockModelGenerators.TintState.TINTED);
 
         BlockModelGenerators.BlockFamilyProvider blue = blockStateModelGenerator.family(Blocks.COBBLESTONE);
         blue.stairs(GeneralBlocks.COBBLESTONE_STAIRS);
@@ -269,10 +272,10 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(GrowableOresItems.STEEL_CASING, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.TIN_CASING, ModelTemplates.FLAT_ITEM);
 
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_HELMET, MapleEquipmentAssetKeys.QUANTUM, TRIM_PREFIX_HELMET, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_CHESTPLATE, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_CHESTPLATE, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_LEGGINGS, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_LEGGINGS, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Quantum_BOOTS, MapleEquipmentAssetKeys.QUANTUM,TRIM_PREFIX_BOOTS, false);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.Quantum_HELMET);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.Quantum_CHESTPLATE);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.Quantum_LEGGINGS);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.Quantum_BOOTS);
 
         itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_SACRED_INGOT, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(AdvancedItems.IRRADIANT_GLASS_PANE, ModelTemplates.FLAT_ITEM);
@@ -312,10 +315,10 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(MapleArmorItems.CUTTING, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.ROLLING, ModelTemplates.FLAT_ITEM);
 
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_BOOTS, MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_HELMET, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_CHESTPLATE,MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_CHESTPLATE, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_HELMET, MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_LEGGINGS, false);
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.BRONZE_LEGGINGS, MapleEquipmentAssetKeys.BRONZE, TRIM_PREFIX_BOOTS,false);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.BRONZE_BOOTS);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.BRONZE_CHESTPLATE);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.BRONZE_HELMET);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.BRONZE_LEGGINGS);
 
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -323,7 +326,7 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModelGenerator.generateFlatItem(MapleArmorItems.BRONZE_HOE, ModelTemplates.FLAT_HANDHELD_ITEM);
 
-        itemModelGenerator.generateTrimmableItem(MapleArmorItems.Electric_Jetpack, MapleEquipmentAssetKeys.ELECTRIC_JETPACK, TRIM_PREFIX_CHESTPLATE, false);
+        itemModelGenerator.generateArmorTrims((ArmorItem) MapleArmorItems.Electric_Jetpack);
 
         itemModelGenerator.generateFlatItem(GrowableOresItems.EMPTY_CELL, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(GrowableOresItems.WATER_CELL, ModelTemplates.FLAT_ITEM);

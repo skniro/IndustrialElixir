@@ -4,7 +4,9 @@
   "cookingtime": 300,
   "experience": 0.45,
   "group": "silver_ingot",
-  "ingredient": "industrial_elixir:silver_dust",
+  "ingredient": {
+    "item": "industrial_elixir:silver_dust"
+  },
   "result": {
     "id": "industrial_elixir:silver_ingot"
   }

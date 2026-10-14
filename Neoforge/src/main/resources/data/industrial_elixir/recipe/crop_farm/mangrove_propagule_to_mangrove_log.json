@@ -1,9 +1,12 @@
 {
   "type": "industrial_elixir:crop_farm",
   "count": 1,
-  "ingredient": "minecraft:mangrove_propagule",
+  "ingredient": {
+    "item": "minecraft:mangrove_propagule"
+  },
   "process_time": 1000,
   "result": {
+    "count": 1,
     "id": "minecraft:mangrove_propagule"
   },
   "result2": {

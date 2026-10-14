@@ -39,7 +39,7 @@ public class HeatImpl {
 		List<Item> items = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof SimpleHeatItem).toList();
 		event.registerItem(HeatStorage.ITEM, (stack, ctx) -> {
 					if (stack.getItem() instanceof SimpleHeatItem HeatItem) {
-						return SimpleHeatItem.createStorage(ctx, HeatItem.getHeatCapacity(stack), HeatItem.getHeatMaxInput(stack), HeatItem.getHeatMaxOutput(stack));
+						return SimpleHeatItem.createStorage(stack, HeatItem.getHeatCapacity(stack), HeatItem.getHeatMaxInput(stack), HeatItem.getHeatMaxOutput(stack));
 					} else {
 						return null;
 					}

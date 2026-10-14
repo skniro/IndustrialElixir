@@ -10,7 +10,6 @@ import com.skniro.industrial_elixir.energy.heat.api.base.SimpleSidedHeatContaine
 import com.skniro.industrial_elixir.init.FurnitureStrings;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.screen.handler.generator.heat.SolidFuelHeaterScreenHandler;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,10 +25,10 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 public class SolidFuelHeaterEntity extends AbstractMachineEntity {
 
@@ -108,10 +107,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
             // Currently burning fuel
             if (heatContainer.amount < HEAT_CAPACITY) {
                 // Heat has room: produce heat and consume burn time
-                try (Transaction tx = Transaction.openRoot()) {
-                    heatContainer.getSideStorage(null).insert(HEAT_PER_TICK, tx);
-                    tx.commit();
-                }
+                heatContainer.getSideStorage(null).insert(HEAT_PER_TICK, false);
                 burnTime--;
                 burning = true;
             }
@@ -158,7 +154,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
         HeatStorage target = HeatStorage.SIDED.getCapability(level, worldPosition.relative(direction),null,null,direction.getOpposite());
         if (target == null) return;
         HeatStorageUtil.move(heatContainer.getSideStorage(direction), target,
-                heatContainer.getSideStorage(null).getAmount(), null);
+                heatContainer.getSideStorage(null).getAmount());
     }
 
     private int getFuelTime(ItemStack stack) {
@@ -169,7 +165,7 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
             if (stack.is(entry.getKey())) return entry.getValue();
         }
         if (this.level != null) {
-            return this.level.fuelValues().burnDuration(stack) / 2;
+            return AbstractFurnaceBlockEntity.getFuel().getOrDefault(stack.getItem(), 0) / 2;
         }
         return 0;
     }
@@ -192,19 +188,19 @@ public class SolidFuelHeaterEntity extends AbstractMachineEntity {
     public RecipeType<?> getCurrentRecipeType() { return null; }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         output.putInt("solid_fuel_heater.burnTime", burnTime);
         output.putInt("solid_fuel_heater.burnDuration", burnDuration);
         output.putLong("solid_fuel_heater.heat", heatContainer.amount);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        burnTime = input.getIntOr("solid_fuel_heater.burnTime", 0);
-        burnDuration = input.getIntOr("solid_fuel_heater.burnDuration", 0);
-        heatContainer.amount = input.getLongOr("solid_fuel_heater.heat", 0);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
+        burnTime = (input.contains("solid_fuel_heater.burnTime") ? input.getInt("solid_fuel_heater.burnTime") : 0);
+        burnDuration = (input.contains("solid_fuel_heater.burnDuration") ? input.getInt("solid_fuel_heater.burnDuration") : 0);
+        heatContainer.amount = (input.contains("solid_fuel_heater.heat") ? input.getLong("solid_fuel_heater.heat") : 0);
     }
 
     @Nullable

@@ -9,7 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -34,14 +34,11 @@ public class AdvancedItems {
     public static final Supplier<Item> PIPE_PLUG = registerItem("pipe_plug", Item::new, new Item.Properties());
 
     public static <B extends Item> Supplier<Item> register(String name, Function<Item.Properties, ? extends B> func, Item.Properties props) {
-        return ITEMS.register(name, () -> {
-            return (Item)func.apply(props.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        });
+        return ITEMS.register(name, () -> (Item) func.apply(props));
     }
 
     private static <T extends Item> Supplier<Item> registerItem(String name, Function<Item.Properties, ? extends T> item, Item.Properties properties) {
-        Supplier<Item> toReturn = register(name, item, properties.setId(ResourceKey.create(Registries.ITEM, Helper.id(name))));
-        return toReturn;
+        return register(name, item, properties);
     }
 
     public static void registerAdvancedItem(IEventBus eventBus){

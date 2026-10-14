@@ -5,7 +5,7 @@ public final class IndustrialModREIUtils {
 
     public static boolean isREIAvailable() {
         try {
-            Class.forName("me.shedaniel.rei.api.common.plugins.REICommonPlugin");
+            Class.forName("me.shedaniel.rei.api.common.plugins.REIServerPlugin");
 
             return true;
         }catch(ClassNotFoundException e) {

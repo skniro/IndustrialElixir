@@ -4,10 +4,7 @@ package com.skniro.industrial_elixir.energy.heat.api.base;
 
 import com.skniro.industrial_elixir.energy.heat.api.HeatStorage;
 import com.skniro.industrial_elixir.energy.heat.impl.SimpleItemHeatStorageImpl;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
@@ -26,11 +23,14 @@ public interface SimpleHeatItem {
 	 * This is used internally for items that implement SimpleHeatItem, but it may also be used outside of that.
 	 * The Heat is stored in the {@link HeatStorage#Heat_COMPONENT} of the stacks.
 	 *
+	 * <p>The {@code stack} is the one that the {@link HeatStorage#ITEM} capability was queried with,
+	 * as 1.21.1 item capabilities do not provide any additional item context.
+	 *
 	 * <p>Stackable Heat containers are supported just fine, and they will distribute Heat evenly.
 	 * For example, insertion of 3 units of Heat into a stack of 2 items using this class will either insert 0 or 2 depending on the remaining capacity.
 	 */
-	static HeatStorage createStorage(ItemAccess ctx, long capacity, long maxInsert, long maxExtract) {
-		return SimpleItemHeatStorageImpl.createSimpleStorage(ctx, capacity, maxInsert, maxExtract);
+	static HeatStorage createStorage(ItemStack stack, long capacity, long maxInsert, long maxExtract) {
+		return SimpleItemHeatStorageImpl.createSimpleStorage(stack, capacity, maxInsert, maxExtract);
 	}
 
 	/**
@@ -91,14 +91,6 @@ public interface SimpleHeatItem {
 	 */
 	static long getStoredHeatUnchecked(ItemStack stack) {
 		return stack.getOrDefault(HeatStorage.Heat_COMPONENT, 0L);
-	}
-
-	static long getStoredHeatUnchecked(ItemResource variant) {
-		return getStoredHeatUnchecked(variant.getComponents());
-	}
-
-	static long getStoredHeatUnchecked(DataComponentMap components) {
-		return components.getOrDefault(HeatStorage.Heat_COMPONENT, 0L);
 	}
 
 	/**

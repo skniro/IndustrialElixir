@@ -3,13 +3,16 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "#": "industrial_elixir:rubber_planks"
+    "#": {
+      "item": "industrial_elixir:rubber_planks"
+    }
   },
   "pattern": [
     "# #",
     "###"
   ],
   "result": {
+    "count": 1,
     "id": "industrial_elixir:rubber_boat"
   }
 }

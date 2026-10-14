@@ -1,8 +1,7 @@
 package com.skniro.industrial_elixir.api.renderer.chunk;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
@@ -26,7 +25,7 @@ public class ChunkMapRenderer {
      * @param selectedMask 已选择chunk
      */
     public void render(
-            GuiGraphicsExtractor graphics,
+            GuiGraphics graphics,
             Level level,
             ChunkPos center,
             int x,
@@ -52,15 +51,15 @@ public class ChunkMapRenderer {
 
             ChunkPos chunkPos =
                     new ChunkPos(
-                            center.x() + col - 2,
-                            center.z() + row - 2
+                            center.x + col - 2,
+                            center.z + row - 2
                     );
 
 
             /*
              * 绘制Chunk纹理
              */
-            Identifier texture =
+            ResourceLocation texture =
                     ChunkTextureCache.getTexture(
                             level,
                             chunkPos
@@ -68,7 +67,6 @@ public class ChunkMapRenderer {
 
 
             graphics.blit(
-                    RenderPipelines.GUI_TEXTURED,
                     texture,
                     drawX,
                     drawY,
@@ -147,7 +145,7 @@ public class ChunkMapRenderer {
 
 
     private void drawBorder(
-            GuiGraphicsExtractor graphics,
+            GuiGraphics graphics,
             int x,
             int y,
             int color

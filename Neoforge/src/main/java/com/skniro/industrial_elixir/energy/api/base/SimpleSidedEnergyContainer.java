@@ -2,18 +2,16 @@ package com.skniro.industrial_elixir.energy.api.base;
 
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import net.minecraft.core.Direction;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 // CREDIT: https://github.com/TechReborn/energy
 // Under MIT-License: https://github.com/TechReborn/Energy/blob/master/LICENSE
 /**
  * A base energy storage implementation with a dynamic capacity, and per-side per-operation insertion and extraction limits.
  * {@link #getSideStorage} can be used to get an {@code EnergyStorage} implementation for a given side.
- * Make sure to override {@link #onRootCommit} to call {@code markDirty} and similar functions.
+ * Make sure to override {@link #onFinalCommit} to call {@code markDirty} and similar functions.
  */
 @SuppressWarnings({"unused"})
-public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
+public abstract class SimpleSidedEnergyContainer {
 	public long amount = 0;
 	private final SideStorage[] sideStorages = new SideStorage[7];
 
@@ -45,25 +43,6 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
 		return sideStorages[side == null ? 6 : side.get3DDataValue()];
 	}
 
-	@Override
-	protected Long createSnapshot() {
-		return amount;
-	}
-
-	@Override
-	protected void revertToSnapshot(Long snapshot) {
-		readSnapshot(snapshot);
-	}
-
-	protected void readSnapshot(Long snapshot) {
-		amount = snapshot;
-	}
-
-	@Override
-	protected void onRootCommit(Long snapshot) {
-		onFinalCommit();
-	}
-
 	protected void onFinalCommit() {
 
 	}
@@ -81,7 +60,7 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
 		}
 
 		@Override
-		public long insert(long maxAmount, TransactionContext transaction) {
+		public long insert(long maxAmount, boolean simulate) {
 			if (maxAmount < 0L) {
 				throw new IllegalArgumentException("Expected value to be non-negative: " + maxAmount);
 			}
@@ -89,8 +68,11 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
 			long inserted = Math.min(getMaxInsert(side), Math.min(maxAmount, getCapacity() - amount));
 
 			if (inserted > 0) {
-				updateSnapshots(transaction);
-				amount += inserted;
+				if (!simulate) {
+					amount += inserted;
+					onFinalCommit();
+				}
+
 				return inserted;
 			}
 
@@ -103,7 +85,7 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
 		}
 
 		@Override
-		public long extract(long maxAmount, TransactionContext transaction) {
+		public long extract(long maxAmount, boolean simulate) {
 			if (maxAmount < 0L) {
 				throw new IllegalArgumentException("Expected value to be non-negative: " + maxAmount);
 			}
@@ -111,8 +93,11 @@ public abstract class SimpleSidedEnergyContainer extends SnapshotJournal<Long> {
 			long extracted = Math.min(getMaxExtract(side), Math.min(maxAmount, amount));
 
 			if (extracted > 0) {
-				updateSnapshots(transaction);
-				amount -= extracted;
+				if (!simulate) {
+					amount -= extracted;
+					onFinalCommit();
+				}
+
 				return extracted;
 			}
 

@@ -1,14 +1,19 @@
 {
   "type": "industrial_elixir:heat_centrifuge",
   "count": 1,
-  "ingredient": "industrial_elixir:crushed_silver",
+  "ingredient": {
+    "item": "industrial_elixir:crushed_silver"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:silver_dust"
   },
   "result2": {
+    "count": 1,
     "id": "industrial_elixir:small_silver_dust"
   },
   "result3": {
+    "count": 1,
     "id": "industrial_elixir:stone_dust"
   }
 }

@@ -3,7 +3,9 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": "industrial_elixir:stripped_rubber_log"
+    "#": {
+      "item": "industrial_elixir:stripped_rubber_log"
+    }
   },
   "pattern": [
     "##",

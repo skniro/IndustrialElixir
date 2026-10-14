@@ -1,6 +1,5 @@
 package com.skniro.industrial_elixir.compat.rei.category;
 
-
 import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.compat.rei.display.BlockCutterDisplay;
@@ -14,15 +13,14 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BlockCutterCategory implements DisplayCategory<BlockCutterDisplay> {
-    public static final Identifier TEXTURE = Helper.id(
+    public static final ResourceLocation TEXTURE = Helper.id(
             "textures/gui/container/machine/block_cutter.png");
 
     private static final int ENERGY_X = 21;
@@ -72,7 +70,7 @@ public class BlockCutterCategory implements DisplayCategory<BlockCutterDisplay> 
             int arrowWidth = 48;
             int currentTick = (int)(ticks % totalTicks);
             int progress = currentTick * arrowWidth / totalTicks;
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, startPoint.x + 70, startPoint.y + 33, 190, 0, progress, 19, 256, 256);
+            context.blit(TEXTURE, startPoint.x + 70, startPoint.y + 33, 190, 0, progress, 19, 256, 256);
         }));
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {

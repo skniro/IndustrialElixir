@@ -1,9 +1,5 @@
 package com.skniro.industrial_elixir.energy.heat.api;
 
-import net.neoforged.neoforge.transfer.TransferPreconditions;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,38 +13,34 @@ public class HeatStorageUtil {
 	/**
 	 * Move Heat between two Heat storages, and return the amount that was successfully moved.
 	 *
+	 * <p>The transfer is first simulated on both sides, and only applied if both sides agree.
+	 *
 	 * @param from The source storage. May be null.
 	 * @param to The target storage. May be null.
 	 * @param maxAmount The maximum amount that may be moved.
-	 * @param transaction The transaction this transfer is part of,
-	 *                    or {@code null} if a transaction should be opened just for this transfer.
 	 * @return The amount of Heat that was successfully moved.
 	 */
-	public static long move(@Nullable HeatStorage from, @Nullable HeatStorage to, long maxAmount, @Nullable TransactionContext transaction) {
+	public static long move(@Nullable HeatStorage from, @Nullable HeatStorage to, long maxAmount) {
 		if (from == null || to == null) return 0;
 
 		if (maxAmount < 0) throw new IllegalArgumentException("Amount must not be negative");
 
 		// Simulate extraction first.
-		long maxExtracted;
+		long maxExtracted = from.extract(maxAmount, true);
 
-		try (Transaction extractionTestTransaction = Transaction.open(transaction)) {
-			maxExtracted = from.extract(maxAmount, extractionTestTransaction);
-		}
+		if (maxExtracted <= 0) return 0;
 
-		try (Transaction moveTransaction = Transaction.open(transaction)) {
-			// Then insert what can be extracted.
-			long accepted = to.insert(maxExtracted, moveTransaction);
+		// Then insert what can be extracted.
+		long accepted = to.insert(maxExtracted, true);
 
-			// Extract for real.
-			if (from.extract(accepted, moveTransaction) == accepted) {
-				// Commit if the amounts match.
-				moveTransaction.commit();
-				return accepted;
-			}
-		}
+		if (accepted <= 0) return 0;
 
-		return 0;
+		// Extract for real, and insert what was actually extracted.
+		long extracted = from.extract(accepted, false);
+
+		if (extracted <= 0) return 0;
+
+		return to.insert(extracted, false);
 	}
 
 	/**
@@ -56,7 +48,7 @@ public class HeatStorageUtil {
 	 * This can typically be used for inventories or slots that want to accept Heat storages only.
 	 */
 	public static boolean isHeatStorage(ItemStack stack) {
-		return stack.getCapability(HeatStorage.ITEM, ItemAccess.forStack(stack)) != null;
+		return stack.getCapability(HeatStorage.ITEM) != null;
 	}
 
 	private HeatStorageUtil() {

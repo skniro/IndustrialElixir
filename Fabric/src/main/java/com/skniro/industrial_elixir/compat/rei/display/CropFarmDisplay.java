@@ -13,7 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
@@ -26,24 +26,9 @@ public class CropFarmDisplay extends BasicDisplay {
     public static final CategoryIdentifier<CropFarmDisplay> CROP_FARM =
             CategoryIdentifier.of(IndustrialElixir.MOD_ID, "crop_farm");
 
-    public static final DisplaySerializer<CropFarmDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(BasicDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(BasicDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(BasicDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(d -> d.count)
-            ).apply(instance, CropFarmDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BasicDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BasicDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    BasicDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    d -> d.count,
-                    CropFarmDisplay::new
-            )
+    public static final DisplaySerializer<CropFarmDisplay> SERIALIZER = BasicDisplay.Serializer.<CropFarmDisplay>of(
+            (inputs, outputs, location, tag) -> new CropFarmDisplay(inputs, outputs, location, tag.getInt("count")),
+            (display, tag) -> tag.putInt("count", display.getCount())
     );
 
     public CropFarmDisplay(CropFarmCraftingRecipe recipe) {
@@ -63,16 +48,16 @@ public class CropFarmDisplay extends BasicDisplay {
     }
 
     public CropFarmDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs,
-                           Optional<Identifier> location, int count) {
+                           Optional<ResourceLocation> location, int count) {
         super(inputs, outputs, location);
         this.count = count;
     }
 
     private static List<EntryIngredient> buildOutputs(CropFarmCraftingRecipe recipe) {
         List<EntryIngredient> outputs = new ArrayList<>();
-        outputs.add(EntryIngredient.of(EntryStacks.of(recipe.output().create())));
-        recipe.output2().ifPresent(o -> outputs.add(EntryIngredient.of(EntryStacks.of(o.create()))));
-        recipe.output3().ifPresent(o -> outputs.add(EntryIngredient.of(EntryStacks.of(o.create()))));
+        outputs.add(EntryIngredient.of(EntryStacks.of(recipe.output())));
+        recipe.output2().ifPresent(o -> outputs.add(EntryIngredient.of(EntryStacks.of(o))));
+        recipe.output3().ifPresent(o -> outputs.add(EntryIngredient.of(EntryStacks.of(o))));
         return outputs;
     }
 
@@ -81,10 +66,6 @@ public class CropFarmDisplay extends BasicDisplay {
         return CROP_FARM;
     }
 
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
-    }
 
     public int getCount() {
         return count;

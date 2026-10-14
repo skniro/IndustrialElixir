@@ -1,7 +1,10 @@
 {
   "type": "industrial_elixir:macerator",
-  "ingredient": "industrial_elixir:lead_ingot",
+  "ingredient": {
+    "item": "industrial_elixir:lead_ingot"
+  },
   "result": {
+    "count": 1,
     "id": "industrial_elixir:lead_dust"
   }
 }

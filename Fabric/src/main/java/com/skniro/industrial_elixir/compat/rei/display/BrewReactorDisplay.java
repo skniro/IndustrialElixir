@@ -15,7 +15,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
@@ -24,36 +24,21 @@ import java.util.Optional;
 public class BrewReactorDisplay extends BasicDisplay {
 
     private int count;
-    private Optional<Identifier> fluid;
+    private Optional<ResourceLocation> fluid;
     private Optional<Integer> fluidamt;
 
     public static final CategoryIdentifier<BrewReactorDisplay>
             BREW_REACTOR = CategoryIdentifier.of(IndustrialElixir.MOD_ID, "brew_reactor");
 
-    public static final DisplaySerializer<BrewReactorDisplay> SERIALIZER = DisplaySerializer.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(BrewReactorDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(BrewReactorDisplay::getOutputEntries),
-                    Identifier.CODEC.optionalFieldOf("location").forGetter(BrewReactorDisplay::getDisplayLocation),
-                    Codec.INT.fieldOf("count").forGetter(BrewReactorDisplay::getCount),
-                    Identifier.CODEC.optionalFieldOf("fluid").forGetter(BrewReactorDisplay::getFluid),
-                    Codec.INT.optionalFieldOf("fluid_amount").forGetter(BrewReactorDisplay::getFluidAmount)
-            ).apply(instance, BrewReactorDisplay::new)),
-            StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BrewReactorDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    BrewReactorDisplay::getOutputEntries,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    BrewReactorDisplay::getDisplayLocation,
-                    ByteBufCodecs.INT,
-                    BrewReactorDisplay::getCount,
-                    ByteBufCodecs.optional(Identifier.STREAM_CODEC),
-                    BrewReactorDisplay::getFluid,
-                    ByteBufCodecs.optional(ByteBufCodecs.INT),
-                    BrewReactorDisplay::getFluidAmount,
-                    BrewReactorDisplay::new
-            )
+    public static final DisplaySerializer<BrewReactorDisplay> SERIALIZER = BasicDisplay.Serializer.<BrewReactorDisplay>of(
+            (inputs, outputs, location, tag) -> new BrewReactorDisplay(inputs, outputs, location, tag.getInt("count"),
+                    tag.contains("fluid") ? Optional.of(ResourceLocation.parse(tag.getString("fluid"))) : Optional.empty(),
+                    tag.contains("fluid_amount") ? Optional.of(tag.getInt("fluid_amount")) : Optional.empty()),
+            (display, tag) -> {
+                tag.putInt("count", display.getCount());
+                display.getFluid().ifPresent(fluid -> tag.putString("fluid", fluid.toString()));
+                display.getFluidAmount().ifPresent(amount -> tag.putInt("fluid_amount", amount));
+            }
     );
 
 
@@ -71,7 +56,7 @@ public class BrewReactorDisplay extends BasicDisplay {
         );
     }
 
-    public BrewReactorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, int count, Optional<Identifier> fluid, Optional<Integer> fluidamt) {
+    public BrewReactorDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, int count, Optional<ResourceLocation> fluid, Optional<Integer> fluidamt) {
         super(inputs, outputs, location);
         this.count = count;
         this.fluid = fluid;
@@ -85,7 +70,7 @@ public class BrewReactorDisplay extends BasicDisplay {
                                 EntryIngredients.ofIngredient(recipe.value().ingredient2())) :
                         List.of(EntryIngredients.ofIngredient(recipe.value().ingredient())),
 
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().create()))));
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output()))));
         this.count = recipe.value().requiredCount();
         this.fluid = recipe.value().requiredFluid();
         this.fluidamt = recipe.value().requiredFluidAmount();
@@ -96,16 +81,12 @@ public class BrewReactorDisplay extends BasicDisplay {
         return BREW_REACTOR;
     }
 
-    @Override
-    public DisplaySerializer<? extends Display> getSerializer() {
-        return SERIALIZER;
-    }
 
     public int getCount() {
         return count;
     }
 
-    public Optional<Identifier> getFluid() {
+    public Optional<ResourceLocation> getFluid() {
         return fluid;
     }
 

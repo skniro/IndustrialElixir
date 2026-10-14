@@ -22,10 +22,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -45,14 +45,14 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        super.saveAdditional(output, registries);
         SingleFluidStorage.writeValue(fluidContainer, output);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        super.loadAdditional(input, registries);
         SingleFluidStorage.readValue(fluidContainer, input);
     }
 
@@ -74,13 +74,10 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
     protected void craftItem() {
         OreWashingCraftingRecipe recipe = (OreWashingCraftingRecipe) getCurrentRecipe().get().value();
         this.removeItem(INPUT_SLOT, recipe.requiredCount());
-        insertOutput(OUTPUT_SLOT, recipe.output().create());
-        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.create()));
-        recipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.create()));
-        try (Transaction tx = Transaction.openRoot()) {
-            fluidContainer.extract(fluidContainer.getResource(0), recipe.requiredFluidAmount(), tx);
-            tx.commit();
-        }
+        insertOutput(OUTPUT_SLOT, recipe.output().copy());
+        recipe.output2().ifPresent(output -> insertOutput(OUTPUT_SLOT_2, output.copy()));
+        recipe.output3().ifPresent(output -> insertOutput(OUTPUT_SLOT_3, output.copy()));
+        fluidContainer.extract(fluidContainer.getResource(0), recipe.requiredFluidAmount(), false);
     }
 
     private void insertOutput(int slot, ItemStack output) {
@@ -162,9 +159,9 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
         var recipe = recipeHolder.value();
         OreWashingCraftingRecipe washingRecipe = (OreWashingCraftingRecipe) recipe;
 
-        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().create())) return false;
-        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().create())) return false;
-        if (washingRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, washingRecipe.output3().get().create())) return false;
+        if (!canInsertIntoSlot(OUTPUT_SLOT, washingRecipe.output().copy())) return false;
+        if (washingRecipe.output2().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_2, washingRecipe.output2().get().copy())) return false;
+        if (washingRecipe.output3().isPresent() && !canInsertIntoSlot(OUTPUT_SLOT_3, washingRecipe.output3().get().copy())) return false;
         if (!hasEnoughEnergyToCraft()) return false;
 
         var currentFluid = this.fluidContainer.getResource(0).getFluid();
@@ -190,9 +187,6 @@ public class OreWashingBlockEntity extends AbstractFluidMachineEntity {
         if (recipe.isEmpty() || !(recipe.get().value() instanceof OreWashingCraftingRecipe washingRecipe)) {
             return;
         }
-        try (Transaction transaction = Transaction.openRoot()) {
-            fluidContainer.extract(fluidContainer.getResource(0), washingRecipe.requiredFluidAmount(), transaction);
-            transaction.commit();
-        }
+        fluidContainer.extract(fluidContainer.getResource(0), washingRecipe.requiredFluidAmount(), false);
     }
 }

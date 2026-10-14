@@ -78,7 +78,6 @@ public class ReplicatorValueMap {
         register(Items.BAMBOO_PLANKS, 12, 0);
         register(Items.CRIMSON_PLANKS, 12, 0);
         register(Items.WARPED_PLANKS, 12, 0);
-        register(Items.PALE_OAK_PLANKS, 12, 0);
         register(Items.SPRUCE_LOG, 44, 0);
         register(Items.BIRCH_LOG, 44, 0);
         register(Items.JUNGLE_LOG, 44, 0);
@@ -96,7 +95,6 @@ public class ReplicatorValueMap {
         register(Items.DARK_OAK_SAPLING, 80, 0);
         register(Items.MANGROVE_PROPAGULE, 80, 0);
         register(Items.CHERRY_SAPLING, 80, 0);
-        register(Items.PALE_OAK_SAPLING, 80, 0);
         register(Items.CRIMSON_FUNGUS, 80, 0);
         register(Items.WARPED_FUNGUS, 80, 0);
 
@@ -114,8 +112,6 @@ public class ReplicatorValueMap {
         register(Items.LILY_OF_THE_VALLEY, 370, 0);
         register(Items.WITHER_ROSE, 370, 0);
         register(Items.TORCHFLOWER, 370, 0);
-        register(Items.OPEN_EYEBLOSSOM, 370, 0);
-        register(Items.CLOSED_EYEBLOSSOM, 370, 0);
 
         register(Items.SUNFLOWER, 370, 0);
         register(Items.LILAC, 370, 0);
@@ -123,7 +119,6 @@ public class ReplicatorValueMap {
         register(Items.PEONY, 370, 0);
 
         register(Items.PINK_PETALS, 370, 0);
-        register(Items.WILDFLOWERS, 370, 0);
 
         // --- Ores ---
         register(Items.COAL, 0, 50000);
@@ -197,8 +192,6 @@ public class ReplicatorValueMap {
 
         register(Items.ECHO_SHARD, 0, 3000000);
 
-        register(Items.RESIN_CLUMP, 8, 0);
-        register(Items.RESIN_BRICK, 8, 0);
 
         // --- Food ---
         register(Items.APPLE, 10, 0);

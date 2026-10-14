@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class IndustrialElixirFluidAIRFluid extends FlowingFluid {
     @Override
-    protected boolean canConvertToSource(ServerLevel world) {
+    protected boolean canConvertToSource(Level world) {
         return false;
     }
 

@@ -1,18 +1,13 @@
 package com.skniro.industrial_elixir.block;
 
 import com.skniro.industrial_elixir.IndustrialElixir;
-import com.skniro.industrial_elixir.api.Helper;
 import com.skniro.industrial_elixir.block.entity.MapleSignTypes;
 import com.skniro.industrial_elixir.block.init.*;
 import com.skniro.industrial_elixir.block.init.machine.fluid.CoffeeMachineBlock;
 import com.skniro.industrial_elixir.item.GrowableOresItems;
 import com.skniro.industrial_elixir.item.MapleFoodComponents;
 import com.skniro.industrial_elixir.world.Tree.RubberSaplingGenerator;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -24,14 +19,13 @@ import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -74,7 +68,7 @@ public class GeneralBlocks {
             (settings)-> new FlowerPotBlock(Rubber_SAPLING.get(), settings), BlockBehaviour.Properties.of().instabreak().noOcclusion());
 
     public static final Supplier<Block> Rubber_LEAVES =registerBlock("rubber_leaves",
-            (settings)-> new TintedParticleLeavesBlock(0.1f, settings), (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN)));
+            LeavesBlock::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).mapColor(MapColor.TERRACOTTA_GREEN)));
 
     public static final Supplier<Block> Rubber_Rubber_LOG =registerBlock("rubber_rubber_log",
             (settings)-> new LogCropBlock(settings, GrowableOresItems.Sticky_Resin), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(MapColor.COLOR_BROWN));
@@ -90,7 +84,7 @@ public class GeneralBlocks {
     public static final Supplier<Block> Rubber_PLANKS = registerBlock("rubber_planks",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.COLOR_BROWN)));
     public static final Supplier<Block> Rubber_BUTTON = registerBlock("rubber_button",
-            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY));
+            (settings)-> new ButtonBlock(MapleBlockSetType.Rubber,30, settings), BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
     public static final Supplier<Block> Rubber_STAIRS = registerBlock("rubber_stairs",
             (settings)-> new ModStairBlock(Blocks.OAK_PLANKS.defaultBlockState(), settings), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
     public static final Supplier<Block> Rubber_SLAB = registerBlock("rubber_slab",
@@ -105,10 +99,12 @@ public class GeneralBlocks {
             (settings)-> new TrapDoorBlock(MapleBlockSetType.Rubber, settings),BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(3.0F).noOcclusion());
     public static final Supplier<Block> Rubber_PRESSURE_PLATE = registerBlockDeferred("rubber_pressure_plate",
             (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN)
-                    .noCollision().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
+                    .noCollission().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
 
+    // 26.1's ShelfBlock / SoundType.SHELF do not exist in 1.21.1; keep the block registered as a
+    // plain wooden block so the item, recipes and datagen entries stay valid.
     public static final Supplier<Block> Rubber_SHELF = registerBlock("rubber_shelf",
-            ShelfBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.SHELF).ignitedByLava().strength(2.0F, 3.0F));
+            Block::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).ignitedByLava().strength(2.0F, 3.0F));
 
     public static final Supplier<Block> Reinforced_Stone = registerBlock("reinforced_stone",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)).mapColor(MapColor.TERRACOTTA_GRAY).strength(100.0F, 1000.0F));
@@ -151,7 +147,7 @@ public class GeneralBlocks {
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CONCRETE)));
 
     //Coffee
-    public static final Supplier<Block> Coffee_Block = registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
+    public static final Supplier<Block> Coffee_Block = GeneralBlocks.<Block>registerBlock("coffee_block", (properties)-> new CoffeeBlock(properties),BlockBehaviour.Properties.of().noOcclusion().requiresCorrectToolForDrops().strength(3.0F, 3.0F));
 
     public static final Supplier<Block> COFFEE_BLACK = registerBlockWithoutItem("coffee_black", CupSpecialBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
     public static final Supplier<Block> CAPPUCCINO = registerBlockWithoutItem("cappuccino", CupBlock::new, BlockBehaviour.Properties.of().strength(0.5F).noOcclusion());
@@ -164,12 +160,12 @@ public class GeneralBlocks {
 
     public static <B extends Block> Supplier<Block> register(String name, Function<BlockBehaviour.Properties, ? extends B> func, BlockBehaviour.Properties props) {
         return BLOCKS.register(name, () -> {
-            return (Block)func.apply(props.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
+            return (Block)func.apply(props);
         });
     }
 
     private static <B extends Block> Supplier<Block> registerBlockWithoutItem(String name, Function<BlockBehaviour.Properties, ? extends B> block, BlockBehaviour.Properties properties) {
-        Supplier<Block> register = register(name, block, properties.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
+        Supplier<Block> register = register(name, block, properties);
         return register;
     }
 
@@ -182,7 +178,7 @@ public class GeneralBlocks {
     private static <B extends Block> Supplier<Block> registerBlockDeferred(String name, Function<BlockBehaviour.Properties, ? extends B> block, Supplier<BlockBehaviour.Properties> propertiesSupplier) {
         Supplier<Block> bSupplier = BLOCKS.register(name, () -> {
             BlockBehaviour.Properties properties = propertiesSupplier.get();
-            return block.apply(properties.setId(ResourceKey.create(Registries.BLOCK, Helper.id(name))));
+            return block.apply(properties);
         });
         registerBlockItem(name, bSupplier);
         return bSupplier;
@@ -190,7 +186,7 @@ public class GeneralBlocks {
 
     private static <T extends Block> Supplier<Item> registerBlockItem(String name, Supplier<T> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, Helper.id(name)))));
+                new Item.Properties()));
     }
 
     public static void registerNetherOresBlock(IEventBus eventBus) {

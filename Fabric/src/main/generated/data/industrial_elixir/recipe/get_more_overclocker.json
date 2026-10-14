@@ -2,9 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": "industrial_elixir:circuit",
-    "G": "minecraft:lapis_block",
-    "S": "industrial_elixir:insulated_copper_cable"
+    "E": {
+      "item": "industrial_elixir:circuit"
+    },
+    "G": {
+      "item": "minecraft:lapis_block"
+    },
+    "S": {
+      "item": "industrial_elixir:insulated_copper_cable"
+    }
   },
   "pattern": [
     "   ",

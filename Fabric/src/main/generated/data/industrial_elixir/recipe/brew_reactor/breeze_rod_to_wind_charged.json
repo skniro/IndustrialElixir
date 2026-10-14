@@ -3,14 +3,19 @@
   "count": 1,
   "fluid": "minecraft:water",
   "fluid_amount": 1000,
-  "ingredient": "minecraft:breeze_rod",
-  "ingredient2": "minecraft:glass_bottle",
+  "ingredient": {
+    "item": "minecraft:breeze_rod"
+  },
+  "ingredient2": {
+    "item": "minecraft:glass_bottle"
+  },
   "result": {
     "components": {
       "minecraft:potion_contents": {
         "potion": "minecraft:wind_charged"
       }
     },
+    "count": 1,
     "id": "minecraft:potion"
   }
 }
