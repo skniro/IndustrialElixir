@@ -56,7 +56,6 @@ public class ModCreativeTab {
                         content.accept(GeneralBlocks.Rubber_SAPLING.get());
                         content.accept(GeneralBlocks.Rubber_LEAVES.get());
                         content.accept(GeneralBlocks.Rubber_Rubber_LOG.get());
-                        content.accept(GeneralBlocks.Rubber_SHELF.get());
                         content.accept(GeneralBlocks.COBBLESTONE_STAIRS.get());
                         content.accept(GrowableOresItems.Sticky_Resin.get());
                         content.accept(MapleArmorItems.Rubber_SIGN.get());

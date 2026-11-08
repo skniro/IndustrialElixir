@@ -50,7 +50,9 @@ public class FluidGeneratorEntity extends AbstractFluidMachineEntity {
 
             @Override
             public long getMaxInsert(@Nullable Direction side) {
-                return getEffectiveTier().getMaxInput();
+                // Output-only: accept energy internally (cable buffer bookkeeping) but never
+                // from neighbouring blocks.
+                return side == null ? getEffectiveTier().getMaxInput() : 0;
             }
 
             @Override

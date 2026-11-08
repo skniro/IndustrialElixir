@@ -5,6 +5,8 @@ import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.renderer.AlchemyblockentityRenderer;
+import com.skniro.industrial_elixir.block.renderer.container.fluid.FluidTankRenderer;
+import com.skniro.industrial_elixir.block.renderer.pipe.FluidPipeRenderer;
 import com.skniro.industrial_elixir.client.particle.MapleCampfireSmokeParticle;
 import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
@@ -32,6 +34,7 @@ import com.skniro.industrial_elixir.screen.ingame.generator.SacredGeneratorScree
 import com.skniro.industrial_elixir.entity.MapleEntityType;
 import com.skniro.industrial_elixir.screen.AlchemyScreenHandlerType;
 import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceScreen;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -50,21 +53,21 @@ public class IndustrialElixirOresClient {
     public static void onClientSetup(FMLClientSetupEvent event) {
 
         RenderType renderLayer2 = RenderType.cutout();
-        ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_LEAVES.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.GLASSFIBER_CABLE.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Fluid_Block.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block.get(), renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass.get(), renderLayer2);
+        ItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING.get(), renderLayer2);
+        ItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_LEAVES.get(), renderLayer2);
+        ItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.GLASSFIBER_CABLE.get(), renderLayer2);
+        ItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Fluid_Block.get(), renderLayer2);
+        ItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block.get(), renderLayer2);
+        ItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass.get(), renderLayer2);
 
         RenderType renderLayer3 = RenderType.translucent();
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK.get(), renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Hot_Spring.get(), renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Hot_Spring.get(), renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_AIR.get(), renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_AIR.get(), renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_UU.get(), renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_UU.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Hot_Spring.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Hot_Spring.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_AIR.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_AIR.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_UU.get(), renderLayer3);
+        ItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_UU.get(), renderLayer3);
     }
 
     @SubscribeEvent

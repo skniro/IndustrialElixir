@@ -11,8 +11,13 @@ import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(modid = IndustrialElixir.MOD_ID, value = Dist.CLIENT)
 public class ModKeyMappings {
-    /** 1.21.1 key categories are plain translation keys. */
-    public static final String INDUSTRIAL_ELIXIR = "industrial_elixir.keybinds";
+    /**
+     * 1.21.1's {@link KeyMapping} takes the category as a plain translation key (vanilla uses
+     * constants such as {@code key.categories.movement}), whereas 26.1 registers a
+     * {@code KeyMapping.Category} and derives {@code key.category.<namespace>.<path>}.
+     * Reuse the same translation key here so the controls screen shows the same label as 26.1.2.
+     */
+    public static final String INDUSTRIAL_ELIXIR = "key.category.industrial_elixir.industrial_elixir.keybinds";
 
     public static final KeyMapping Mode_Switch_Keybind = new KeyMapping("key.industrial_elixir.mode_switch_key", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, INDUSTRIAL_ELIXIR);
     public static final KeyMapping ALT_Keybind = new KeyMapping("key.industrial_elixir.alt_key", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, INDUSTRIAL_ELIXIR);

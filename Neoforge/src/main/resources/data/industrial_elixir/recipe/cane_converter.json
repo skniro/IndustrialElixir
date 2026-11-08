@@ -6,10 +6,18 @@
         "cIc"
     ],
     "key": {
-        "c": "minecraft:copper_ingot",
-        "I": "minecraft:iron_block",
-        "R": "minecraft:redstone",
-        "F": "minecraft:furnace"
+        "c": {
+            "item": "minecraft:copper_ingot"
+        },
+        "I": {
+            "item": "minecraft:iron_block"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        },
+        "F": {
+            "item": "minecraft:furnace"
+        }
     },
     "result": {
         "id": "industrial_elixir:growableores_block",

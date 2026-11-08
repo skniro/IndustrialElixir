@@ -405,6 +405,16 @@ public class NuclearReactorBlockEntity extends BlockEntity implements MenuProvid
         return Component.translatable(FurnitureStrings.NuclearReactor);
     }
 
+    /**
+     * NeoForge menu opening: the client-side factories read the machine position from the
+     * extra opening data. Without this override the buffer is empty and the client throws
+     * a network protocol error while decoding the open-screen packet.
+     */
+    @Override
+    public void writeClientSideData(AbstractContainerMenu menu, net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        buffer.writeBlockPos(this.getBlockPos());
+    }
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {

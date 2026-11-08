@@ -6,7 +6,9 @@
         "###"
     ],
     "key": {
-        "#": "industrial_elixir:ier_tin_ore_cane"
+        "#": {
+            "item": "industrial_elixir:ier_tin_ore_cane"
+        }
     },
     "result": {
         "id": "industrial_elixir:tin_ingot",

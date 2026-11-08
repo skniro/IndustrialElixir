@@ -18,6 +18,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -111,6 +112,16 @@ public abstract class AbstractHeatMachineEntity extends BlockEntity implements M
         };
     }
 
+
+    /**
+     * NeoForge menu opening: the client-side factories read the machine position from the
+     * extra opening data. Without this override the buffer is empty and the client throws
+     * a network protocol error while decoding the open-screen packet.
+     */
+    @Override
+    public void writeClientSideData(AbstractContainerMenu menu, net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        buffer.writeBlockPos(this.getBlockPos());
+    }
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {

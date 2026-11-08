@@ -5,6 +5,7 @@ import com.skniro.industrial_elixir.block.entity.BasePowerBlockBlockEntity;
 import com.skniro.industrial_elixir.block.init.machine.AbstractMachineblock;
 import com.skniro.industrial_elixir.energy.api.EnergyStorage;
 import com.skniro.industrial_elixir.energy.api.EnergyStorageUtil;
+import com.skniro.industrial_elixir.energy.api.base.SimpleSidedEnergyContainer;
 import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,6 +23,32 @@ public abstract class NewBaseGeneratorBlockEntity extends BasePowerBlockBlockEnt
 
     public NewBaseGeneratorBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
+
+        // Generators are sources: they must never accept energy from a neighbouring cable or
+        // storage, and every side has to be extractable so the cable network can drain them.
+        // This matches BaseGeneratorBlockEntity / NuclearReactorBlockEntity in 26.1.2.
+        energyContainer = new SimpleSidedEnergyContainer() {
+            @Override
+            public long getCapacity() {
+                return getMachineCapacity();
+            }
+
+            @Override
+            public long getMaxInsert(@Nullable Direction side) {
+                return side == null ? getEffectiveTier().getMaxInput() : 0;
+            }
+
+            @Override
+            public long getMaxExtract(@Nullable Direction side) {
+                return getEffectiveTier().getMaxOutput();
+            }
+
+            @Override
+            protected void onFinalCommit() {
+                setChanged();
+                getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
+            }
+        };
     }
 
     public EnergyStorage getSideEnergyStorage(@Nullable Direction side) {

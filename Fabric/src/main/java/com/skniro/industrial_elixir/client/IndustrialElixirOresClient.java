@@ -38,6 +38,7 @@ import com.skniro.industrial_elixir.screen.ingame.machine.heat.ModBlastFurnaceSc
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
@@ -46,6 +47,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -58,23 +60,25 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(ModClientEvents::onEndTick);
 
         RenderType renderLayer2 = RenderType.cutout();
-        ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_SAPLING, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Rubber_LEAVES, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.GLASSFIBER_CABLE, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Item_Block, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Iten_Block, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Stone_Fluid_Block, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.Pipe_Wooden_Fluid_Block, renderLayer2);
-        ModItemBlockRenderTypes.setRenderLayer(GeneralBlocks.Reinforced_Glass, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GeneralBlocks.Rubber_SAPLING, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GeneralBlocks.Rubber_LEAVES, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.GLASSFIBER_CABLE, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.Pipe_Stone_Item_Block, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.Pipe_Wooden_Iten_Block, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.Pipe_Stone_Fluid_Block, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.Pipe_Wooden_Fluid_Block, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GeneralBlocks.Reinforced_Glass, renderLayer2);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.VENDOR_MACHINE_Block, renderLayer2);
 
         RenderType renderLayer3 = RenderType.translucent();
-        ModItemBlockRenderTypes.setRenderLayer(GrowableOresBlocks.FLUID_TANK_BLOCK, renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Hot_Spring, renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Hot_Spring, renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_AIR, renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_AIR, renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.FLOWING_Fluid_UU, renderLayer3);
-        ModItemBlockRenderTypes.setRenderLayer(IndustrialElixirFluids.STILL_Fluid_UU, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.FLUID_TANK_BLOCK, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putFluid(IndustrialElixirFluids.FLOWING_Hot_Spring, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putFluid(IndustrialElixirFluids.STILL_Hot_Spring, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putFluid(IndustrialElixirFluids.FLOWING_Fluid_AIR, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putFluid(IndustrialElixirFluids.STILL_Fluid_AIR, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putFluid(IndustrialElixirFluids.FLOWING_Fluid_UU, renderLayer3);
+        BlockRenderLayerMap.INSTANCE.putFluid(IndustrialElixirFluids.STILL_Fluid_UU, renderLayer3);
+
 
         MenuScreens.register(AlchemyScreenHandlerType.ALCHEMY, AlchemyBlockScreen::new);
         MenuScreens.register(AlchemyScreenHandlerType.COAL_GENERATOR_SCREEN_HANDLER, CoalGeneratorScreen::new);
@@ -110,10 +114,6 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         MenuScreens.register(AlchemyScreenHandlerType.VendorMachine, VendorMachineScreen::new);
 
         BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, AlchemyblockentityRenderer::new);
-        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_BLOCK_ENTITY, WoodenPipeRenderer::new);
-        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_BLOCK_ENTITY, WoodenPipeRenderer::new);
-        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
-        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
         BlockEntityRenderers.register(AlchemyBlockEntityType.FLUID_TANK_BLOCK_ENTITY, FluidTankRenderer::new);
 
         HudRenderCallback.EVENT.register(this::renderHud);

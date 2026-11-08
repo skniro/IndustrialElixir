@@ -6,8 +6,12 @@
         "###"
     ],
     "key": {
-        "#": "minecraft:sugar_cane",
-        "G": "industrial_elixir:bronze_ingot"
+        "#": {
+            "item": "minecraft:sugar_cane"
+        },
+        "G": {
+            "item": "industrial_elixir:bronze_ingot"
+        }
     },
     "result": {
         "id": "industrial_elixir:ier_bronze_ore_cane",

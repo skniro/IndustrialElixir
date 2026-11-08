@@ -23,7 +23,9 @@ import java.util.List;
 
 
 public abstract class BaseEnergyBoxBlockEntity extends BasePowerBlockBlockEntity {
-    public SimpleSidedEnergyContainer energyContainer;
+    // NOTE: do not redeclare energyContainer here. The directional container below replaces the
+    // field from BasePowerBlockBlockEntity; a local field would hide it and leave inherited code
+    // (pushEnergyToNeighbours, getFreeSpace, ...) looking at the unused base instance.
     protected final ContainerData propertyDelegate;
 
     public BaseEnergyBoxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {

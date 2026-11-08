@@ -9,6 +9,7 @@ import com.skniro.industrial_elixir.registry.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -52,6 +53,16 @@ public abstract class BaseGeneratorBlockEntity extends BlockEntity implements Me
                 getLevel().sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
             }
         };
+    }
+
+    /**
+     * NeoForge menu opening: the client-side factories read the machine position from the
+     * extra opening data. Without this override the buffer is empty and the client throws
+     * a network protocol error while decoding the open-screen packet.
+     */
+    @Override
+    public void writeClientSideData(AbstractContainerMenu menu, net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        buffer.writeBlockPos(this.getBlockPos());
     }
 
     public EnergyStorage getSideEnergyStorage(@Nullable Direction side) {

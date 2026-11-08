@@ -62,8 +62,6 @@
     "industrial_elixir:induction_furnace",
     "industrial_elixir:heat_centrifuge",
     "industrial_elixir:pattern_storage",
-    "industrial_elixir:pipe_wooden_item",
-    "industrial_elixir:pipe_stone_item",
     "industrial_elixir:pipe_wooden_fluid",
     "industrial_elixir:pipe_stone_fluid",
     "industrial_elixir:fluid_tank",

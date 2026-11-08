@@ -7,8 +7,7 @@ import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
 public class ModKeyMappings {
-    /** 1.21.1 key categories are plain translation keys. */
-    public static final String INDUSTRIAL_ELIXIR = "industrial_elixir.keybinds";
+    public static final String INDUSTRIAL_ELIXIR = "key.category.industrial_elixir.industrial_elixir.keybinds";
 
     public static final KeyMapping Mode_Switch_Keybind = KeyBindingHelper.registerKeyBinding(
             new KeyMapping("key.industrial_elixir.mode_switch_key", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, INDUSTRIAL_ELIXIR));

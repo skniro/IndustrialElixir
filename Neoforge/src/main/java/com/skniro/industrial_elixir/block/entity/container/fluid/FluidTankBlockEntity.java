@@ -11,6 +11,7 @@ import com.skniro.industrial_elixir.item.init.FluidCellItem;
 import com.skniro.industrial_elixir.screen.handler.container.fluid.FluidTankScreenHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -82,6 +83,16 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
                 return 0;
             }
         };
+    }
+
+    /**
+     * NeoForge menu opening: the client-side factories read the machine position from the
+     * extra opening data. Without this override the buffer is empty and the client throws
+     * a network protocol error while decoding the open-screen packet.
+     */
+    @Override
+    public void writeClientSideData(AbstractContainerMenu menu, net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        buffer.writeBlockPos(this.getBlockPos());
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
@@ -314,12 +325,14 @@ public class FluidTankBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         SingleFluidStorage.writeValue(fluidContainer, nbt);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
         SingleFluidStorage.readValue(fluidContainer, nbt);
     }
 

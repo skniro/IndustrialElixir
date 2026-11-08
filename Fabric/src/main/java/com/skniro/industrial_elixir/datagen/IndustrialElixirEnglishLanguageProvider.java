@@ -440,6 +440,7 @@ public class IndustrialElixirEnglishLanguageProvider extends FabricLanguageProvi
         translationBuilder.add("block.industrial_elixir.fluid_air","Air Fluid");
 
         translationBuilder.add("key.category.industrial_elixir.industrial_elixir.keybinds", "Industrial Elixir");
+        translationBuilder.add("industrial_elixir.keybinds", "Industrial Elixir");
         translationBuilder.add("key.industrial_elixir.alt_key", "ALT key");
         translationBuilder.add("key.industrial_elixir.mode_switch_key", "Mode Switch Key");
         translationBuilder.add("key.industrial_elixir.boost_key", "Boost Key");

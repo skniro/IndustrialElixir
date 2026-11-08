@@ -18,6 +18,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -81,6 +82,16 @@ public abstract class BasePowerBlockBlockEntity extends BlockEntity implements M
             }
         };
     };
+
+    /**
+     * NeoForge menu opening: the client-side factories read the machine position from the
+     * extra opening data. Without this override the buffer is empty and the client throws
+     * a network protocol error while decoding the open-screen packet.
+     */
+    @Override
+    public void writeClientSideData(AbstractContainerMenu menu, net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        buffer.writeBlockPos(this.getBlockPos());
+    }
 
     // 获取有效的 EnergyTier（支持 Transformer 升级）
     public EnergyTier getEffectiveTier() {

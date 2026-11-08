@@ -6,7 +6,9 @@
         "###"
     ],
     "key": {
-        "#": "industrial_elixir:ier_bronze_ore_cane"
+        "#": {
+            "item": "industrial_elixir:ier_bronze_ore_cane"
+        }
     },
     "result": {
         "id": "industrial_elixir:bronze_ingot",

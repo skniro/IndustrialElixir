@@ -64,6 +64,8 @@ public class ElectricJetpackItem extends ArmorItem implements SimpleEnergyItem, 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean selected) {
         if (!(entity instanceof Player player)) return;
+        // 26.1's ServerLevel signature limited this logic to the server side.
+        if (level.isClientSide()) return;
         if (player.getItemBySlot(EquipmentSlot.CHEST) != stack) return;
 
         boolean powered = getStoredEnergy(stack) > 0;

@@ -188,6 +188,7 @@
   "gui.metal_former.mode.error": "Invalid Mode",
   "gui.metal_former.mode.extruding": "Extruding",
   "gui.metal_former.mode.rolling": "Rolling",
+  "industrial_elixir.keybinds": "Industrial Elixir",
   "industrial_elixir.tooltip.liquid.amount": "Liquid Amount: %s",
   "industrial_elixir.tooltip.liquid.amount.with.capacity": "Capacity: %s",
   "item.industrial_elixir.advanced_circuit": "Advanced Circuit",
