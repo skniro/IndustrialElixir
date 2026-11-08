@@ -1,5 +1,6 @@
 package com.skniro.industrial_elixir.screen.ingame.machine;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.skniro.industrial_elixir.IndustrialElixir;
 import com.skniro.industrial_elixir.api.renderer.chunk.ChunkMapRenderer;
 import com.skniro.industrial_elixir.screen.handler.machine.ChunkLoaderScreenHandler;
@@ -159,7 +160,7 @@ public class ChunkLoaderScreen extends AbstractContainerScreen<ChunkLoaderScreen
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (event.button() != 0) {
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT) {
             return super.mouseClicked(event, doubleClick);
         }
 

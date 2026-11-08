@@ -120,3 +120,4 @@ run/
 /Neoforge/src/main/generated/.cache/
 /Neoforge/runs/
 /.claude/
+*.patch

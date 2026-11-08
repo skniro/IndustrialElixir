@@ -108,7 +108,6 @@ public class ModCreativeTab {
                         content.accept(GrowableOresBlocks.CESU.get());
                         content.accept(GrowableOresBlocks.MFE.get());
                         content.accept(GrowableOresBlocks.MFSU.get());
-                        content.accept(GrowableOresBlocks.ChargePad.get());
                         content.accept(GrowableOresBlocks.CESU_CHARGE_PAD.get());
                         content.accept(GrowableOresBlocks.MFE_CHARGE_PAD.get());
                         content.accept(GrowableOresBlocks.MFSU_CHARGE_PAD.get());

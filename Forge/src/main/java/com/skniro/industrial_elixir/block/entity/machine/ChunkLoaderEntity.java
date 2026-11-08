@@ -23,6 +23,9 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
     // 5x5 grid, 25 chunks, center chunk (index 12) always loaded
     // Bit i represents chunk i in row-major order
     private int selectedChunks = 0;
+    // Optional chunks this loader currently has force-loaded.
+    private int appliedChunks = 0;
+    private boolean chunksApplied = false;
 
     public ChunkLoaderEntity(BlockPos pos, BlockState state) {
         super(AlchemyBlockEntityType.CHUNK_LOADER_BE.get(), pos, state);
@@ -93,12 +96,25 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
 
-        for (int i = 0; i < 25; i++) {
-            if ((selectedChunks & (1 << i)) != 0 || i == 12) {
-                int row = i / 5;
-                int col = i % 5;
-                ChunkPos chunkPos = new ChunkPos(chunkX + (col - 2), chunkZ + (row - 2));
-                serverLevel.setChunkForced(chunkPos.x(), chunkPos.z(), false);
+        if (!chunksApplied) {
+            for (int i = 0; i < 25; i++) {
+                if (i == 12 || (selectedChunks & (1 << i)) != 0) {
+                    serverLevel.setChunkForced(chunkX + (i % 5) - 2, chunkZ + (i / 5) - 2, true);
+                }
+            }
+            appliedChunks = selectedChunks;
+            chunksApplied = true;
+        } else {
+            int changed = appliedChunks ^ selectedChunks;
+            if (changed != 0) {
+                for (int i = 0; i < 25; i++) {
+                    if (i == 12) continue;
+                    if ((changed & (1 << i)) != 0) {
+                        boolean force = (selectedChunks & (1 << i)) != 0;
+                        serverLevel.setChunkForced(chunkX + (i % 5) - 2, chunkZ + (i / 5) - 2, force);
+                    }
+                }
+                appliedChunks = selectedChunks;
             }
         }
     }
@@ -108,28 +124,28 @@ public class ChunkLoaderEntity extends AbstractMachineEntity {
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
 
+        // Not working: release every chunk this loader forced, including its own chunk.
         for (int i = 0; i < 25; i++) {
-            if (i == 12) continue; // never un-force center
-            int row = i / 5;
-            int col = i % 5;
-            ChunkPos chunkPos = new ChunkPos(chunkX + (col - 2), chunkZ + (row - 2));
-            serverLevel.setChunkForced(chunkPos.x(), chunkPos.z(), false);
+            if (i == 12 || (appliedChunks & (1 << i)) != 0) {
+                serverLevel.setChunkForced(chunkX + (i % 5) - 2, chunkZ + (i / 5) - 2, false);
+            }
         }
+        appliedChunks = 0;
+        chunksApplied = false;
     }
 
     @Override
-    public void setRemoved() {
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         if (level instanceof ServerLevel serverLevel) {
-            int chunkX = worldPosition.getX() >> 4;
-            int chunkZ = worldPosition.getZ() >> 4;
+            int chunkX = pos.getX() >> 4;
+            int chunkZ = pos.getZ() >> 4;
             for (int i = 0; i < 25; i++) {
-                int row = i / 5;
-                int col = i % 5;
-                ChunkPos chunkPos = new ChunkPos(chunkX + (col - 2), chunkZ + (row - 2));
-                serverLevel.setChunkForced(chunkPos.x(), chunkPos.z(), false);
+                serverLevel.setChunkForced(chunkX + (i % 5) - 2, chunkZ + (i / 5) - 2, false);
             }
         }
-        super.setRemoved();
+        appliedChunks = 0;
+        chunksApplied = false;
+        super.preRemoveSideEffects(pos, state);
     }
 
     @Override

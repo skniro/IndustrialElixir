@@ -153,7 +153,6 @@ public class ModCreativeTab {
             content.accept(GrowableOresBlocks.CESU);
             content.accept(GrowableOresBlocks.MFE);
             content.accept(GrowableOresBlocks.MFSU);
-            content.accept(GrowableOresBlocks.ChargePad);
             content.accept(GrowableOresBlocks.CESU_CHARGE_PAD);
             content.accept(GrowableOresBlocks.MFE_CHARGE_PAD);
             content.accept(GrowableOresBlocks.MFSU_CHARGE_PAD);

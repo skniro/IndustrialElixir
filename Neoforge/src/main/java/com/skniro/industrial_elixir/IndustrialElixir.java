@@ -118,7 +118,5 @@ public class IndustrialElixir {
             LivingEntity entity = event.getLivingEntity();
 
             ModContent.Cables cable = event.getCableType();
-
-            // 你的触电逻辑
         }
 }
