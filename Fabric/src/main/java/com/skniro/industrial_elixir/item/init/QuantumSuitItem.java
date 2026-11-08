@@ -175,6 +175,8 @@ public class QuantumSuitItem extends ArmorItem implements SimpleEnergyItem, Tier
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean selected) {
         if (!(entity instanceof Player player)) return;
+        // 26.1 handed inventoryTick a ServerLevel, so the ability logic only ran server-side.
+        if (level.isClientSide()) return;
         // 26.1 hands the equipment slot straight to inventoryTick; 1.21.1 only passes an inventory
         // index, so resolve the slot the piece is worn in and skip anything merely carried around.
         EquipmentSlot slot = player.getEquipmentSlotForItem(stack);

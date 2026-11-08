@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -384,6 +385,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
+        ContainerHelper.saveAllItems(nbt, inventory, registries);
         nbt.putLong("tank.amount", fluidContainer.amount);
         if (!fluidContainer.variant.isBlank()) {
             nbt.putInt("tank.fluid_id", BuiltInRegistries.FLUID.getId(fluidContainer.variant.getFluid()));
@@ -395,6 +397,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
+        ContainerHelper.loadAllItems(nbt, inventory, registries);
         long amount = (nbt.contains("tank.amount") ? nbt.getLong("tank.amount") : 0);
         int fluidId = (nbt.contains("tank.fluid_id") ? nbt.getInt("tank.fluid_id") : -1);
         if (amount <= 0 || fluidId < 0) {

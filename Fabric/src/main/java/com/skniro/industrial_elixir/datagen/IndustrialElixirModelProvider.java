@@ -56,9 +56,6 @@ public class IndustrialElixirModelProvider extends FabricModelProvider {
 
         blockStateModelGenerator.createPlant(GeneralBlocks.Rubber_SAPLING, GeneralBlocks.POTTED_Rubber_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
         blockStateModelGenerator.createTrivialCube(GeneralBlocks.Rubber_LEAVES);
-        // 26.1's ShelfBlock (and BlockModelGenerators#createShelf) do not exist in 1.21.1; the block is
-        // registered as a plain wooden block, so it gets the matching trivial cube model.
-        blockStateModelGenerator.createTrivialCube(GeneralBlocks.Rubber_SHELF);
 
         blockStateModelGenerator.createHangingSign(GeneralBlocks.STRIPPED_Rubber_LOG, MapleSignBlocks.Rubber_HANGING_SIGN, MapleSignBlocks.Rubber_WALL_HANGING_SIGN);
 

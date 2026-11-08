@@ -53,7 +53,6 @@ public class IndustrialElixirLootTableGenerator extends FabricBlockLootTableProv
         dropSelf(GeneralBlocks.Rubber_TRAPDOOR);
         dropSelf(GeneralBlocks.STRIPPED_Rubber_LOG);
         dropSelf(GeneralBlocks.STRIPPED_Rubber_WOOD);
-        dropSelf(GeneralBlocks.Rubber_SHELF);
 
         dropSelf(GeneralBlocks.Raw_Lead_Block);
         dropSelf(GeneralBlocks.Raw_Tin_Block);

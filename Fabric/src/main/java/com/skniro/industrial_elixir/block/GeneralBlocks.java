@@ -98,11 +98,6 @@ public class GeneralBlocks {
             (settings)-> new PressurePlateBlock(MapleBlockSetType.Rubber, settings), BlockBehaviour.Properties.of().mapColor(
                     Rubber_PLANKS.defaultMapColor()).noCollission().strength(0.5F).ignitedByLava().instrument(NoteBlockInstrument.BASS).pushReaction(PushReaction.DESTROY));
 
-    // 26.1's ShelfBlock / SoundType.SHELF do not exist in 1.21.1; keep the block registered as a
-    // plain wooden block so the item, recipes and datagen entries stay valid.
-    public static final Block Rubber_SHELF = registerBlock("rubber_shelf",
-            Block::new, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).ignitedByLava().strength(2.0F, 3.0F));
-
     public static final Block Reinforced_Stone = registerBlock("reinforced_stone",
             Block::new, (BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)).mapColor(MapColor.TERRACOTTA_GRAY).strength(100.0F, 1000.0F));
     public static final Block Reinforced_Glass = registerBlock("reinforced_glass",

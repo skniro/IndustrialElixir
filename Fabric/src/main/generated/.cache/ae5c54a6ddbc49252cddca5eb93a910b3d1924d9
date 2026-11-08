@@ -1,9 +1,8 @@
-// 1.21.1	2026-10-14T21:13:58.4019375	Skniro's Industrial Elixir/Block Loot Tables
+// 1.21.1	2026-11-08T10:38:23.4881116	Skniro's Industrial Elixir/Block Loot Tables
 564975cb4ae8384ff13642b9de3142e4e54f9bc7 data\industrial_elixir\loot_table\blocks\rubber_fence_gate.json
 c1e00695fd90ea525b70414c844d19e603457e14 data\industrial_elixir\loot_table\blocks\super_machine.json
 04204c7019f3065f56ad9de3014316b21c1ccc32 data\industrial_elixir\loot_table\blocks\rubber_leaves.json
 70815314f4153cd60e842e63c058446dbd4ce0f7 data\industrial_elixir\loot_table\blocks\machine.json
-32c7b51db00fb4ffecfb12dc0e4dddfd93e0d9d5 data\industrial_elixir\loot_table\blocks\rubber_shelf.json
 9a3f644c8cfd986f3b7c56e7eaa0c6c48e74c90e data\industrial_elixir\loot_table\blocks\ore_washing_block.json
 d67a7cf98021efcd20c11af575e20a11b442f839 data\industrial_elixir\loot_table\blocks\insulated_copper_cable.json
 9b0f6bac03ae5b38affdceccd260acb73a142390 data\industrial_elixir\loot_table\blocks\insulated_hv_cable.json

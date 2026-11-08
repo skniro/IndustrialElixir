@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-14T21:13:58.4109391	Skniro's Industrial Elixir/BaseMachine
+// 1.21.1	2026-11-08T10:38:23.4961121	Skniro's Industrial Elixir/BaseMachine
 1a7e40548706d63c14c096cecd6e2edd215eb9a7 data\industrial_elixir\advancement\recipes\misc\metalformer.json
 86f60e2d62b93875e5256189f944a9c885d38b81 data\industrial_elixir\advancement\recipes\misc\solid_fuel_heater_generator.json
 7c53e09812ab4547fee0fb5306ec27e5d3462146 data\industrial_elixir\advancement\recipes\misc\crop_farm.json
@@ -23,8 +23,8 @@ ac261581bca557ddd83a91062c106cf2e68fd930 data\industrial_elixir\recipe\brew_reac
 0b4ed03c07994903f24cf1233ee5cc4d79ef3261 data\industrial_elixir\advancement\recipes\misc\pipe_stone_fluid.json
 5a0901ae714e0d9d41a5191ec5b201df0e653428 data\industrial_elixir\advancement\recipes\misc\blast_furnace.json
 f1ea0ed87cf2983ecf8758d345b1dcd1bf135aaa data\industrial_elixir\advancement\recipes\misc\cutting_block.json
-91dfed2ed83a1863d3d1c3e62dfb24f1a8d33aad data\industrial_elixir\advancement\recipes\misc\coal_generator.json
 bc459fde264ef707ffc12ff372ad05701b885433 data\industrial_elixir\recipe\coal_generator.json
+91dfed2ed83a1863d3d1c3e62dfb24f1a8d33aad data\industrial_elixir\advancement\recipes\misc\coal_generator.json
 e585133b74d1ed334873308dc2c726b1c0708fa0 data\industrial_elixir\advancement\recipes\misc\hv_transformer.json
 f4f461f84d503cf23b9649e1e4694262033c93cc data\industrial_elixir\advancement\recipes\misc\compressor.json
 84e90fc3057e4fcbb583b68b1a41d1e7a381e0db data\industrial_elixir\recipe\crop_farm.json

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-14T21:13:58.4239385	Skniro's Industrial Elixir/Cable
+// 1.21.1	2026-11-08T10:38:23.5151122	Skniro's Industrial Elixir/Cable
 95d33920c86f222029c5bd6dabec0f7eff5ec7b2 data\industrial_elixir\recipe\insulated_copper_cable.json
 71e9b7bd65db431dd64f0a39c53b38300f066071 data\industrial_elixir\recipe\insulated_gold_cable.json
 6efb9675a9b3f083a05238d2f7de7233607f1bfc data\industrial_elixir\advancement\recipes\misc\glassfiber_cable.json
@@ -19,5 +19,5 @@ f46703953163b6e692dc132982523741c069ef4d data\industrial_elixir\advancement\reci
 93110936f0dc927b335bf070816d5dc76254775f data\industrial_elixir\advancement\recipes\misc\insulated_hv_cable.json
 8e1df8e31f5f085d2a56c5292c79db9e1696cd49 data\industrial_elixir\advancement\recipes\misc\insulated_copper_cable.json
 9f2f75e71f89aa29f77b90f4e66579e88a6d2f0f data\industrial_elixir\advancement\recipes\misc\insulated_gold_cable.json
-2fb09efb3b918393e185ad82d57d01933a7a4498 data\industrial_elixir\advancement\recipes\misc\energy_storage.json
 b7f7f40a4bf542efc0a19ed62ac608962aa54dc2 data\industrial_elixir\recipe\energy_storage.json
+2fb09efb3b918393e185ad82d57d01933a7a4498 data\industrial_elixir\advancement\recipes\misc\energy_storage.json

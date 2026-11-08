@@ -4,6 +4,9 @@ import com.skniro.industrial_elixir.block.GeneralBlocks;
 import com.skniro.industrial_elixir.block.GrowableOresBlocks;
 import com.skniro.industrial_elixir.block.entity.AlchemyBlockEntityType;
 import com.skniro.industrial_elixir.block.renderer.AlchemyblockentityRenderer;
+import com.skniro.industrial_elixir.block.renderer.container.fluid.FluidTankRenderer;
+import com.skniro.industrial_elixir.block.renderer.pipe.FluidPipeRenderer;
+import com.skniro.industrial_elixir.block.renderer.pipe.WoodenPipeRenderer;
 import com.skniro.industrial_elixir.client.particle.MapleCampfireSmokeParticle;
 import com.skniro.industrial_elixir.client.particle.MapleParticleTypes;
 import com.skniro.industrial_elixir.fluid.IndustrialElixirFluids;
@@ -107,11 +110,11 @@ public class IndustrialElixirOresClient implements ClientModInitializer {
         MenuScreens.register(AlchemyScreenHandlerType.VendorMachine, VendorMachineScreen::new);
 
         BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, AlchemyblockentityRenderer::new);
-        //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_BLOCK_ENTITY, WoodenPipeRenderer::new);
-        //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_BLOCK_ENTITY, WoodenPipeRenderer::new);
-        //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
-        //BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
-        //BlockEntityRenderers.register(AlchemyBlockEntityType.FLUID_TANK_BLOCK_ENTITY, FluidTankRenderer::new);
+        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_BLOCK_ENTITY, WoodenPipeRenderer::new);
+        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_BLOCK_ENTITY, WoodenPipeRenderer::new);
+        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Wooden_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
+        BlockEntityRenderers.register(AlchemyBlockEntityType.PIPE_Stone_Fluid_BLOCK_ENTITY, FluidPipeRenderer::new);
+        BlockEntityRenderers.register(AlchemyBlockEntityType.FLUID_TANK_BLOCK_ENTITY, FluidTankRenderer::new);
 
         HudRenderCallback.EVENT.register(this::renderHud);
 

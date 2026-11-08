@@ -34,7 +34,6 @@ public class TreeBlockRecipeGenerator extends FabricRecipeProvider {
                 this.woodFromLogs(GeneralBlocks.Rubber_WOOD, GeneralBlocks.Rubber_LOG);
                 this.woodFromLogs(GeneralBlocks.STRIPPED_Rubber_WOOD, GeneralBlocks.STRIPPED_Rubber_LOG);
                 this.woodenBoat(GrowableOresItems.RUBBER_BOAT, GeneralBlocks.Rubber_PLANKS);
-                this.shelf(GeneralBlocks.Rubber_SHELF, GeneralBlocks.STRIPPED_Rubber_LOG);
                 this.chestBoat(GrowableOresItems.RUBBER_CHEST_BOAT, GrowableOresItems.RUBBER_BOAT);
                 this.hangingSign(MapleSignBlocks.Rubber_HANGING_SIGN, GeneralBlocks.STRIPPED_Rubber_LOG);
                 generateRecipes(GrowableOresBlockFamilies.RUBBER_PLANKS, FeatureFlags.VANILLA_SET);
