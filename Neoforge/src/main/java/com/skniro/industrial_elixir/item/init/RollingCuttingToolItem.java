@@ -9,20 +9,13 @@ public class RollingCuttingToolItem extends Item {
         super(settings.durability(80));
     }
 
-    /**
-     * Returns the stack left behind after this tool is used as a crafting ingredient.
-     *
-     * <p>26.1 reached this through {@code ItemStack#getCraftingRemainder()}, which has no 1.21.1
-     * counterpart, so the mod keeps its own helper with the same signature.</p>
-     */
-    public ItemStack getCraftingRemainder(ItemStack stack) {
-        ItemStack copy = stack.copy();
-        copy.setDamageValue(copy.getDamageValue() + 1);
-
-        if (copy.getDamageValue() >= copy.getMaxDamage()) {
+    public static ItemStack getRemainingTool(ItemStack stack) {
+        int damage = stack.getDamageValue() + 1;
+        if (damage >= stack.getMaxDamage()) {
             return ItemStack.EMPTY;
         }
-
+        ItemStack copy = stack.copy();
+        copy.setDamageValue(damage);
         return copy;
     }
 }
